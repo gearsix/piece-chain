@@ -1,0 +1,351 @@
+<html>
+<head><script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app215.us.archive.org';v.server_ms=497;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="/_static/js/bundle-playback.js?v=36gO9Ebf" charset="utf-8"></script>
+<script type="text/javascript" src="/_static/js/wombat.js?v=UHAOicsW" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace3.html","20080311104006","https://web.archive.org/","web","/_static/",
+	      "1205232006");
+</script>
+<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=fantwOh2" />
+<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
+<!-- End Wayback Rewrite JS Include -->
+</head>
+<title> Design and Implementation of an Advanced Text Editor: Screen Display, Moving Around</title>
+<body background="https://web.archive.org/web/20080311104006im_/http://home.mcom.com/assist/net_sites/bg/paper/blue_paper.gif"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
+<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20080311104006/http%3A//www.canberra.edu.au/~scott/C%253DHacking/C-Hacking11/zedace3.html"
+	    scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><div id="wm-ipp-inside">
+  <div id="wm-toolbar" style="position:relative;display:flex;flex-flow:row nowrap;justify-content:space-between;">
+    <div id="wm-logo" style="/*width:110px;*/padding-top:12px;">
+      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
+    </div>
+    <div class="c" style="display:flex;flex-flow:column nowrap;justify-content:space-between;flex:1;">
+      <form class="u" style="display:flex;flex-direction:row;flex-wrap:nowrap;" target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace3.html" onfocus="this.focus();this.select();" style="flex:1;"/><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20080311104006" /><input type="submit" value="Go" />
+      </form>
+      <div style="display:flex;flex-flow:row nowrap;align-items:flex-end;">
+		<div class="s" id="wm-nav-captures">
+	  	  <a class="t" href="/web/20080311104006*/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace3.html" title="See a list of every capture for this URL">20 captures</a>
+	  <div class="r" title="Timespan for captures of this URL">21 Apr 2001 - 11 Mar 2008</div>
+	  </div>
+	<div class="k" style="flex:1;">
+	  <a href="" id="wm-graph-anchor">
+	    <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+	      <canvas id="wm-sparkline-canvas" width="675" height="27" border="0"></canvas>
+	    </div>
+	  </a>
+	</div>
+      </div>
+    </div>
+    <div class="n">
+      <table>
+	<tbody>
+	  <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+	  <tr class="m">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071221042238/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace3.html" title="21 Dec 2007"><strong>Dec</strong></a></td>
+	    <td class="c" id="displayMonthEl" title="You are here: 10:40:06 Mar 11, 2008">MAR</td>
+	    <td class="f" nowrap="nowrap">Apr</td>
+	  </tr>
+	  <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+	  <tr class="d">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071221042238/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace3.html" title="04:22:38 Dec 21, 2007"><img src="/_static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a></td>
+	    <td class="c" id="displayDayEl" style="width:34px;font-size:22px;white-space:nowrap;" title="You are here: 10:40:06 Mar 11, 2008">11</td>
+	    <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
+	  </tr>
+	  <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+	  <tr class="y">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20060717014006/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace3.html" title="17 Jul 2006"><strong>2006</strong></a></td>
+	    <td class="c" id="displayYearEl" title="You are here: 10:40:06 Mar 11, 2008">2008</td>
+	    <td class="f" nowrap="nowrap">2009</td>
+	  </tr>
+	</tbody>
+      </table>
+    </div>
+    <div class="r" style="display:flex;flex-flow:column nowrap;align-items:flex-end;justify-content:space-between;">
+      <div id="wm-btns" style="text-align:right;height:23px;">
+        	<span class="xxs">
+          <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="#"
+	     title="Share via My Web Archive" >
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php" title="Sign In" id="wm-sign-in">
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
+	</span>
+        	<a class="xxs" href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+	<a id="wm-tb-close" href="#close" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share" class="xxs">
+        <a href="/web/20080311104006/http://web.archive.org/screenshot/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace3.html"
+           id="wm-screenshot"
+           title="screenshot">
+          <span class="wm-icon-screen-shot"></span>
+        </a>
+        <a href="#" id="wm-video" title="video">
+          <span class="iconochive-movies"></span>
+        </a>
+	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20080311104006/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace3.html" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20080311104006/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace3.html" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+      <div style="padding-right:2px;text-align:right;white-space:nowrap;">
+	<a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span class="xxs" style="font-size:80%;">About this capture</span></a>
+      </div>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+                    <div id="wm-capinfo-collected-by">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center">COLLECTED BY</div>
+    <div style="padding:3px;position:relative" id="wm-collected-by-content">
+            <div style="display:inline-block;vertical-align:top;width:50%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexacrawls);"></span>
+		Organization: <a style="color:#33f;" href="https://archive.org/details/alexacrawls" target="_new"><span class="wm-title">Alexa Crawls</span></a>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Starting in 1996, <a href="http://www.alexa.com/">Alexa Internet</a> has been donating their crawl data to the Internet Archive.  Flowing in every day, these data are added to the <a href="http://web.archive.org/">Wayback Machine</a> after an embargo period.
+	</div>
+	      </div>
+      <div style="display:inline-block;vertical-align:top;width:49%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/50_crawl)"></span>
+		<div>Collection: <a style="color:#33f;" href="https://archive.org/details/50_crawl" target="_new"><span class="wm-title">50_crawl</span></a></div>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  this data is currently not publicly accessible.
+	</div>
+	      </div>
+    </div>
+    </div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
+    </div>
+    </div>
+  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20080311104006/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace3.html</div>
+<script type="text/javascript">
+__wm.bt(675,27,25,2,"web","http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace3.html","20080311104006",1996,"/_static/",["/_static/css/banner-styles.css?v=fantwOh2","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1><a name="zedace">Design and Implementation of an Advanced Text Editor</a></h1>
+<b>by <a href="https://web.archive.org/web/20080311104006/http://ccnga.uwaterloo.ca/~csbruce/index.html">Craig Bruce</a> (<a href="https://web.archive.org/web/20080311104006/mailto:csbruce@ccnga.uwaterloo.ca">csbruce@ccnga.uwaterloo.ca</a> )</b>
+<h2> 3. SCREEN DISPLAY, MOVING AROUND </h2>
+ 
+This section discusses the operations that have to do with maintaining the 
+current secion of the document on the display and moving the cursor around 
+within the document. 
+ 
+<h3>3.1. PAINTING THE SCREEN </h3>
+ 
+This is the essential operation that keeps the screen up to date with the 
+docment in memory.  <b>ZED</b> has a single function that does this operation, and 
+it is called with the arguments: a pointer to the starting line to display, 
+the starting screen line number to start painting at, and the ending screen 
+line number to end painting at, plus one (lots of endings are 'plus one' 
+since this allows me to use the BCC instruction).  Some implied arguments 
+include general information about the screen for use with the "aceWin*" 
+kernel functions and the left margin for displaying lines. 
+ <p>
+This subroutine simply goes through the display lines one by one, displays 
+the line contents, and advances the line pointer.  To display a single line, 
+the line is fetched into the line buffer from far memory and the number of 
+displayable characters is calculated according to the line length and the 
+left-hand display margin.  The displayable characters (possibly zero) are 
+written to the screen memory and if the line isn't completely full, then the 
+remainder of the line is filled in with space characters.  The displaying is 
+completely performed by the "aceWinPut" system call.  One oddity that needs 
+to be handled is running out of document lines before filling the screen 
+range.  In this case, each remaining screen line is cleared. 
+ <p>
+Attributes (colors) are not used for this operation, since they are not 
+needed and using them would only slow us down.  They display-area color 
+cells are initiali<b>ZED</b> when <b>ZED</b> starts (as are the status-line and 
+separator-line color cells) and don't change during operation.  The colors 
+come from the ACE palette (which the user can configure to his own liking). 
+<p> 
+This subroutine is used to both repaint the entire screen (when necessary) 
+and to repaint only one line or a few lines (when I can get away with 
+this).  Repainting takes time, so we want to repaint only what has changed. 
+However, repainting isn't too slow, especially when compared to serial-line 
+speeds, since screen updates are written directly to screen memory, although 
+the C64's soft-80 screen is significantly slower than the other screen types 
+since so much more processor work needs to be done just to make a single 
+character appear. 
+ <p>
+In the future, it may be useful to allow this function to abort in the 
+middle of this operation if the user presses a key before the repainting is 
+finished, in order to allow the user to work faster.  For example, if you 
+hold down the Page-Down keystroke, the speed that you go forward in the 
+document is limited by how fast the screen can be repainted.  If the repaint 
+operation were abortable, then you could always go forward as fast as the 
+key repeates, and when you get to where you are going and release the 
+Page-Down key, the screen would repaint one final time and everything would 
+be consistent.  A flag would need to be kept to tell whether the screen is 
+consistent or not, in order to make this work. 
+ <p>
+There is also a function that displays a message in the separator line on 
+the screen.  It also needs to store the displayed message in order to allow 
+the user to scroll through it if the screen is not wide enough to display it 
+in its entirety.  When the message is no longer needed, it is erased by 
+overwriting it with separator characters.  And, there is also a function 
+that updates all of the fields that have changed on the status line. 
+ 
+<h3>3.2. MAIN CONTROL </h3>
+ 
+Before I start talking about the implementations of the individual commands, 
+I should say something about the main control for the program.  After <b>ZED</b> 
+initializes and loads the initial document (even if you don't specify one, 
+<b>ZED</b> will default to the name "noname" and try to load it), control is passed 
+to a small main loop of simply displaying the cursor, waiting for a 
+keystroke, undisplaying the cursor, calling the subroutine associated with 
+the keystroke, and repeating. 
+ 
+<h3>3.3. END UP, DOWN, LEFT, RIGHT </h3>
+ 
+Moving the current line to the top and bottom of the document is straight 
+forward, because of the organization that was discussed in the data- 
+structure secion above.  To go to the top of the document, copy the 
+trailer-line pointer to the current line pointer and then fetch the next 
+pointer from the trailer line's header; this will give a pointer to the top 
+line.  Then we set the current line number to one and a couple of other 
+variables and call the subroutine discussed above to repaint the screen. 
+ <p>
+Going to the bottom of the document would be just as easy as going to the 
+top, except that we want the last line (the trailer line) to be displayed on 
+the bottom of the screen in order to present as much useful document content 
+to the user as possible.  If there are fewer lines in the file than will 
+fill a screen, then we cannot, of course, display an entire screen. 
+ <p>
+To make this business easier, a subroutine is provided that, given a 
+starting line pointer and a count, will scan until it either hits the 
+count-th line previous to the given one or it hits the top line of the 
+document.  It returns the number of lines that were actually scanned upwards 
+(possibly zero), the pointer to the line that it stopped scanning at, and a 
+flag indicating whether it stopped because it hit the top of the document or 
+not.  This subroutine is quite generally useful.  There is a similar 
+subroutine that scans downward. 
+ <p>
+So, after locating the bottom line of the document and setting the line 
+number, the scan-upwards subroutine is called to scan upwards the number of 
+displayable lines on the screen.  The screen is then repainted in its 
+entirety from the line that was scanned up to, and the new cursor-display 
+location is computed from the count of the lines that were scanned over. 
+This works equally well for a long document, a document shorter than the 
+height of the screen, and an empty document. 
+ <p>
+The End-Left and End-Right commands are very simple in that they don't even 
+have to change the current line pointer, but they do have to check if the 
+cursor has moved off either the left or right edge (margin) of the screen. 
+The visible columns go from the column number of the left margin, up to that 
+plus the width of the screen.  If the cursor goes off an edge of the screen, 
+then the new left margin will have to be computed and the entire display 
+will need to be repainted. 
+ <p>
+This repainting effectively achieves horizontal scrolling.  Lines in <b>ZED</b>, of 
+course, can be up to 240 characters across (241 if you count the carriage- 
+return character), but the widest screen that ACE supports is 80 columns. 
+Arguably, the horizontal scrolling could be done more efficiently by moving 
+the contents of the display left or right by the requred number of columns 
+and then filling in the opened spaces with the data from the correct columns 
+of the display lines in memory.  However, the additional complexity is 
+non-trivial and the speedup may not be all that great except for the soft-80 
+screen of the C64.  A better approach might be to go with the interruptable- 
+repainting idea that I spoke of earlier, if the current line were updated 
+first (so that you can see what you're doing) and the rest of the lines 
+afterwards. 
+ 
+<h3>3.4. PAGE UP, DOWN, CURSOR UP, DOWN, LEFT, RIGHT, WORD LEFT &amp; RIGHT </h3>
+ 
+All of these functions follow quite naturally from what is above.  For Page- 
+Up and Down, the scan-up or scan-down subroutines already described are 
+called to find the new current line for the cursor and then the entire 
+screen is repainted, effectively paging up or down. 
+<p> 
+For cursor up and down, we just go up or down to the next line in the 
+document and adjust adjust the cursor location on the screen.  If the cursor 
+goes off the top or bottom of the screen, then we scroll the screen up or 
+down as appropriate (ACE can scroll the screen up or down and will 
+eventually be able to scroll it left and right (although this will be a bit 
+painful for the soft-80 screen since it may mean scrolling left and right 
+nybbles)).  Then, we display the current line at either the top or bottom of 
+the screen to fill in the blank line that we just opened up.  Because we use 
+scrolling and painting only a single line, we can scroll the screen fairly 
+quickly, easily keeping up with the cursor repeat rate, except on the 
+soft-80 screen. 
+ <p>
+For cursor left and right, we advance the cursor one position on the line 
+and see if it has gone over the edge.  If not, then we are done; nothing 
+needs to be redisplayed.  If we have gone off the edge, then we call the 
+cursor-up or cursor-down routines to go to the previous/next line and we 
+position the cursor to either the end or start of the new line. 
+ <p>
+The word left/right functions are similar to the cursor left/right 
+functions, except that we keep scanning until we run into the start of the 
+next word.  For word left, this is defined as running into a non-whitespace 
+character that is preceeded by a whitespace character.  A whitespace 
+character is defined as either a space, a TAB, a hard return, or the 
+beginning or ending of the document.  For word right, the start of the next 
+word is defined as a non-whitespace character that is preceeded by a 
+whitespace character, where we start searching from one position to the 
+right of the current cursor position.  If we run into the beginning or end 
+of the document, then we stop there. 
+ <p>
+BTW, all of these moving-around functions check the cursor position against 
+the display bounds and "scroll" the display left or right if the cursor has 
+gone off the screen.  Well, actually, there is one exception to this rule. 
+If the current line is the target-length number of characters long, and the 
+target length equals the screen width, and carriage returns are selected not 
+to be displayed, and the left margin of the display is column one 
+(external), and the cursor is in the target-length-plus-one position of the 
+line, then the screen is NOT scrolled right.  Instead, the cursor is 
+displayed on the last position of the line and is made to blink fast (an ACE 
+feature).  This is done to avoid the annoyance of having the screen scroll 
+right when you are editing a text file on, say, an 80-column screen that has 
+up to 80-character lines in it.  The standalone ACE does this too, when you 
+logically hit the 81st column. 
+ <p>
+<a href="zedace4.html">On to Chapter 4.</a>
+<hr>
+Last Updated: 1995-12-06 Rev A
+</body>
+</html>
+
+<!--
+     FILE ARCHIVED ON 10:40:06 Mar 11, 2008 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 20:33:43 Apr 27, 2022.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 96.232
+  exclusion.robots: 0.169
+  exclusion.robots.policy: 0.161
+  RedisCDXSource: 2.216
+  esindex: 0.008
+  LoadShardBlock: 76.829 (3)
+  PetaboxLoader3.datanode: 89.153 (4)
+  CDXLines.iter: 15.238 (3)
+  load_resource: 396.374
+  PetaboxLoader3.resolve: 335.464
+-->

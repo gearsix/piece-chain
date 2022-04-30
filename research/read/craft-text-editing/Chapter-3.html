@@ -1,0 +1,382 @@
+<html>
+<title>The Craft of Text Editing: Chapter 3</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 3: Implementation Languages</h1>
+
+<blockquote>
+He took his vorpal sword in hand:<br>
+&nbsp;&nbsp;Long time the manxome foe he sought --<br>
+</blockquote>
+
+<p>The choice of implementation language has a major effect on the
+design of a text editor.  In some environments, only one language is
+available.  In such environments, you do the best that you can and
+your editor may end up different from what it would be if the ideal
+language was available. However, most environments offer at least two
+languages.  You thus have a choice, and this chapter offers guidance
+in making that choice.  Of course, this may be a choice between Scylla
+and Charybdis...</p>
+
+<h2>General Considerations</h2>
+
+<p>The general considerations in selecting a language to use for
+implementing a text editor are:</p>
+
+<ul>
+<li>availability and implementation quality
+<li>text handling power
+<li>support for extensibility
+<li>support for large projects
+<li>efficiency
+</ul>
+
+<p>Each of these considerations will be explored in detail.</p>
+
+<h3>Availability and Implementation Quality</h3>
+
+<p>You can only use those languages that are supported on the system
+that your text editor is first implemented upon.  Nonetheless, you
+should be thinking about the second, third, and later systems that
+your text editor will be ported to, and which languages all of those
+systems support in common.</p>
+
+<p>In addition to the mere presence of a language processor on a
+system, you should take into consideration the quality of
+implementation of such systems.  An implementation's speed of
+operation, quality of diagnostics, quality of code produced, and other
+such factors can make a large difference in the usability of the
+language on a particular system.</p>
+
+<h3>Text Handling Power</h3>
+
+<p>It may appear redundant to say that a text editor must handle text,
+but consider a spread sheet program: most of its work is in handling
+control flow, figuring redisplay, and setting up to execute commands.
+Only a small fraction of its time is spent in the floating point
+instructions that most users think is the program's &quot;real
+work.&quot;</p>
+
+<p>At any given moment, a text editor -- or most any other similar
+interactive program -- is mainly doing all of the following:</p>
+
+<ul>
+<li>waiting for user input
+<li>parsing that input
+<li>setting up to execute the commands
+<li>executing the commands
+<li>determining the effect of those commands on the screen
+<li>updating the screen
+</ul>
+
+<p>Most of these operations involve processing text in some way or
+other.  Text editors differ from other applications only in that the
+&quot;executing the commands&quot; item also involves manipulating
+text.</p>
+
+<p>It is important to note that &quot;text handling&quot; does not
+necessarily mean &quot;string handling.&quot; In many cases, the
+language's native string operations are not sufficient, and you must
+write your own string primitives.  For example:</p>
+
+<ul>
+<li>Fortran does not support strings with dynamically varying lengths.
+<li>C does not support strings that contain the NUL (0 decimal)
+character.
+<li>Many implementations of Pascal do not support arbitrarily long
+strings (the leading byte count is often only 8 or 16 bits wide).
+</ul>
+
+<h3>Support for Extensibility</h3>
+
+<p>If they do nothing else, text editors change.  The language should
+make it easy to make and maintain changes.  In some cases, the source
+code must be changed and the editor recompiled.  However, it is very
+desirable to allow users to change some of the editor to suit their
+tastes.  The language should offer such support.</p>
+
+<p>This support can take many forms:</p>
+
+<ul>
+<li>late binding of names to procedures through indirect calls,
+dynamic linking, or other techniques
+<li>retaining and using the symbol table information at run time so
+that the user can think of changes in terms of names, not addresses
+<li>internal error and consistency checking under program control so
+that users can be protected from their mistakes
+<li>the ability to add code to the executing editor
+</ul>
+
+<p>Not all languages offer these features.  You will have to simulate
+the missing features when using those languages that lack them.</p>
+
+<h3>Large Project Support</h3>
+
+<p>Text editors are apt to grow quite large.  All of the techniques
+useful for any large project are useful here.  Examples of these
+techniques are:</p>
+
+<ul>
+<li>division of the program into separate modules
+<li>division of the program into separate files
+<li>separate compilation
+<li>a way to organize the global name space
+<li>a way to keep objects out of the global name space
+<li>automatic verification of procedure call/declaration compatibility
+<li>conditional compilation
+<li>compilation constants
+<li>a way of constructing &quot;data abstractions&quot; that package
+procedures and private state information
+<li>a way of dynamically allocating memory
+</ul>
+
+<p>Add your own favorites to the list.</p>
+
+<h3>Efficiency</h3>
+
+<p>Programs spend most of their time doing simple operations such
+as:</p>
+
+<pre>
+A = B
+A = B +/- 1
+A = B +/- C
+</pre>
+
+<p>No other expressions occur often enough to matter (Knuth 1971).
+Thus, the language should support these common operations well.
+Control structure implementations -- in particular, a procedure call
+-- should be kept efficient.  Most languages do all right in this
+respect: the main thing is to ensure that they keep simple things
+simple.</p>
+
+<h2>Specific Language Notes</h2>
+
+<p>This section briefly examines a number of popular and/or
+interesting language choices.  It is important to keep in mind that at
+some level, all languages are equivalent: anything that you can do in
+one, you can do in any other, given sufficient CPU time, memory, and
+programmer elbow grease.  However, each language is intended to make
+solving one type of problem easy, and in most cases that type of
+problem is not text editing.</p>
+
+<h3>TECO</h3>
+
+<p>TECO (Text Editor and COrrector) was developed at the Massachusetts
+Institute of Technology.  It was one of the first text editors ever
+written.  It grew over the years, gaining both popularity and
+features.  During one of its more stable periods, Digital Equipment
+Corporation took a &quot;snapshot&quot; of its commands and produced
+(subset) versions for all of DEC's computers.</p>
+
+<p>But TECO kept growing.  Along the way, it turned into a
+Turing-complete programming language.  Several sets of editor macros
+were developed and used.  Sometime around 1975, Richard Stallman
+organized these Editor MACroS into the first Emacs-type text
+editor.</p>
+
+<p>TECO is clearly a language capable of supporting text editing.
+However, unless you have a DECSYSTEM 20 computer to run it on, you're
+out of luck: M.I.T.'s version of TECO is written in assembly language
+and only runs on such systems.</p>
+
+<p>The TECO command set is described in Appendix D.  There are two
+reasons why it is not a good choice as an implementation language:</p>
+
+<ul>
+
+<li>As has been mentioned, its only implementation is on the
+PDP-10/DEC 20 series of computers.  Implementations on other machines
+involve answering the question of what you write the TECO in -- the
+very question that this chapter discusses.
+
+<li>It is the only language less readable than APL.  A listing of a
+TECO program has a more than passing resemblance to transmission line
+noise.  Writing and maintaining TECO programs is a definite problem.
+</ul>
+
+<h3>Lisp</h3>
+
+<p>Lisp -- especially Common Lisp -- is an excellent choice.  It is
+readily extensible, as even compiled Lisp code usually has provisions
+for evaluating new expressions.  It thus provides an interpretive
+language that can be readily used to write even complex editing
+macros.  Modern implementations usually have excellent string support.
+The language has features such as macros and packages that support
+large projects well, and Lisp programs are fairly readable (if you
+don't mind lots of parentheses (like these (and these))).  Compiled
+Lisp code is usually as efficient as that of any other language.</p>
+
+<p>Its view of memory management makes it well suited to the linked
+line form of buffer management (described in Chapter 7).</p>
+
+<h3>C</h3>
+
+<p>C was designed by people who wrote operating systems and utilities.
+Since text editors are among those utilities, it is not surprising
+that C would be a good choice.</p>
+
+<p>C supports extensibility as well as any other compiled language,
+and better than most. For example, it provides the ability to call
+procedures through a pointer.</p>
+
+<p>C lacks a built-in string type, but this lack is not a hindrance,
+as you would probably need to re-implement strings anyway.  There is a
+strong tradition in C of creating new data types, so the requirement
+is well supported.</p>
+
+<p>C supports many of the features needed for large projects.  In
+addition, as the language was designed by its users, and only came
+into widespread use after it was stable, there is a large existing
+base of compatible implementations.  Due to this heritage, you don't
+need &quot;improvements&quot; in the language in order to get useful
+work done.</p>
+
+<p>C's basic data types are focused around characters, integers, and
+pointers.  These are exactly the core data types needed by text
+editors.  C allows the ready manipulation of complicated data
+structures and yet remains generally readable.</p>
+
+<p>C++ is a variant of C that provides much improved support for
+object-oriented programming.  It, too, is a good choice.</p>
+
+<h3>PL/1</h3>
+
+<p>PL/1 is another example of a &quot;systems language.&quot; Thus,
+most of the comments regarding C also apply to PL/1.  However, its
+main failing is a lack of multiple implementations: the only vendor
+that seriously supports it is IBM Corp.</p>
+
+<h3>Other Systems Languages</h3> <p></p>
+
+<p>There are a number of other systems languages (<i>e.g.</i>,
+Modula).  However, like PL/1, they have only a limited availability.
+Many were designed as research projects.  None of them even distantly
+approach C in the number of implementations or trained
+programmers.</p>
+
+<h3>Fortran</h3>
+
+<p>Well, some people think that it's a great language for writing
+astronomy programs.  I have even written a text editor in it.  Not by
+choice.</p>
+
+<h3>Pascal</h3>
+
+<p>Many people consider this language to be a good alternative (read
+&quot;better&quot;) to C.  It is worth reviewing Pascal's history: it
+was originally intended as a language to present (relatively small)
+algorithms in an academic setting.  It was also targeted to
+introductory programming courses.  For those purposes it is an
+excellent choice.</p>
+
+<p>However, the standard language is not targeted towards developing
+large projects and does not provide the features that make developing
+a large project practical.  On the other hand, each Pascal vendor has
+supplied those features.  Unfortunately, they have in general chosen
+different ways to provide the features.  Thus leading to incompatible
+implementations that make porting code difficult.</p>
+
+<h3>Basic</h3>
+
+<p>Basic has Pascal's problems, only more so: the core version is not
+even standardized (by the industry: there is an ANSI standard which is
+honored in the breach).  Implementations range from &quot;Tiny
+Basic,&quot; which can be run in only a few Kilobytes of memory to
+&quot;True Basic,&quot; as defined by Kemeny &amp; Kurtz (Kemeny
+1985), which offers all the advanced features that you could want and
+all but omits line numbers.  But &quot;True Basic&quot; bears little
+resemblance to what most programmers think of as the Basic
+language.</p>
+
+<h3>Ada</h3>
+
+<p>Ada was designed as a language to support embedded, real-time
+systems.  It has many features which allow compilers to validate code
+and use external information to produce small, reliable object
+modules.  However, these features do not mesh well with the need for
+extensiblity (for example, there is rarely a need to reprogram an
+altimeter while in flight).  Further, the general computing
+environment that is the home for most text editors is simply outside
+the scope of what Ada is intended for.  However, it should be
+seriously examined as a choice if the text editor is to execute in an
+embedded, real-time system.</p>
+
+<h3>Sine</h3>
+
+<p>Sine (Anderson 1979) was a Lisp-like language tailored for text
+applications.  Its only implementation to date is on Interdata 7/32
+(or Perkin-Elmer 3200) minicomputers running the MagicSix operating
+system developed at M.I.T.'s Architecture Machine Group.  It is
+interesting because it is a language tailored for implementing
+editors.  It is an example of an &quot;ideal&quot; implementation
+language.  </p>
+
+<p>Sine is composed of two parts.  Sine source code is assembled into
+a compact format.  This object code is then interpreted.  It allows
+function rebinding and other such niceties.  In addition, the
+interpreter implements such things as memory management and screen
+redisplay.  Thus, the resulting editor is nicely structured, with
+&quot;irrelevant&quot; details hidden away. This mention of Sine leads
+nicely into...</p>
+
+<h3>Custom Editor Languages</h3>
+
+<p>No traditional language (except perhaps for Common Lisp) offers
+complete support for text editing.  The solution, used by virtually
+every implementation of Emacs-type text editors, as well as many
+implementations of other editors, is the creation of a custom editor
+language.</p>
+
+<p>An existing language -- very often C -- is selected.  This language
+is used to write an interpreter for the custom editor language.  The
+interpreter manages memory, handles display refresh, and in general
+provides all of the necessary utility functions.  The editor language
+is then used to write the logic of all the user-visible commands.</p>
+
+<p>As the editor language is implemented using an interpreter, the
+command set is readily extensible.  Also, because the editor language
+is designed around text editing, it can offer excellent text-handling
+power.</p>
+
+<p>The division of the programming tasks into two components provides
+an excellent base for supporting large projects.  And, since the
+interpreter is usually implemented in a language such as C, the
+interpreter can be quite efficient.</p>
+
+<p>For these reasons, custom editor languages are the preferred method
+for implementing text editors.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>What is a good way of implementing a command dispatch table in C?
+Fortran?  Pascal?  Ada?  (Easy)</p>
+
+<p>Why is a string-oriented language such as SNOBOL not a good choice?
+(Easy)</p>
+
+<p>How much compilation is appropriate for the custom editor language
+(none, just interpret the text; tokenization; full)?  (Medium)</p>
+
+<p>Following on the previous question, how would an opcode-oriented
+interpreter compare to a threaded-code interpreter? (Medium)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

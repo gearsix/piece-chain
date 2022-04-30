@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>		The piece table method				</TITLE>
+<META NAME="description" CONTENT="		The piece table method				">
+<META NAME="keywords" CONTENT="sds">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="sds.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html207" HREF="node16.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://cbl.leeds.ac.uk/nikos/figs/next_motif.gif"></A> <A NAME="tex2html205" HREF="node11.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://cbl.leeds.ac.uk/nikos/figs/up_motif.gif"></A> <A NAME="tex2html201" HREF="node14.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://cbl.leeds.ac.uk/nikos/figs/previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html208" HREF="node16.html"> A General Model </A>
+<B>Up:</B> <A NAME="tex2html206" HREF="node11.html">		Recursive Sequence Data </A>
+<B> Previous:</B> <A NAME="tex2html202" HREF="node14.html">		Fixed size buffers				</A>
+<BR> <P>
+<H2><A NAME="SECTION00064000000000000000">		The piece table method				</A></H2>
+<P>
+In the piece table method the sizes of the spans are as large
+as possible but are split as a result of the editing
+that is done on the sequence.
+The sequence starts out as one big span and that gets
+divided up as insertions and deletions are made.
+We call each span a <I>piece</I> (of the sequence)
+and its descriptor is called a <I>piece descriptor</I>.
+The sequence of piece descriptors is called the <I>piece table</I>.
+<P>
+The piece table method uses two buffers.
+The first (the <I>file buffer</I>) contains the original contents
+of the file being edited.
+It is of fixed size and is read-only.
+The second (the <I>add buffer</I>) is another buffer
+that can grow without bound and is append-only.
+All new items are placed in this buffer.
+<P>
+Each piece descriptor points to a span in the file buffer
+or in the add buffer.
+Thus a descriptor must contain three pieces of information:
+which buffer (a boolean), an offset into that buffer (a non-negative integer)
+and a length (a positive integer<A NAME="tex2html16" HREF="footnode.html#334"><IMG  ALIGN=BOTTOM ALT="gif" SRC="http://cbl.leeds.ac.uk/nikos/figs/foot_motif.gif"></A>).
+<P>
+Figure <A HREF="node15.html#figpieces1">7</A> shows a piece table structure.
+<P><A NAME="476">&#160;</A><BR>
+<STRONG>Figure 7:</STRONG>  The piece table method <A NAME="figpieces1">&#160;</A> <BR>
+<P>
+The file consists of five pieces.
+<P>
+Initially there is only one piece descriptor which points
+to the entire file buffer.
+A delete is handled by splitting a piece into two pieces.
+One of these pieces points to the items in the old piece before
+the deleted item and the other piece points to the items
+after the deleted item.
+A special case occurs when the deleted item is at the
+beginning or end of the piece in which case we simply adjust
+the pointer or the piece length.
+<P>
+An insert is handled by splitting the piece into three pieces.
+The first piece points to the items of the old piece before
+the inserted item.
+The third piece points to the items of the old piece after
+the inserted item.
+The inserted item is appended to the end of the add
+file and the second piece points to this item.
+Again there are special cases for in insertion at the beginning
+or end of a piece.
+<P>
+If several items are inserted in a row,
+the inserted items are combined into a single piece
+rather than using a separate piece for each item inserted.
+<P>
+Figures <A HREF="node15.html#figpiece1">8</A>, <A HREF="node15.html#figpiece2">9</A> and <A HREF="node15.html#figpiece3">10</A>
+show the effect of a delete and an insert in a piece table.
+Figure <A HREF="node15.html#figpiece1">8</A> shows the piece table after the file
+is read in initially.
+This is a very short file containing only 20 characters.
+Figure <A HREF="node15.html#figpiece2">9</A> shows the piece table after the word
+``large '' has been deleted.
+Figure <A HREF="node15.html#figpiece3">10</A> shows the piece table after the word
+``English '' has been added.
+Notice that, in general, a delete increases the number of pieces
+in the piece table by one and an insert increases the number
+of pieces in the piece table by two.
+<P>
+<P><A NAME="478">&#160;</A><BR>
+<STRONG>Figure 8:</STRONG> A piece table before any edits
+	<A NAME="figpiece1">&#160;</A><BR>
+<P>
+<P><A NAME="480">&#160;</A><BR>
+<STRONG>Figure 9:</STRONG> A piece table after a delete
+	<A NAME="figpiece2">&#160;</A><BR>
+<P>
+<P><A NAME="482">&#160;</A><BR>
+<STRONG>Figure 10:</STRONG> A piece table after a delete and an insert
+	<A NAME="figpiece3">&#160;</A><BR>
+<P>
+<P>
+Let us look at another example.
+Suppose we start with a new file that is 1000 bytes
+long and make the following edits.
+<P>
+<OL><LI> Six characters inserted (typed in) after character 900.<LI> Character 600 deleted.<LI> Five characters inserted (typed in) after character 500.
+</OL>
+<P>
+The piece table after these edits will look like this:
+<P>
+<P><P>
+<P>
+The ``logical offset'' column does not actually exist
+in the piece table but can be computed from it
+(it is the running total of the lengths).
+These logical offsets are not kept in the piece table
+because they would all have to be updated after each edit.
+<P>
+The piece table method has several advantages.
+<P>
+<UL><LI>
+The original file is never changed so it can be a read-only file.
+This is advantageous for caching systems since the data never changes.<LI>
+The add file is append-only and so, once written, it never changes either.<LI>
+Items never move once they have been written into a buffer
+so they can be pointed to by other data structures working
+together with the piece table.<LI>
+Undo is made much easier by the fact that items are never written over.
+It is never necessary to save deleted or changed items.
+Undo is just a matter of keeping the right piece descriptors around.
+Unlimited undoes can be easily supported.<LI>
+No file preprocessing is required.
+The initial piece can be set up only knowing the length
+of the original file, information that can be quickly and easily
+obtained from the file system.
+Thus the size of the file does not affect the startup time.<LI>
+The amount of memory used is a function of the number of
+edits not the size of the file.
+Thus edits on very large files will be quite efficient.
+</UL>
+<P>
+The above description implies that a sequence must start out as
+one big piece and only inserts and deleted can add pieces.
+Following this rule keeps the number of pieces at a minimum
+and the fewer pieces there are the more efficient the <I>ItemAt</I>
+operations are.
+But the text editor is free to split pieces at other times
+to suit its purposes.
+<P>
+For example, a word processor needs to keep formatting
+information as well as the text sequence itself.
+This formatting information can be kept as a tree where
+the leaves of the tree are pieces.
+A word in bold face would be kept as a separate piece so it
+could be pointed to by a ``bold'' format node in the format tree.
+The text editor Lara [<A HREF="node26.html#cacmlara">8</A>] uses piece tables this way.
+<P>
+As another example, suppose the text editor implements hypertext
+links between any two spans of text in the sequence.
+The span at each end of the link can be isolated in a separate
+piece and the link data structure would point to these
+two pieces.<A NAME="tex2html17" HREF="footnode.html#374"><IMG  ALIGN=BOTTOM ALT="gif" SRC="http://cbl.leeds.ac.uk/nikos/figs/foot_motif.gif"></A>
+This technique is used in the Pastiche text editor [<A HREF="node26.html#crowleyht91">5</A>]
+for fine-grained hypertext.
+<P>
+These techniques work because piece table descriptors and items
+do not move when edits occur and so these tree structures
+will be maintained with little extra work even if the sequence
+is edited heavily.
+<P>
+Overall, the piece table is an excellent data structure for
+sequences and is normally the data structure of choice.
+Caching can be used to speed up
+this data structure so it is competitive with other
+data structures for sequences.
+<P>
+Piece tables are used in the text editors:
+Bravo [<A HREF="node26.html#lampsonbravo">10</A>], Lara [<A HREF="node26.html#cacmlara">8</A>],
+Point [<A HREF="node26.html#pointrefman">4</A>] and Pastiche [<A HREF="node26.html#crowleyht91">5</A>].
+Fraser and Krishnamurthy [<A HREF="node26.html#fraserlivetext">7</A>] suggest the use
+of piece tables as a way to implement their idea of ``live text''.
+<P>
+<HR><A NAME="tex2html207" HREF="node16.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://cbl.leeds.ac.uk/nikos/figs/next_motif.gif"></A> <A NAME="tex2html205" HREF="node11.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://cbl.leeds.ac.uk/nikos/figs/up_motif.gif"></A> <A NAME="tex2html201" HREF="node14.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://cbl.leeds.ac.uk/nikos/figs/previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html208" HREF="node16.html"> A General Model </A>
+<B>Up:</B> <A NAME="tex2html206" HREF="node11.html">		Recursive Sequence Data </A>
+<B> Previous:</B> <A NAME="tex2html202" HREF="node14.html">		Fixed size buffers				</A>
+<P><ADDRESS>
+<I>Charlie Crowley <BR>
+Thu Jun 27 15:36:10 MDT 1996</I>
+</ADDRESS>
+</BODY>
+</HTML>

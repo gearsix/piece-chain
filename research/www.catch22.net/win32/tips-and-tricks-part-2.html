@@ -1,0 +1,845 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/tips-and-tricks-part-2 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Win32 Tips &amp; Tricks - Part 2 - Catch22</title>
+<meta name="description" content="Continuing on from the last part, here are more Win32 Tips and Tricks for you to browse.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Win32 Tips &amp; Tricks - Part 2">
+<meta property="og:url" content="tips-and-tricks-part-2.html">
+
+
+  <meta property="og:description" content="Continuing on from the last part, here are more Win32 Tips and Tricks for you to browse.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-05-14T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="tips-and-tricks-part-2.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Win32 Tips & Tricks - Part 2</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Win32 Tips &amp; Tricks - Part 2">
+    <meta itemprop="description" content="Continuing on from the last part, here are more Win32 Tips and Tricks for you to browse.">
+    <meta itemprop="datePublished" content="May 14, 2006">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Win32 Tips &amp; Tricks - Part 2
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Win32 Tips & Tricks - Part 2</h1-->
+<!--h3>More useful tips for Win32 programming</h3-->
+
+<p>Continuing on from the last part, here are more Win32 Tips and Tricks for you to browse.</p>
+
+<h2 id="xp-themes">XP Themes</h2>
+
+<p>Common-control manifests (which enable the XP themes) can be added to an executable in one of two ways:</p>
+
+<p>Firstly, the manifest can be saved inside a file in the same directory as your executable. It must also have the same filename, with the text ‘.manifest’ appended to the end:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">AppName</span><span class="p">.</span><span class="n">exe</span>
+<span class="n">AppName</span><span class="p">.</span><span class="n">exe</span><span class="p">.</span><span class="n">manifest</span>
+</code></pre></div></div>
+
+<p>The manifest is just a text file (in XML) and should look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;?</span><span class="n">xml</span> <span class="n">version</span><span class="o">=</span><span class="s">"1.0"</span> <span class="n">encoding</span><span class="o">=</span><span class="s">"UTF-8"</span> <span class="n">standalone</span><span class="o">=</span><span class="s">"yes"</span><span class="o">?&gt;</span>
+  <span class="o">&lt;</span><span class="n">assembly</span> <span class="n">xmlns</span><span class="o">=</span><span class="s">"urn:schemas-microsoft-com:asm.v1"</span> <span class="n">manifestVersion</span><span class="o">=</span><span class="s">"1.0"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">assemblyIdentity</span>    
+        <span class="n">version</span><span class="o">=</span><span class="s">"1.0.0.0"</span>    
+        <span class="n">processorArchitecture</span><span class="o">=</span><span class="s">"X86"</span>    
+        <span class="n">name</span><span class="o">=</span><span class="s">"CompanyName.ProductName.AppName"</span>    
+        <span class="n">type</span><span class="o">=</span><span class="s">"win32"</span>
+    <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="n">description</span><span class="o">&gt;</span><span class="n">Program</span> <span class="n">Description</span><span class="o">&lt;/</span><span class="n">description</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>    
+      <span class="o">&lt;</span><span class="n">dependentAssembly</span><span class="o">&gt;</span>        
+        <span class="o">&lt;</span><span class="n">assemblyIdentity</span> 
+            <span class="n">type</span><span class="o">=</span><span class="s">"win32"</span> 
+            <span class="n">name</span><span class="o">=</span><span class="s">"Microsoft.Windows.Common-Controls"</span>            
+            <span class="n">version</span><span class="o">=</span><span class="s">"6.0.0.0"</span>            
+            <span class="n">processorArchitecture</span><span class="o">=</span><span class="s">"X86"</span>            
+            <span class="n">publicKeyToken</span><span class="o">=</span><span class="s">"6595b64144ccf1df"</span>            
+            <span class="n">language</span><span class="o">=</span><span class="s">"*"</span>        
+        <span class="o">/&gt;</span>    
+      <span class="o">&lt;/</span><span class="n">dependentAssembly</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">assembly</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">xml</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>You should change the &lt;assemblyIdentity name=”MyProg”&gt; value to the same name as your executable.</p>
+
+<p>The second method of adding the manifest is to embed it directly into the executable as a resource:</p>
+
+<ol>
+  <li>Add a Custom Resource to your application with resource-type name “24”</li>
+  <li>Change the resource-id to “1”</li>
+  <li>Embed the manifest directly into the resource as binary data.</li>
+</ol>
+
+<h2 id="safe-subclassing">Safe Subclassing</h2>
+
+<p>Use the following function to safely sublass a window when you don’t know if it is a Unicode/Ansi window or not:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WNDPROC</span> <span class="nf">SafeSubclassWindow</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">WNDPROC</span> <span class="n">NewProc</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">IsWindowUnicode</span><span class="p">(</span><span class="n">hwnd</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">SetWindowLongPtrW</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG_PTR</span><span class="p">)</span><span class="n">NewProc</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">SetWindowLongPtrA</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG_PTR</span><span class="p">)</span><span class="n">NewProc</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Your sublass procedure must now call the old window-procedure by making use of the following function, which calls the Unicode or Ansi version of CallWindowProc as appropriate:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">SafeCallWndProc</span><span class="p">(</span><span class="n">WNDPROC</span> <span class="n">OldProc</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">IsWindowUnicode</span><span class="p">(</span><span class="n">hwnd</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">CallWindowProcW</span><span class="p">(</span><span class="n">OldProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">CallWindowProcA</span><span class="p">(</span><span class="n">OldProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="shell-dialog-fonts">Shell Dialog Fonts</h2>
+
+<p>Under Windows XP and 2000 a new shell fontname was introduced - “MS Shell Dlg”. This is not a real font - instead it is a registry value which maps to whatever the current user-interface font is (usually Tahoma/Segoi UI etc). To use this new font for your dialogs, you must edit your <code class="highlighter-rouge">resource.rc</code> file manually and change the name to “MS Shell Dlg”. You must also add the DS_SHELLFONT style to the dialog.</p>
+
+<p>Note that there is a trick to getting this to work correctly. The dialog-template resource must a DIALOGEX resource type rather than the older DIALOG. You can add an extended dialog-style to the resource (such as <code class="highlighter-rouge">WS_EX_CONTROLPARENT</code>) to cause this change, because otherwise Visual Studio will think that it is an older DIALOG and will erase your work once you make any changes to the template.</p>
+
+<p>Lastly if your dialog is going to be part of a property-sheet, then all panes must be DIALOGEX’s otherwise the font will not work.</p>
+
+<h2 id="shbrowseforfolder">SHBrowseForFolder</h2>
+
+<p>It is possible to force <code class="highlighter-rouge">SHBrowseForFolder</code> start at a specific directory by using the callback function facility:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">BrowseForPath</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndParent</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szPath</span><span class="p">)</span>
+<span class="p">{</span>	
+    <span class="n">BROWSEINFO</span> <span class="n">shbi</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+    <span class="n">ITEMIDLIST</span> <span class="o">*</span><span class="n">pidl</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="n">success</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+    <span class="n">IMalloc</span> <span class="o">*</span><span class="n">pMalloc</span><span class="p">;</span>
+    
+    <span class="n">shbi</span><span class="p">.</span><span class="n">hwndOwner</span> <span class="o">=</span> <span class="n">hwndParent</span><span class="p">;</span>
+    <span class="n">shbi</span><span class="p">.</span><span class="n">ulFlags</span> <span class="o">=</span> <span class="n">BIF_NONEWFOLDERBUTTON</span> <span class="o">|</span> <span class="n">BIF_RETURNONLYFSDIRS</span><span class="p">;</span>
+    <span class="n">shbi</span><span class="p">.</span><span class="n">lParam</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="n">szPath</span><span class="p">;</span>
+    <span class="n">shbi</span><span class="p">.</span><span class="n">lpfn</span> <span class="o">=</span> <span class="n">BrowseCallbackProc</span><span class="p">;</span>
+	
+    <span class="n">OleInitialize</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+	
+    <span class="c1">// show the browse-dialog!
+</span>    <span class="k">if</span><span class="p">((</span><span class="n">pidl</span> <span class="o">=</span> <span class="n">SHBrowseForFolder</span><span class="p">(</span><span class="o">&amp;</span><span class="n">shbi</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// convert the selected ITEMIDLIST back to a path
+</span>        <span class="k">if</span><span class="p">(</span><span class="n">SHGetPathFromIDList</span><span class="p">(</span><span class="n">pidl</span><span class="p">,</span> <span class="n">szPath</span><span class="p">))</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+	
+        <span class="c1">// free the ITEMIDLIST
+</span>        <span class="n">SHGetMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pMalloc</span><span class="p">);</span>
+        <span class="n">pMalloc</span><span class="o">-&gt;</span><span class="n">Free</span><span class="p">(</span><span class="n">pidl</span><span class="p">);</span>
+        <span class="n">pMalloc</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">OleUninitialize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">success</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The callback function looks like this.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">CALLBACK</span> <span class="nf">BrowseCallbackProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uMsg</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lpData</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">uMsg</span> <span class="o">==</span> <span class="n">BFFM_INITIALIZED</span><span class="p">)</span>
+        <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">BFFM_SETSELECTION</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">lpData</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note that the <code class="highlighter-rouge">lpData</code> value is passed straight to <code class="highlighter-rouge">SendMessage</code>. We know this is safe to do because we set the corresponding <code class="highlighter-rouge">lParam</code> field in the <code class="highlighter-rouge">BROWSEINFO</code> structure, which points to the path we want.</p>
+
+<h2 id="explorer-context-menu">Explorer Context Menu</h2>
+
+<p>Many applications like to add entries to the Shell context-menu in Explorer. The common way to do this is by writing a Shell Extension DLL in ATL/COM, but this is alot of work when only a simple text-entry with no bitmaps/icons is required.</p>
+
+<p>The code below shows how to add a “Open with MyProgram” entry to all file-types in the system, so that when a file is right-clicked and the “Open with…” option selected, the application will be spawned with the selected filename passed as the first commandline argument:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define CONTEXT_APP_LOC _T("Software\\Classes\\*\\shell\\Open With MyApp")
+#define CONTEXT_CMD_LOC _T("Software\\Classes\\*\\shell\\Open With MyApp\\command")
+</span></code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">AddToExplorerContext</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">TCHAR</span> <span class="n">szAppPath</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="n">TCHAR</span> <span class="n">szDefaultStr</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+
+    <span class="n">GetModuleFileName</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">szAppPath</span><span class="p">,</span> <span class="n">MAX_PATH</span><span class="p">);</span>
+    <span class="n">wsprintf</span><span class="p">(</span><span class="n">szDefaultStr</span><span class="p">,</span> <span class="n">_T</span><span class="p">(</span><span class="s">"</span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s"> </span><span class="se">\"</span><span class="s">%%1</span><span class="se">\"</span><span class="s">"</span><span class="p">),</span> <span class="n">szAppPath</span><span class="p">);</span>    
+    <span class="n">RegSetValue</span><span class="p">(</span> <span class="n">HKEY_CURRENT_USER</span><span class="p">,</span> 
+                 <span class="n">CONTEXT_CMD_LOC</span><span class="p">,</span> 
+                 <span class="n">REG_SZ</span><span class="p">,</span> 
+                 <span class="n">szDefaultStr</span><span class="p">,</span> 
+                 <span class="n">lstrlen</span><span class="p">(</span><span class="n">szDefaultStr</span><span class="p">)</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">TCHAR</span><span class="p">)</span>
+           <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The code above sets the “command” key to the following value:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">application</span><span class="o">-</span><span class="n">path</span><span class="o">&gt;</span> <span class="s">"%1"</span>
+</code></pre></div></div>
+
+<p>To remove the menu-item use the following function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">RemoveFromExplorerContext</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">RegDeleteKey</span><span class="p">(</span><span class="n">HKEY_CURRENT_USER</span><span class="p">,</span> <span class="n">CONTEXT_CMD_LOC</span><span class="p">);</span>    
+    <span class="n">RegDeleteKey</span><span class="p">(</span><span class="n">HKEY_CURRENT_USER</span><span class="p">,</span> <span class="n">CONTEXT_APP_LOC</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="force-window-onto-visible-display">Force Window onto visible display</h2>
+
+<p>If you use dual (or even triple/quad) displays then you have undoubtably encountered the following situation: You change the physical order of your displays, or otherwise reconfigure the logical ordering using your display software. This sometimes has the side-effect of changing your desktop coordinates from zero-based to negative starting coordinates (i.e. the top-left coordinate of your desktop changes from 0,0 to -1024,-768).</p>
+
+<p>This effects many Windows programs which restore their last on-screen position whenever they are started. Should the user reorder their display configuration this can sometimes result in a Windows program subsequently starting in an off-screen position (i.e. at a location that used to be visible) - and is now effectively <em>invisible</em>, preventing the user from closing it down or otherwise moving it back on-screen.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">ForceVisibleDisplay</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">// check if the specified window-rectangle is visible on any display
+</span>    <span class="k">if</span><span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">MonitorFromRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">MONITOR_DEFAULTTONULL</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">HMONITOR</span> <span class="n">hMonitor</span><span class="p">;</span>
+        <span class="n">MONITORINFO</span> <span class="n">mi</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">mi</span><span class="p">)</span> <span class="p">};</span>
+
+        <span class="c1">// find the nearest display to the rectangle
+</span>        <span class="n">hMonitor</span> <span class="o">=</span> <span class="n">MonitorFromRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">MONITOR_DEFAULTTONEAREST</span><span class="p">);</span>        
+
+        <span class="n">GetMonitorInfo</span><span class="p">(</span><span class="n">hMonitor</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mi</span><span class="p">);</span>
+
+        <span class="c1">// center window rectangle
+</span>        <span class="n">rect</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">mi</span><span class="p">.</span><span class="n">rcWork</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="p">((</span><span class="n">mi</span><span class="p">.</span><span class="n">rcWork</span><span class="p">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">mi</span><span class="p">.</span><span class="n">rcWork</span><span class="p">.</span><span class="n">left</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="n">rect</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">mi</span><span class="p">.</span><span class="n">rcWork</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="p">((</span><span class="n">mi</span><span class="p">.</span><span class="n">rcWork</span><span class="p">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">mi</span><span class="p">.</span><span class="n">rcWork</span><span class="p">.</span><span class="n">top</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>        
+
+        <span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SWP_NOACTIVATE</span><span class="o">|</span><span class="n">SWP_NOZORDER</span><span class="o">|</span><span class="n">SWP_NOSIZE</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">ForceVisibleDisplay</code> function can be called at program start-time right after the main window has been created and positioned ‘on-screen’. Should the window be positioned in an off-screen position, it is forced back onto the nearest display to its last position. The user will be unaware this is happening and won’t even realise to thank you for keeping their user-interface visible, even though they changed their display settings. Thanks to Norman Diamond for spottng the problems with the last version, this one will hopefully work a little better!</p>
+
+<h2 id="change-the-system-highlight-colour">Change the System Highlight colour</h2>
+
+<p>It is possible to change the “system highlight” colour on a per-application basis. For example, suppose you wanted to change the Edit control’s selection colour just for your application, so that it matched the rest of your custom controls. Using this technique it is possible to do this.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+#include &lt;detours.h&gt;
+</span>
+<span class="n">DETOUR_TRAMPOLINE</span><span class="p">(</span>
+    <span class="n">COLORREF</span> <span class="n">WINAPI</span> <span class="n">GetSysColorTrampoline</span><span class="p">(</span><span class="n">UINT</span><span class="p">),</span>
+    <span class="n">GetSysColor</span>
+<span class="p">);</span>
+
+<span class="n">COLORREF</span> <span class="n">WINAPI</span> <span class="nf">GetSysColorDetour</span><span class="p">(</span><span class="n">UINT</span> <span class="n">uIndex</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">uIndex</span> <span class="o">==</span> <span class="n">COLOR_HIGHLIGHT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span> <span class="c1">// your_rgb_value_here
+</span>    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">GetSysColorTrampoline</span><span class="p">(</span><span class="n">uIndex</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Init</span><span class="p">()</span>
+<span class="p">{</span>    
+    <span class="n">DetourFunctionWithTrampoline</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">PBYTE</span><span class="p">)</span><span class="n">GetSysColorTrampoline</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">PBYTE</span><span class="p">)</span><span class="n">GetSysColorDetour</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The technique works by installing a <em>Detour</em> on the <code class="highlighter-rouge">GetSysColor</code> API (for the current application only). When the edit control draws it’s selection colour, it calls this routine and the detour above intercepts it and returns a different value. You need the <a href="http://research.microsoft.com/sn/detours/">Detours library</a> from microsoft for this to compile.</p>
+
+<h2 id="new-xp-style-listviews">New XP-style ListViews</h2>
+
+<p>To enable the new XP visual style in ListViews (the translucent-blue selection rectangle) you need to do two things. Firstly, add an XP-Theme manifest to your executable to get the new common-controls 6.0 library. Then enable “double-buffering” mode for the ListView:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ListView_SetExtendedListViewStyle</span><span class="p">(</span><span class="n">hwndListView</span><span class="p">,</span> <span class="n">LVS_EX_DOUBLEBUFFER</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="listview-groups">ListView Groups</h2>
+
+<p>To use ListView groups you must first enable group-view mode:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ListView_EnableGroupView</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Adding a “group” requires the following code:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">AddListViewGroup</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndList</span><span class="p">,</span> <span class="n">WCHAR</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iGroupId</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">LVGROUP</span> <span class="n">lvgrp</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">lvgrp</span><span class="p">)</span> <span class="p">};</span>
+
+    <span class="n">lvgrp</span><span class="p">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">LVGF_HEADER</span> <span class="o">|</span> <span class="n">LVGF_GROUPID</span> <span class="o">|</span> <span class="n">LVGF_ALIGN</span><span class="p">;</span>
+    <span class="n">lvgrp</span><span class="p">.</span><span class="n">pszHeader</span> <span class="o">=</span> <span class="n">szText</span><span class="p">;</span>
+    <span class="n">lvgrp</span><span class="p">.</span><span class="n">cchHeader</span> <span class="o">=</span> <span class="n">wcslen</span><span class="p">(</span><span class="n">lvgrp</span><span class="p">.</span><span class="n">pszHeader</span><span class="p">);</span>
+    <span class="n">lvgrp</span><span class="p">.</span><span class="n">iGroupId</span> <span class="o">=</span> <span class="n">iGroupId</span><span class="p">;</span>
+    <span class="n">lvgrp</span><span class="p">.</span><span class="n">uAlign</span> <span class="o">=</span> <span class="n">LVGA_HEADER_CENTER</span><span class="p">;</span>
+
+    <span class="n">ListView_InsertGroup</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lvgrp</span><span class="p">);</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">AddListViewGroup</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="s">L"Group Title"</span><span class="p">,</span> <span class="mi">12345</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>New ListView items must be added into a specific group otherwise they don’t appear.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">AddItemToListGroup</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndList</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szItem</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iItemIdx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iImageIdx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iGroupId</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">LVITEM</span> <span class="n">lvitem</span><span class="p">;</span>
+
+    <span class="n">lvitem</span><span class="p">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">LVIF_IMAGE</span> <span class="o">|</span> <span class="n">LVIF_TEXT</span> <span class="o">|</span> <span class="n">LVIF_GROUPID</span><span class="p">;</span>
+    <span class="n">lvitem</span><span class="p">.</span><span class="n">iItem</span> <span class="o">=</span> <span class="n">iItemIdx</span><span class="p">;</span>
+    <span class="n">lvitem</span><span class="p">.</span><span class="n">iSubItem</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">lvitem</span><span class="p">.</span><span class="n">pszText</span> <span class="o">=</span> <span class="n">szItem</span><span class="p">;</span>
+    <span class="n">lvitem</span><span class="p">.</span><span class="n">iImage</span> <span class="o">=</span> <span class="n">iImageIdx</span><span class="p">;</span>
+    <span class="n">lvitem</span><span class="p">.</span><span class="n">iGroupId</span> <span class="o">=</span> <span class="n">iGroupId</span><span class="p">;</span> <span class="n">ListView_InsertItem</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lvitem</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">AddItemToListViewGroup</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="s">L"Item 0"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">12345</span><span class="p">);</span>
+<span class="n">AddItemToListViewGroup</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="s">L"Item 1"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">12345</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="user-profile-directory">User Profile directory</h2>
+
+<p>Obtain the path of where the user-profiles are stored. i.e. <code class="highlighter-rouge">"C:\Documents And Settings"</code> or<code class="highlighter-rouge"> "C:\WINNT\Profiles"</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+// Find out where the user-profile directory is located
+// i.e. C:\Documents And Settings
+// C:\WINNT\Profiles
+//
+</span><span class="n">BOOL</span> <span class="nf">GetProfilePath</span><span class="p">(</span><span class="n">TCHAR</span> <span class="o">*</span><span class="n">szProfilePath</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">nLength</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HKEY</span> <span class="n">hKey</span><span class="p">;</span>
+    <span class="n">TCHAR</span> <span class="n">szPath</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="n">ULONG</span> <span class="n">nPathLen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">szPath</span><span class="p">);</span>
+
+    <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szProfileList</span> <span class="o">=</span> <span class="s">"SOFTWARE</span><span class="se">\\</span><span class="s">Microsoft</span><span class="se">\\</span><span class="s">Windows NT</span><span class="se">\\</span><span class="s">CurrentVersion</span><span class="se">\\</span><span class="s">ProfileList"</span><span class="p">;</span>    
+
+    <span class="k">if</span><span class="p">(</span><span class="n">ERROR_SUCCESS</span> <span class="o">!=</span> <span class="n">RegOpenKeyEx</span><span class="p">(</span><span class="n">HKLM</span><span class="p">,</span> <span class="n">szProfileList</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">KEY_READ</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hKey</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>    
+
+    <span class="k">if</span><span class="p">(</span><span class="n">ERROR_SUCCESS</span> <span class="o">==</span> <span class="n">RegQueryValueEx</span><span class="p">(</span><span class="n">hKey</span><span class="p">,</span> <span class="s">"ProfilesDirectory"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">REG_SZ</span><span class="p">,</span> <span class="n">szPath</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nPathLen</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">ExpandEnvironmentStrings</span><span class="p">(</span><span class="n">szPath</span><span class="p">,</span> <span class="n">szProfilePath</span><span class="p">,</span> <span class="n">nLength</span><span class="p">);</span>
+        <span class="n">RegCloseKey</span><span class="p">(</span><span class="n">hKey</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">RegCloseKey</span><span class="p">(</span><span class="n">hKey</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="parent-process-id">Parent Process Id</h2>
+
+<p>Find out which process started you with this handy routine (Windows NT/2000/XP only).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="nf">GetParentPid</span><span class="p">(</span><span class="n">HANDLE</span> <span class="n">hProcess</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PROCESS_BASIC_INFORMATION</span> <span class="n">pbi</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+
+    <span class="c1">// Query the ProcessBasicInformation(0)
+</span>    <span class="n">ZwQueryProcessInformation</span><span class="p">(</span><span class="n">hProcess</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pbi</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">pbi</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">pbi</span><span class="p">.</span><span class="n">InheritedFromUniqueProcessId</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The code above makes use of an undocumented “Native API” called ZwQueryInformationProcess. This API is exported by NTDLL.DLL so you can easily locate it using GetModuleHandle / GetProcAddress. The function-pointer prototype is shown below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="p">(</span><span class="n">WINAPI</span> <span class="o">*</span> <span class="n">ZwQueryInformationProcess</span><span class="p">)</span> <span class="p">(</span>
+                <span class="n">IN</span> <span class="n">HANDLE</span> <span class="n">ProcessHandle</span><span class="p">,</span>
+                <span class="n">IN</span> <span class="n">ULONG</span> <span class="n">ProcessInformationClass</span><span class="p">,</span>
+                <span class="n">OUT</span> <span class="n">PVOID</span> <span class="n">ProcessInformation</span><span class="p">,</span>
+                <span class="n">IN</span> <span class="n">ULONG</span> <span class="n">ProcessInformationLength</span><span class="p">,</span>
+                <span class="n">OUT</span> <span class="n">PULONG</span> <span class="n">ReturnLength</span> <span class="n">OPTIONAL</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<p>The PROCESS_BASIC_INFORMATION structure is also not a standard PlatformSDK structure. It’s definition is shown here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>  
+<span class="p">{</span>
+     <span class="n">ULONG</span> <span class="n">ExitStatus</span><span class="p">;</span>
+     <span class="n">PVOID</span> <span class="n">PebBaseAddress</span><span class="p">;</span>
+     <span class="n">ULONG</span> <span class="n">AffinityMask</span><span class="p">;</span>
+     <span class="n">ULONG</span> <span class="n">BasePriority</span><span class="p">;</span>
+     <span class="n">ULONG_PTR</span> <span class="n">UniqueProcessId</span><span class="p">;</span>
+     <span class="n">ULONG_PTR</span> <span class="n">InheritedFromUniqueProcessId</span><span class="p">;</span> 
+
+<span class="p">}</span> <span class="n">PROCESS_BASIC_INFORMATION</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Note that the function/structure definitions I have shown are slightly different to how they appear in other sources - I have changed all of the “NT” types to simple ULONG/PVOID types to make compilation easier.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// example:
+</span><span class="n">DWORD</span> <span class="n">dwParentId</span> <span class="o">=</span> <span class="n">GetParentPid</span><span class="p">(</span><span class="n">GetCurrentProcess</span><span class="p">());</span>
+</code></pre></div></div>
+
+<h2 id="process-id-from-handle">Process Id from HANDLE</h2>
+
+<p>The exact same technique can be used to obtain the process ID from a process-handle, given a HANDLE to <em>any</em> process in the system. To do this, access the <code class="highlighter-rouge">UniqueProcessId</code> member inside the PROCESS_BASIC_INFORMATION structure, instead of the parent-id.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="nf">ProcessIdFromHandle</span><span class="p">(</span><span class="n">HANDLE</span> <span class="n">hProcess</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PROCESS_BASIC_INFORMATION</span> <span class="n">pbi</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+
+    <span class="c1">// Query the ProcessBasicInformation(0)
+</span>    <span class="n">ZwQueryProcessInformation</span><span class="p">(</span><span class="n">hProcess</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pbi</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">pbi</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">pbi</span><span class="p">.</span><span class="n">UniqueProcessId</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DWORD</span> <span class="n">dwProcessId</span> <span class="o">=</span> <span class="n">ProcessIdFromHandle</span><span class="p">(</span><span class="n">hProcess</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="find-where-the-user-kernel-divide-is-located">Find where the user-kernel divide is located</h2>
+
+<p>Usually the system address-range starts at 0x80000000. However it is dangerous to assume this because of the ability to boot Windows with the /3Gb switch. The snippet below shows how to retrieve the “system range start” for the current system.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="nf">GetSystemRangeStart</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">ULONG</span> <span class="n">nRangeStart</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// get the SystemRangeStartInformation (50) value
+</span>    <span class="n">ZwQuerySystemInformation</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nRangeStart</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ULONG</span><span class="p">));</span>
+
+    <span class="k">return</span> <span class="n">nRangeStart</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="argv-and-argc-from-a-windows-program">argv[] and argc from a Windows program</h2>
+
+<p>Many people don’t realise that it is possible to access the “traditional” argv[] commandline from a Windows GUI program. The Visual C compiler provides the program’s commandline as global - in the ` <strong>argc<code class="highlighter-rouge"> and </code></strong> argv<code class="highlighter-rouge"> variables. These are the ANSI (char\*) commandline variables. To obtain the Unicode (WCHAR\*) commandline the </code>GetCommandLineW` API can be called.</p>
+
+<p>Combined together we can write a routine which returns the commandline:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCHAR</span> <span class="o">**</span><span class="nf">GetArgvCommandLine</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">argc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#ifdef UNICODE
+</span>    <span class="k">return</span> <span class="n">GetCommandLineW</span><span class="p">(</span><span class="n">argc</span><span class="p">);</span>
+<span class="cp">#else
+</span>    <span class="o">*</span><span class="n">argc</span> <span class="o">=</span> <span class="n">__argc</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">__argv</span><span class="p">;</span>
+<span class="cp">#endif
+</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>The following program shows how to access <code class="highlighter-rouge">argv</code> and <code class="highlighter-rouge">argc</code> directly from WinMain:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">WINAPI</span> <span class="nf">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span> <span class="n">hInst</span><span class="p">,</span> <span class="n">HINSTANCE</span> <span class="n">hPrev</span><span class="p">,</span> <span class="n">LPSTR</span> <span class="n">lpCmdLine</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nCmdShow</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">TCHAR</span> <span class="o">*</span><span class="n">argv</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">argc</span><span class="p">;</span>
+
+    <span class="c1">// obtain command-line arguments in argv[] style array
+</span>    <span class="n">argv</span> <span class="o">=</span> <span class="n">GetArgvCommandLine</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">);</span>
+
+    <span class="c1">// process the argv array
+</span>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">OutputDebugString</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="detect-if-an-executable-was-started-from-a-short-cut">Detect if an executable was started from a Short-Cut</h2>
+
+<p>This tip is copied from another article I wrote - Undocumented CreateProcess - and shows you is how any win32 application can detect if it was started from a shortcut (i.e. by double-clicking a shortcut link), or directly via Windows explorer or the Run dialog. This method also allows you to obtain the path of the shortcut link as well.</p>
+
+<p>There is an undocumented STARTUPINFO flag which I have called <strong>STARTF_TITLESHORTCUT</strong>. This bit-flag has the value 0x800. Windows sets this flag when an executable has been started via a short-cut. So it is possible for any program to check if it was started this way by examining it’s own STARTUPINFO structure to see if this flag was specified:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Returns TRUE if started through a shortcut, FALSE if not. // Also returns the name of the shortcut file (if any)
+</span><span class="n">BOOL</span> <span class="nf">GetShortcutName</span><span class="p">(</span><span class="n">TCHAR</span> <span class="o">*</span><span class="n">szLinkName</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nLinkNameSize</span><span class="p">)</span>
+<span class="p">{</span>    
+    <span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+
+    <span class="n">GetStartupInfo</span><span class="p">(</span><span class="o">&amp;</span><span class="n">si</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">si</span><span class="p">.</span><span class="n">dwFlags</span> <span class="o">&amp;</span> <span class="n">STARTF_TITLESHORTCUT</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">lstrcpyn</span><span class="p">(</span><span class="n">szLinkName</span><span class="p">,</span> <span class="n">si</span><span class="p">.</span><span class="n">lpTitle</span><span class="p">,</span> <span class="n">nLinkNameSize</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It is a simple matter to check for this undocumented flag, but another important piece of information should be explained. When the STARTF_TITLESHORTCUT flag is set, the <strong>lpTitle</strong> member of STARTUPINFO points to a string which contains the full path to the shortcut file used to start the current executable.</p>
+
+<p>So imagine that there is a short-cut on your desktop which launches notepad.exe. When notepad.exe starts, it’s <strong>STARTUPINFO::lpTitle</strong> contains the following text:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">C:</span><span class="err">\</span><span class="n">Documents</span> <span class="n">and</span> <span class="n">Settings</span><span class="err">\</span><span class="n">James</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">Notepad</span><span class="p">.</span><span class="n">lnk</span>
+</code></pre></div></div>
+
+<p>The following snippet shows how to use <code class="highlighter-rouge">GetShortcutName</code> :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">linkName</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">GetShortcutName</span><span class="p">(</span><span class="o">&amp;</span><span class="n">linkName</span><span class="p">,</span> <span class="n">MAX_PATH</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"started from %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">linkName</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="resolve-shortcut">Resolve shortcut</h2>
+
+<p>Sometimes it is necessary to resolve a shell-shortcut link to the referenced file. The Win32 C-code below shows how.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+//	Resolve a ShellLink (i.e. c:\path\shortcut.lnk) to a real path
+//
+</span><span class="n">BOOL</span> <span class="nf">ResolveShortcut</span><span class="p">(</span><span class="n">TCHAR</span> <span class="o">*</span><span class="n">pszShortcut</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">pszFilePath</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nPathLen</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">IShellLink</span> <span class="o">*</span> <span class="n">psl</span><span class="p">;</span>
+    <span class="n">SHFILEINFO</span> <span class="n">info</span><span class="p">;</span>
+    <span class="n">IPersistFile</span> <span class="o">*</span><span class="n">ppf</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">pszFilePath</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   
+
+    <span class="c1">// assume failure
+</span>    <span class="k">if</span><span class="p">((</span><span class="n">SHGetFileInfo</span><span class="p">(</span><span class="n">pszShortcut</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">info</span><span class="p">),</span> <span class="n">SHGFI_ATTRIBUTES</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="c1">// not a shortcut?
+</span>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">info</span><span class="p">.</span><span class="n">dwAttributes</span> <span class="o">&amp;</span> <span class="n">SFGAO_LINK</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">lstrcpyn</span><span class="p">(</span><span class="n">pszFilePath</span><span class="p">,</span> <span class="n">pszShortcut</span><span class="p">,</span> <span class="n">nPathLen</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// obtain the IShellLink interface
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">CoCreateInstance</span><span class="p">(</span><span class="o">&amp;</span><span class="n">CLSID_ShellLink</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">CLSCTX_INPROC_SERVER</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">IID_IShellLink</span><span class="p">,</span> <span class="p">(</span><span class="n">LPVOID</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">psl</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">psl</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">QueryInterface</span><span class="p">(</span><span class="n">psl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">IID_IPersistFile</span><span class="p">,</span> <span class="p">(</span><span class="n">LPVOID</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">ppf</span><span class="p">)))</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">ppf</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">Load</span><span class="p">(</span><span class="n">ppf</span><span class="p">,</span> <span class="n">pszShortcut</span><span class="p">,</span> <span class="n">STGM_READ</span><span class="p">)))</span>
+        <span class="p">{</span>
+            <span class="c1">// Resolve the link, this may post UI to find the link
+</span>            <span class="k">if</span> <span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">psl</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">Resolve</span><span class="p">(</span><span class="n">psl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SLR_NO_UI</span> <span class="p">)))</span>
+            <span class="p">{</span>
+                <span class="n">psl</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">GetPath</span><span class="p">(</span><span class="n">psl</span><span class="p">,</span> <span class="n">pszFilePath</span><span class="p">,</span> <span class="n">nPathLen</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="n">ppf</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">(</span><span class="n">ppf</span><span class="p">);</span>
+                <span class="n">psl</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">(</span><span class="n">psl</span><span class="p">);</span>
+                <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">ppf</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">(</span><span class="n">ppf</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">psl</span><span class="o">-&gt;</span><span class="n">lpVtbl</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">(</span><span class="n">psl</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="return-values-from-a-dialogproc">Return values from a DialogProc</h2>
+
+<p>Returning a value from a dialog-procedure is not as simple as a normal window-procedure. A DialogProc only returns TRUE/FALSE to indicate to Windows whether or not the message was processed. To return a ‘real’ value from a DialogProc requires calling the <code class="highlighter-rouge">SetWindowLongPtr</code> API with the <code class="highlighter-rouge">DWLP_MSGRESULT</code> parameter.</p>
+
+<p>A common example is processing the WM_CTLCOLOREDIT message inside a dialog-box:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_CTLCOLOREDIT</span><span class="p">:</span>
+
+    <span class="c1">// set foreground/background colours as normal
+</span>    <span class="n">SetTextColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">rgbForeground</span><span class="p">);</span>
+    <span class="n">SetBkColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">rgbBackground</span><span class="p">);</span>
+
+    <span class="c1">// 'return' the brush from the dialog-procedure
+</span>    <span class="n">SetWindowLongPtr</span><span class="p">(</span><span class="n">hwndDlg</span><span class="p">,</span> <span class="n">DWLP_MSGRESULT</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG_PTR</span><span class="p">)</span><span class="n">hBrush</span><span class="p">);</span>
+
+    <span class="c1">// tell Windows that we processed this dialog-message
+</span>    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">SetWindowLong</code> API is used in this situation to return the HBRUSH back to Windows.</p>
+
+<h2 id="small-icons-for-titlebars">Small icons for titlebars</h2>
+
+<p>Setting the icon to appear in a window’s titlebar is not as simple as calling <code class="highlighter-rouge">LoadIcon</code>, because even though your icon resource might contain a 16x16 image, LoadIcon will only load the 32x32 image size. The following snippets shows how to call <code class="highlighter-rouge">RegisterClassEx</code> using LoadImage to set both the small and large icons for a window’s titlebar:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">InitWindow</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">WNDCLASSEX</span> <span class="n">wcx</span><span class="p">;</span>
+
+    <span class="p">....</span>
+    <span class="n">wcx</span><span class="p">.</span><span class="n">hIcon</span> <span class="o">=</span> <span class="n">LoadImage</span><span class="p">(</span><span class="n">hInst</span><span class="p">,</span> <span class="n">MAKEINTRESOURCE</span><span class="p">(</span><span class="n">IDI_APP</span><span class="p">),</span> <span class="n">IMAGE_ICON</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">LR_CREATEDIBSECTION</span><span class="p">);</span>
+    <span class="n">wcx</span><span class="p">.</span><span class="n">hIconSm</span> <span class="o">=</span> <span class="n">LoadImage</span><span class="p">(</span><span class="n">hInst</span><span class="p">,</span> <span class="n">MAKEINTRESOURCE</span><span class="p">(</span><span class="n">IDI_APP</span><span class="p">),</span> <span class="n">IMAGE_ICON</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">LR_CREATEDIBSECTION</span><span class="p">);</span>
+
+    <span class="n">RegisterClassEx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wcx</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The alternative method is to use the <code class="highlighter-rouge">SendMessage</code> function after the window has been created, and use the <code class="highlighter-rouge">WM_SETICON</code> message, specifying the <code class="highlighter-rouge">ICON_BIG</code> and <code class="highlighter-rouge">ICON_SMALL</code> parameters where appropriate.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2006-05-14T00:00:00+00:00">May 14, 2006</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../neatpad/keyboard-navigation.html" class="pagination--pager" title="Keyboard Navigation
+">Previous</a>
+    
+    
+      <a href="../neatpad/piece-chains.html" class="pagination--pager" title="Piece Chains
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/tips-and-tricks-part-2 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+</html>

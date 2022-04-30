@@ -1,0 +1,638 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/cardlib by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>CardLib - Catch22</title>
+<meta name="description" content="(How to use cards.dll, Part 3)">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="CardLib">
+<meta property="og:url" content="cardlib.html">
+
+
+  <meta property="og:description" content="(How to use cards.dll, Part 3)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-12-04T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="cardlib.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">CardLib</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/CardLib.zip">CardLib.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="CardLib">
+    <meta itemprop="description" content="(How to use cards.dll, Part 3)">
+    <meta itemprop="datePublished" content="December 04, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">CardLib
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>CardLib</h1-->
+<!--h3>Introducing CardLib, a card-game programming library</h3-->
+
+<h2 id="how-to-use-cardsdll-part-3">(How to use cards.dll, Part 3)</h2>
+
+<h2 id="updated-14th-jul-2005">Updated 14th Jul 2005</h2>
+
+<p>Fixed bug in Cardlib’s <code class="highlighter-rouge">CardRgnMouse.cpp</code> which caused cardgames to hang when a stack was clicked (only occurred when compiled with VC7.0+)</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>The previous two tutorials in this series concentrated on accessing the playing-card bitmap images from cards.dll, and demonstrated how to simply draw a playing-card into a window.</p>
+
+<p>This tutorial presents <strong>CardLib</strong> , a fully featured card-game library, which provides a framework to manipulate cards and collections of cards.</p>
+
+<p>Cards can be dragged around the screen from one stack to another. Card-stacks are fully customizable. A function-callback system allows the programmer to register callback functions with different events. This system provides complete control over playing card manipulation.</p>
+
+<p><img src="http://www.catch22.net/assets/img/card10.gif" alt="{short description of image}" class="align-center" /></p>
+
+<p>I decided to write this library using C++. No external libraries such as MFC or ATL are required to use the library. However, there is nothing to stop you from using these frameworks alongside CardLib. CardLib requires the use of a C++ compiler. The project currently only supports Visual C++ 6.0, but other 32bit Windows compilers should also work because there are no Visual C++ extensions used by the project.</p>
+
+<p>I chose C++, because it is the language which lends itself best to this type of library. Originally I had wanted to use C instead of C++, but I encountered many problems designing the library. This was because an inherently object-oriented concept was being designed, and I finally decided that C++ was the way forward. This, in addition to the type-safety C++ provides, has resulted in an easier to use and better designed game library. (Well, I think so, anyway!).</p>
+
+<p>For the purely C folk reading this, please don’t be put off. The library is really easy to use, and I havn’t used any advanced C++ features such as templates or polymorphism. In fact, most of the functional game code that you write will use very few C++ features. If you can write C programs, you can use this library.</p>
+
+<h2 id="create-a-playing-table">Create a playing table</h2>
+
+<p>The first thing you must do in a CardLib program is to link with CardLib.lib, and #include “CardLib.h”. Once you have done this, you are free to start using the library. Next, you must create a <code class="highlighter-rouge">CardWindow</code> which forms the basis of all subsequent coding. Therefore, you need to declare a class object of type CardWindow somewhere in your program.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardWindow</span> <span class="n">cardwnd</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>If you are writing a bare-bones Win32 application, then this declaration could just be a global variable. For an MFC application, you would define this variable as a class member in a CView class.</p>
+
+<p>By itself, this declaration doesn’t really do much. In order to actually create a physical card window, you need to call the CardWindow::Create member function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CardWindow</span><span class="o">::</span><span class="n">Create</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndParent</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwExStyle</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwStyle</span><span class="p">,</span> 
+                            <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With this function, you specify the parent window of the card-window, the window styles, and the card window location. A typical usage of this function might look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cardwnd</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WS_EX_CLIENTEDGE</span><span class="p">,</span> <span class="n">WS_CHILD</span><span class="o">|</span><span class="n">WS_VISIBLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>In order to manipulate the <em>physical</em> card window, you simply pass the CardWindow object to any Win32 API call you desire. The CardWindow class automatically converts to a <code class="highlighter-rouge">HWND</code> window handle whenever you need one. So, to resize the card window in a <code class="highlighter-rouge">WM_SIZE</code> handler, for example, you would write something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_SIZE</span><span class="p">:</span>
+    <span class="n">nWidth</span> <span class="o">=</span> <span class="p">(</span><span class="n">LOWORD</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+    <span class="n">nHeight</span> <span class="o">=</span> <span class="p">(</span><span class="n">HIWORD</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+
+    <span class="n">MoveWindow</span><span class="p">(</span> <span class="o">**</span><span class="n">cardwnd</span><span class="o">**</span> <span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nWidth</span><span class="p">,</span> <span class="n">nHeight</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>At this point you don’t need to do anything else. The card window is currently empty though, apart from the default dark-green background. It would be nice if we could create some playing cards somehow, and drag them around.</p>
+
+<h2 id="create-a-playing-card">Create a Playing Card</h2>
+
+<p>The basic element of any card-game is a playing card. CardLib provides a built-in C++ class called <code class="highlighter-rouge">Card</code>. A card has a number of attributes, listed below:</p>
+
+<ul>
+  <li><strong>Face-value</strong> , or Rank (Ace-King)</li>
+  <li><strong>Suit</strong> (Clubs, Diamonds, Hearts and Spades)</li>
+  <li><strong>Face-direction</strong> (facing Up or Down)</li>
+</ul>
+
+<p>It is simple to create a playing card - just create a <code class="highlighter-rouge">Card</code> variable.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Card</span> <span class="n">card</span><span class="p">(</span><span class="n">Ten</span><span class="p">,</span> <span class="n">Diamonds</span><span class="p">);</span>
+<span class="n">Card</span> <span class="n">card</span><span class="p">(</span><span class="mi">48</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The example above shows two methods of intializing a playing card. The first method is obvious - specify the suit followed by the rank. The second method needs explaining though. The single-argument constructor for a Card requires an integer value in the range 0-51, inclusive. This value uniquely indentifies a playing card. You can calculate this value using the following formula, or use the <code class="highlighter-rouge">MAKE_CARD</code> function, whichever you prefer.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">MAKE_CARD</span><span class="p">(</span><span class="kt">int</span> <span class="n">Value</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Suit</span><span class="p">);</span>
+
+<span class="p">...</span> <span class="n">or</span> <span class="p">...</span>
+
+<span class="kt">int</span> <span class="n">cardval</span> <span class="o">=</span> <span class="p">(</span><span class="n">Value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">Suit</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Whilst playing cards are essential to a card game, a Card object provides no method to display itself - a <code class="highlighter-rouge">Card</code> is just a basic C++ class. To actually display and interact with a <code class="highlighter-rouge">Card</code> object, you must first place the card on a card-stack.</p>
+
+<h2 id="create-a-card-stack">Create a Card Stack</h2>
+
+<p>CardLib implements a stack-orientated card system. Rather than creating individual playing cards and positioning them manually on the screen, CardLib gives you the power to manipulate and interact with collections of cards instead. A <code class="highlighter-rouge">CardStack</code> is a C++ data structure which provides a “stack” metaphore to one or more playing cards. Cards are accessed from the top of the stack, and cards can be pushed and popped from a stack in whatever way you want.</p>
+
+<p>Note that a <code class="highlighter-rouge">CardStack</code> still doesn’t provide any way to draw itself on the screen, or any way for the user to interact with it. The sole purpose of a <code class="highlighter-rouge">CardStack</code> object is to collect one or more cards together in an ordered manner. The following example shows how to create and manipulate a <code class="highlighter-rouge">CardStack</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Card</span> <span class="n">card</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">Spades</span><span class="p">);</span>
+<span class="n">CardStack</span> <span class="n">cardstack</span><span class="p">;</span>
+
+<span class="cm">/* Add, then remove a card */</span>
+<span class="n">cardstack</span><span class="p">.</span><span class="n">Push</span><span class="p">(</span><span class="n">card</span><span class="p">);</span>
+<span class="n">cardstack</span><span class="p">.</span><span class="n">Pop</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Once you have created a <code class="highlighter-rouge">CardStack</code> and populated it with cards, it is finally time to display it on the screen.</p>
+
+<h2 id="create-a-card-region">Create a Card Region</h2>
+
+<p>A <code class="highlighter-rouge">CardRegion</code> object is a place-holder for a CardStack. This is basically a region in a <code class="highlighter-rouge">CardWindow</code> which can hold and display a <code class="highlighter-rouge">CardStack</code>. Every <code class="highlighter-rouge">CardRegion</code> object contains one <code class="highlighter-rouge">CardStack</code>. The contents of the <code class="highlighter-rouge">CardStack</code> dictate how the <code class="highlighter-rouge">CardRegion</code> draws itself. You create a <code class="highlighter-rouge">CardRegion</code> using the following <code class="highlighter-rouge">CardWindow</code> member function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardRegion</span><span class="o">*</span> <span class="n">CardWindow</span><span class="o">::</span><span class="n">CreateRegion</span> <span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fVisible</span><span class="p">,</span> 
+                       <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">xoffset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">yoffset</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With this function, you specify a unique ID, whether or not the stack is initally visible, the coordinates of the stack, and the direction that cards take when collected on the stack. A typical usage of this function might look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define MY_CARD_STACK 1
+</span><span class="n">CardRegion</span> <span class="o">*</span><span class="n">pRegion1</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">pRegion1</span> <span class="o">=</span> <span class="n">cardwnd</span><span class="p">.</span><span class="n">CreateRegion</span><span class="p">(</span><span class="n">MY_CARD_STACK</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">CardWindow</code> object performs all necessary allocation for you, and performs all the management required to draw the card-region and interact with it. You don’t need to store the <code class="highlighter-rouge">CardRegion</code> pointer that is returned - you can retrieve this at any time by using the <code class="highlighter-rouge">CardWindow::CardRegionFromId(int Id)</code> member function. However, you can perform alot of customization on the <code class="highlighter-rouge">CardRegion</code> itself, so you will probably find yourself storing this pointer for later use.</p>
+
+<p>Once a <code class="highlighter-rouge">CardRegion</code> has been created, you can add a CardStack to it, to be displayed and interacted with. Use the <code class="highlighter-rouge">CardRegion::SetCardStack</code> method to accomplish this. The following example shows how to create a stack of cards and add it to a <code class="highlighter-rouge">CardRegion</code> for display.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardStack</span> <span class="n">cardstack</span><span class="p">;</span>
+<span class="n">Card</span> <span class="n">card1</span><span class="p">(</span><span class="n">Jack</span><span class="p">,</span> <span class="n">Clubs</span><span class="p">);</span>
+<span class="n">Card</span> <span class="n">card2</span><span class="p">(</span><span class="n">Ace</span><span class="p">,</span> <span class="n">Hearts</span><span class="p">);</span>
+
+<span class="n">cardstack</span><span class="p">.</span><span class="n">Push</span><span class="p">(</span><span class="n">card1</span><span class="p">);</span>
+<span class="n">cardstack</span><span class="p">.</span><span class="n">Push</span><span class="p">(</span><span class="n">card2</span><span class="p">);</span>
+
+<span class="n">pRegion1</span><span class="o">-&gt;</span><span class="n">SetCardStack</span><span class="p">(</span><span class="n">cardstack</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Note that the <code class="highlighter-rouge">CardRegion</code> does not take “ownership” of the <code class="highlighter-rouge">CardStack</code> passed to it - a <code class="highlighter-rouge">CardRegion</code> keeps its own internal <code class="highlighter-rouge">CardStack</code>. Therefore if you modified the <code class="highlighter-rouge">CardStack</code> after passing it to <code class="highlighter-rouge">CardRegion::SetCardStack</code>, this would have no effect on the region’s internal <code class="highlighter-rouge">CardStack</code>.</p>
+
+<p>At this stage we have created a fully functional stack of cards which can be dragged around the screen. Creating additional stacks is left as an exercise to the reader. The only thing left to do is to customize the appearance and behaviour of the <code class="highlighter-rouge">CardRegion</code>.</p>
+
+<p>There are quite a few <code class="highlighter-rouge">CardRegion</code> member functions to choose from. The <a href="../cards/cardtut4.html">CardLib Programmer’s Reference</a> describes each function available to you.</p>
+
+<h2 id="create-a-button">Create a Button</h2>
+
+<p>The <code class="highlighter-rouge">CardWindow</code> object supports buttons as well as card-stacks. These buttons are not “real” button controls, rather they are built into the card window, and share the same colour scheme. It is not necessary to create any buttons in your card game, but sometimes they can be useful if you want to give the user some kind of control to click on, say to shuffle a card-stack, or to pickup some cards from one stack and place them in another.</p>
+
+<p>You create a <code class="highlighter-rouge">CardButton</code> object using the following <code class="highlighter-rouge">CardWindow</code> member function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardButton</span><span class="o">*</span> <span class="n">CardWindow</span><span class="o">::</span><span class="n">CreateButton</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uStyle</span><span class="p">,</span> 
+         <span class="kt">bool</span> <span class="n">fVisible</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Again, it is not necessary to store the <code class="highlighter-rouge">CardButton</code> pointer that is returned, but it will be useful if you want to customize the button, for example setting if it is centered or right-aligned.</p>
+
+<h2 id="provide-drag-and-drop-behaviour">Provide Drag and Drop Behaviour</h2>
+
+<p>Card stack behaviour is the key to implementing a card-game. By default, a card-stack will let you drag and drop any number of cards from and to it. It is unlikely that you will want to allow this type of behaviour, so specifying which cards can be dragged to and from stacks gives you greater control over stack manipulation.</p>
+
+<p>There are only two functions which control stack behaviour. These are:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">CardRegion</span><span class="o">::</span><span class="n">SetDragRule</span> <span class="p">(</span><span class="n">UINT</span> <span class="n">uDragType</span><span class="p">,</span> <span class="n">pCanDragProc</span> <span class="n">proc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Card dragging is controlled using the <code class="highlighter-rouge">SetDragRule</code> member function. There are four different types of card dragging:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">CS_DRAG_NONE</code> prevents any cards from being dragging from a stack.</li>
+  <li><code class="highlighter-rouge">CS_DRAG_TOP</code> restricts dragging to the top card only.</li>
+  <li><code class="highlighter-rouge">CS_DRAG_ALL</code> allows any number of cards to be dragged (the default).</li>
+  <li><code class="highlighter-rouge">CS_DRAG_CALLBACK</code> allows you to specify a custom callback function which is executed whenever the user tries to drag cards from a stack. The callback function returns a boolean value to indicate whether or not to allow the drag action to contine. More information on callbacks can be found in the next section.</li>
+</ul>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">CardRegion</span><span class="o">::</span><span class="n">SetDropRule</span> <span class="p">(</span><span class="n">UINT</span> <span class="n">uDropType</span><span class="p">,</span> <span class="n">pCanDropProc</span> <span class="n">proc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Card dropping is controlled using the <code class="highlighter-rouge">SetDropRule</code> member function. There are three different types of drop behaviour:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">CS_DROP_NONE</code> prevents any cards from being dropped.</li>
+  <li><code class="highlighter-rouge">CS_DROP_ANY</code> allows any number of cards to be dropped (the default).</li>
+  <li><code class="highlighter-rouge">CS_DROP_CALLBACK</code> allows you to specify a custom callback function which is executated whenever the user tries to drop cards on a stack. The callback function returns a boolean value to indicate whether or not to allow the drop to take place. More information on callbacks can be found in the next section.</li>
+</ul>
+
+<p><code class="highlighter-rouge">SetDragRule</code> and <code class="highlighter-rouge">SetDropRule</code> both accept an optional second parameter - a pointer to a callback function. This parameter must only be specified when using the <code class="highlighter-rouge">CS</code>_xxxx`_CALLBACK` rule.</p>
+
+<h2 id="create-an-event-callback">Create an Event Callback</h2>
+
+<p>Event callbacks provide complete control over stack manipulation. Here is a list of the different types of callback that a StackObject supports.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Type</td>
+      <td>Return type</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CanDragProc</code></td>
+      <td><code class="highlighter-rouge">bool</code></td>
+      <td>Controls how many cards can be removed from a stack.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CanDropProc</code></td>
+      <td><code class="highlighter-rouge">bool</code></td>
+      <td>Controls the type of card that can be dropped on a stack.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">ClickProc</code></td>
+      <td><code class="highlighter-rouge">void</code></td>
+      <td>Single-click notification of one of the cards in a stack.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DblClickProc</code></td>
+      <td><code class="highlighter-rouge">void</code></td>
+      <td>Double-click notification of one of the cards in a stack.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">AddProc</code></td>
+      <td><code class="highlighter-rouge">void</code></td>
+      <td>Sent after cards have been dropped (added) on a stack</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">RemoveProc</code></td>
+      <td><code class="highlighter-rouge">void</code></td>
+      <td>Sent after cards have been dragged (removed) from a stack.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="drag-callback">Drag Callback</h3>
+
+<p>A drag callback must use the following prototype.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">CARDLIBPROC</span> <span class="n">CanDragProc</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">&amp;</span><span class="n">cardrgn</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iNumDragging</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The CardRegion parameter identifies which card-stack is being manipulated.</p>
+
+<p>The <code class="highlighter-rouge">iNumDragging</code> variable specifies how many cards (from the top) are being removed.</p>
+
+<p>The callback must return <code class="highlighter-rouge">true</code> to allow the drag, or <code class="highlighter-rouge">false</code> to prevent any cards from being removed.</p>
+
+<h3 id="drop-callback">Drop Callback</h3>
+
+<p>A drop callback must use the following prototype.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">CARDLIBPROC</span> <span class="n">CanDropProc</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">&amp;</span><span class="n">cardrgn</span><span class="p">,</span> <span class="n">CardStack</span> <span class="o">&amp;</span><span class="n">cardstack</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">CardRegion</code> parameter identifies which card-stack is having cards dropped on it.</p>
+
+<p>The <code class="highlighter-rouge">CardStack</code> object contains the list of cards that are being dropped.</p>
+
+<p>The callback must return <code class="highlighter-rouge">true</code> to allow the drop, or <code class="highlighter-rouge">false</code> to prevent any cards from being dropped.</p>
+
+<h3 id="mouse-click-callback">Mouse Click Callback</h3>
+
+<p>A mouse-click callback is set using the CardRegion::SetClickProc member function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CardRegion</span><span class="o">::</span><span class="n">SetClickProc</span> <span class="p">(</span><span class="n">pClickProc</span> <span class="n">proc</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The function you pass to SetClickProc must use the following prototype.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CARDLIBPROC</span> <span class="n">ClickProc</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">&amp;</span><span class="n">cardrgn</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iNumClicked</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">CardRegion</code> parameter identifies which card-stack has been clicked on.</p>
+
+<p>The <code class="highlighter-rouge">iNumClicked</code> variable specifies which card (from the top) has been clicked on. This variable will range from 0 (the top card) to n-1 (the number of cards in the stack).</p>
+
+<p>The callback does not return a value.</p>
+
+<h3 id="mouse-double-click-callback">Mouse Double-Click Callback</h3>
+
+<p>A mouse double-click callback is set using the CardRegion::SetDblClickProc member function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CardRegion</span><span class="o">::</span><span class="n">SetClickProc</span> <span class="p">(</span><span class="n">pClickProc</span> <span class="n">proc</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The callback function uses the exact same function prototype as the single-click callback.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CARDLIBPROC</span> <span class="n">ClickProc</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">&amp;</span><span class="n">cardrgn</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iNumClicked</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">CardRegion</code> parameter identifies which card-stack has been double-clicked on.</p>
+
+<p>The <code class="highlighter-rouge">iNumClicked</code> variable specifies which card (from the top) has been double-clicked on.</p>
+
+<p>The callback does not return a value.</p>
+
+<h3 id="add-callback">Add Callback</h3>
+
+<p>The card-add callback is set using the CardRegion::SetAddCardProc member function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CardRegion</span><span class="o">::</span><span class="n">SetAddCardProc</span><span class="p">(</span><span class="n">pAddProc</span> <span class="n">proc</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The callback is called <em>after</em> any card(s) have been dropped on a card-stack, and must use the following prototype.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CARDLIBPROC</span> <span class="n">AddProc</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">&amp;</span><span class="n">cardrgn</span><span class="p">,</span> <span class="n">CardStack</span> <span class="o">&amp;</span><span class="n">cardstack</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">CardRegion</code> parameter identifies which card-stack has been clicked on.</p>
+
+<p>The <code class="highlighter-rouge">CardStack</code> parameter specifies the list of cards which have been added.</p>
+
+<p>The callback does not return a value.</p>
+
+<h3 id="remove-callback">Remove Callback</h3>
+
+<p>The card-remove callback is set using the CardRegion::SetRemoveCardProc member function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CardRegion</span><span class="o">::</span><span class="n">SetRemoveCardProc</span><span class="p">(</span><span class="n">pRemoveProc</span> <span class="n">proc</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The callback is called <em>after</em> any card(s) have been dragged from a card-stack (and subsequently dropped on another stack). The remove-callback must use the following prototype.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CARDLIBPROC</span> <span class="n">RemoveProc</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">&amp;</span><span class="n">cardrgn</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iNumRemoved</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">CardRegion</code> parameter identifies which card-stack has been clicked on.</p>
+
+<p>The <code class="highlighter-rouge">iNumRemoved</code> variable specifies how many cards were removed.</p>
+
+<p>The callback does not return a value.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Once again, this is work in progress. It’s not that there are any problems with the library, but this is my first real stab at a framework of this sort, so there are undoubtably some areas that could be improved, from a design perspective.</p>
+
+<p>I am confident that the library works well. It took me just over an hour to write a complete Solitiare game using the library, so I think this speaks for itself.</p>
+
+<p>Well, if you have any comments or ideas for improvement, then I’d like to hear them..</p>
+
+<p>James.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/CardLib.zip">CardLib.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-12-04T00:00:00+00:00">December 04, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="cardlib-reference.html" class="pagination--pager" title="CardLib Reference
+">Previous</a>
+    
+    
+      <a href="custom-scrollbars.html" class="pagination--pager" title="Custom Scrollbars
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/cardlib by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

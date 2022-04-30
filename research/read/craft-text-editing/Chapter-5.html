@@ -1,0 +1,420 @@
+<html>
+<title>The Craft of Text Editing: Chapter 5</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-5.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 5: File Formats</h1>
+
+<blockquote>
+And, as in uffish thought he stood,<br>
+&nbsp;&nbsp;The Jabberwock, with eyes of flame,<br>
+</blockquote>
+
+<p>This chapter surveys the range of file formats that a text editor
+might encounter.</p>
+
+<h2>Text Files</h2>
+
+<p>Each operating system has a standard way of storing text
+files. Text editors must be able to edit these standard system text
+files.  From the user's point of view, such files consist of a series
+of reasonable-length lines of &quot;reasonable&quot; characters.</p>
+
+<h3>Line Boundaries</h3>
+
+<p>From the program's point of view, system text files consist of a
+sequence of characters, divided into lines in a variety of ways.  Each
+of the most popular methods will be described.</p>
+
+<p><b>Card and Print Images</b>: These files are a series of lines,
+all exactly the same length (typically 80, 132, or 133 characters
+long).  They may also include another form of line divisor
+(<i>e.g.</i>, 80 characters, then a CR/LF sequence).  These files will
+mostly be found on older systems.</p>
+
+<p><b>Newline Character</b>: Marker bytes are used to signal the end
+of one line and the start of another.  Popular choices are:</p>
+
+<ul>
+<li>Line Feed: Used by UNIX systems.
+
+<li>Carriage Return: Used by Apple computers and some DEC computers.
+
+<li>Carriage Return/Line Feed combination: Used by CP/M and MS/DOS
+computers.  The two-character sequence can be awkward to use when
+editing.  You can usually get away with dropping the CR (but only when
+it appears as part of a CR/LF sequence), use the LF as a newline
+character, and put the CR back when the file is written out.  When
+editing an existing file, record whether you found CRs to remove, so
+that you don't put extra CRs in when writing out binary files.
+</ul>
+
+<p><b>Character Count</b>: Some systems use an initial count of
+characters (typically the count is one or two bytes long), followed by
+that many characters.  There may or may not be padding between lines
+in order to align their start on a word boundary.</p>
+
+<p><b>Record Markers</b>: Some operating systems store one line per
+record, and store the record markers &quot;out of band.&quot; In this
+case, you must read and write one line at a time, and record the line
+break information somehow.  (If the operating system lets you read
+multiple lines at once, it must have some method of indicating what
+the line boundaries are, which leads us to one of the earlier
+methods.)</p>
+
+<h3>Line Contents</h3>
+
+<p>Some systems place restrictions on the contents of each line.  The
+most frequently encountered restrictions are:</p>
+
+<p><b>Long Lines</b>: Some systems have no limit on the length of a
+line.  Others place a fixed limit.  Typical limits are 80, 127 or 128,
+255/6, 511/2, 32,767/8, and 65,535 characters.  If a program attempts
+to write lines that exceed the system limit, some systems return an
+error, others split the line, and still others will silently truncate
+the line.</p>
+
+<p><b>Short Lines</b>: Most systems support zero-length (empty) lines
+quite well. However, some systems do not allow such lines while others
+allow them in theory but not in practice.  For example, the
+system-supplied text editor may not allow the entry of empty lines.
+Because of this limitation, no files will be created that have such
+lines.  Hence, the code to handle such lines may not be tested well,
+and some programs may not behave properly when such lines are
+encountered.</p>
+
+<p><b>Partial Last Line</b>: This problem can only occur in systems
+that use a newline character.  As with short lines, the
+system-supplied text editor may not allow the entry of partial last
+lines (<i>i.e.</i>, a missing newline character) and some programs may
+not behave properly when such lines are encountered.</p>
+
+<p><b>Non-Printing Characters</b>: All systems generally allow all
+printing characters and the Space character to appear in text files.
+These character have codes that range from 32 to 126 decimal in ASCII
+or the equivalent characters in EBCDIC.  Difficulties arise in how
+programs handle other characters.  For example, are Tab characters
+treated as one character or the appropriate number of spaces, and if
+the latter, what is the appropriate width?  Limitations on
+non-printing characters usually fall into the following groups:</p>
+
+<ul>
+<li>Tab
+<li>Form Feed
+<li>Back Space
+<li>Carriage Return (this is a &quot;bare CR&quot;)
+<li>other control characters (in the range 0 to 31 decimal and 127
+decimal)
+<li>meta characters (128 to 255 decimal)
+</ul>
+
+<p>Typically, systems that allow a given group allow all preceding
+groups.  Given that the characters are allowed, the next question is
+how should the character be displayed.  Typical methods are:</p>
+
+<ul>
+<li>Just send the character as is without translation.
+<li>Expand into caret notation (see Appendix E).
+<li>Expand into octal or hexadecimal notation.
+</ul>
+
+<h3>End of File</h3>
+
+<p>Most systems record the exact file length and make this information
+available to the program.  However, there are two special cases to be
+considered:</p>
+
+<p><b>CP/M systems</b> only record the file length to the next
+multiple of 128 bytes.  By convention, a control-Z (^Z) character is
+used to mark the end of the file.  Data after the first Z character is
+ignored.  Note that if the file ends exactly on a 128-byte boundary,
+some programs do not add the trailing ^Z character.  Some programs
+filled the entire remainder of the block with the ^Z character: other
+programs relied on this convention and only removed trailing ^Z
+characters.</p>
+
+<p><b>MS/DOS systems</b> started off following the CP/M convention but
+later changed to omit the ^Z character.  The safest algorithm to use
+on these systems is:</p>
+
+<ul>
+<li>If you are editing an existing file, record whether the file
+originally ended with ^Z. When the new version is written, add a ^Z if
+the file had one.
+<li>Otherwise, do not add a ^Z.
+</ul>
+
+<p>As always, the user should have a way of selecting both
+methods.</p>
+
+<h2>Binary Files</h2>
+
+<p>From a text editor's point of view, a <i>binary file</i> is any
+file that is not a text file.  These files have none of the following
+restrictions found in text files:</p>
+
+<ul>
+<li>Files may not be divided into lines at all.
+<li>Lines may be any length.
+<li>Lines may contain any character.
+</ul>
+
+<p>As a general rule, it is a nice feature to be able to edit a binary
+file.  The rules to be followed are these:</p>
+
+<ul>
+<li>You should be able to read a file in and write the identical file
+back out.
+<li>It should be possible to move to and usefully view any portion of
+the file.
+<li>It should be possible to insert any character.
+<li>It should be possible to precisely control any deletions
+(<i>e.g.</i>, &quot;delete the following three characters&quot;).
+</ul>
+
+<h2>Structured Files</h2>
+
+<p>If your editor will only encounter standard system-text files and
+binary files, you can skip the rest of this chapter which describes
+considerations for designing file formats for holding information in
+addition to pure ASCII text.</p>
+
+<p>Basic text files use 94 printing characters and a Space
+character. They also need some way to indicate line breaks.  Often,
+users will want to include the Bell, Back Space, Tab, and Form Feed
+characters in their text files.  Thus, a total of 99 characters are
+reserved for representing themselves.  This leaves 29 codes (with 7
+bit characters) or 157 codes (with 8 bit characters) available for
+other uses.</p>
+
+<p>If all computer manufacturers used only the ASCII character set,
+the analysis could stop here.  However, IBM Corp., Apple Computer
+Corp., Hewlett-Packard, and other vendors all support
+&quot;extended&quot; character sets that make use of many of these
+other codes.  (Not to worry, though, the world is still safe: all of
+the manufacturers support <i>different</i> extended character sets.)
+What were previously unused codes are now in use to the extent that
+your users wish to be able to make use of the extended characters.</p>
+
+<p>(Actually, as this book is being written, many vendors are jointly
+developing a 16-bit character set that is intended to encompass most
+characters and glyphs in use, although not doing a complete job on
+Chinese, Japanese, and Korean.)</p>
+
+<h2>Where to Store the &quot;Extra&quot; Information</h2>
+
+<p>Whether or not &quot;extended&quot; character sets are supported,
+it is likely that you will want to store more information than can fit
+into the unused character codes.  This leads us to the basic choice
+that will affect many other aspects of the implementation: is the
+extra information stored in-band or out-of-band?</p>
+
+<h3>In-Band</h3>
+
+<p>Storing information <i>in-band</i> means that some of the character
+codes are used to signal the presence of this additional
+information. Once the presence of this information is indicated, all
+character codes can potentially be used to represent the
+information.</p>
+
+<p>The use of these character codes for non-character purposes has two
+ramifications.  First, those codes are not available for representing
+characters.  Second, if those characters are present, redisplay must
+know how to display them (and their associated information) and the
+user commands must know how to process them.</p>
+
+<p>Depending upon the purpose of the extra information and your users'
+expectations, it may be appropriate to allow this in-band information
+to be visible to the user, at least in some display modes.  Further,
+it may be appropriate to allow the user to edit the information
+directly.  On the other hand, the best choice might be to hide this
+information from the user and allow only indirect manipulation.</p>
+
+<p>Note that programs should be able to parse in-band information in
+either direction (<i>i.e.</i>, both when working forwards through the
+buffer and when working backwards).  It is also important in this
+representation that it be reasonably easy to determine how to display
+a file when starting from an arbitrary point in the middle of the
+file.  In particular, the program shouldn't have to examine the entire
+previous contents of the file in order to figure out how to display
+something.</p>
+
+<h3>Out-of-Band</h3>
+
+<p>Storing information <i>out-of-band</i> means that none of the
+character codes are used for any special purpose.  Rather, the
+additional information is stored somewhere else and is tied back to
+the text by means of pointers and offsets.</p>
+
+<p>The disadvantage of choosing the out-of-band method is that you
+must find some place to put the information.  While a file is being
+edited, the information can (and probably should) be stored in special
+purpose structures within the editor.  However, when the file is
+stored, the additional information must be put somewhere.  This place
+can be a separate file or a separate part of the same file (either a
+different file &quot;fork,&quot; or at the file's beginning or
+end).</p>
+
+<h3>Conclusion</h3>
+
+<p>There may be enough additional information that manipulating it can
+itself require significant overhead.  The techniques described in the
+next chapter can apply to the additional information as to the text
+itself.</p>
+
+<p>There is no preferred choice: both in-band and out-of-band have
+their good points and their bad.  The choice must be made on a
+case-by-case basis.</p>
+
+<p>Actually, they are almost two ends of a continuous scale.  The
+difference between them could also be considered like this:</p>
+
+<ul>
+<li><i>in-band</i> data is parsed at each use
+<li><i>out-of-band</i> data is parsed at file load
+</ul>
+
+<h2>The Additional Information</h2>
+
+<p>This section describes some of the categories of additional
+information that you may wish to store in files.  These categories are
+illustrative examples only: you will probably want to store other
+types of information or the same types in different ways.</p>
+
+<h3>Fonts, Sizes, Attributes</h3>
+
+<p>A <i>font</i> describes the shapes of the characters.  <i>Size</i>
+information describes how large a character should be.
+<i>Attributes</i> are variations on a font such as boldface, italics,
+or underscoring. Together, these are used in word processors to
+provide character formatting.</p>
+
+<p>These three share common qualities such as the ability to change at
+a character boundary, and the ability to change one without changing
+the others.  The representation that you select needs to take these
+qualities into account.</p>
+
+<h3>Line, Paragraph, Page, and Other Formats</h3>
+
+<p>This information determines such things as line margins,
+justification types, tab stops, page headings and footings, page
+length, and so forth.  This information has a major effect on the
+redisplay code described in Chapter 7.</p>
+
+<h3>Non-Text Objects</h3>
+
+<p>These can be arbitrary non-text objects such as graphical bitmaps
+or object, spread sheets, database excerpts, or other information used
+by non-editor applications.  The editor needs to know such things
+as:</p>
+
+<ul>
+<li>how to display them
+<li>how much space they occupy
+<li>how to invoke the application that defines them
+<li>how to obtain current or updated versions of them
+</ul>
+
+<h2>Internationalization</h2>
+
+<p>This section lists some of the U.S. and English language biases
+that might be encountered in text files.  Techniques for removing
+these biases from the program are outside the scope of this book.  By
+their nature, these biases are hard to sort out: my apologies if I
+have missed some.</p>
+
+<p>Except for this section, this book contains U.S. and English
+language biases.  However, the programming and design techniques
+described in the rest of this book are applied in pretty much the same
+way in non-U.S. and non-English language editors.</p>
+
+<p>The first bias is the character set used to represent information.
+There are many different international character sets and, while they
+tend to incorporate the U.S. ASCII character set (presented in
+Appendix E) in them, they all differ in the other characters.</p>
+
+<p>The second bias is the character size (<i>i.e.</i>, the number of
+bits required to represent the number of distinct characters that can
+be stored in the document).  If you are limiting your users to ASCII,
+7-bit characters are sufficient.  However, international character
+sets may require 8, 16, or even 32 bits per character.  In the case of
+the larger character sizes, it may make sense to store most characters
+as 8-bit codes and to have multiple-byte characters for the others.
+So long as your implementation handles them consistently and can
+interchange data with the other programs on your system, the exact
+representation does not matter.</p>
+
+<p>The third bias is the language direction.  English uses
+left-to-right, then top-to-bottom.  Other languages use different
+patterns.  You must also properly handle cases where you mix languages
+(say, English and Arabic).</p>
+
+<p>The fourth bias is the general conventions for handling such things
+as character case (some languages do not have English's
+upper/lowercase distinction), characters changing representation
+depending upon their position within a word (contextual forms), and so
+forth.</p>
+
+<p>The fifth bias is in handling numbers.  For example, in the U.S.,
+numbers are written as &quot;1,000.5&quot;.  In Europe, they are
+written as &quot;1.000,5&quot;.  In addition, languages differ in the
+order that digits are entered (left to right vs. right to left) and
+the placement of the most significant digit.</p>
+
+<p>The sixth bias is in handling dates: day - month - year, month -
+day - year, and year - month - day are all popular, as are differing
+punctuation characters between them.</p>
+
+<p>The seventh bias is in handling calendars.  Gregorian and Julian
+are both in use and quite similar, but there are lunar and other
+calendars also in use.</p>
+
+<p>The eigth bias is how punctuation characters are handled.  For
+example, in Spanish, questions are introduced with an inverted
+&quot;?&quot; character and terminated with &quot;?&quot;.</p>
+
+<p>The last bias is how hyphenation is handled.  In English, it is
+often difficult or impossible to determine how a word should be
+hyphenated.  In Portuguese, for example, it is very easy to determine
+how to hyphenate a word and is considered mandatory to handle
+hyphenation properly.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>How visible should the representation of line boundaries in
+standard system-text files be to the user? (Easy)</p>
+
+<p>Why is the ability to edit binary files useful? (Easy)</p>
+
+<p>Is it reasonable to require that font, size, and attribute
+definitions always be properly nested? (Medium: note that the program
+can automatically make non-nested change requests into nested
+ones)</p>
+
+<p>Define a representation for fonts, sizes, and attributes.
+(Medium)</p>
+
+<p>Define a <i>good</i> representation for fonts, sizes, and
+attributes.  (Hard)</p>
+
+<p>Identify a bias that I missed. (Easy for non-U.S. readers, probably
+Hard for U.S. readers)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-5.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

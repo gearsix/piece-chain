@@ -1,0 +1,588 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/drop-target by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Drop Target - Catch22</title>
+<meta name="description" content="Updated 6 Dec 2006">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Drop Target">
+<meta property="og:url" content="drop-target.html">
+
+
+  <meta property="og:description" content="Updated 6 Dec 2006">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2004-06-17T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="drop-target.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Drop Target</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/win32/droptarget.zip">droptarget.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Drop Target">
+    <meta itemprop="description" content="Updated 6 Dec 2006">
+    <meta itemprop="datePublished" content="June 17, 2004">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Drop Target
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Drop Target</h1-->
+<!--h3>Implementing the IDropTarget interface</h3-->
+
+<h2 id="updated-6-dec-2006">Updated 6 Dec 2006</h2>
+
+<p>Many thanks to Davide Chiodi from Italy who has very kindly converted the drop-target code into a Pure C implementation - <a href="https://www.catch22.net/sites/default/files/Catch22OLEpart6.rar">download now</a>!</p>
+
+<p>Welcome to the sixth part of the “OLE Drag and Drop” tutorial series! This article will concentrate on implementing a small application which will act as a drop-target. What this means is that our application will be capable of receiving objects (be they files, pictures or text) which are dragged onto it.</p>
+
+<p>We will implement an <code class="highlighter-rouge">IDropTarget</code> COM interface which will allow any OLE application to drag it’s data over our application. This will take the form of a simple EDIT control which can act as a target for dropped <code class="highlighter-rouge">CF_TEXT</code> data. Hopefully you will be able to take the code presented here and “drag” it straight into your own apps ;-)</p>
+
+<h2 id="become-a-drop-target">Become a “Drop Target”</h2>
+
+<p>In order for a window to accept data from a drap-drop operation, it must be registered as a “drop target”. There is an OLE API call - <code class="highlighter-rouge">RegisterDragDrop</code> - which is used for this very purpose. The function prototype looks like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WINOLEAPI</span> <span class="n">RegisterDragDrop</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">IDropTarget</span> <span class="o">*</span> <span class="n">pDropTarget</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The first parameter to this function is the window handle, of the window that is destined to be a drop target. The second parameter is a pointer to the <code class="highlighter-rouge">IDropTarget</code> COM object. The COM/OLE runtime will call the methods on this interface during the course of a drag-drop operation.</p>
+
+<p>Likewise there is an OLE API call to remove drag-and-drop functionality from a window:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WINOLEAPI</span> <span class="n">RevokeDragDrop</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>All that is required from us is to called RegisterDragDrop when our window is created, and RevokeDragDrop when our window is destroyed. Before we can call RegisterDragDrop though, we need to construct a COM object which supports the <code class="highlighter-rouge">IDropTarget</code> interface.</p>
+
+<h2 id="the-idroptarget-interface">The IDropTarget Interface</h2>
+
+<p>The <code class="highlighter-rouge">IDropTarget</code> Interface is relatively simple, with only four functions that need to be implemented. Of course there is also the IUnknown interface which needs to be implemented but we have already covered that earlier.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>IDropTarget Methods</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DragEnter</code></td>
+      <td>Determines whether a drop can be accepted and its effect if it is accepted.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DragOver</code></td>
+      <td>Provides target feedback to the user through the <code class="highlighter-rouge">DoDragDrop</code> function.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DragLeave</code></td>
+      <td>Causes the drop target to suspend its feedback actions.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Drop</code></td>
+      <td>Drops the data into the target window.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each one of these four functions will be called by the COM/OLE runtime whenever an “object” is dragged over our registered window. Each function has a different task, as shown in the table above. It is up to us to provide the implementations of these functions.</p>
+
+<h2 id="implementing-idroptarget">Implementing IDropTarget</h2>
+
+<p>The <code class="highlighter-rouge">IDropTarget</code> interface is (in my experience) very difficult to write without using “application specific” code. i.e. there is no easy way to make a generic <code class="highlighter-rouge">IDropTarget</code> COM object which can be re-used between all of your applications.</p>
+
+<p>This is because the requirement of <code class="highlighter-rouge">IDropTarget</code> is to show graphical feedback in your target window whenever an object is dragged over it, and also the application-specific code to access the data object’s content.</p>
+
+<p>Out of all the drag+drop interfaces, the <code class="highlighter-rouge">IDropTarget</code> is the one that would be best integrated directly into your window class. For example, supposing you have implemented a custom window using a C++ class - the best method to add drop-target support to this window is have your custom-window class inherit directly from <code class="highlighter-rouge">IDropTarget</code>, rather than having a separate <code class="highlighter-rouge">CDropTarget</code> class. This means that your drop-target code would have full access to all of your internal window state.</p>
+
+<p>However, for the time-being here is the CDropTarget class in all it’s glory:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CDropTarget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IDropTarget</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// IUnknown implementation
+</span>    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">QueryInterface</span> <span class="p">(</span><span class="n">REFIID</span> <span class="n">iid</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span> <span class="n">ppvObject</span><span class="p">);</span>
+    <span class="n">ULONG</span> <span class="kr">__stdcall</span> <span class="n">AddRef</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+    <span class="n">ULONG</span> <span class="kr">__stdcall</span> <span class="n">Release</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+    <span class="c1">// IDropTarget implementation
+</span>    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">DragEnter</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">*</span> <span class="n">pDataObject</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span> <span class="n">pdwEffect</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">DragOver</span><span class="p">(</span><span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span> <span class="n">pdwEffect</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">DragLeave</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">Drop</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">*</span> <span class="n">pDataObject</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span> <span class="n">pdwEffect</span><span class="p">);</span>
+
+    <span class="c1">// Constructor
+</span>    <span class="n">CDropTarget</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">CDropTarget</span><span class="p">();</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="c1">// internal helper function
+</span>    <span class="n">DWORD</span> <span class="n">DropEffect</span><span class="p">(</span><span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwAllowed</span><span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">QueryDataObject</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">);</span>
+
+    <span class="c1">// Private member variables
+</span>    <span class="kt">long</span> <span class="n">m_lRefCount</span><span class="p">;</span>
+    <span class="n">HWND</span> <span class="n">m_hWnd</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">m_fAllowDrop</span><span class="p">;</span>
+
+    <span class="c1">// Other internal window members
+</span>    
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>As well as the reference count, we need to store two additional variables: The <code class="highlighter-rouge">m_hWnd</code> variable is the window handle of the drop-target is needed so we can provide visual feedback during the drag-drop operation. The <code class="highlighter-rouge">m_fAllowDrop</code> is used to indicate whether or not the dataobject being dropped on us contains useful data. This is so we don’t have to continually query the dataobject - basically its an optimization trick.</p>
+
+<h2 id="idroptargetdragenter">IDropTarget::DragEnter</h2>
+
+<p>Let’s look at the IDropTarget::DragEnter function first of all, because this is the first function that is called by COM when an object is dragged over our window:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">DragEnter</span><span class="p">(</span>
+   <span class="n">IDataObject</span> <span class="o">*</span> <span class="n">pDataObject</span><span class="p">,</span> <span class="c1">// Pointer to the interface of the source data object
+</span>   <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="c1">// Current state of keyboard modifier keys
+</span>   <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="c1">// Current cursor coordinates
+</span>   <span class="n">DWORD</span> <span class="o">*</span> <span class="n">pdwEffect</span> <span class="c1">// Pointer to the effect of the drag-and-drop operation
+</span>   <span class="p">);</span>
+</code></pre></div></div>
+
+<p>Look closely at the function prototype above, because it is important to understand what each of the parameters are used for.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">IDataObject</code> - the very first argument is another pointer to the data object passed to us (via COM) by the source of the drag-drop operation. The <code class="highlighter-rouge">IDataObject</code> is simply the “transport medium” for the data that is being dropped. We can query the data object during <code class="highlighter-rouge">DragEnter</code> to see if it has any data that we want.</li>
+  <li><code class="highlighter-rouge">gfrKeyState</code> - holds the state of the keyboard modifier keys such as Control, Alt and Shift, and the state of the mouse buttons. It’s a simple DWORD variable comprised using one or more of the following bit-flags: <code class="highlighter-rouge">MK_CONTROL</code>, <code class="highlighter-rouge">MK_SHIFT</code>, <code class="highlighter-rouge">MK_ALT</code>, <code class="highlighter-rouge">MK_BUTTON</code>, <code class="highlighter-rouge">MK_LBUTTON</code> etc.</li>
+  <li><code class="highlighter-rouge">pt</code> - a <code class="highlighter-rouge">POINTL</code> structure, containing the coordinates of the mouse as it enters our window. In some applications this parameter would be used to check if the mouse was positioned over allowable drop areas, or used simply to position some kind of “insertion” cursor to indicate where the dropped data would go.</li>
+  <li><code class="highlighter-rouge">pdwEffect</code> - pointer to a DWORD value that specifies the drop-effects that are <em>allowed</em> by the drop-source. This value is the same as the <code class="highlighter-rouge">dwOKEffect</code> value specified by the caller of <code class="highlighter-rouge">DoDragDrop</code>.</li>
+</ul>
+
+<p>Our implementation of <code class="highlighter-rouge">DragEnter</code> needs to perform several common tasks, in addition to drawing graphical feedback.</p>
+
+<ol>
+  <li>Inspect the supplied data object and decide if it contains any useful data or not.</li>
+  <li>Inspect the keyboard state stored in <code class="highlighter-rouge">grfKeyState</code> and calculate what the drop-effect should be. i.e. if the Control key is held down, the drop-effect should be “copy”, if Shift is held down, the drop-effect should be “move”.</li>
+  <li>Verify that the computed drop-effect is compatible with those allowed by the drop-source.</li>
+  <li>Store the final drop-effect in the DWORD pointed to by <code class="highlighter-rouge">pdwEffect</code>.</li>
+</ol>
+
+<p>Don’t get caught up in the complexity of all this. The purpose of <code class="highlighter-rouge">DragEnter</code> is to simply say “yes or no” to the drag-drop operation, and to specify what the drop-effect should be so that the mouse-cursor can be updated by OLE.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDropTarget</span><span class="o">::</span><span class="n">DragEnter</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> 
+                                              <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span><span class="n">pdwEffect</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// does the dataobject contain data we want?
+</span>    <span class="n">m_fAllowDrop</span> <span class="o">=</span> <span class="n">QueryDataObject</span><span class="p">(</span><span class="n">grfKeyState</span><span class="p">,</span> <span class="n">pdwEffect</span><span class="p">,</span> <span class="n">pDataObject</span><span class="p">);</span>
+	
+    <span class="k">if</span><span class="p">(</span><span class="n">m_fAllowDrop</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// get the dropeffect based on keyboard state
+</span>        <span class="o">*</span><span class="n">pdwEffect</span> <span class="o">=</span> <span class="n">DropEffect</span><span class="p">(</span><span class="n">grfKeyState</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="o">*</span><span class="n">pdwEffect</span><span class="p">);</span>
+
+        <span class="n">SetFocus</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">);</span>
+        <span class="n">PositionCursor</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">pt</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="o">*</span><span class="n">pdwEffect</span> <span class="o">=</span> <span class="n">DROPEFFECT_NONE</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">return</span> <span class="n">S_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Apart from setting focus to the underlying window and positioning the EDIT caret on the nearest character under the mouse, the <code class="highlighter-rouge">DragEnter</code> function has been simplified by delegating the functionality to two internal helper routines:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">CDropTarget</span><span class="o">::</span><span class="n">QueryDataObject</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">FORMATETC</span> <span class="n">fmtetc</span> <span class="o">=</span> <span class="p">{</span> <span class="n">CF_TEXT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DVASPECT_CONTENT</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">TYMED_HGLOBAL</span> <span class="p">};</span>
+
+    <span class="c1">// does the data object support CF_TEXT using a HGLOBAL?
+</span>    <span class="k">return</span> <span class="n">pDataObject</span><span class="o">-&gt;</span><span class="n">QueryGetData</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fmtetc</span><span class="p">)</span> <span class="o">==</span> <span class="n">S_OK</span> <span class="o">?</span> <span class="nb">true</span> <span class="o">:</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">QueryDataObject</code> is a private member function which is used purely to inspect the supplied data object, and decide if it contains data that is meaningful to our drop-target. In our case, we only accept <code class="highlighter-rouge">CF_TEXT</code> data stored as a HGLOBAL, so this is what we ask for. A private member variable <code class="highlighter-rouge">m_fAllowDrop</code> is used to remember this decision.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DWORD</span> <span class="n">CDropTarget</span><span class="o">::</span><span class="n">DropEffect</span><span class="p">(</span><span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwAllowed</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">dwEffect</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// 1. check "pt" -&gt; do we allow a drop at the specified coordinates?
+</span>    <span class="c1">// 2. work out that the drop-effect should be based on grfKeyState	
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">grfKeyState</span> <span class="o">&amp;</span> <span class="n">MK_CONTROL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">dwEffect</span> <span class="o">=</span> <span class="n">dwAllowed</span> <span class="o">&amp;</span> <span class="n">DROPEFFECT_COPY</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">grfKeyState</span> <span class="o">&amp;</span> <span class="n">MK_SHIFT</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">dwEffect</span> <span class="o">=</span> <span class="n">dwAllowed</span> <span class="o">&amp;</span> <span class="n">DROPEFFECT_MOVE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 3. no key-modifiers were specified (or drop effect not allowed), so
+</span>    <span class="c1">// base the effect on those allowed by the dropsource
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">dwEffect</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dwAllowed</span> <span class="o">&amp;</span> <span class="n">DROPEFFECT_COPY</span><span class="p">)</span> <span class="n">dwEffect</span> <span class="o">=</span> <span class="n">DROPEFFECT_COPY</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dwAllowed</span> <span class="o">&amp;</span> <span class="n">DROPEFFECT_MOVE</span><span class="p">)</span> <span class="n">dwEffect</span> <span class="o">=</span> <span class="n">DROPEFFECT_MOVE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">dwEffect</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">DropEffect</code> helper function is used to compute the drop-effect based on the keyboard state and the effects allowed by the source.</p>
+
+<p>First of all the <code class="highlighter-rouge">grfKeyState</code> variable is checked to see if either the Control or Shift keys are being used. The standard OLE behaviours for these keys are that Control should force a <em>Copy</em> of data, and Shift should force a <em>Move</em> of data. If both are held down, the the data should be <em>Linked</em> (i.e. the source should make a shortcut to the target), but we don’t support this feature.</p>
+
+<p>The important thing to note is the use of the “bitwise-AND” operator when assigning the drop-effect to dwEffect:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dwEffect</span> <span class="o">=</span> <span class="n">dwAllowed</span> <span class="o">&amp;</span> <span class="n">DROPEFFECT_COPY</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The result of this assignment is simple - <code class="highlighter-rouge">dwEffect</code> will be assigned the value <code class="highlighter-rouge">DROPEFFECT_COPY</code>, but only if this value is present in the <code class="highlighter-rouge">dwAllowed</code> variable. This use of logic prevents us from forcing a drop-effect that is not allowed by the source.</p>
+
+<p>The next stage is to decide what to do if no keyboard modifiers are present - i.e. Control or Shift are not in use. In this case we simply inspect the drop-effects allowed by the source and choose (in order of priority) which one to use - in our implementation, we let <strong>data moves</strong> override <strong>data copies</strong>.</p>
+
+<h2 id="idroptargetdragover">IDropTarget::DragOver</h2>
+
+<p>The <code class="highlighter-rouge">DragOver</code> function will be called multiple times during the lifetime of a drag-drop operation. Therefore it is important for this function to be efficiently written. <code class="highlighter-rouge">DragOver</code> is called whenever the state of the keyboard modifiers change (i.e. shift/control etc), or when the mouse moves. It is the responsibilty of this function to indicate to OLE what the drop-effect will be based on the state of the keyboard and mouse position.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDropTarget</span><span class="o">::</span><span class="n">DragOver</span><span class="p">(</span><span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span> <span class="n">pdwEffect</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m_fAllowDrop</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">*</span><span class="n">pdwEffect</span> <span class="o">=</span> <span class="n">DropEffect</span><span class="p">(</span><span class="n">grfKeyState</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="o">*</span><span class="n">pdwEffect</span><span class="p">);</span>
+        <span class="n">PositionCursor</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">pt</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="o">*</span><span class="n">pdwEffect</span> <span class="o">=</span> <span class="n">DROPEFFECT_NONE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">S_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">DragOver</code> is very simple to write, because the logic is identical to that of <code class="highlighter-rouge">DragEnter</code>. We use the previously computed <code class="highlighter-rouge">m_fAllowDrop</code> and the <code class="highlighter-rouge">DropEffect</code> helper routine to return a drop-effect through the pdwEffect pointer.</p>
+
+<h2 id="idroptargetdragleave">IDropTarget::DragLeave</h2>
+
+<p>The <code class="highlighter-rouge">DragLeave</code> function is called whenever the mouse cursor is moved outside of our drop-target window, or the Escape key is pressed which cancels the drag-drop operation. It’s prototype (and implementation) is really simple:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDropTarget</span><span class="o">::</span><span class="n">DragLeave</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">S_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is the most basic way to write this function. The only reason this function exists is so that applications that make heavy use of graphical feedback effects get a chance to clean up once the mouse moves out of the window. For example, imagine the following scenario: whenever something is dragged over a drop-target, the DragEnter function is used to change the colour of the window-border. In this case, the <code class="highlighter-rouge">DragLeave</code> function would be used to restore the window-border.</p>
+
+<h2 id="idroptargetdrop">IDropTarget::Drop</h2>
+
+<p>The Drop function’s prototype is exactly the same as the DragEnter function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDropTarget</span><span class="o">::</span><span class="n">Drop</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="n">POINTL</span> <span class="n">pt</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span><span class="n">pdwEffect</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PositionCursor</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">pt</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">m_fAllowDrop</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">DropData</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">pDataObject</span><span class="p">);</span>
+        <span class="o">*</span><span class="n">pdwEffect</span> <span class="o">=</span> <span class="n">DropEffect</span><span class="p">(</span><span class="n">grfKeyState</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="o">*</span><span class="n">pdwEffect</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="o">*</span><span class="n">pdwEffect</span> <span class="o">=</span> <span class="n">DROPEFFECT_NONE</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">S_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This function is called when OLE has determined that the drag-drop will go ahead. We get the same interface pointer to the IDataObject that we received during <code class="highlighter-rouge">DragEnter</code>, which we can now retrieve data from to paste into our edit window.</p>
+
+<p>The <code class="highlighter-rouge">DropData</code> helper function is used to access the <code class="highlighter-rouge">CF_TEXT</code> data inside the dataobject and insert it into the edit control. This routine is purely academic and as we already know how to access a dataobject I won’t bother detailing it any further - just look at the sourcecode download if you are interested.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We’ve done it! It’s taken six tutorials to get to this stage, but it was necessary to break up the subject matter into managable chunks.</p>
+
+<p>So what have we accomplished?</p>
+
+<p>At this stage we know how to implement <code class="highlighter-rouge">IDataObject</code>, <code class="highlighter-rouge">IEnumFORMATETC</code>, <code class="highlighter-rouge">IDropTarget</code> and <code class="highlighter-rouge">IDropSource</code>, as well as access the Windows clipboard using the new OLE functions.</p>
+
+<p>There is still scope for further tutorials though. The next tutorial (or two) will look at dragging and dropping files (and filenames), and also using the IStream COM interface to stream file content between applications and the Windows Shell.</p>
+
+<p>As always, I’d like to hear any feedback you may have on this tutorial series. More feedback equals more tutorials, so stay tuned!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/win32/droptarget.zip">droptarget.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2004-06-17T00:00:00+00:00">June 17, 2004</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="drop-source.html" class="pagination--pager" title="Drop Source
+">Previous</a>
+    
+    
+      <a href="../neatpad.html" class="pagination--pager" title="Design &amp; Implementation of a Win32 Text Editor
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/drop-target by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:42 GMT -->
+</html>

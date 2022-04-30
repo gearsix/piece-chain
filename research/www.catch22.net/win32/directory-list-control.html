@@ -1,0 +1,617 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/directory-list-control by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Directory list control - Catch22</title>
+<meta name="description" content="Does anyone else miss the old style Windows 3.1 directory list boxes? I find the new Windows 95 directory tree view controls pretty cumbersome to navigate around. They display far too much information at any one time, and as a result it can be confusing to navigate around the control to locate a folder.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Directory list control">
+<meta property="og:url" content="directory-list-control.html">
+
+
+  <meta property="og:description" content="Does anyone else miss the old style Windows 3.1 directory list boxes? I find the new Windows 95 directory tree view controls pretty cumbersome to navigate around. They display far too much information at any one time, and as a result it can be confusing to navigate around the control to locate a folder.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-08-26T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="directory-list-control.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Directory list control</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dirlist.zip">dirlist.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Directory list control">
+    <meta itemprop="description" content="Does anyone else miss the old style Windows 3.1 directory list boxes? I find the new Windows 95 directory tree view controls pretty cumbersome to navigate around. They display far too much information at any one time, and as a result it can be confusing to navigate around the control to locate a folder.">
+    <meta itemprop="datePublished" content="August 26, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Directory list control
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Directory list control</h1-->
+<!--h3>A directory-picker list box</h3-->
+
+<p>Does anyone else miss the old style Windows 3.1 directory list boxes? I find the new Windows 95 directory tree view controls pretty cumbersome to navigate around. They display far too much information at any one time, and as a result it can be confusing to navigate around the control to locate a folder.</p>
+
+<p><img src="http://www.catch22.net/assets/img/dirlist06.gif" alt="" class="align-center" /></p>
+
+<p>The original style controls were declared obsolete because they didn’t do a very good job of displaying long file names. The beauty of them was though, that they displayed only the necessary information to describe to the user what the current directory was, and what sub-directories were available. If you look at the picture above, you can instantly tell that the current directory is <code class="highlighter-rouge">G:\WINNT\system32</code>, because of the intuitive use of a hierarchy which displays sub-directories at increasing levels of indentation. A subtle but effective way to communicate a complex idea.</p>
+
+<p>The directory list control that I have implemented solves the long filename problem by enabling the horizontal scrollbar in the control when necessary, i.e. when a filename becomes too big to display in the list without scrolling. Because the full source code is available, you can make the list control any size you wish as well, so you can make it big enough to display typical long filenames.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>Implementing a directory list control is pretty easy once you know how. The process can be broken down into two major steps:</p>
+
+<ul>
+  <li>Building the list control</li>
+  <li>Drawing the list control</li>
+</ul>
+
+<p>The key to the implementation is separating the logic needed to draw the list from the logic used to build the list contents. We are going to use the owner-draw facility provided by a list box control to customize the appearence of the list. Owner-draw operates on an item-based manner. So, we need to know how to draw each item in the list, without having to work out the relationship between items each time we have to draw them.</p>
+
+<p>Look the image of a directory list once more. You will see that each item in the list posesses two properties that makes it unique. Each item’s folder icon is in one of two states: either <strong>opened</strong> (1) or <strong>closed</strong> (0). In addition, each item has a hierarchy in the list. The first item has a “depth” of 0, the second item a depth of 1, and so on.</p>
+
+<p><img src="http://www.catch22.net/assets/img/dirlist01.gif" alt="" /> <img src="http://www.catch22.net/assets/img/dirlist05.gif" alt="" class="align-center" /></p>
+
+<p>The image on the right identifies the two properties that each list item requires. The first number is the item depth, or hierarchy level. The second value is the state of the folder image. You should be able to see the relationship between the item properties and what they represent.</p>
+
+<p>You also should notice how the directory components appear in the list. The actual directory that is displayed (in this case <code class="highlighter-rouge">G:\WINNT\system32</code>) is split into its component directory names (“<code class="highlighter-rouge">G:\</code>”, “<code class="highlighter-rouge">WINNT</code>” and “<code class="highlighter-rouge">system32</code>”). Each component uses the “opened” icon. Each component also has an increasing depth (starting with 0).</p>
+
+<p>The subdirectories under <code class="highlighter-rouge">G:\WINNT\system32</code> always appear after the “current directory”. They all have the same depth, or hierarchy. In addition, all sub-directories use the “closed” icon to indicate that they havn’t been opened yet.</p>
+
+<h2 id="associating-properties-with-each-list-item">Associating properties with each list item</h2>
+
+<p>Now that we know we need two properties per list item, we need to set these two properties somehow. There is an easy solution: we will use the <code class="highlighter-rouge">LB_SETITEMDATA</code> message to set the 32bit integer value that each list item has. Because we need to set two values, we can use the low 16bits to set one value, and the high 16bits to set the second value. The following function associates two properties with one list item.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">SetItemState</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndList</span><span class="p">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="kt">int</span> <span class="n">state</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">LB_SETITEMDATA</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">MAKELONG</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">state</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is a simple way to associate value(s) with a list item. However, if you needed to associate more complicated data with a list item then the best solution would be to allocate a structure containing the properties. You would then set the item data to be a pointer to one of these structures. Our simple solution is fine for this purpose however.</p>
+
+<h2 id="building-the-directory-list-control">Building the directory list control</h2>
+
+<p>The first step is to fill the list box with the component names of the directory that you want to browse. For example, assuming that you want to browse the <code class="highlighter-rouge">G:\WINNT\system32</code> directory:</p>
+
+<ol>
+  <li>First, the components that make up the path “G:\WINNT\system32” must be added to the start of the list. So, the strings “<code class="highlighter-rouge">G:\</code>”, “<code class="highlighter-rouge">WINNT</code>” and “<code class="highlighter-rouge">system32</code>” are added first of all. These strings are added with the “opened” icon state.</li>
+  <li>Second, any sub-directories under the “<code class="highlighter-rouge">G:\WINNT\system32</code>” are added after the path components. These sub directory names can be obtained using the <code class="highlighter-rouge">FindFirstFile</code> / <code class="highlighter-rouge">FindNextFile</code> API calls. Every name is added with the “closed” icon state, and all with a constant depth.</li>
+</ol>
+
+<p>After these two steps have been performed, the list-box will look something like this:</p>
+
+<p><img src="http://www.catch22.net/assets/img/dirlist04.gif" alt="" class="align-center" /></p>
+
+<p>Here is an example of what the code might look like to perform this initial step.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">DirList_AddItem</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndList</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">szSubDir</span><span class="p">,</span> <span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="kt">int</span> <span class="n">state</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">idx</span><span class="p">;</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">LB_INSERTSTRING</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="n">szSubDir</span><span class="p">);</span>
+    <span class="n">SetItemState</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">state</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+// This function adds the names of all sub-directories
+// under the path specified by szPath, into the list identified
+// by hwndList
+//
+</span><span class="kt">void</span> <span class="nf">DirList_AddSubDirs</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndList</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">szPath</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HANDLE</span> <span class="n">hFind</span><span class="p">;</span>
+    <span class="n">WIN32_FIND_DATA</span> <span class="n">win32fd</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">szSearchPath</span><span class="p">[</span><span class="n">_MAX_PATH</span><span class="p">];</span>
+    
+    <span class="n">lstrcpy</span><span class="p">(</span><span class="n">szSearchPath</span><span class="p">,</span> <span class="n">szPath</span><span class="p">);</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">szPath</span><span class="p">[</span><span class="n">lstrlen</span><span class="p">(</span><span class="n">szPath</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'\\'</span><span class="p">)</span>
+        <span class="n">lstrcat</span><span class="p">(</span><span class="n">szSearchPath</span><span class="p">,</span> <span class="s">"</span><span class="se">\\</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="n">lstrcat</span><span class="p">(</span><span class="n">szSearchPath</span><span class="p">,</span> <span class="s">"*.*"</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">((</span><span class="n">hFind</span> <span class="o">=</span> <span class="n">FindFirstFile</span><span class="p">(</span><span class="n">szSearchPath</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">win32fd</span><span class="p">))</span> <span class="o">==</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">)</span> 
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">do</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">win32fd</span><span class="p">.</span><span class="n">cFileName</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'.'</span> <span class="o">&amp;&amp;</span> 
+          <span class="p">(</span><span class="n">win32fd</span><span class="p">.</span><span class="n">dwFileAttributes</span> <span class="o">&amp;</span> <span class="n">FILE_ATTRIBUTE_DIRECTORY</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
+         <span class="o">!</span><span class="p">(</span><span class="n">win32fd</span><span class="p">.</span><span class="n">dwFileAttributes</span> <span class="o">&amp;</span> <span class="n">FILE_ATTRIBUTE_HIDDEN</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">DirList_AddItem</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">win32fd</span><span class="p">.</span><span class="n">cFileName</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">FOLDER_CLOSED</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">FindNextFile</span><span class="p">(</span><span class="n">hFind</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">win32fd</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">FindClose</span><span class="p">(</span><span class="n">hFind</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+// This function fills the specified list box control
+// with the specified path name
+//
+</span><span class="n">BOOL</span> <span class="nf">DirList_SetPath</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndList</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">szPath</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">szFullPath</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="n">szText</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">items</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="o">*</span><span class="n">szName</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">szSep</span> <span class="o">=</span> <span class="n">szFullPath</span><span class="p">;</span>
+
+    <span class="n">GetFullPathName</span><span class="p">(</span><span class="n">szPath</span><span class="p">,</span> <span class="n">MAX_PATH</span><span class="p">,</span> <span class="n">szFullPath</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">szName</span><span class="p">);</span>
+    <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">LB_RESETCONTENT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">szSep</span> <span class="o">=</span> <span class="n">strchr</span><span class="p">(</span><span class="n">szSep</span><span class="p">,</span> <span class="sc">'\\'</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">szSep</span><span class="p">)</span> <span class="n">lstrcpy</span><span class="p">(</span><span class="n">szText</span><span class="p">,</span> <span class="n">szFullPath</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">lstrcpyn</span><span class="p">(</span><span class="n">szText</span><span class="p">,</span> <span class="n">szFullPath</span><span class="p">,</span> <span class="n">szSep</span><span class="o">-</span><span class="n">szFullPath</span><span class="o">+</span><span class="mi">2</span><span class="p">);</span>
+
+    <span class="n">DirList_AddItem</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">items</span><span class="o">++</span><span class="p">,</span> <span class="n">FOLDER_OPENED</span><span class="p">);</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">szSep</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="p">(</span><span class="n">szSep</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">szOld</span> <span class="o">=</span> <span class="n">szSep</span><span class="p">;</span>
+        <span class="n">szSep</span> <span class="o">=</span> <span class="n">strchr</span><span class="p">(</span><span class="n">szSep</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="sc">'\\'</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">szSep</span><span class="p">)</span> <span class="n">lstrcpy</span><span class="p">(</span><span class="n">szText</span><span class="p">,</span> <span class="n">szOld</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">lstrcpyn</span><span class="p">(</span><span class="n">szText</span><span class="p">,</span> <span class="n">szOld</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">szSep</span><span class="o">-</span><span class="n">szOld</span><span class="p">);</span>
+
+        <span class="n">DirList_AddItem</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">items</span><span class="o">++</span><span class="p">,</span> <span class="n">FOLDER_OPENED</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//Add the sub-directories
+</span>    <span class="n">DirList_AddSubDirs</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">szFullPath</span><span class="p">,</span> <span class="n">items</span><span class="p">);</span>
+
+    <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">LB_SETCURSEL</span><span class="p">,</span> <span class="n">items</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="drawing-the-list-control">Drawing the list control</h2>
+
+<p>We are going to use Owner-draw to display this directory list. To enable owner-draw for a list-box, we have to set the <code class="highlighter-rouge">LB_OWNERDRAWFIXED</code> style. Once this style is set, the parent of the list control will receive a <code class="highlighter-rouge">WM_DRAWITEM</code> message whenever an individual item needs to be painted.</p>
+
+<p>The only thing left to do is obtain a couple of images for the folder states. The best place to find these is inside the System Image List. This image list is just a standard <code class="highlighter-rouge">HIMAGELIST</code>, as found in the common controls library. We get a handle to the system image list using the <code class="highlighter-rouge">ShGetFileInfo</code> function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SHFILEINFO</span> <span class="n">shfi</span><span class="p">;</span>
+
+<span class="n">HIMAGELIST</span> <span class="n">hSysImgList</span><span class="p">;</span>
+
+<span class="c1">//retrieve the index of the icon in the system image list
+</span><span class="n">hSysImgList</span> <span class="o">=</span> <span class="p">(</span><span class="n">HIMAGELIST</span><span class="p">)</span><span class="n">SHGetFileInfo</span><span class="p">(</span><span class="s">"C:"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">shfi</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">SHFILEINFO</span><span class="p">),</span> 
+                                          <span class="n">SHGFI_SMALLICON</span> <span class="o">|</span> <span class="n">SHGFI_SYSICONINDEX</span> <span class="o">|</span> <span class="n">SHGFI_ICON</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The advantage of the system image list is two-fold. Firstly, the list is made up of icon images. This is good because it is easy to draw icons with a transparent back-ground. The second advantage is that the folder images will look correct on whatever version of Windows that you run on.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">DirListDraw</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uCtrlId</span><span class="p">,</span> <span class="n">DRAWITEMSTRUCT</span> <span class="o">*</span><span class="n">dis</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwndCombo</span> <span class="o">=</span> <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">uCtrlId</span><span class="p">);</span>
+    <span class="kt">char</span> <span class="n">szText</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">idx</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nState</span><span class="p">,</span> <span class="n">nLevel</span><span class="p">;</span>
+    
+    <span class="k">switch</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemAction</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">ODA_FOCUS</span><span class="p">:</span>
+        
+        <span class="c1">//Windows 2000 doesn't display a control's focus in
+</span>        <span class="c1">//a dialog box until the ALT key is pressed.
+</span>        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span> <span class="o">&amp;</span> <span class="n">ODS_NOFOCUSRECT</span><span class="p">))</span>
+            <span class="n">DrawFocusRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">);</span>
+        
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">ODA_SELECT</span><span class="p">:</span>
+    <span class="k">case</span> <span class="n">ODA_DRAWENTIRE</span><span class="p">:</span>
+        <span class="c1">// get the text string to display, and the item state.
+</span>        <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">,</span> <span class="n">LB_GETTEXT</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemID</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">szText</span><span class="p">);</span>
+        <span class="n">GetItemState</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemID</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nLevel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nState</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span> <span class="o">&amp;</span> <span class="n">ODS_SELECTED</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHTTEXT</span><span class="p">));</span>
+            <span class="n">SetBkColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHT</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOWTEXT</span><span class="p">));</span>
+            <span class="n">SetBkColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOW</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="c1">//draw the item text first of all. The ExtTextOut function also
+</span>        <span class="c1">//lets us draw a rectangle under the text, so we use this facility
+</span>        <span class="c1">//to draw the whole line at once.
+</span>        <span class="n">ExtTextOut</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> 
+            <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">nBitmapXSpace</span> <span class="o">+</span> <span class="n">nBitmapWidth</span> <span class="o">+</span> <span class="n">nLevel</span> <span class="o">*</span> <span class="n">CX_OFFSET</span><span class="p">,</span> 
+            <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> 
+            <span class="n">ETO_OPAQUE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">szText</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">nState</span> <span class="o">==</span> <span class="n">FOLDER_OPENED</span> <span class="o">?</span> <span class="n">nImgFolderOpened</span> <span class="o">:</span> <span class="n">nImgFolderClosed</span><span class="p">;</span>
+
+        <span class="c1">//draw the folder image, using an icon from an image list.
+</span>        <span class="n">ImageList_Draw</span><span class="p">(</span><span class="n">hDirImgList</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> 
+            <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">nLevel</span> <span class="o">*</span> <span class="n">CX_OFFSET</span><span class="p">,</span> 
+            <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">nBitmapYOff</span><span class="p">,</span> 
+            <span class="n">ILD_TRANSPARENT</span><span class="p">);</span>
+
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="centering-the-folder-image">Centering the folder image</h2>
+
+<p>If you actually looked at the source above, you will see that there is a variable called <code class="highlighter-rouge">nBitmapYOff</code>. This variable is the distance in pixels that the folder image needs to be offset by so that it is centered in the list item. When a large system font is being used, the text of a list box will be much larger than the height of the folder bitmap, so the folder image is centered to create a more pleasing effect. A simple formula is used to calculate the <code class="highlighter-rouge">nBitmapYOff</code> variable.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nBitmapYOff</span> <span class="o">=</span> <span class="p">(</span><span class="n">nLineHeight</span> <span class="o">-</span> <span class="p">(</span><span class="n">nBitmapHeight</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">nLineHeight</code> value is the size in pixels of each line in the list. This is calculated whenever a <code class="highlighter-rouge">WM_MEASUREITEM</code> message is received. This message instructs the parent of the directory list to set the size in pixels of each item in the list. The code below calculates this amount by taking the maximum value between the folder bitmap height and the height of a line of text.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEXTMETRIC</span> <span class="n">tm</span><span class="p">;</span>
+<span class="n">HANDLE</span> <span class="n">hOldFont</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="n">HDC</span> <span class="n">hdc</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">nTextHeight</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">nLineHeight</span><span class="p">;</span>
+
+<span class="n">hdc</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">);</span>
+<span class="n">hOldFont</span> <span class="o">=</span> <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hFont</span><span class="p">);</span>
+
+<span class="n">GetTextMetrics</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tm</span><span class="p">);</span>
+<span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hOldFont</span><span class="p">);</span>
+
+<span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">,</span> <span class="n">hdc</span><span class="p">);</span>
+
+<span class="n">nTextHeight</span> <span class="o">=</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmHeight</span> <span class="o">+</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmInternalLeading</span><span class="p">;</span>
+<span class="n">nLineHeight</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">nBitmapHeight</span><span class="p">,</span> <span class="n">nTextHeight</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="adding-horizontal-scrollbar-support">Adding horizontal scrollbar support</h2>
+
+<p>To make sure that extra-long directory names are still visible in our list, we need to enable the horizontal scrollbar on the list control. There is a list-box message called <code class="highlighter-rouge">LB_SETHORIZONTALEXTENT</code> which is used to set the amount by which the list-box scrolls horizontally. Without this message, no horizontal scrollbar will be shown.</p>
+
+<p><code class="highlighter-rouge">LB_SETHORIZONTALEXTENT</code> requires one parameter - the size in pixels of the area to scroll horizontally. Therefore we need to calculate the width of the longest entry in the directory list, and use this value when we send the message.</p>
+
+<p>The easiest way to calculate the length of the longest line is to use a seperate function, which loops through all of the items in the list. The length of each line is calculated using the <code class="highlighter-rouge">GetTextExtentPoint32</code> function. Each item’s hierarchy in the list is taken into account, and the appropriate distance added to the line length.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">DirList_UpdateWidth</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndList</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HANDLE</span> <span class="n">hOld</span><span class="p">;</span>
+    <span class="n">HDC</span> <span class="n">hdc</span><span class="p">;</span> 
+    <span class="n">HFONT</span> <span class="n">hFont</span><span class="p">;</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nLevel</span><span class="p">,</span> <span class="n">nState</span><span class="p">;</span>
+
+    <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">(</span><span class="n">hwndList</span><span class="p">);</span>
+    <span class="n">hFont</span> <span class="o">=</span> <span class="p">(</span><span class="n">HFONT</span><span class="p">)</span><span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">WM_GETFONT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">hOld</span> <span class="o">=</span> <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hFont</span><span class="p">);</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">LB_GETCOUNT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">// loop over each line in the directory list
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">SIZE</span> <span class="n">sz</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">ach</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+
+        <span class="c1">// retrieve this item's text
+</span>        <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">LB_GETTEXT</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">ach</span><span class="p">);</span>
+        <span class="n">GetItemState</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nLevel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nState</span><span class="p">);</span>
+
+        <span class="c1">// calculate the size of the text
+</span>        <span class="n">GetTextExtentPoint32</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">ach</span><span class="p">,</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">ach</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">sz</span><span class="p">);</span>
+
+        <span class="c1">// add on the size of the folder image, and the amount
+</span>        <span class="c1">// that this item is indented by
+</span>        <span class="n">sz</span><span class="p">.</span><span class="n">cx</span> <span class="o">+=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXBORDER</span><span class="p">)</span> <span class="o">+</span> 
+            <span class="n">nBitmapXSpace</span> <span class="o">+</span> <span class="n">nBitmapWidth</span> <span class="o">+</span> <span class="n">nLevel</span> <span class="o">*</span> <span class="n">CX_OFFSET</span><span class="p">;</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">sz</span><span class="p">.</span><span class="n">cx</span> <span class="o">&gt;</span> <span class="n">width</span><span class="p">)</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">sz</span><span class="p">.</span><span class="n">cx</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">GetClientRect</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">// if the horizontal scrollbar is not needed, the hide it
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">width</span> <span class="o">&lt;</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">)</span> <span class="n">ShowScrollBar</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">SB_HORZ</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">ShowScrollBar</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">SB_HORZ</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+
+    <span class="c1">// set the horizontal scroll amount
+</span>    <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">LB_SETHORIZONTALEXTENT</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hOld</span><span class="p">);</span>
+    <span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwndList</span><span class="p">,</span> <span class="n">hdc</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s basically all that needs to be done to implement a directory list control. There are a few more little bits and pieces to get it to operate correctly. The supplied source code provides a fully implemented directory list, so you can look there to see the other details.</p>
+
+<p>The technique presented here can also be used to draw pretty almost any list-based hierarchy. Just remember to separate the implementation into two stages: building the list and drawing the list. If you stick to this method it is much easier to draw hierarchies in this way.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dirlist.zip">dirlist.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-08-26T00:00:00+00:00">August 26, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="drive-list-control.html" class="pagination--pager" title="Drive-list control
+">Previous</a>
+    
+    
+      <a href="memory-techniques-part-2.html" class="pagination--pager" title="Memory Techniques - Part 2
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/directory-list-control by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

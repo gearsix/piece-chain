@@ -1,0 +1,1219 @@
+<html>
+<title>The Craft of Text Editing: Chapter 9</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-9.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 9: Command Set Design</h1>
+
+<blockquote>
+&quot;And hast thou slain the Jabberwock?<br>
+&nbsp;&nbsp;Come to my arms, my beamish boy!<br>
+</blockquote>
+
+<p>Previous chapters have discussed the external constraints on
+implementations and the division of the editor into more manageable
+pieces.  You now understand how to build an editor.  But which editor
+should you build?  This chapter discusses various issues involved with
+designing the editor's command set.</p>
+
+<p>Your editor implementation will (you hope) be used by many people.
+Regardless of the expertise of these people, there are some design
+principles that should be followed.  A good design incorporates these
+qualities:</p>
+
+<ul>
+<li>responsiveness
+<li>consistency
+<li>permissiveness
+<li>progress
+<li>simplicity
+<li>uniformity
+<li>extensibility
+</ul>
+
+<p>Each of these qualities will be discussed in turn.</p>
+
+<h2>Responsiveness</h2>
+
+<p>Responsiveness means that each action taken by the user is handled
+and confirmed immediately.  In other words, the application responds
+well to the user.  This good response allows skilled users to work
+fast.</p>
+
+<p>A different name for responsiveness is <i>visible effect</i>, which
+is to say that every action taken by the user has a visible effect on
+the display.  This effect might be simple cursor motion, a change in
+the text being shown, or a message.  Even if only an internal state
+variable is changed, that state variable should have an indicator on
+the display.  (Ringing the display's bell is considered to be a
+&quot;visible&quot; effect for the purposes of this section.)  By
+following this principle, the user is never in doubt whether the
+application is keeping up with his or her typing or has received a
+command: there is consequently never a need to issue a command because
+of doubt or uncertainty.</p>
+
+<p>On some displays, the desire for a visible effect can conflict with
+other design goals such as minimizing display flicker.  One solution
+to this problem is to delay the display of visible effect until the
+user stops typing for a few seconds.  In this way, as long as a user
+is typing, he or she is presumed to know what he or she is doing and
+so the feedback is less important.  However, if the user should stop
+typing, the application would quickly show the current state.</p>
+
+<p>An important ramification of responsiveness is good error-checking.
+User input should be checked as soon as logically possible after it
+has been entered.  If the input passes the check, some sort of
+confirmation is given (<i>e.g.</i>, a message or beep).  If the input
+fails the check, an error indicator is displayed.  As a general rule,
+no incorrect input should be accepted, unless it is infeasible to
+perform the check.  Different checks will naturally be performed at
+different times.  For example, if the user is being asked to enter a
+number in a specified range, the individual characters can be checked
+as they are typed to ensure that they are digits.  The number as a
+whole cannot be range-checked until the user has indicated that it is
+complete (say by pressing the Return key).</p>
+
+<h2>Consistency</h2>
+
+<p>Consistency means that all parts of the application work the same
+way.  This topic is covered in more detail in the section on
+&quot;modes.&quot;</p>
+
+<h2>Permissiveness</h2>
+
+<p>Permissiveness means that the user is in control of the application
+and not vice versa.  While this might sound tautological at first, it
+is a principle that is often honored only in the breach.  Think of the
+applications that you have used that lead you through a step-by-step
+process, with only limited choices at each step.  Often, these
+applications do not allow you to review or change earlier decisions
+short of aborting the whole application and starting over from
+scratch.</p>
+
+<p>Writing a permissive application is both easier and harder than
+writing a non-permissive version of the same one. It is harder because
+the implementation has to be able to handle any request at any time.
+(An &quot;event - message - object&quot; design model makes it easy to
+handle such unpredictable requests.)  If some process is multi-step,
+the application must have interlocks to prohibit processing the steps
+out of order (and of course these interlocks should have their state
+variables displayed).  It is easier because you as a designer do not
+have to anticipate all possible paths through the application and
+decide in advance which ones are reasonable.</p>
+
+<h2>Progress</h2>
+
+<p>Progress means that each command should meet some part of the
+user's goals.  An example of a command that does not make progess
+would be a command to &quot;show the current line.&quot; This command
+does not contribute to making any of the changes that the user
+(presumably) desires: it just wastes the user's time and effort.  It
+is the elimination of such commands that makes screen-oriented text
+editors such an improvement over the older ones.</p>
+
+<p>In general, there should be no commands for the user to give that
+merely tell the application to do something that it has enough
+information to figure out on its own.  For example, if the user moves
+to the end of the buffer, the application should display that part of
+the buffer.  (Actually, as stated this principle is a bit harsh.  From
+time to time, the application will not be able to guess correctly and
+it is acceptable to have a way for the user to take control.  For
+example, sometimes the user wants to position the window to include
+two areas of particular interest.  The application in general cannot
+detect this case.  But if that happens often, there is a design
+problem.)</p>
+
+<h2>Simplicity</h2>
+
+<p>Simplicity goes under the sobriquet of &quot;keep simple things
+simple.&quot; Complicated things can be complicated (or simple if that
+works out), but simple things should never be complicated.</p>
+
+<p>This principle means that the basic editing operations (insert,
+delete, move) should be as conceptually simple as possible.  For
+example, inserting a character is a conceptually simple operation.
+The simplest way of expressing that operation is to just type that
+character.  Having input/edit (or &quot;input/overtype&quot; or
+&quot;insert/replace&quot;) modes is an example of making a simple
+thing complicated.  With the input/edit mode, inserting a character
+becomes &quot;am I in insert mode? No. Then type the 'go into insert
+mode' command, type the character, and maybe type the 'leave insert
+mode' command.&quot; Hardly simple.</p>
+
+<p>This principle is closely related to efficiency.  It is natural to
+think that the command set that requires the fewest user operations is
+the best one to use.  Unfortunately, that natural thought does not
+remain valid when taken to extremes.  On an extreme basis, the set of
+editing operations could be Huffman encoded into a command set.  While
+the resulting command set would be optimally efficient, it would
+probably not be usable.  For example, the command to insert the string
+&quot;the &quot; might be ^X 7.  On the other hand, simple things tend
+to be efficient if for no other reason than that they don't have the
+baggage of being complicated.  Ideally, the most-often used commands
+should be the shortest.</p>
+
+<h2>Uniformity</h2>
+
+<p>Uniformity also goes under the names &quot;regularity,&quot;
+&quot;predictability,&quot; and &quot;orthogonality.&quot; Basically,
+a command set is uniform if, when a user knows some part of it, he or
+she can predict the unknown parts.  Another way of looking at it is
+that the command set fits into a pattern.</p>
+
+<p>This principle is important in that the user is freed from learning
+each command separately.  Instead, the user learns some of the
+commands and a set of rules for generating the rest.  For example,
+here are the basic Emacs character commands:</p>
+
+<dl compact="compact">
+<dt><b>^F</b></dt><dd>move forward character</dd>
+<dt><b>^B</b></dt><dd>move backward character</dd>
+<dt><b>^D</b></dt><dd>delete the following character</dd>
+<dt><b>^H</b></dt><dd>delete the preceding character</dd>
+</dl>
+
+<p>(Keep in mind that ^H is also the Back Space key.) Here are the
+word commands:</p>
+
+<dl compact="compact">
+<dt><b>^[ F</b></dt><dd>move forward word</dd>
+<dt><b>^[ B</b></dt><dd>move backward word</dd>
+<dt><b>^[ D</b></dt><dd>delete the following word</dd>
+<dt><b>^[ ^H</b></dt><dd>delete the preceding word</dd>
+</dl>
+
+<p>A user learns these commands by learning this basic command
+set:</p>
+
+<dl compact="compact">
+<dt><b>F</b></dt><dd>move forward ...</dd>
+<dt><b>B</b></dt><dd>move backward ...</dd>
+<dt><b>D</b></dt><dd>delete the following ...</dd>
+<dt><b>^H</b></dt><dd>delete the preceding ...</dd>
+</dl>
+
+<p>and these rules:</p>
+
+<ul>
+<li>control-shifted means &quot;character&quot;
+<li>^[-prefixed means &quot;word&quot;
+</ul>
+
+<p>It is rare that a command set will ever be completely uniform.
+However, it is important to take advantage of uniformity where
+possible.</p>
+
+<h2>Extensibility</h2>
+
+<p>Extensibility means the ability to accommodate changes.  This
+principle has a number of aspects.  First, changes can be accommodated
+by designing in &quot;holes&quot; or &quot;gaps&quot; where users can
+install commands of their own.  Second, the command set can be made
+rich (&quot;large&quot;) as the larger number of commands provides
+more places for commands to be placed.  Third, a uniform command set
+helps extensibility.  For example, if the command set has a set of
+&quot;sentence&quot; operations (move by, delete by), these can be
+converted as a set into &quot;statement&quot; operations for use in
+programming languages.</p>
+
+<h2>Modes</h2>
+
+<p>This chapter uses the word &quot;mode&quot; in a different way from
+the command-set-oriented use of &quot;mode&quot; from earlier
+chapters.  It is unfortunate that the same word is used by the
+industry in different ways.</p>
+
+<p>What are &quot;modes,&quot; and why should you care about them?
+Simply put, a design has a mode when an end user has to do an
+&quot;unnecessary&quot; action in order to do the desired action.  You
+should care about modes because having modes can make a program harder
+to use.  As a programmer, you are used to modes and deal with them
+constantly without conscious thought.  Your end users, however, may be
+confused by the presence of modes.  Their thinking might go something
+like &quot;I pressed the 'f' key (at command level) and it showed me
+an 'f', so why does pressing the 'f' key here move me forward by a
+screen?&quot;</p>
+
+<p>The definition just presented is a little abstract, so an example
+is in order.  A piano is a device that has (almost) no modes.  If you
+want a piano to make a sound, you just press a key.  Each key is
+independent: it produces the same note regardless of which other keys
+were pressed before.</p>
+
+<p>A piano really does have modes.  You select the modes with the foot
+pedals.  It is easy to learn to overlap the key presses with the foot
+pedal ups and downs, so the modes, although present, do not interfere
+with playing the piano.  Moreover, the modes have a great deal of
+overlap with the basic keys.  In a manner of speaking, the piano's
+&quot;command set&quot; is quite orthogonal.</p>
+
+<p>A typical scientific calculator has many modes.  An example of such
+a mode is the degrees/radians selection.  If you are in degrees mode
+and want to compute the sine of an angle in radians, you must first
+switch to radians mode and then compute the sine.  Switching to
+radians is not part of your calculation.  Rather, it is something that
+you have to do in order to perform your calculation.  Hence, the
+calculator has a mode.  A similar -- but less useful -- mode in a text
+editor would be an insert/overwrite (or replace) mode.</p>
+
+<p>These examples are at the extremes of the range.  The piano is an
+almost modeless device, while a calculator has many modes.</p>
+
+<p>What does all this have to do with designing an editor's command
+set?  These things:</p>
+
+<ul>
+<li>you should have as few modes as possible;
+<li>modes should be aligned with the activity;
+<li>if you must have a mode, make it visible.
+</ul>
+
+<p>Adding keys (or a mouse) can reduce the number of modes.  For
+example, having both &quot;sine in degrees&quot; and &quot;sine in
+radians&quot; keys would eliminate the degrees/radians mode.  However,
+there is an upper limit to the number of keys that you can put on a
+user input device, be it a calculator or a keyboard.</p>
+
+<p>Rearranging the modes so that they coincide with natural breaks in
+the activity also reduces confusion.  For example, it is not too
+unreasonable to have a &quot;text editor mode&quot; and a &quot;spread
+sheet&quot; mode, where the two modes correspond to completely
+different applications.  Switching modes is less confusing because the
+end user is mentally changing gears at the same time.  On the other
+hand, with modern computers' ability to rapidly switch between
+different application programs, it can be very valuable to have the
+different applications present the same interface to the end user:
+doing anything else is often not in the end-users' best interests.  Of
+course, if you did provide additional functions within the text
+editor, the differences in the modes whould be minimized.</p>
+
+<p>Returning to the example of an insert/edit mode for an editor, we
+can see how that mode is not aligned with a change in activity.  To
+the user, &quot;editing&quot; is a single activity that comprises both
+deletion and insertion.  Changing between insert and edit modes is
+thus a mode change with no accompanying activity change.</p>
+
+<p>Some text editors offer an insert/replace mode which affects how
+newly typed text affects the existing text.  In insert mode, newly
+typed text is inserted.  In replace mode, each newly typed character
+usually replaces an existing character.  However, in many cases users
+do not want to replace characters: they want to replace words,
+sentences, or other higher-level objects.  In these cases, simple
+replacement is not sufficient since it is unlikely that the new text
+is exactly the same length as the old.  The correct effect can be
+readily achieved when insert mode is combined with an operation that
+defines a region or selection that identifies the old text.</p>
+
+<p>Modes should be made visible.  For example, in older calculators,
+the degrees/radians mode was hidden.  New calculators have an
+indicator on the display that shows the current mode.  Although the
+mode is still there, the indicator reminds the operator that the mode
+exists and can even guide the operator's next input.</p>
+
+<p>The best way to make the modes visible is to show all state
+information on the display.  In this way, it is <i>possible</i> for a
+knowledgeable end user to predict accurately the effect of the next
+command by examining the current display.  Of course, not all end
+users are &quot;knowledgeable,&quot; but how could a
+<i>non</i>-knowledgeable user ever succeed if a knowledgeable one
+cannot?</p>
+
+<p>Note how the reasons for making modes visible dovetail with the
+reasons mentioned earlier for commands having visible effects.</p>
+
+<h2>Use of Language</h2>
+
+<p>DO NOT PRODUCE OUTPUT IN ALL UPPER CASE.  UPPER CASE IS MORE
+DIFFICULT TO READ THAN lower case.  Proper capitalization and
+punctuation are also important.  Would you rather read:</p>
+
+<pre>
+	ENTER CITY STATE AND ZIP CODE:
+</pre>
+
+<p>or:</p>
+
+<pre>
+	Enter city, state, and zip code:
+</pre>
+
+<p>Use full words and phrases: do not abbreviate.  Displays are large
+enough and output fast enough so that abbreviations are no longer
+required.</p>
+
+<p>Prompts should have the form <i>verb object</i> (at least in
+English). A prompt of:</p>
+
+<pre>
+	Username:
+</pre>
+
+<p>doesn't tell the user what to do.  However, a prompt of:</p>
+
+<pre>
+	Enter your username:
+</pre>
+
+<p>or even:</p>
+
+<pre>
+	Please enter your username:
+</pre>
+
+<p>is reasonably unambiguous.  In the first case, a user is apt to
+feel confused and unsure of what to do next.  (What about a username?
+Should he or she go get one?  Whose username?)  In the second case,
+that confusion vanishes.</p>
+
+<p>Error messages should state <i>whether</i> the operation was
+performed, <i>why</i> something went wrong, and <i>what</i> to do
+instead.  Instead of:</p>
+
+<pre>
+	File write error.
+</pre>
+
+<p>or (gasp!):</p>
+
+<pre>
+	SIO-FI-ERR-12
+</pre>
+
+<p>this:</p>
+
+<pre>
+	The file was not written because the disk was full.  Clear space
+	on the existing disk and try again or write the file to a
+	different disk.
+</pre>
+
+<p>Longer, but much better.</p>
+
+<p>The application should do what computers do best: arithmetic,
+checking, recording.  Users should do what they do best: direct the
+application to solve a problem.  Don't make the user count things or
+keep track of what was done in the past.</p>
+
+<p>Be generous in what you accept.  If both Delete and Back Space are
+used for erasing a character, accept both.  Unless there is a good
+reason otherwise, don't distinguish between upper and lower-case
+input.  In general, if there is a possible way to unambiguously
+determine what the user wants, accept it.</p>
+
+<h2>Guideline Summary</h2>
+
+<p>This section presents a brief summary of the guidelines already
+presented.</p>
+
+<h3>Overall</h3>
+
+<ul>
+<li>Responsiveness: reflect all input immediately to the display.
+
+<li>Consistency: the same input should always have the same result.
+
+<li>Permissiveness: the user controls the application.
+
+<li>Progress: the user input should achieve the user's goal, not be
+for the application's benefit.
+
+<li>Simplicity: keep simple things simple.
+
+<li>Uniformity: make the commands easy to learn and to predict.
+
+<li>Extensibility: plan for growth and change.
+</ul>
+
+<h3>Modes</h3>
+
+<ul>
+<li>Avoid modes where possible.
+
+<li>Where modes cannot be avoided, align mode changes with activity
+changes.
+
+<li>Remind the user what mode(s) are in effect.
+</ul>
+
+<h3>Use of Language</h3>
+
+<ul>
+<li>Use mixed case, proper capitalization, and punctuation.
+
+<li>Use full words and phrases: do not abbreviate.
+
+<li>Prompts should tell the user what to do.
+
+<li>Use full error messages.
+
+<li>Have the program do what computers do best.
+
+<li>Be generous in what you accept.
+</ul>
+
+<h2>Structure Editors</h2>
+
+<p>One idea that keeps recurring is that of a &quot;structure
+editor.&quot; In general, a structure editor limits editing to valid
+transformations on the object being edited.  They are often used as
+programming language editors.  In those cases, there may be a command
+to &quot;insert an `if' statement.&quot; The user then sees something
+like this:</p>
+
+<pre>
+	if &lt;#&gt; then &lt;&gt;
+	else &lt;&gt;
+</pre>
+
+<p>(This example does not use the C language.  In general, people
+don't do structure editors for the C language.)  The point is
+positioned at the &quot;#&quot; character and the user is then allowed
+to make syntactically valid transformations to continue programming.
+These editors are often found as the subject of research papers.  For
+reasons that will be described, it is fortunate that they are not
+often found anywhere else.</p>
+
+<p>Of course, the user is in trouble if, for example, he or she
+decides to negate the condition and make the &quot;else&quot; clause
+into the &quot;then&quot; clause.  If the user is lucky, there will be
+an editor command to do this operation.  If not, the user may have to
+&quot;cut&quot; the else part and &quot;paste&quot; it into the then.
+Or worse, the user may be forced to delete the else part and retype it
+at the then.</p>
+
+<p>It may well be possible to create a structure editor that is also a
+good editor design.  However, in all my research I have never seen
+one.  There are two reasons why creating such an editor is
+difficult:</p>
+
+<p>First, while the structure-oriented operations may be well suited
+to the process of <i>writing</i> a program, they are not well suited
+to the process of <i>editing</i> one.  The distinction is a subtle but
+important one.  The examples (usually shown in the papers) all show
+how easy it is to write programs this way.  After all, it is a nice
+typing aid to be able to insert many characters of language statement
+with a short command.  However, most of the work involved in
+programming is in editing programs that are already written.  Editing
+operations are often ugly and involve intermediate states that are not
+valid language syntax.  It is just in those areas that the
+structure-oriented operations start getting in the way.</p>
+
+<p>Second, there is no carryover from one part of the editing task to
+another.  Sure, it may be easier to write the program, <i>but the task
+of editing text strings and comments to the program has not been
+addressed by the programming-language editing commands</i>.  The user
+still needs a full-feature editor to handle the strings constants, the
+comments, and other documentation that are an integral part of any
+programming project.  By adding the structure editor, either a
+completely separate editor or a complicated new mode has been
+introduced and consistency has been lost.  (I will completely skip
+over the question of how to handle the programmer that is editing more
+than one programming language.  I will point out that I have worked on
+projects where I have been editing programs written in more than five
+languages at the same time.)</p>
+
+<p>Note that the arguments just presented address the concept of a
+structure editor, not any one editor in particular.</p>
+
+<h2>Programing Assistance</h2>
+
+<p>Even if the structure editor approach is not the best, there are
+still techniques that can be used to help write and edit programs.  If
+you like, it could be said that these techniques are adapted from
+structure editors.  However, the origins of these techniques are lost
+in the mists of history and no one knows which was developed first:
+structure editors or the adaptations to general editors.</p>
+
+<p><b>Typing aids</b>: The first technique is to have commands that
+serve as typing aids.  These aids would insert statements or statement
+parts by typing just a few characters (presumably fewer than the
+statements or parts themselves!).  In this way, users gain the
+&quot;express typing&quot; benefits of structure editors.</p>
+
+<p><b>Language modes</b>: Further, a language mode can tailor the
+effects of commands to suit the characteristics of the language.  For
+example, the commands that move by or manipulate words would be
+adjusted to use language tokens; those that use sentences would be
+adjusted to use language statements; and those that use paragraphs
+would be adjusted to use a statement block or procedure.  In addition,
+commands that perform indentation can also be modified to handle
+statement nesting.</p>
+
+<p>However, these alterations change how commands work and so some
+predictability is lost.  In addition, while the alterations would
+presumably only be made for buffers that hold programs, these programs
+include comments.  Hence, the commands need to &quot;know&quot;
+whether they are operating in a comment and thus whether to use the
+altered behavior.  Even so, not all users are happy with such changes.
+Hence, there should be a way for users to turn them off.  (I, for
+example, prefer to disable all language modes when editing.)</p>
+
+<p><b>Syntax checking</b>: Structure editors offer good syntax
+checking. Most even prevent you from creating a syntactically
+incorrect program.  While possible to implement, syntax checking is
+not clearly appropriate for an editor, given that a better alternative
+may be available.  This better alternative is for users to be able to
+invoke the compiler from within the editor, and to have the editor be
+able to parse the compiler's error and warning messages.</p>
+
+<p>Simple syntax checking is a feature that looks useful on the
+surface, but turns out not to be very useful in practice, as good
+programers tend to make relatively few syntax errors.  Syntax checking
+can catch errors like:</p>
+
+<pre>
+	ovid Foo()		
+		{
+		return (a -+ b;
+		}
+</pre>
+
+<p>This example has a misspelled keyword, a missing close parenthesis,
+and an illegal operator combination.  Syntax checking can catch the
+last two of these, but not the first: at the syntax level, there is no
+way to tell whether &quot;ovid&quot; is a misspelled keyword or a
+programmer-defined type.</p>
+
+<p>Semantic checking can catch the &quot;ovid&quot; problem, as well
+as missing declarations, mis-matched types, and other such problems.
+With programs spread across multiple files, there is simply no way
+that an editor would be able to assemble the information required to
+perform the correct analysis.  It is up to the language compiler to
+perform that function.</p>
+
+<p><b>Compiler invocation</b>: And so we bring up the best way for an
+editor to help in program development.  That is for the user to
+quickly and easily be able to invoke the compiler and work with the
+results.  The commands might be &quot;compile this file,&quot;
+&quot;move to the place indicated by the next error message,&quot; and
+so forth.  The lesser features such as syntax checking would only be
+used on systems where invoking the compiler is expensive (in user
+time, not computer power) to do from within the editor.</p>
+
+<h2>Command Behavior</h2>
+
+<p>This section describes some of the considerations involved with
+designing some of the commands.  As with other parts of the book, the
+purpose of this section is not to say merely &quot;do it this
+way,&quot; but to review why different approaches should be
+considered.</p>
+
+<h3>Does Down Move the Point or the Text?</h3>
+
+<p>Let's say that the point is somewhere in the middle of a large
+buffer, large enough that neither the top or bottom is on the display.
+The user gives the &quot;move down a line&quot; command (say, by
+pressing the down-arrow key).  What happens?</p>
+
+<p>First, the point (and cursor) could both move down one line.  The
+user is thinking &quot;I want to move down&quot; and lo, the point
+moves down.</p>
+
+<p>A variant on this choice is to move the point down one line, but to
+move the text of the buffer <i>up</i> in the window.  This variant has
+the unfortunate property that the cursor is always kept in the center
+of the window.</p>
+
+<p>There is a another choice.  The cursor could stay in the same
+place, and the <i>text of the buffer</i> move down.  In effect, this
+moves the point <i>up</i> one line.</p>
+
+<p>A moment's thought shows that both choices are indeed valid
+interpretations of &quot;down.&quot; In fact, both have been
+implemented many times.  All modern editors now use the first
+interpretation.  In fact, you might be wondering why anyone would
+select the second interpretation.</p>
+
+<p>The descriptions just given do not reveal why the two
+interpretations arose.  For that information, we have to step from the
+world of text editing into the world of computer graphics.</p>
+
+<p>Consider the following picture:</p>
+
+<pre>
+		 o		|\		The quick
+		---		| \		red fox
+		 |		| /		jumps over
+		/ \		|/		the lazy
+
+		user		display	buffer
+</pre>
+
+<p>In this view, the user sees the text on a display. Now let us
+redraw this picture more abstractly:</p>
+
+<pre>
+		 o		------	The quick
+		---		|ed f|	red fox
+		 |		|umps|	jumps over
+		/ \		------	the lazy
+
+		user		window	buffer
+</pre>
+
+<p>In this view, the user is &quot;looking through&quot; a window onto
+the text.  The user sees only that part of the text that can be seen
+through the window.  Now the question &quot;when the user gives the
+`move down one line' command, does the command move the window or the
+text?&quot; makes sense.</p>
+
+<h3>Scrolling vs. Paging</h3>
+
+<p>Closely related to the previous point is whether to scroll or page
+the screen.  Again, there are two choices, and again, we are
+considering the case where the user is giving &quot;move down one
+line&quot; commands.  In all cases, the <i>point</i> is moving down
+one line at a time.  The question relates to how the <i>cursor</i>
+moves on the screen.</p>
+
+<p>First, the cursor can move down one line at a time until it reaches
+the bottom of the screen (possibly with a line or so of &quot;guard
+zone&quot;).  Once there, the whole screen moves up one
+&quot;page&quot; and the cursor is re-centered.</p>
+
+<p>Second, the cursor could stay in the same place on the screen and
+the text could move up by one line.</p>
+
+<p>The second method offers the advantage that the maximum amount of
+surrounding text is always visible.  However, it offers the much more
+severe disadvantage that &quot;just moving around&quot; appears to be
+constantly changing the text.  That is quite distracting to users.  It
+also ties what the user sees with where the user is making changes.
+Thus, if the display has a 24-line screen and the preferred row is
+line 10, the user is out of luck if he or she wants to make changes
+while looking at text that is more than 10 lines before the point or
+14 lines after it.</p>
+
+<p>A third method would be to have the cursor move down to a guard
+zone, then scroll the screen instead of paging it.  This method offers
+better continuity than does just paging.  It is especially nice if you
+repeatedly give the &quot;move down line&quot; command.  Personally, I
+find it exasperating because your context gradually reduces to the
+size of the guard zone, then <i>stays there</i>.  With paging, the
+context is automatically restored to about one-half of the window.
+When using editors that select this method, I have to give the
+&quot;recenter window&quot; command much more often than I like
+to.</p>
+
+<h3>Page Breaks</h3>
+
+<p>This is more of an issue with word processors than text editors,
+but it is worth mentioning anyway.  The problem arises when the
+program is displaying the buffer in its &quot;printed form,&quot;
+including page breaks.  It is very tempting for the implementor to
+always position the page break at the top of the display.  However, it
+is important that users be able to see the text just before and after
+the page break at the same time.</p>
+
+<h3>How Many Ways Can You Move by a Word?</h3>
+
+<p>When writing commands that operate on words, the first question
+that arises is &quot;what is a word?&quot; We need a definition that
+is both possible and easy to implement.  We will approach a definition
+in a series of refinements.</p>
+
+<p>The first step is to consider all of the characters between white
+space to be one word.  With this definition, the sequence:</p>
+
+<pre>
+	This is a very-strange test sentence, isn't it?
+</pre>
+
+<p>would be considered to be eight words.  While a good start, it is
+not sufficient, as the following sequence would be considered only two
+words:</p>
+
+<pre>
+	here--a phrase
+</pre>
+
+<p>But this sequence would be considered four words:</p>
+
+<pre>
+	here -- a phrase
+</pre>
+
+<p>Thus, the next step is to define a word as a string of letters and
+digits.  With this definition, the three examples would be considered
+to have ten, three, and three words, respectively.  This definition
+has the advantage that for something to be considered a word, there
+should be something &quot;word-like&quot; about it (<i>i.e.</i>, the
+characters &quot;--&quot; are not considered to be a word.  In
+addition, the presence or absence of extra spaces around the
+&quot;--&quot; does not change the number of words: a good sign that
+we are on the right track.</p>
+
+<p>Our refinement can stop right here and be considered acceptable.
+There are some changes that we can make, but these changes are not
+uniformly considered improvements.</p>
+
+<p>The first change is to add some characters to the &quot;word&quot;
+characters in language modes.  For example, when writing C programs,
+the underscore character (&quot;_&quot;) is legal within a token.  By
+adding this character to the letters and digits, a &quot;move by
+word&quot; command will now properly move by tokens.</p>
+
+<p>The second change is to add other characters, such as dash
+(&quot;-&quot;) and quote (&quot; ' &quot;).  But these are added in a
+special way: they must be surrounded by letters or digits in order to
+be considered as part of a word.  This change allows the
+&quot;very-strange&quot; and &quot;isn't&quot; parts of the sequence
+to be considered as single words.</p>
+
+<p>However, suppose that you had a very-long-hyphenated-phrase.  It
+probably makes sense to consider this phrase as four separate words.
+In particular, it is better to err on the side of dividing one
+&quot;word&quot; into two rather than combining two &quot;words&quot;
+into one.  For example, in our very-long-hyphenated-phrase, it would
+be difficult to change the &quot;hyphenated&quot; to
+&quot;dashed&quot; if word motion commands considered the whole thing
+as one word.</p>
+
+<h4>Moving by Words</h4>
+
+<p>As with many of the other topics here, there are two popular ways
+of moving forward by words.  Oddly, though, there is only one popular
+way of moving backwards.</p>
+
+<p>One way to move forward is to move to the end of the word.  For
+example, if we had the text:</p>
+
+<pre>
+	one two three four
+	     ^
+</pre>
+
+<p>and the cursor was at the &quot;w&quot; (which means that the point
+is between the &quot;t&quot; and the &quot;w&quot;), and a &quot;move
+forward word&quot; command were given, this move would leave the point
+here:</p>
+
+<pre>
+	one two three four
+	       ^
+</pre>
+
+<p><i>i.e.</i>, just before the white space after the word.  The other
+method would move the point to the start of the next word:</p>
+
+<pre>
+	one two three four
+	        ^
+</pre>
+
+<p>When moving backwards, both methods leave the point at the start of
+the word:</p>
+
+<pre>
+	one two three four
+	    ^
+</pre>
+
+<p>The difference may become slightly more clear if we look at the
+code that might be used to implement these commands.  Assuming that
+the constant <i>WORDSTRING</i> contains the characters that comprise a
+word, the code to move backward a word is this:</p>
+
+<pre>
+	Find_First_In_Backward(WORDSTRING);
+	Find_First_Not_In_Backward(WORDSTRING);
+</pre>
+
+<p>The code to move forward to the end of the word is the same code,
+with &quot;Backward&quot; changed to &quot;Forward&quot;:</p>
+
+<pre>
+	Find_First_In_Forward(WORDSTRING);
+	Find_First_Not_In_Forward(WORDSTRING);
+</pre>
+
+<p>Finally, the code to move forward to the start of the next word is
+this:</p>
+
+<pre>
+	Find_First_In_Forward(WORDSTRING);
+	Find_First_Not_In_Forward(WORDSTRING);
+	Find_First_In_Forward(WORDSTRING);
+</pre>
+
+<p>The first method, to leave the point at the end of the current
+word, has the property that it is symmetric with respect to backward
+motion.  The second method, to leave the point at the start of the
+following word, lacks that symmetry.  On the other hand, it makes it
+easier to move to the beginning of the following word.</p>
+
+<p>The choice is up to you.  I strongly prefer the first method.</p>
+
+<h4>Deleting by Words</h4>
+
+<p>This question is &quot;okay, so I have decided what happens when I
+<i>move</i> by words.  What should happen when I <i>delete</i> by
+words?&quot;</p>
+
+<p>The first answer, which works very well, is simply that you should
+delete whatever the corresponding move command would move over.  Thus,
+if the motion command were to move to the start of the next word, the
+deletion command should delete that same text.</p>
+
+<p>However, consider this case:</p>
+
+<pre>
+	This is some text.
+			   ^
+
+	--------------------
+
+	And, three lines later, more text.
+</pre>
+
+<p>The &quot;move forward word&quot; command would move to just before
+the &quot;A&quot;.  However, is it really desirable that the
+&quot;delete forward word&quot; command delete the lines in between,
+including the row of dashes?  Well, yes, if you want to be consistent
+(and predictable).  This is one of the reasons why this style of word
+motion is not the best one to use.</p>
+
+<p>The second answer would be to be &quot;intelligent.&quot; This view
+is used by Apple Computer (see Apple 1987).  In it, you would change
+exactly what was deleted based on circumstances.  For example, with
+the text:</p>
+
+<pre>
+	Here is some text.
+		   ^
+</pre>
+
+<p>a &quot;delete forward word&quot; command would delete the word
+&quot;some&quot; and the following space, thus leaving this:</p>
+
+<pre>
+	Here is text.
+		   ^
+</pre>
+
+<p>instead of this:</p>
+
+<pre>
+	Here is  text.
+		   ^
+</pre>
+
+<p>This definition has the advantage that deleting a word deletes the
+&quot;supporting structure&quot; for the word as well and thus makes
+the text as if the word was never there.  It also means that
+&quot;sloppy&quot; users don't leave stray extra spaces around.  It
+has the disadvantage that if you wanted to replace one word with a new
+one -- a very common operation -- you now have to re-type the space.
+This definition also loses predictability in that only white space is
+so treated: commas, periods, and other punctuation marks are not.  So,
+to replace &quot;old&quot; with new in the following text:</p>
+
+<pre>
+	This is an old word.
+			 ^
+</pre>
+
+<p>you give the &quot;delete forward word&quot; command then type
+&quot;new &quot;, but to do the same replacement with the text:</p>
+
+<pre>
+	This is an old, word.
+			 ^
+</pre>
+
+<p>you give the &quot;delete forward word&quot; command, then simply
+type &quot;new&quot;.  Now explain that to a user quickly and
+painlessly.  (Note that Apple Human Interface Guidelines do not
+provide for word-level operations other than selection.)</p>
+
+<p>In all fairness to Apple -- and I believe that their guidelines are
+excellent -- their guidelines are build around a keyboard/mouse
+combination for user input.  This book assumes that only a keyboard is
+available.  Changing such a basic assumption will result in changing
+some of its conclusions: that is why you should make your choices
+based on a full understanding of the options and assumptions that
+apply in your situation.</p>
+
+<p>These examples have all operated on full words.  The Apple
+guidelines do not have guidelines for how to handle deleting parts of
+words because the guidelines only support whole words as objects.
+However, you are free to invent your own semantics for handling
+partial words in an &quot;intelligent&quot; manner.</p>
+
+<h3>Where Do Sentences and Paragraphs End?</h3>
+
+<p>I will start with the cheery statement that there is no way to
+correctly determine the ends of all possible valid English sentences
+by analyzing syntax alone.  Why not?</p>
+
+<p>Consider these text sequences:</p>
+
+<pre>
+	This is a sentence.
+	The value 3.14159 is close to the value of pi.
+	The value 3. is close to the value of pi.
+	Dr. Martin is a medical doctor.
+	I hate typing long words and prefer to abbrev. them.
+</pre>
+
+<p>We all know that a period is used to end a sentence.  The second
+example shows that periods can occur within a sentence.  The third
+shows that periods can end a token and yet not end a sentence.  The
+fourth shows that the token can be a word.  The last shows that you
+can't just work off a list of known abbreviations.  When considering
+these examples, remember that we are applying semantic knowledge to
+the statements, something that is beyond the ability of most computer
+programs.  From the program's point of view, the sequences might as
+well be:</p>
+
+<pre>
+	Xxxx xx x xxxxxxxx.
+	Xxx xxxxx 0.00000 xx xxxxx xx xxx xxxxx xx xx.
+	Xxx xxxxx 0. xx xxxxx xx xxx xxxxx xx xx.
+	Xx. Xxxxxx xx x xxxxxxx xxxxxx.
+	X xxxx xxxxxx xxxx xxxxx xxx xxxxxx xx xxxxxx. xxxx.
+</pre>
+
+<p>All that said, what is a way out?  The definition that I have found
+that works best was worked out by trial-and-error and refined over a
+period of years is this:</p>
+
+<pre>
+	Find_First_In_Forward(&quot;.?!:&quot;);
+	Point_Move(1);
+	Find_First_Not_In_Forward(&quot;\&quot;')]}&quot;);
+	if (xiswhite(Get_Char())) &lt;you are at a sentence end&gt;;
+</pre>
+
+<p>This definition looks for any of the sentence-ending characters
+(colons are considered to end sentences here).  It then skips over any
+of the characters that tend to follow sentence ends.  Finally, it
+checks for white space.</p>
+
+<p>This definition has the unfortunate property that the last three
+examples are considered to be two sentences each.  On the other hand,
+it has the advantage that it works fairly well on non-contrived
+examples.  And, as with words, it is better to count one sentence as
+two than to treat two sentences as one.</p>
+
+<p>Note that only one white-space character (any character of Space,
+Tab, newline, or whatever else you wish to include) is required to end
+a sentence.  Depending upon which style manual you follow, either one
+or two spaces should be included after the end of a sentence.
+However, even if your style manual requires two spaces, your users may
+not use that manual or may simply forget to type the extra space.
+Hence, you should not penalize them for the omission.</p>
+
+<p>I know of one implementation that makes life difficult for its
+users.  Its end-of-sentence definition requires two spaces.  Yet, when
+you refill a paragraph, it removes the second space.  Thus, you can
+move by sentences until you first refill the paragraph, after which
+the entire paragraph is treated as one sentence...</p>
+
+<p>Paragraph ends are much easier than sentence ends.  If you are
+using word wrap, each paragraph will be one line long.  Thus, a
+newline character will end a paragraph.  Otherwise, a newline followed
+by any white-space character (Space, Tab, newline, etc.) will mark the
+end of the paragraph.</p>
+
+<p>If you are fortunate (or unfortunate, it depends on your outlook)
+enough to use a text formatter, you will want to include your
+formatter-command characters as paragraph-break characters.  For
+example, if you are using the nroff formatter, you will want a
+paragraph break here:</p>
+
+<pre>
+	This is some text.
+	.LP
+	This is some more text.
+</pre>
+
+<p>So just look for a newline followed by either white space or a
+dot.</p>
+
+<p>Moving and deleting by sentences and paragraphs involves all of the
+same problems as moving and deleting by words.  See the earlier
+discussion. </p>
+
+<h3>How to Search</h3>
+
+<p>This topic supplies lots of choices, all of them good.  The
+question is more one of how much work you want to put into your
+implementation than which is the correct approach.</p>
+
+<p>The first choice is between buffered searching and incremental
+searching.  <i>Buffered searching</i> means that your implementation
+prompts for a search string, waits for the user to enter the complete
+string, then performs the search.  It works and is easy to implement,
+but not as good as incremental search.</p>
+
+<p><i>Incremental search</i> means that the implementation searches as
+the user types.  Here is an example:</p>
+
+<dl compact="compact">
+<dt><b>user types</b></dt><dd><b>what is done</b></dd>
+<br>
+<br>
+<dt><b>^S</b></dt><dd>start incremental search</dd>
+<dt><b>a</b></dt><dd>find the first &quot;a&quot;</dd>
+<dt><b>b</b></dt><dd>(1) find the first &quot;ab&quot;</dd>
+<dt><b>c</b></dt><dd>find the first &quot;abc&quot;</dd>
+<dt><b>^H</b></dt><dd>erase the &quot;c&quot; from the string; go back to where you were after (1)</dd>
+<dt><b>d</b></dt><dd>find the first &quot;abd&quot;</dd>
+<dt><b>^S</b></dt><dd>(2) search again for &quot;abd&quot;: you are now at the second one</dd>
+<dt><b>^S</b></dt><dd>search again, you are now at the third one</dd>
+<dt><b>^H</b></dt><dd>get rid of the last ^S; go back to where you were after (2)</dd>
+</dl>
+
+<p>You get the idea.  The commands available can be as powerful as you
+like.  This is clearly a much nicer way to search than buffered
+searching.  Just as clearly, it is more work to implement.</p>
+
+<p>The next question is what the search string should be.  The most
+simple case is that the editor should search for the string exactly as
+typed.  Thus, this string:</p>
+
+<pre>
+	Some text.
+</pre>
+
+<p>would match only the string &quot;Some text.&quot; in the buffer.
+While simple, it is not necessarily useful.</p>
+
+<p>The first alternate way to search would be to simply ignore upper
+and lower case.  Thus, the string would also match &quot;some
+text.&quot; and &quot;SOME TEXT.&quot; and &quot;SoMe TeXt.&quot;</p>
+
+<p>Another way to search would be to have lower-case characters in the
+search string match either upper or lower case in the buffer, but an
+upper-case character in the search string match only upper-case
+characters in the buffer.  The search string would then match
+&quot;SOME TEXT.&quot; and &quot;SoMe TeXt.&quot; but not &quot;some
+text.&quot; This way is more useful than one might think, because you
+can enter &quot;ROM&quot; in order to find &quot;ROM&quot; but not the
+&quot;rom&quot; in &quot;from&quot;, yet you can still find both
+&quot;the&quot; and &quot;The&quot; with one search string.</p>
+
+<p>Another search variation is whole-word match.  Thus, one could
+search for &quot;the&quot; without finding &quot;then&quot;.  In
+addition, it would be handy to be able to allow varying amounts of
+white space to match.  Thus, our &quot;Some text.&quot; string would
+match</p>
+
+<pre>
+	Some
+	text.
+</pre>
+
+<p>and</p>
+
+<pre>
+	Some      text.
+</pre>
+
+<p>You can get as complex as you like with all of this, up to wild
+cards and UNIX-style regular expressions.  Just don't forget to
+include a way to quote any special characters so that the user can
+search for them exactly.</p>
+
+<h3>Commands to Handle Typos</h3>
+
+<p>There are two very common forms of typographic errors for which
+special commands can be helpful.</p>
+
+<h4>Capitalization Commands</h4>
+
+<p>One typographic error is the incorrect upper/lower case of a
+character, part of word, or word.  Two different forms of commands can
+be defined to handle this task.</p>
+
+<p>The first form operates as a &quot;move forward word&quot; command,
+but forcing all characters moved over to UPPER, lower, or Capitalized
+case (the latter is first character in upper case, and all others in
+lower case).  Note that three separate commands are required.</p>
+
+<p>The second form is a &quot;rotate case&quot; command.  The
+definition that I use acts differently depending upon whether you are
+within a word or between words.  In the former case, it affects all
+characters between the point and the end of the word.  In the latter
+case, it affects the entire previous word.  In either case, it
+examines the current state of the word and rotates it among word -&gt;
+Word -&gt; WORD -&gt; word, etc.  The point is not moved.  This
+definition turns out to be very handy.</p>
+
+<h4>Twiddling</h4>
+
+<p>Another typographic error is interchanging two characters.  For
+example, &quot;teh&quot; instead of &quot;the&quot;.  There are three
+forms of the command to fix this.</p>
+
+<p>The first form interchanges the two preceding characters.
+Thus:</p>
+
+<pre>
+	abcd
+	  ^
+</pre>
+
+<p>becomes</p>
+
+<pre>
+	bacd
+	  ^
+</pre>
+
+<p>The second form interchanges the two surrounding characters.  Thus
+our original becomes:</p>
+
+<pre>
+	acbd
+	  ^
+</pre>
+
+<p>Neither of the first two forms moves the point.  The third form
+moves the point and our original becomes</p>
+
+<pre>
+	acbd
+	   ^
+</pre>
+
+<p>The advantage to this form is that repeated executions of the
+command serve to &quot;drag&quot; a character along.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Consider how your favorite editor's command set and implementation
+meet the design guidelines.  (Medium)</p>
+
+<p>Define a command that you would like to see in an
+editor. (Easy)</p>
+
+<p>What are some different ways to handle moving down a line (hint:
+consider how to handle variable-width characters)?  (Easy)</p>
+
+<p>How do the word, sentence, and paragraph problems change when
+languages other than English are considered? (Medium)</p>
+
+<p>Define a complete command set. (Hard)</p>
+
+<p>Define a good structure-editor command set. (Hard)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-9.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

@@ -1,0 +1,566 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/64bit-scrollbars by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>64bit Scrollbars - Catch22</title>
+<meta name="description" content="Recently I have been rewriting part of my HexEdit application. One specific area was to properly handle 64bit file sizes (i.e. files that were over 4Gb in size). The problem I faced was not the loading of files this large, but the issue of initializing Win32 scrollbars with 64bit values. Seeing as I found a nice elegant solution to the problem I thought I would share the results of my work.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="64bit Scrollbars">
+<meta property="og:url" content="64bit-scrollbars.html">
+
+
+  <meta property="og:description" content="Recently I have been rewriting part of my HexEdit application. One specific area was to properly handle 64bit file sizes (i.e. files that were over 4Gb in size). The problem I faced was not the loading of files this large, but the issue of initializing Win32 scrollbars with 64bit values. Seeing as I found a nice elegant solution to the problem I thought I would share the results of my work.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-09-02T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="64bit-scrollbars.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">64bit Scrollbars</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="64bit Scrollbars">
+    <meta itemprop="description" content="Recently I have been rewriting part of my HexEdit application. One specific area was to properly handle 64bit file sizes (i.e. files that were over 4Gb in size). The problem I faced was not the loading of files this large, but the issue of initializing Win32 scrollbars with 64bit values. Seeing as I found a nice elegant solution to the problem I thought I would share the results of my work.">
+    <meta itemprop="datePublished" content="September 02, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">64bit Scrollbars
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>64bit Scrollbars</h1-->
+<!--h3>How to create 64bit scroll ranges using standard Win32 scrollbars</h3-->
+
+<p>Recently I have been rewriting part of my HexEdit application. One specific area was to properly handle 64bit file sizes (i.e. files that were over 4Gb in size). The problem I faced was not the loading of files this large, but the issue of initializing Win32 scrollbars with 64bit values. Seeing as I found a nice elegant solution to the problem I thought I would share the results of my work.</p>
+
+<h2 id="scrollbars-in-windows">Scrollbars in Windows</h2>
+
+<p>Scrollbars have always been an integral part any GUI-based application. However in Windows operating systems the supported scrollbar range has always been tied to the native WORD width of the OS - for example Windows 3.1 (a 16bit OS) used 16bit quantities to represent scrollbar metrics. This provided applications with a scrollbar range of -32768 to 32767.</p>
+
+<p>When Microsoft introduced their win32 API model they extended the standard scrollbar range to use LONG values whilst still maintaing compatibility with the older 16bit model. This allowed a scrollbar’s to maximum range to increase -2147483648 to 2147483647. This is still way short of the maximum value a 32bit <em>unsigned</em> integer can hold, but for most applications this scrollbar range is more than satisfactory.</p>
+
+<p>Although uncommon, there are some applications which require a scrolling range beyond that which Windows natively provides. Extending a scrollbar’s range to a 64bit number system would be very useful especially for hex-editors.</p>
+
+<p>Fortunately Microsoft Visual C++ has a built-in integer type which can represent 64bit numbers - the <code class="highlighter-rouge">__int64</code> type. An unsigned <code class="highlighter-rouge">__int64</code> (or <code class="highlighter-rouge">UINT64</code>) variable can hold a maximum value of 18,446,744,073,709,551,615. That’s a pretty big number (18 Exa-bytes), considering the the maximum value a 32bit unsigned integer can hold is 4,294,967,295 (4 Giga-bytes).</p>
+
+<p>It is fairly obvious that a 64bit number will not fit into a 32bit variable so the solution is to maintain each scrollbar’s range in “external” 64bit variables and scale these numbers down to 32bits whenever we want to access a scrollbar’s settings.</p>
+
+<h2 id="managing-scrollbar-variables">Managing scrollbar variables</h2>
+
+<p>As a programmer you don’t need to do anything different when dealing with 64bit scrollbar quantities. Most programs will already maintain scrollbar state so the only thing that changes is the size of the variables (32bit -&gt; 64bit) .</p>
+
+<p>To keep things simple we ignore the fact that a scrollbar has a “minimum” value and will make the scrollbar range zero-based - this makes the maths later on much easier. So the only values we need to keep track of are the scrollbar’s position, and it’s current maximum value:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UINT64</span> <span class="n">nScrollPos64</span><span class="p">;</span>
+<span class="n">UINT64</span> <span class="n">nScrollMax64</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Of course these variables would normally be stored as C++ class members but thats not really important for this example. Below shows a typical scrollbar sequence of code.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">OnVScroll</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nSBPart</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span><span class="p">(</span><span class="n">nSBPart</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">SB_TOP</span><span class="p">:</span>
+        <span class="n">nScrollPos64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">SB_BOTTOM</span><span class="p">:</span>
+        <span class="n">nScrollPos64</span> <span class="o">=</span> <span class="n">nScrollMax64</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">SB_LINEUP</span><span class="p">:</span>
+        <span class="n">nScrollPos64</span><span class="o">--</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">SB_LINEDOWN</span><span class="p">:</span>
+        <span class="n">nScrollPos64</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">SB_THUMBTRACK</span><span class="p">:</span>
+        <span class="n">nScrollPos64</span> <span class="o">=</span> <span class="n">GetScrollPos64</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">SB_VERT</span><span class="p">,</span> <span class="n">nScrollMax64</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">SetScrollInfo64</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">SB_VERT</span><span class="p">,</span> <span class="n">SIF_ALL</span><span class="p">,</span> <span class="n">nScrollMax64</span><span class="p">,</span> <span class="n">nScrollPos64</span><span class="p">,</span> <span class="n">nScrollPage</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you look at the code above you will see there are two function calls highlighted in bold - <code class="highlighter-rouge">GetScrollPos64</code> and <code class="highlighter-rouge">SetScrollInfo64</code>. Of course, normally a program would call the “normal” Win32 <code class="highlighter-rouge">GetScrollPos</code> and <code class="highlighter-rouge">SetScrollInfo</code> but we must do things a little differently if we are to emulate 64bit scrollbar ranges.</p>
+
+<p>What I have done is to create an interface between our 64bit scrollbar variables and the win32 scrollbar APIs. These two functions act just like the win32 API - and hide the complexity of the 32bit/64bit conversions that must be managed. The idea is to provide a mechanism to support 64bit scrollbars without having to change any scrolling logic.</p>
+
+<h2 id="scaling-a-scrollbars-range">Scaling a scrollbar’s range</h2>
+
+<p>As mentioned above we must maintain our “64bit” scrollbar range separately from the Windows scrollbar. The relationship between the two scroll ranges can be expressed using a simple mathematical formula. For convenience’s sake I will refer to these two ranges using four separate variables - <code class="highlighter-rouge">pos32</code>, <code class="highlighter-rouge">max32</code> (for 32bit scrollbar ranges), and <code class="highlighter-rouge">pos64</code>, <code class="highlighter-rouge">max64</code> (for 64bit ranges).</p>
+
+<p><img src="http://www.catch22.net/assets/img/scroll64_1.gif" alt="alt &lt;&gt;" /></p>
+
+<p>Recall that previously I mentioned there were two new functions to be written - <code class="highlighter-rouge">GetScrollPos64</code> and <code class="highlighter-rouge">SetScrollInfo64</code>. What you must understand is this:</p>
+
+<blockquote>
+  <p><em>There are really only two tasks that are commonly performed with scrollbars. The first is to set the scrollbar thumb position programmatically. The second is to retrieve the scrollbar thumb position when it has been modified (dragged) by the user.</em></p>
+</blockquote>
+
+<p>Therefore to set the scrollbar position we must call one of the Win32 scrollbar APIs - <code class="highlighter-rouge">SetScrollInfo</code> is the most common for 32bit programs. Before we call <code class="highlighter-rouge">SetScrollInfo</code> we must calculate the real (32bit) thumb position by performing some kind of mathemetical operation<code class="highlighter-rouge">.</code> By using simple rearrangement of the original formula we can derive our first equation:</p>
+
+<p><img src="http://www.catch22.net/assets/img/scroll64_2.gif" alt="alt &lt;&gt;" /></p>
+
+<p>It really is that simple! Now onto the second task, which involves retrieving the 64bit scrollbar thumb position using the Win32 <code class="highlighter-rouge">GetScrollInfo</code>. The rearrangement below gives us our second equation.</p>
+
+<p><img src="http://www.catch22.net/assets/img/scroll64_3.gif" alt="alt &lt;&gt;" /></p>
+
+<p>In both of these equations we always know what value two of the variables will be- but <code class="highlighter-rouge">max32</code> is always an <em>unknown</em> so we can’t solve the equations yet. It actually doesn’t matter what this value is, as long as we set it to some known quantity in order to solve the equations. <code class="highlighter-rouge">MAX32</code> will therefore be defined as a constant integer value (something like 0x7ffffffff). With all three variables now known, we can solve both equations. It’s time to put this into code…</p>
+
+<h2 id="setscrollinfo64-first-steps">SetScrollInfo64 first steps</h2>
+
+<p>So our first task will be to implement a function which can set a scrollbar’s range, given two 64bit values and a 32bit constant. In order to work out what to set the scrollbar position to, we use the first equation:</p>
+
+<p><img src="http://www.catch22.net/assets/img/scroll64_2.gif" alt="alt &lt;&gt;" /></p>
+
+<p>Now before we rewrite this equation in “C” notation you should understand the following concept:</p>
+
+<blockquote>
+  <p><em>In mathematics, it doesn’t matter what order the equation is evaluated in. We could perform the multiplication first then the division, or we could divide first of all then multiply up. It doesn’t matter because real maths uses real numbers.</em></p>
+</blockquote>
+
+<p>This idea is illustrated below but in “C” notation:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pos32</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos64</span> <span class="o">*</span> <span class="n">MAX32</span><span class="p">)</span> <span class="o">/</span> <span class="n">max64</span><span class="p">;</span>
+<span class="n">pos32</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos64</span> <span class="o">/</span> <span class="n">max64</span><span class="p">)</span> <span class="o">*</span> <span class="n">MAX32</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The first equation is traditionally the preferred “programmatic” method because there will be less loss of precision. This is because the integer division operation on a CPU will <em>always</em> lose precision - by the very nature of how integer arithmetic works:</p>
+
+<p>By performing the division first of all (the second method) there is the potential to lose accuracy when <code class="highlighter-rouge">pos64</code> and <code class="highlighter-rouge">max64</code> are close in value - and when the multiplication is subsequently performed it is using inaccurate numbers. The first method does not have this problem because we multiply first of all (maintaining precision) and only lose precision at the very end resulting in a more accurate answer. This is a common approach in programming which you are hopefully aware of.</p>
+
+<p>Now ordinarily we would opt for method#1, but there is a problem with this approach. Because we want to use the full range that the 64bit numbers can represent, we will suffer from integer <em>overflow</em> when <code class="highlighter-rouge">pos64</code> and <code class="highlighter-rouge">max32</code> are both very large. We could theoretically use 128bit integers to hold the numbers whilst we calculate the expression but this would be very difficult without built-in compiler support.</p>
+
+<p>At this point we might have got stuck - but we haven’t finished rearranging our equation yet. If we divide the numerator and demoninator by <code class="highlighter-rouge">max32</code> we end up with:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pos32</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos64</span> <span class="o">*</span> <span class="n">MAX32</span> <span class="o">/</span> <span class="n">MAX32</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max64</span> <span class="o">/</span> <span class="n">MAX32</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This can be simplified and our original formula can now be re-written as:</p>
+
+<p><img src="http://www.catch22.net/assets/img/scroll64_4.gif" alt="alt &lt;&gt;" /></p>
+
+<p>In “C” notation this looks like:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pos32</span> <span class="o">=</span> <span class="n">pos64</span> <span class="o">/</span> <span class="p">(</span><span class="n">max64</span> <span class="o">/</span> <span class="n">MAX32</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now I realise that this probably doesn’t look like the ideal way to solve this problem using integer maths (we have <em>two</em> divisions now) but I have a trick up my sleeve. With this third rearrangement we <em>can</em> control the accuracy of the division operator - because we control the value of <code class="highlighter-rouge">max32</code>.</p>
+
+<p>When max64 is very large the result of the division is quite accurate (in integer terms!) - i.e., when max64 is a fair bit larger than max32. However when max64 approaches max32 in value the result will become very inaccurate, as we already know. The trick is to never allow these values to get this close together.</p>
+
+<p>Because we control what <code class="highlighter-rouge">max32</code> will be it is natural to set it to the maximum value that a 32bit scrollbar can hold - 0x7fffffff (2147483647). But there is no reason why we couldn’t just choose a much lower number - for example 0x7fff (32767, the maximum value of a 16bit scrollbar!).</p>
+
+<p>Remember that <code class="highlighter-rouge">max32</code> is the value we give the scrollbar maximum range using <code class="highlighter-rouge">SetScrollInfo</code>, and that I am now proposing that we set this maximum value to 32767 - far less than the maximum number a 32bit integer can hold. The thing is, it really doesn’t matter what we set the scrollbar maximum to. We are scaling number ranges anyway so we will never be 100% accurate - and anyway, this scroll range still has to get translated even further when Windows displays the scrollbars on screen. The point is, noone will ever notice.</p>
+
+<p>The original problem still remains though - when <code class="highlighter-rouge">max64</code> this time approaches 32767 (i.e. 32768) we still lose precision. However we are now in the position where we can prevent this from happening. The way we do this is simple: when max64 happens to be in the range 0x7fffffff to 0x7fff (i.e. within the range of a regular 32bit number) we can simply revert to the normal Win32 API because all our numbers will be 32bits!!</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">max64</span> <span class="o">&lt;=</span> <span class="n">WIN32_SCROLLBAR_MAX</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pos32</span> <span class="o">=</span> <span class="n">pos64</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+    <span class="n">pos32</span> <span class="o">=</span> <span class="n">pos64</span> <span class="o">/</span> <span class="p">(</span><span class="n">max64</span> <span class="o">/</span> <span class="n">WIN16_SCROLLBAR_MAX</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Simple, no? Well I think so anyway. Anyway let’s define these two “maximum” limits as follows:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define WIN16_SCROLLBAR_MAX 0x7fff
+#define WIN32_SCROLLBAR_MAX 0x7fffffff
+</span></code></pre></div></div>
+
+<p>Now we still don’t <em>have</em> to use these exact numbers - as long as we choose two numbers which are far enough apart (2147450880 in this case!!) we can ensure that our sums will always be very accurate.</p>
+
+<h2 id="setscrollinfo64">SetScrollInfo64</h2>
+
+<p>We can now write our first replacement scrollbar API, <code class="highlighter-rouge">SetScrollInfo64</code>. Before you cast your eyes down, be aware that the names of the variables we are used to (<code class="highlighter-rouge">pos32</code>, <code class="highlighter-rouge">max32</code>, <code class="highlighter-rouge">max64</code> etc) have now changed to be more meaningful for a Win32 program.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+// Wrapper around SetScrollInfo, performs scaling to 
+// allow massive 64bit scroll ranges
+//
+</span><span class="n">BOOL</span> <span class="nf">SetScrollInfo64</span><span class="p">(</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> 
+                      <span class="kt">int</span> <span class="n">nBar</span><span class="p">,</span> 
+                      <span class="kt">int</span> <span class="n">fMask</span><span class="p">,</span> 
+                      <span class="n">UINT64</span> <span class="n">nMax64</span><span class="p">,</span> 
+                      <span class="n">UINT64</span> <span class="n">nPos64</span><span class="p">,</span> 
+                      <span class="kt">int</span> <span class="n">nPage</span><span class="p">,</span> 
+                      <span class="n">BOOL</span> <span class="n">fRedraw</span>
+                    <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SCROLLINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">),</span> <span class="n">fMask</span> <span class="p">};</span>
+
+    <span class="c1">// normal scroll range requires no adjustment
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">nMax64</span> <span class="o">&lt;=</span> <span class="n">WIN32_SCROLLBAR_MAX</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nMin</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nMax</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">nMax64</span><span class="p">;</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nPage</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">nPage</span><span class="p">;</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nPos</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">nPos64</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// scale the scrollrange down into allowed bounds
+</span>    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nMin</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nMax</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">WIN16_SCROLLBAR_MAX</span><span class="p">;</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nPage</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">nPage</span><span class="p">;</span>
+        <span class="n">si</span><span class="p">.</span><span class="n">nPos</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">nPos64</span> <span class="o">/</span> <span class="p">(</span><span class="n">nMax64</span> <span class="o">/</span> <span class="n">WIN16_SCROLLBAR_MAX</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">SetScrollInfo</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">nBar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">,</span> <span class="n">fRedraw</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This function doesn’t look exactly the same as the regular <code class="highlighter-rouge">SetScrollInfo</code> because we are passing all of the scrollbar metrics as parameters rather than using a separate <code class="highlighter-rouge">SCROLLINFO</code> structure - or <code class="highlighter-rouge">SCROLLINFO64</code> as it would have to be called. I think it’s neater this way so I’ve left it as it is.</p>
+
+<h2 id="getscrollpos64">GetScrollPos64</h2>
+
+<p>The second task (calculating the 64bit scrollbar position) is somewhat simpler because we (hopefully!) understand the issues involved now.</p>
+
+<p><img src="http://www.catch22.net/assets/img/scroll64_3.gif" alt="alt &lt;&gt;" /></p>
+
+<p>Writing this equation in “C” notation yields the following:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pos64</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos32</span> <span class="o">*</span> <span class="n">max64</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX32</span>
+</code></pre></div></div>
+
+<p>Of course we have the overflow problem again with the multiplication, but we now know that the division operation will not produce the inaccuracy we fear because we can control the values of <code class="highlighter-rouge">max64</code> and <code class="highlighter-rouge">max32</code> just like before. We can therefore safely change the order of evaluation as shown below.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pos64</span> <span class="o">=</span> <span class="n">pos32</span> <span class="o">*</span> <span class="p">(</span><span class="n">max64</span> <span class="o">/</span> <span class="n">MAX32</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>One thing that we must be careful of is the situation where the scrollbar thumb is right at the very end of its range (i.e. the thumb position is equal to the maximum position). The reason is that integer math always rounds down. Even when the scroll-thumb was at it’s maximum value, there would be alot of cases when <code class="highlighter-rouge">pos64</code> would never equal <code class="highlighter-rouge">max64</code>. Therefore I have a special case for this end-of-scroll-range and force <code class="highlighter-rouge">pos64</code> to be equal to <code class="highlighter-rouge">max64</code> in this situation.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+// Wrapper around GetScrollInfo, returns 64bit scrollbar position
+// fMask must be either SIF_POS or SIF_TRACKPOS
+//
+</span><span class="n">size_w</span> <span class="nf">GetScrollPos64</span><span class="p">(</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> 
+                       <span class="kt">int</span> <span class="n">nBar</span><span class="p">,</span> 
+                       <span class="kt">int</span> <span class="n">fMask</span><span class="p">,</span> 
+                       <span class="n">UINT64</span> <span class="n">nMax64</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SCROLLINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">),</span> <span class="n">fMask</span> <span class="o">|</span> <span class="n">SIF_PAGE</span><span class="p">};</span>
+    <span class="n">UINT64</span> <span class="n">nPos32</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">GetScrollInfo</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">nBar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">))</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">nPos32</span> <span class="o">=</span> <span class="p">(</span><span class="n">fMask</span> <span class="o">&amp;</span> <span class="n">SIF_TRACKPOS</span><span class="p">)</span> <span class="o">?</span> <span class="n">si</span><span class="p">.</span><span class="n">nTrackPos</span> <span class="o">:</span> <span class="n">si</span><span class="p">.</span><span class="n">nPos</span><span class="p">;</span>
+
+    <span class="c1">// special-case: scroll position at the very end
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">nPos32</span> <span class="o">==</span> <span class="n">WIN16_SCROLLBAR_MAX</span> <span class="o">-</span> <span class="n">si</span><span class="p">.</span><span class="n">nPage</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">nMax64</span> <span class="o">-</span> <span class="n">si</span><span class="p">.</span><span class="n">nPage</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span><span class="c1">// normal scroll range requires no adjustment
+</span>    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">nMax64</span> <span class="o">&lt;=</span> <span class="n">WIN32_SCROLLBAR_MAX</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">nPos32</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// adjust the scroll position to be relative to maximum value
+</span>    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">nPos32</span> <span class="o">*</span> <span class="p">(</span><span class="n">nMax64</span> <span class="o">/</span> <span class="n">WIN16_SCROLLBAR_MAX</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For this second function we require the scrollbar’s <code class="highlighter-rouge">nPage</code> as part of the calculations - so have obtained it from the scrollbar rather than passing it in as a parameter. This is just for neatness as usually you wouldn’t want to worry about this small detail - but be aware that it is happening.</p>
+
+<h2 id="how-to-use-this-new-api">How to use this new API</h2>
+
+<p>It really isn’t any different than what you would do normally!</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">example</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">UINT64</span> <span class="n">max</span> <span class="o">=</span> <span class="mh">0xffffffffffffffff</span><span class="p">;</span>
+    <span class="n">UINT64</span> <span class="n">pos</span> <span class="o">=</span> <span class="mh">0x1234567812345678</span><span class="p">;</span>
+
+    <span class="n">SetScrollInfo64</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">SB_VERT</span><span class="p">,</span> <span class="n">SIF_ALL</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+
+    <span class="c1">// when reacting to a WM_VSCROLL, with SB_THUMBTRACK/SB_THUMBPOS:
+</span>    <span class="n">pos</span> <span class="o">=</span> <span class="n">GetScrollPos64</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">SB_VERT</span><span class="p">,</span> <span class="n">SIF_TRACKPOS</span><span class="p">,</span> <span class="n">max</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="possible-optimization-yields-bad-results">Possible optimization yields bad results</h2>
+
+<p>I mentioned earlier that the numbers we used for <code class="highlighter-rouge">max32</code> and <code class="highlighter-rouge">max64</code> didn’t have to be the exact values I chose.</p>
+
+<p>You could in fact set <code class="highlighter-rouge">max32</code> (<code class="highlighter-rouge">WIN16_SCROLLBAR_MAX</code> as it is now known) to be a power-of-2 (i.e. 0x8000, just 1 more than it is now). This would eliminate one of the divisions because we could use <em>bit-shifts</em> instead. The reason I stuck with a divide-by-0x7ffff rather than a divide-by-0x8000 (a right-shift-by 15) is this:</p>
+
+<p>I designed these functions for use in a Hex Editor. If we used a right-shift instead of a division the result would be that the scrollbar positions would not be very granular. Every time we scrolled the scroll-thumb up and down, the resulting 64bit position would always be a multiple of 0x8000 (32768). It would <em>look</em> like there is a loss of precision and make the address-column in a hex editor look very “sticky”. A divide by 0x7fff (32767) yields much better randomness of the bits and the result is more “natural”.</p>
+
+<p>If you decide that this apparent loss of precision is not a problem then go ahead and optimize all you like :-)</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>You may be wondering why I bothered doing all this work when I could have used floating point arithmetic. Here’s why.</p>
+
+<ul>
+  <li>It isn’t necessary!</li>
+  <li>Floating point arithmetic in VC++ cannot represent the largest 64bit integer numbers accurately. I couldn’t be bothered to work out if this would be an issue or not.</li>
+  <li>Floating point maths requires the use of extra runtime support and introduces bloat that we don’t need.</li>
+  <li>I consider floating point math dirty and try to avoid it unless the benefits of simplicity outweigh that dirty, sordid feeling you get when you hit that compile button, knowing that those filthy <code class="highlighter-rouge">doubles</code> will be corrupting your sleek integer-only program somehow.</li>
+  <li>Did I mention that I don’t like floating point? :-)</li>
+</ul>
+
+<p>Hopefully you have found this tutorial useful, or at least interesting as you may not have any immediate use for this subject. Anyway as before I’d appreciate any feedback you may have.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-09-02T00:00:00+00:00">September 02, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../neatpad/margins-and-long-lines.html" class="pagination--pager" title="Margins and Long Lines
+">Previous</a>
+    
+    
+      <a href="../neatpad/introduction-unicode.html" class="pagination--pager" title="Introduction to Unicode
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/64bit-scrollbars by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

@@ -1,0 +1,550 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/tips-and-tricks by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Win32 Tips &amp; Tricks - Catch22</title>
+<meta name="description" content="IntroductionThis page presents a few win32 programming tips that I have picked up whilst learning to program Windows.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Win32 Tips &amp; Tricks">
+<meta property="og:url" content="tips-and-tricks.html">
+
+
+  <meta property="og:description" content="IntroductionThis page presents a few win32 programming tips that I have picked up whilst learning to program Windows.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-05-15T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="tips-and-tricks.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Win32 Tips & Tricks</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      15 May 2001
+    
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Win32 Tips &amp; Tricks">
+    <meta itemprop="description" content="IntroductionThis page presents a few win32 programming tips that I have picked up whilst learning to program Windows.">
+    <meta itemprop="datePublished" content="May 15, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Win32 Tips &amp; Tricks
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Win32 Tips & Tricks</h1-->
+<!--h3>A page presenting many useful tips for Windows programming</h3-->
+
+<h2 id="introduction">Introduction</h2>
+<p>This page presents a few win32 programming tips that I have picked up whilst learning to program Windows.</p>
+
+<h2 id="filling-areas-with-a-solid-colour">Filling areas with a solid colour</h2>
+<p>The <code class="highlighter-rouge">ExtTextOut</code> API call is the fastest and simplest way to fill a rectangular area with a solid colour. Most people are aware of the <code class="highlighter-rouge">FillRect</code> API call. The disadvantage of this function is that it requires the user to supply a handle to a brush, which also means that you must look after this brush yourself. <code class="highlighter-rouge">PatBlt</code> is another fast way to fill an area with a brush, but has the same inconveniences as <code class="highlighter-rouge">FillRect</code>. By using the <code class="highlighter-rouge">ETO_OPAQUE</code> flag in the call to <code class="highlighter-rouge">ExtTextOut</code>, and supplying a zero-length string to display, you can quickly and easily fill a rectangular area using the current background colour.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">PaintRect</span><span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span><span class="n">rect</span><span class="p">,</span> <span class="n">COLORREF</span> <span class="n">colour</span><span class="p">)</span> 
+<span class="p">{</span> 
+    <span class="n">COLORREF</span> <span class="n">oldcr</span> <span class="o">=</span> <span class="n">SetBkColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">colour</span><span class="p">);</span> 
+    <span class="n">ExtTextOut</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ETO_OPAQUE</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> 
+    <span class="n">SetBkColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">oldcr</span><span class="p">);</span> 
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<h2 id="dragging-a-window-by-its-client-area">Dragging a window by its client area</h2>
+<p>The simplest way to drag a window by its client area (or drag a window if it has no title bar), is to handle the <code class="highlighter-rouge">WM_NCHITTEST</code> message that is sent to every window when a mouse event occurs. By returning a value of <code class="highlighter-rouge">HTCAPTION</code> from the <code class="highlighter-rouge">WM_NCHITTEST</code> message handler, you can fool windows into thinking that the mouse is over a caption bar, and the window can be dragged around with the mouse. It is best to only allow dragging by the client area of a window - otherwise, the window borders would become unusable. To achieve this, call the default window procedure, and check if its return value is <code class="highlighter-rouge">HTCLIENT</code> - if it is, then return <code class="highlighter-rouge">HTCAPTION</code> instead. Otherwise, just let the default behaviour take place.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UINT</span> <span class="n">uHitTest</span><span class="p">;</span> 
+<span class="p">...</span> 
+<span class="k">case</span> <span class="n">WM_NCHITTEST</span><span class="p">:</span> 
+    <span class="n">uHitTest</span> <span class="o">=</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_NCHITTEST</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span> 
+
+    <span class="k">if</span><span class="p">(</span><span class="n">uHitTest</span> <span class="o">==</span> <span class="n">HTCLIENT</span><span class="p">)</span> 
+        <span class="k">return</span> <span class="n">HTCAPTION</span><span class="p">;</span> 
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">uHitTest</span><span class="p">;</span> 
+</code></pre></div></div>
+
+<h2 id="get-the-mouse-position-at-any-time">Get the mouse position at any time</h2>
+
+<p>The current mouse position can always be retrieved with a call to <code class="highlighter-rouge">GetCursorPos</code>. However, the API call <code class="highlighter-rouge">GetMessagePos</code> returns the mouse position at the time when the last message was posted.</p>
+
+<h2 id="automatically-include-a-library-from-a-source-file-visual-c">Automatically include a library from a source file (Visual C)</h2>
+<p>Including the following command in any source file will include a library search record in the resulting object file, which when it comes to link time, will ensure that the specified file will always be included.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma comment( lib, "filename.lib" ); 
+</span></code></pre></div></div>
+
+<h2 id="calculate-the-point-size-of-a-font">Calculate the point size of a font</h2>
+<p>The <code class="highlighter-rouge">LOGFONT</code> structure specifies the a fontsize in logical units, which is fairly useless in alot of cases. Alot of the time “points” are useful for displaying the size of a font in a user-interface. Use the following formula to convert from logical units to points, when using the <code class="highlighter-rouge">MM_TEXT</code> mapping mode.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">pointsize</span> <span class="o">=</span> <span class="n">MulDiv</span><span class="p">(</span><span class="n">logheight</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">LOGPIXELSY</span><span class="p">));</span> 
+</code></pre></div></div>
+
+<p>To convert from points back to logical device coordinates, use</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">logheight</span> <span class="o">=</span> <span class="o">-</span><span class="n">MulDiv</span><span class="p">(</span><span class="n">pointsize</span><span class="p">,</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">LOGPIXELSY</span><span class="p">),</span> <span class="mi">72</span><span class="p">);</span> 
+</code></pre></div></div>
+
+<h2 id="prevent-a-window-from-being-resized">Prevent a window from being resized</h2>
+<p>There are three ways to prevent a window from being resized.</p>
+<ol>
+  <li>Make sure the window does not have the <code class="highlighter-rouge">WS_THICKFRAME</code> style set, as this allows the user to resize the window.</li>
+  <li>Handle the <code class="highlighter-rouge">WM_GETMINMAXINFO</code> message.</li>
+  <li>Handle the <code class="highlighter-rouge">WM_SIZING</code> message.</li>
+</ol>
+
+<h2 id="change-the-colours-of-an-edit-control">Change the colours of an EDIT control</h2>
+<p>The best way to change the colours of an edit control is to handle the <code class="highlighter-rouge">WM_CTLCOLOREDIT</code> message in the parent window of the edit control. When you receive this message, you will have the device context in <code class="highlighter-rouge">wParam</code>. You can use <code class="highlighter-rouge">SetTextColor</code> and <code class="highlighter-rouge">SetBkColor</code> on this device context to set the colours. Lastly, you must return a handle to a brush (which you must assume ownership of), which is used to paint the edit control’s background.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_CTLCOLOREDIT</span><span class="p">:</span> 
+  <span class="n">hdc</span> <span class="o">=</span> <span class="p">(</span><span class="n">HDC</span><span class="p">)</span><span class="n">wParam</span><span class="p">;</span> 
+  <span class="n">SetTextColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span> <span class="c1">// red 
+</span>  <span class="n">SetBkColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span> <span class="c1">// yellow 
+</span>  <span class="k">return</span> <span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_3DHILIGHT</span><span class="p">);</span> <span class="c1">// hilight colour 
+</span></code></pre></div></div>
+
+<h2 id="center-a-window-relative-to-its-parent">Center a window relative to its parent</h2>
+<p>Here’s a quick and easy method to center any window relative to its parent window.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">CenterWindow</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwndParent</span><span class="p">;</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">,</span> <span class="n">rectP</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">;</span>      
+    <span class="kt">int</span> <span class="n">screenwidth</span><span class="p">,</span> <span class="n">screenheight</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+ 
+    <span class="c1">//make the window relative to its parent
+</span>    <span class="n">hwndParent</span> <span class="o">=</span> <span class="n">GetParent</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>    
+     
+    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwndParent</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rectP</span><span class="p">);</span>
+     
+    <span class="n">width</span>  <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span>  <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">;</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">;</span>    
+     
+    <span class="n">x</span> <span class="o">=</span> <span class="p">((</span><span class="n">rectP</span><span class="p">.</span><span class="n">right</span><span class="o">-</span><span class="n">rectP</span><span class="p">.</span><span class="n">left</span><span class="p">)</span> <span class="o">-</span>  <span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">rectP</span><span class="p">.</span><span class="n">left</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">((</span><span class="n">rectP</span><span class="p">.</span><span class="n">bottom</span><span class="o">-</span><span class="n">rectP</span><span class="p">.</span><span class="n">top</span><span class="p">)</span> <span class="o">-</span> <span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">rectP</span><span class="p">.</span><span class="n">top</span><span class="p">;</span>    
+ 
+    <span class="n">screenwidth</span>  <span class="o">=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXSCREEN</span><span class="p">);</span>
+    <span class="n">screenheight</span> <span class="o">=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYSCREEN</span><span class="p">);</span>
+ 
+    <span class="c1">//make sure that the dialog box never moves outside of//the screen
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span>  <span class="o">&gt;</span> <span class="n">screenwidth</span><span class="p">)</span>  <span class="n">x</span> <span class="o">=</span> <span class="n">screenwidth</span>  <span class="o">-</span> <span class="n">width</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">height</span> <span class="o">&gt;</span> <span class="n">screenheight</span><span class="p">)</span> <span class="n">y</span> <span class="o">=</span> <span class="n">screenheight</span> <span class="o">-</span> <span class="n">height</span><span class="p">;</span>    
+ 
+    <span class="n">MoveWindow</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="prevent-a-rebars-text-labels-from-flickering">Prevent a Rebar’s text labels from flickering</h2>
+<p>A rebar control is usually contained within the top portion of a main window. Whenever the main window’s size changes, the rebar must also be resized to fit. The obvious way to do this is to handle <code class="highlighter-rouge">WM_SIZE</code>, and use <code class="highlighter-rouge">MoveWindow(0, 0, width, rebar_height)</code> to size the rebar exactly. However, this causes the text labels on a rebar control to flicker. To prevent this from happening, size the rebar control to the cover total size of the main window’s client area. The rebar has some special sizing logic inside it which stretches the rebar across its parent’s width, but keeps its height constant, even though you told it to be stretched vertically as well. Believe it or not, this works: In the main window’s <code class="highlighter-rouge">WM_SIZE</code> handler:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_SIZE</span><span class="p">:</span> 
+  <span class="n">MoveWindow</span><span class="p">(</span><span class="n">hwndRebar</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LOWORD</span><span class="p">(</span><span class="n">lParam</span><span class="p">),</span> <span class="n">HIWORD</span><span class="p">(</span><span class="n">lParam</span><span class="p">));</span> 
+  <span class="p">...</span> 
+</code></pre></div></div>
+<h2 id="create-non-rectangular-windows">Create non-rectangular windows</h2>
+<p>The <code class="highlighter-rouge">SetWindowRgn</code> API can be used to give any window a non-rectangular shape. A region must be created, using any of the Region functions, such as <code class="highlighter-rouge">CreateRectRgn</code> or <code class="highlighter-rouge">CreateEllipticRgn</code>. The region coordinates must be window-relative.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRGN</span> <span class="n">hrgn</span><span class="p">;</span> 
+<span class="p">...</span> 
+<span class="n">hrgn</span> <span class="o">=</span> <span class="n">CreateEllipticRgn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="n">SetWindowRgn</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hrgn</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span> 
+</code></pre></div></div>
+<h2 id="update-the-text-in-a-status-bar">Update the text in a status bar</h2>
+<p>Here’s a useful function to set the text of any status bar pane using a <code class="highlighter-rouge">printf</code>-like call</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdarg.h&gt;
+</span>    
+<span class="cm">/* style can be SBT_NOBORDERS etc */</span>
+<span class="kt">void</span> <span class="nf">SetStatusBarText</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndSB</span><span class="p">,</span> <span class="kt">int</span> <span class="n">part</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">style</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">tmpbuf</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+    <span class="kt">va_list</span> <span class="n">argp</span><span class="p">;</span>
+    <span class="n">va_start</span><span class="p">(</span><span class="n">argp</span><span class="p">,</span> <span class="n">fmt</span><span class="p">);</span>
+
+    <span class="n">_vsnprintf</span><span class="p">(</span><span class="n">tmpbuf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">tmpbuf</span><span class="p">),</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">argp</span><span class="p">);</span>
+    <span class="n">va_end</span><span class="p">(</span><span class="n">argp</span><span class="p">);</span>
+
+    <span class="c1">//cannot use PostMessage, as the panel type is not set correctly
+</span>    <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndSB</span><span class="p">,</span> <span class="n">SB_SETTEXT</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">part</span> <span class="o">|</span> <span class="n">style</span><span class="p">,</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)(</span><span class="n">LPSTR</span><span class="p">)</span><span class="n">tmpbuf</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="display-the-customize-dialog-for-a-toolbar">Display the Customize dialog for a toolbar</h2>
+
+<p>The standard windows customization dialog for toolbars can be displayed by sending the toolbar the <code class="highlighter-rouge">TB_CUSTOMIZE</code> message.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndToolbar</span><span class="p">,</span> <span class="n">TB_CUSTOMIZE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>You must remember to handle the <code class="highlighter-rouge">TBN_QUERYDELETE</code> and <code class="highlighter-rouge">TBN_QUERYINSERT</code> notifications, and return non-zero for both of these. Without them, the customize dialog will appear very briefly and then vanish.</p>
+
+<h2 id="resize-a-window-without-having-to-move-it">Resize a window without having to move it</h2>
+
+<p>The easiest way to resize or move a window is to use the <code class="highlighter-rouge">MoveWindow</code> API. There is another function though, <code class="highlighter-rouge">SetWindowPos</code>, which can be used just to resize a window, and to keep it in the same place, by specifying the appropriate flags.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">SizeWindow</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">SWP_NOMOVE</span> <span class="o">|</span> <span class="n">SWP_NOZORDER</span> <span class="o">|</span> <span class="n">SWP_NOACTIVATE</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="give-a-rebar-control-a-double-gripper">Give a Rebar control a double gripper</h2>
+
+<p>Does anyone else prefer the rebar controls that Internet Explorer 3 had? The ones with the double-grippers? There is an easy way to give the newer rebar controls (single-grippers) a new look, by using the custom draw feature that all common controls support.</p>
+
+<p>You must create the rebar’s bands with the <code class="highlighter-rouge">RBBS_GRIPPERALWAYS</code> style (to display the single vertical grip bar). You must also set each rebar band’s header size to around 10 pixels to allow extra room for the addtional gripper.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REBARBANDINFO</span> <span class="n">rbBand</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="n">rbBand</span><span class="p">.</span><span class="n">cbSize</span>   <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">REBARBANDINFO</span><span class="p">);</span>
+<span class="n">rbBand</span><span class="p">.</span><span class="n">fMask</span>    <span class="o">=</span> <span class="n">RBBIM_STYLE</span> <span class="o">|</span> <span class="n">RBBIM_HEADERSIZE</span> <span class="cm">/* include the others here */</span><span class="p">;</span>
+<span class="n">rbBand</span><span class="p">.</span><span class="n">fStyle</span>   <span class="o">=</span> <span class="n">RBBS_NOVERT</span> <span class="o">|</span> <span class="n">RBBS_CHILDEDGE</span> <span class="o">|</span> <span class="n">RBBS_GRIPPERALWAYS</span><span class="p">;</span>
+<span class="n">rbBand</span><span class="p">.</span><span class="n">cxHeader</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Handle the <code class="highlighter-rouge">WM_NOTIFY</code> message in the rebar control’s parent window. When you receive a <code class="highlighter-rouge">NM_CUSTOMDRAW</code> notification for your rebar, use the following function to draw the extra gripper:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">RebarCustomDraw</span><span class="p">(</span><span class="n">NMCUSTOMDRAW</span> <span class="o">*</span><span class="n">lpcd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">lpcd</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">dwDrawStage</span> <span class="o">==</span> <span class="n">CDDS_PREPAINT</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">CDRF_NOTIFYPOSTPAINT</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">lpcd</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">dwDrawStage</span> <span class="o">==</span> <span class="n">CDDS_POSTPAINT</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">lpcd</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">dwItemSpec</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+    
+        <span class="n">SetRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">rect</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">38</span><span class="p">);</span>
+        <span class="n">DrawEdge</span><span class="p">(</span><span class="n">lpcd</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">rect</span><span class="p">,</span> <span class="n">BDR_RAISEDINNER</span><span class="p">,</span> <span class="n">BF_RECT</span><span class="o">|</span><span class="n">BF_LEFT</span><span class="o">|</span><span class="n">BF_RIGHT</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">CDRF_DODEFAULT</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="calculate-the-size-of-a-menu-bar">Calculate the size of a menu bar</h2>
+
+<p>It is straight-forward to calculate the size of a menu bar, or even a drop-down menu. You can use the <code class="highlighter-rouge">GetMenuItemRect</code> function (available in all 32bit versions of Windows) to work out the size of each item, and then use a loop to add all of the individual items together to work out the size of the whole menu.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">GetMenuRect</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">HMENU</span> <span class="n">hmenu</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span><span class="n">pmenurect</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="n">SetRect</span><span class="p">(</span><span class="n">pmenurect</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">GetMenuItemCount</span><span class="p">(</span><span class="n">hmenu</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">GetMenuItemRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hmenu</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">rect</span><span class="p">);</span>
+        <span class="n">UnionRect</span><span class="p">(</span><span class="n">pmenurect</span><span class="p">,</span> <span class="n">pmenurect</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="share-data-between-multiple-processes-windows-nt">Share data between multiple processes (Windows NT)</h2>
+
+<p>The simplest way to share data between multiple instances of the same program is to create a new section in the executable. You must use a some form of protected access to the variable to prevent threading problems.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Instruct compiler to put g_SharedVariable in its own section,
+// so it can be shared amongst multiple instances
+</span><span class="cp">#pragma data_seg("Shared")
+</span>
+<span class="n">LONG</span> <span class="n">g_SharedVariable</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+<span class="cp">#pragma data_seg()
+#pragma comment(linker, "/section:Shared,rws")
+</span></code></pre></div></div>
+
+<h2 id="detect-when-the-mouse-has-left-a-window">Detect when the mouse has left a window</h2>
+
+<p>There are four ways to detect when the mouse has left a window</p>
+
+<ol>
+  <li>Use the <code class="highlighter-rouge">TrackMouseEvent</code> API and the <code class="highlighter-rouge">WM_MOUSELEAVE</code> message (Win98/NT4+)</li>
+  <li>By using <code class="highlighter-rouge">SetCapture</code> API. When the window first receives a <code class="highlighter-rouge">WM_MOUSEMOVE</code> message, set the mouse capture. When the mouse leaves the window, Windows will send the window one last <code class="highlighter-rouge">WM_MOUSEMOVE</code> (the coordinates will be outside the window’s client area). You can use this fact to detect when the mouse has left a window.</li>
+  <li>By using a Timer. When the mouse enters a window, set a timer going with a small interval (10ms, say). When the timer expires, check if the mouse is still in the window. If it is, then let the timer keep going. Otherwise, the mouse has left the window, and the timer can be stopped.</li>
+  <li>By using a mouse hook. When the mouse enters a window, install a mouse hook to monitor all mouse events. By checking for <code class="highlighter-rouge">WM_MOUSEMOVE</code> messages, you can check when the mouse has left a window and remove the hook appropriately.</li>
+</ol>
+
+<h2 id="undocumented-flags-for-getdcex">Undocumented flags for GetDCEx</h2>
+
+<p>(Curtesy of Feng Yuan) <code class="highlighter-rouge">GetDCEx</code> can be used to retrieve the device context for a window during processing of <code class="highlighter-rouge">WM_NCPAINT</code>. The documentation states that this is achieved by using</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GetDCEx</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hrgn</span><span class="p">,</span> <span class="n">DCX_WINDOW</span> <span class="o">|</span> <span class="n">DCX_INTERSECTRGN</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>However, this call never works, because there is an undocumented flag to include which is not mentioned anywhere.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GetDCEx</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hrgn</span><span class="p">,</span> <span class="n">DCX_WINDOW</span> <span class="o">|</span> <span class="n">DCX_INTERSECTRGN</span> <span class="o">|</span> <span class="mh">0x10000</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="generate-messages-during-compile-time">Generate messages during compile time</h2>
+
+<p>It is possible to produce messages in the compilation window when a certain line of source code is compiled. This can be very useful, as you can leave reminders or warnings that a certain section of code may need reviewing. Use the following #pragma statement to create a message to yourself whenever the source file is compiled:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma MESSAGE(Add error checking here later);
+</span></code></pre></div></div>
+
+<p>This is the macro itself. Place this in a header file and include it in any source file that you want to include this message capability for.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define chMSG(x) #x
+#define chMSG2(x) chMSG(x)
+#define MESSAGE(desc) message( __FILE__"(" chMSG2( __LINE__ ) ") : message : " #desc)
+</span></code></pre></div></div>
+
+<h2 id="undocumented-visual-c-stuff">Undocumented Visual C stuff</h2>
+
+<p>You can display x number of elements in the watch window, by specifying a number after the variable name.e.g. plist, 15 will display 15 elements of the array pointed to by plist (assuming plist is a pointer).</p>
+
+<p>&lt;/stdarg.h&gt;</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-05-15T00:00:00+00:00">May 15, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="win32/2001-05-20-insert-buttons-into-an-edit-control/index.html" class="pagination--pager" title="Insert buttons into an edit control
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/tips-and-tricks by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+</html>

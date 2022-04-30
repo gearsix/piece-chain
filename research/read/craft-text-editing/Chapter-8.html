@@ -1,0 +1,1126 @@
+<html>
+<title>The Craft of Text Editing: Chapter 8</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-8.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 8: User-Oriented Commands: The Command Loop</h1>
+
+<blockquote>
+He left it dead, and with its head<br>
+&nbsp;&nbsp;He went galumphing back.<br>
+</blockquote>
+
+<p>The previous two chapters described a way of dividing an
+implementation into parts and covered the internal sub-editor and
+redisplay.  This chapter describes the last part: the user-oriented
+commands.  This last part is what gives the editor its
+&quot;feel.&quot; It determines the overall command structure (the
+syntax) and what each of the commands does (the semantics).</p>
+
+<p>Command structure is a large enough topic to be divided into two
+chapters.  This chapter describes <i>how</i> to implement the command
+structure.  The next chapter covers command set design issues.  It
+thus describes <i>what</i> commands should be implemented.</p>
+
+<h2>The Core Loop: Read, Evaluate, Print</h2>
+
+<p>The command loop is built around a basic core.  This core reads in
+commands, evaluates (or executes) them, and prints the results.</p>
+
+<p><i>Reading commands</i> is the process of accepting user input and
+determining what operations the user wishes to perform.</p>
+
+<p><i>Evaluating commands</i> is the process of carrying out the
+user's wishes.  In general, this is done by executing a series of
+sub-editor calls.</p>
+
+<p><i>Printing the results</i> is the redisplay.</p>
+
+<p>The core loop looks like this:</p>
+
+<pre>
+	char c;
+
+	while (1) {
+		c = Key_Get();
+		if (Evaluate(c)) break;
+		Redisplay();
+		}
+</pre>
+
+<p>This loop accepts user input (a single character), evaluates it,
+exits (if the user has requested to quit the editor, causing
+<b>Evaluate</b> to return True), and invokes <b>Redisplay</b>.  This,
+like all program examples in this chapter, is a simplified version of
+just one of the many ways you can implement these functions.  They are
+meant as examples, not as limits.</p>
+
+<h3>The Evaluate Procedure</h3>
+
+<pre>
+	FLAG Evaluate(char c)
+		{
+		FLAG is_exit = FALSE;
+		FLAG is_arg = FALSE;
+		int arg = 1;
+
+		while (!(*commands[c])(&amp;is_arg, &amp;arg, &amp;is_exit, c)) {
+			c = Key_Get();
+			Redisplay();
+			}
+		return(is_exit);
+		}
+</pre>			
+
+<p>This is the core of the <b>Evaluate</b> routine.  The
+<b>is_exit</b> flag records whether the command is one to exit the
+editor.  The <b>is_arg</b> flag records whether the user has specified
+a repeat-count argument.  The <b>arg</b> variable records the
+repeat-count argument. </p>
+
+<p>This routine -- and the editor implementation -- is built around a
+set of command dispatch tables.  Each table is an array of pointers to
+procedures, indexed by command characters.  Thus, the element:</p>
+
+<pre>
+	commands['a']
+</pre>
+
+<p>would specify the procedure to handle the command designated by the
+&quot;a&quot; character.  These procedures all have the same
+interface.  This interface is:</p>
+
+<pre>
+	FLAG Command_Procedure(FLAG *is_argptr, int *argptr,
+		FLAG *is_exitptr, char c);
+</pre>
+
+<p>The first three arguments are <i>pointers</i> to the three state
+variables.  They are pointers instead of the values so that the
+command procedures can alter their values.  The fourth argument is the
+character that is used to invoke the procedure.  The procedure returns
+True if the command has completed, or False if the command is
+incomplete.</p>
+
+<p>The reasons for selecting this interface will be made clear through
+four sample command procedures: &quot;move by character,&quot;
+&quot;insert character,&quot; &quot;second-level dispatch,&quot; and
+&quot;accept an argument.&quot;</p>
+
+<h3>Move by a Character</h3>
+
+<p>This procedure moves forward by <i>arg</i> characters if <i>arg</i>
+is positive or backward by <i>arg</i> characters if <i>arg</i> is
+negative.  It looks like this:</p>
+
+<pre>
+	FLAG Move_by_Character(FLAG *is_argptr, int *argptr,
+		 FLAG *is_exitptr, char c)
+		{
+		Point_Move(*argptr);
+		return(TRUE);
+		}
+</pre>
+
+<h3>Insert a Character</h3>
+
+<p>This procedure inserts <i>arg</i> copies of the character used to
+invoke it.  If <i>arg</i> is negative, its absolute value is used.  It
+looks like this:</p>
+
+<pre>
+	FLAG Insert_A_Character(FLAG *is_argptr, int *argptr,
+		 FLAG *is_exitptr, char c)
+		{
+		int arg = *argptr;
+
+		if (arg &lt; 0) arg = -arg;
+		while (arg-- &gt; 0) Insert_Char(c);
+		return(TRUE);
+		}
+</pre>
+
+<h3>Second-Level Dispatch</h3>
+
+<p>This procedure doesn't implement a command itself.  Rather, it
+accepts a second character and uses that to select a command from a
+second dispatch table.  In this case, the &quot;^X&quot; character
+will be used as the dispatch.</p>
+
+<pre>
+	FLAG Ctrl_X_Dispatch(FLAG *is_argptr, int *argptr,
+		 FLAG *is_exitptr, char c)
+		{
+		char c;
+
+		c = Delayed_Display(CTRL_X_DELAY, &quot;^X &quot;);
+		return(*ctrl_x_commands[c])(is_argptr, argptr,
+			is_exitptr, c));
+		}
+</pre>
+
+<p>The <b>Delayed_Display</b> routine waits for a character and
+returns it.  If more than a specified amount of time passes with no
+input, the prompt string is displayed.</p>
+
+<p>Note that this routine passes the arguments and exit status to and
+from the second-level command routine.</p>
+
+<h3>Accept an Argument</h3>
+
+<p>Again, this procedure doesn't implement a command itself.  Rather,
+it performs one step of accepting a numeric argument.  For the
+purposes of this example, we will assume that all digit characters
+specify an argument and do not insert themselves.</p>
+
+<pre>
+	FLAG Argument(FLAG *is_argptr, int *argptr,
+		 FLAG *is_exitptr, char c)
+		{
+		if (!*is_argptr) {	/* no arg yet */
+			*is_argptr = TRUE;
+			*argptr = 0;
+			}
+		*argptr = *argptr * 10 + c - '0';
+		return(FALSE);
+		}
+</pre>
+
+<p>This routine is the first one that does not completely execute the
+command.  Rather, it modifies the state information that is passed to
+the command procedure itself.</p>
+
+<p>(Note: this routine does <i>not</i> implement the Emacs
+&quot;universal argument&quot; command, but is a simplified version
+for the purposes of this example only.  It actually performes
+<i>vi</i>-style argument handling.)</p>
+
+<h3>Philosophy</h3>
+
+<p>The loop as described puts few (theoretical) restrictions on the
+command syntax.  Each character, in its raw form, is mapped to a
+procedure which is in turn evaluated.  State information is passed to
+and from this procedure, which can either update the state
+information, perform an operation, or both.  Arbitrary syntax and
+semantics can be implemented with this base.</p>
+
+<p>In theory, a syntax of commands being words (<i>e.g.</i>,
+&quot;delete,&quot; &quot;move,&quot; etc.) could be implemented in
+this structure by having either a large number of dispatch tables (and
+thus implementing a symbol-state table architecture) or a procedure
+which parses the syntax of the command via conditional statements.  If
+you really want to do one of these, you will want to invent your own
+-- different -- internal structure.</p>
+
+<h3>A Minimalist Command Set Design</h3>
+
+<p>Consider the thought that every character that is typed at the
+keyboard causes a procedure to be executed.  The first conclusion that
+results is that it is silly to type &quot;insert x&quot; or anything
+like that when you want &quot;x&quot; to be inserted.  As this is a
+very common operation, it makes more sense to bind the key
+&quot;x&quot; to an &quot;InsertX&quot; function (or, more probably,
+the <b>Insert_A_Character</b> procedure just defined).</p>
+
+<p>This architecture binds all of the straight, printing ASCII
+characters to commands that insert the character.  The remaining
+things that can be entered from most keyboards are the control
+characters, the delete key, and the break key.  These could be bound
+to functions that implement a complex syntax, but why bother?  It is
+not too difficult for users to learn even a large number of key
+bindings, so let us bind the control keys directly to useful
+functions.  For example, ^F could be &quot;move forward a
+character,&quot; ^D could be &quot;delete the following
+character,&quot; and so forth.  Note that the &quot;break&quot; key
+does not have an ASCII value and is therefore difficult to use without
+writing operating system-specific code.</p>
+
+<p>Thirty-three functions (the 32 control characters plus the Delete
+character) are not enough for even the commonly used functions. Thus,
+some of the keys should be bound to functions which temporarily rebind
+the dispatch table.  For each of these rebinding functions, 128 new
+functions are made available (there is no reason for the printing
+characters in those second-level tables to be bound to &quot;self
+insert&quot;).</p>
+
+<p>Thus, even though we began with a structure for the command loop
+that did not impose any constraints on the syntax of commands (and
+thus was as general as possible), we arrived at a specific syntax for
+commands.  This syntax is to bind the printing characters to
+&quot;self insert,&quot; bind the control characters to a mixture of
+useful functions and second-level dispatch tables, and to have three
+or four alternate dispatch tables (enough to supply many hundreds of
+commands).  Thus, commands are rarely more than two keystrokes long.
+The price that is paid for this brevity is a possibly longer time
+learning to use the editor effectively.</p>
+
+<p>Note that most of the increased time spent learning the editor is
+<i>not</i> from the brevity of the commands, but because there are
+more commands to learn.  Given a &quot;conventional&quot; editor of
+some other command set design (<i>e.g.</i>, insert/replace modes or
+command lines) and an equivalent subset of this &quot;minimalist&quot;
+editor, learning times will probably be comparable when the same
+number of commands from each are covered (assuming sensible command
+assignments in both cases).</p>
+
+<h2>Errors</h2>
+
+<p>There are two main types of errors: internal and external.
+Internal errors are those that occur in the editor itself.  Examples
+are a subscript being out of range and division by zero. External
+errors are those that are caused by the user.  Examples of these are
+an attempt to delete off the end of the buffer.  There are also
+&quot;non-error&quot; errors, such as a normal exit condition.  Errors
+can be detected both from within the editor and from outside the
+editor (for example, by the operating system).</p>
+
+<h3>Internal Errors</h3>
+
+<p>Internal errors will be considered first.  These errors cause an
+immediate exit to the operating system with no questions asked and no
+delays tolerated.  They will be internally generated by such things as
+arithmetic overflows and bad subscripts. (While the editor might catch
+and process some of these, it will not in general process them all.
+This section only discusses the non-processed ones.)  These errors are
+unpredictable and the state of the editor should remain intact.</p>
+
+<p>The user should also be able to signal such an error to abort out
+of the editor.  He or she might want to do this signaling because of a
+problem with the editor itself (<i>e.g.</i>, infinite loop) or because
+he or she wants to do something else (<i>e.g.</i>, suspend this
+process and do another task).  This signaling is usually done with the
+help of the operating system.  In any case, the precise state of the
+editor should be retained so that it can be resumed exactly where it
+left off.  Most operating systems have some facility for doing this;
+they differ principally in the freedom of action that they allow
+before losing the state.  This freedom ranges from nothing to doing
+arbitrarily many other things.</p>
+
+<p>At the user's discretion, the editor should be restartable either
+from exactly where it left off or at a safe restart point.  This point
+is ordinarily a portion of the editor which recovers the buffers and
+other current state information and then resumes the command loop.
+Note that in many implementations, the editor must perform actions
+both on the process suspension and when it resumes.  These actions
+must handle saving and restoring the state, restoring and saving the
+display modes, and taking note of any changes in the environment, such
+as a window resizing.</p>
+
+<h3>External Errors</h3>
+
+<p>External errors are principally user errors.  The action ordinarily
+taken is the display of an error message and a return to command
+level.  The implementation of this level of recovery is built into the
+procedures which implement the commands.</p>
+
+<p>There is a variation of external errors which are generated
+manually by the user.  Typically, these involve backing out of an
+undesired state (<i>e.g.</i>, the unwanted invoking of a dispatch
+table rebinding or aborting an undesired argument).  The ^G character
+has often been used for this purpose.  In this case, the procedures
+will know that this character has been typed and will implement the
+back-out protocol.</p>
+
+<h3>Exiting</h3>
+
+<p>Finally, provisions to exit the editor must be made.  These
+provisions often take the form of a flag variable such as the
+<i>is_exit</i> variable described earlier.</p>
+
+<p>Note that various other uses might be multiplexed onto this flag,
+signifying varying levels of &quot;exiting.&quot; For example, one
+level could be used by buffer switching in order to rebind the
+dispatch tables (see the section on modes later in this chapter).
+Alternatively, the different functions could use multiple flag
+variables.</p>
+
+<p>Ordinary exiting involves several types of processing.  The editor
+might ask the user what to do with buffers that have been modified but
+not written out.  If, as is ordinarily assumed, the state of the
+editor is preserved across invocations, the state must be saved.  If
+not, it must be sure that all memory is deallocated.  Finally, the
+user's environment should be restored as it was found.  This implies
+such varied things as cleaning up the stack, closing files,
+deallocating unneeded storage, and resetting terminal parameters.</p>
+
+<h2>Arguments</h2>
+
+<p>Arguments are specified by the user to modify the behavior of a
+function.  The Emacs argument mechanism will be described as an
+example of three diverse ways in which arguments are obtained.</p>
+
+<p>There are three standard argument types.  First are numeric
+(prefix) arguments.  These are invoked by a string of functions (which
+are in turn invoked by characters typed before the &quot;actual&quot;
+command character) and are an example of using the key/function
+binding to implement a more complicated syntax.  Next are string
+(suffix) arguments.  When obtaining a string argument, the editor is
+invoked recursively on an argument buffer, and upon return from the
+recursive invocation the contents of that buffer are given to the
+requesting procedure.  Last are positional arguments.  These are the
+internal variables of the editor.</p>
+
+<h3>Numeric (Prefix) Arguments</h3>
+
+<p>Prefix arguments are entered before the command whose behavior the
+arguments are modifying, thus, their syntax does not depend upon the
+command.  The interpretation of prefix arguments can vary from command
+to command. Emac type editors limit these arguments to numeric
+values.</p>
+
+<p>Ordinarily, commands will have an internal variable available to
+them named something like <i>arg</i>, and it will have a value of one.
+Prefix arguments allow the user to change that value to any other
+positive or negative integer.  It is useful to provide a mechanism for
+command procedures to determine whether an argument has been given at
+all.  This mechanism allows the procedures to handle the default case
+where no arguments are supplied differently than the case where an
+argument is supplied.</p>
+
+<p>Each command uses arguments for different, but related,
+purposes.</p>
+
+<p>The first purpose is to specify a repeat count for a command.
+Thus, specifying an argument of &quot;12&quot; to the &quot;forward
+character&quot; command would cause the command to move forward 12
+characters.</p>
+
+<p>The second purpose is to tell a command to use a specific value.
+For example, it doesn't make sense to say &quot;move to the end of the
+buffer&quot; 12 times.  Instead, that command might interpret its
+argument as a line number and move to the specified line of the
+buffer.  In this case, the &quot;default&quot; value would be the (end
+of the) last line.</p>
+
+<p>An Emacs-type text editor uses the ^U character as the
+&quot;universal argument&quot; function.  It can be used in either of
+two ways.  ^U <i>command</i> means to supply an argument of
+&quot;4&quot; to command.  Adding another ^U means to multiply the
+current argument by four.  Thus, ^U ^U ^U <i>command</i> means to
+supply an argument of 64 to the command.  The factor of 4 was selected
+because 5 is too large (1, 5, 25, 125 goes up too fast) and, while 3
+might have better spacing (1, 3, 9, 27, 81, 243), the powers of 4 are
+known by all people who are likely to be around computers.  In
+addition, on a 24 x 80 display, 64 is about the number of characters
+per line and 16 is 2/3 of the screen height.</p>
+
+<p>The other use is to specify a value exactly.  ^U <i>number</i>
+<i>command</i> means to supply an argument of <i>number</i> to the
+command.  For example, ^U - 1 4 7 <i>command</i> means to supply an
+argument of -147 to the command.  The ^U in this case serves as an
+&quot;escape&quot; to logically rebind the digit and &quot;-&quot;
+keys.  If you want to supply an argument to the commands normally
+invoked by the digit and '-' characters, you use the quote command,
+located on ^Q.</p>
+
+<p>On some terminals, there are two sets of numeric keys.  One set is
+across the top row and always sends the ASCII code for the
+corresponding digit character.  Another set may form a numeric pad and
+its keys can be configured to send either the ASCII codes for the
+digit characters or different codes.  In this case, these &quot;other
+numbers&quot; can be bound directly to functions that set up the
+implied arguments and the initial ^U is not needed.</p>
+
+<h3>String (Suffix) Arguments</h3>
+
+<p>Numeric arguments are made available in the same way to all
+commands.  Suffix arguments, however, must be explicitly requested by
+the commands that use them.  A command may also request multiple
+suffix arguments.  Most suffix arguments are for strings, not
+numbers.</p>
+
+<p>The program notifies the user of the string argument by displaying
+a prompt.  This prompt indicates the type of argument that is
+requested.  The user responds by entering the value up through and
+including a terminating character.  The command then proceeds to
+execute, using the value in whatever way is appropriate.</p>
+
+<p>The following points should be taken into consideration regarding
+string arguments.</p>
+
+<p>First, the prompt should clearly state what is being asked for --
+for example, &quot;Name of the file to be read.&quot;</p>
+
+<p>Second, the key or key sequence used to terminate the end of the
+string should be able to vary and should be indicated in the prompt --
+for example, &quot;Name of the file to be read (Return): &quot; or
+&quot;String to search for (ESC): &quot; There should be a way to
+cleanly abort out of the prompt and its requesting command.  This
+should be the same command used for the &quot;abort&quot; command
+(<i>e.g.</i>, ^G).  </p>
+
+<p>Third, in order to facilitate the abort process, the command should
+<i>first</i> ask for all user input, and only <i>then</i> perform any
+actions.  This organization means that any abort will result in no
+effect rather than leave inconsistent state information.</p>
+
+<p>Each command that requests a string prompt should provide a default
+value for the prompt.  This value should be used if the user enters a
+null response.  The value should be the program's best guess about
+what value the user would most likely want to enter.  If no other
+guess is available, the last value entered should be used.</p>
+
+<p>Here are some examples of string arguments:</p>
+
+<ul>
+<li>Search string: Ask for a string and search for the next occurrence
+of it in the buffer. If the user enters a null string, use the same
+string that was last entered.
+
+<li>Write file: Ask for a string and, using it as a file name, write
+the contents of the buffer to the specified file.  If the user enters
+a null string, use the current file name associated with the buffer.
+
+<li>Change buffer: Ask for a string and switch to the buffer whose
+name is the user's response.  If the user enters a null string, use
+the buffer that was last the current one (<i>i.e.</i>, the one that
+the user was in before the one that the user is in now).  Note that
+this default may <i>not</i> be the one whose name was last entered.
+</ul>
+
+<p>Here are some example prompts:</p>
+
+<ul>
+<li>Name of the file to write to (Return, default /home/fin/test):
+<li>String to search forward for (ESC):
+<li>Name of the buffer to switch to (^M, default chapter5):
+</ul>
+
+<p>While these examples were requesting a character string, this need
+not always be the case.  For example, to enter numeric values, the
+requesting procedure merely has to convert the read-in character
+string to a numeric value.  An example of such a command would be a
+&quot;go to line&quot; command.</p>
+
+<p>One way to implement the routine that accepts string arguments is
+to use a variation of the <b>Get_Line</b> routine defined in the
+Introduction.  However, a better way to implement this routine is to
+create an argument buffer in a new window, display a prompt, and call
+the editor recursively with that as the current buffer.  By following
+this scheme, the full power of the editor is available to correct
+typing mistakes or otherwise make the entry process easier.  It has
+the additional advantage of not creating a new &quot;mode&quot;: the
+user is free to continue editing while responding to the prompt.</p>
+
+<p>Further, the full power of the editor can be brought to bear on a
+problem.  For example, suppose that someone sends you a mail message
+that says &quot;the answer is in file X.&quot; While reading the mail
+message, you give the &quot;find file&quot; command.  This command
+prompts you to enter a file name.  You switch buffers (from the prompt
+buffer to the mail message buffer), copy the file name, switch back,
+and paste it into the prompt, then type the prompter terminator.
+<i>Voila</i>!  A fully integrated, modeless environment.</p>
+
+<p>Finally, the prompts need not be &quot;lifeless&quot; and
+&quot;passive.&quot; A passive prompt just accumulates the input until
+complete, then passes it back as a block.  It has no interaction.  A
+&quot;lively&quot; and &quot;active&quot; prompt offers interaction
+with the user.  For example:</p>
+
+<ul>
+<li><b>Searching</b>: The search can be <i>incremental</i>, with the
+search proceeding as the user types.
+<li><b>File names</b>: The program can offer <i>file name
+completion</i>, where the user can enter a prefix, press a key, and
+the program fills in as much of the file name as possible.  A
+different key might display a list of all file names that match what
+has already been typed.
+</ul>
+
+<h3>Positional Arguments</h3>
+
+<p>Positional arguments are not directly specifiable by the user. They
+are the editor's internal state variables. Such variables include both
+those required by the editor (<i>e.g.</i>, the length of the buffer,
+the locations of the point and the mark, etc.) and those which have a
+specialized purpose (<i>e.g.</i>, the current value of the right-hand
+margin, the tab spacing, etc.).</p>
+
+<p>Often these values are used in unusual ways.  For example, the
+horizontal position (column) of the point can often be a more pleasant
+way of specifying a value than entering a number.  The user can
+indicate that &quot;this is where I want the right margin to be&quot;
+instead of having to count characters to get a number.</p>
+
+<p>A specialized positional argument is the <i>region</i>.  This is
+the range of text delimited by the point and the mark.  By convention,
+it does not matter whether the point or the mark is placed earlier in
+the buffer.</p>
+
+<h3>Selection Arguments</h3>
+
+<p>The use of graphical input devices opens up new ways of issuing
+commands and specifying arguments.  For example, the cursor can be
+moved by a graphical input device as well as the more traditional
+point-motion commands.  In addition, a region can be specified by a
+&quot;click and drag&quot; operation (or whatever sequence is used by
+the operating system).</p>
+
+<h2>Rebinding</h2>
+
+<p><i>Binding</i> is the act of connecting a name and a meaning,
+<i>rebinding</i> the act of changing the binding.  In the case of
+editors, there are two different levels that binding (and rebinding)
+can occur on.</p>
+
+<p>The first is at the key level.  Binding in this case mean attaching
+an operation to a key. These bindings are often implemented by means
+of a dispatch table.</p>
+
+<p>The second is at the function level.  Binding in this case means
+attaching a procedure to an operation.  Again, these bindings are
+often implemented by means of a dispatch table.</p>
+
+<p>For example, the alphabetic keys may be bound to the
+&quot;insert&quot; operation.  This operation, in turn, can be bound
+to a variety of procedures:</p>
+
+<ul>
+<li>The basic &quot;insert a character&quot; procedure.
+<li>The basic procedure, but one that saves a copy of the buffer every
+so often.
+<li>The basic procedure, but one that performs word wrap (by inserting
+hard newlines, not in redisplay).  This is often called something like
+&quot;fill mode.&quot;
+<li>A different basic procedure, say one that performs replacement
+(overwrite) instead of insertion.
+</ul>
+
+<p>Implementations can perform at one of two levels of rebinding:
+static and dynamic.  Static rebinding is when the new procedure is
+known about at the time that the editor is invoked.  All
+implementations can perform this level of rebinding.  Dynamic
+rebinding is possible when the new procedure can be defined after the
+editor is invoked.  Unless otherwise stated, this discussion assumes
+dynamic rebinding.</p>
+
+<p>To a first approximation, editors that are written in compiled
+languages (<i>e.g.</i>, C and Pascal) can only perform static
+rebinding, and editors that are written in interpreted languages
+(<i>e.g.</i>, Lisp) can also perform dynamic rebinding.  Dynamic
+linking, however, allows compiled editors to include new procedures at
+run time, and so this distinction is not always a proper one to make.
+Dynamic bindings are also possible when a compiled language is used to
+implement an interpreted language, which in turn implements at least
+the user command portion of the editor.</p>
+
+<h3>Rebinding Keys</h3>
+
+<p>The process of key rebinding is relatively simple and is done
+essentially the same way in all implementations.  A set of dispatch
+tables is used to map keys (represented by their ASCII values) to
+their respective functions.</p>
+
+<p>In languages such as C and Lisp, the table can contain the pointer
+to the procedures themselves.  In less powerful languages such as
+Fortran and Pascal, the dispatch table branches to a different part of
+the same routine that contains the table.  There, the procedure call
+is made.  In languages that supply it, a case statement can be used
+instead of the n-way branch.</p>
+
+<p>All of these command procedures have the same formal parameters,
+and so they can all be invoked with the same calling sequence.  Thus,
+the C and Lisp direct invocations can work properly.  Note also that
+simple commands do not have to have a separate procedure assigned to
+them, but the code to execute them can be placed in-line in place of a
+call (where the case-statement equivalent is used).  Making this
+substitution loses some potential flexibility.</p>
+
+<h3>Rebinding Functions</h3>
+
+<p>Dynamic rebinding is ordinarily a language-supplied feature and so
+it will not be discussed in depth.  Two comments will, however, be
+made on how to simulate it.</p>
+
+<p>If the underlying operating system has dynamic linking
+(<i>e.g.</i>, Multics, OS/2, and some new UNIX systems), a procedure
+may be rebound at run time.  Dynamic linking is a way of linking
+procedures together in which the actual link is not made until the
+procedure is about to be executed.  At that time, the procedure is
+located in the file system and brought into memory.  The link may
+either be left alone, in which case the next call will have the
+procedure re-located (a relatively expensive process) or it may be
+<i>snapped</i>. Snapping a link is the process of converting the
+general call instruction (which is kept in a special, writeable part
+of the program) into a call instruction to the appropriate address.
+If a link is snapped, it must be explicitly unsnapped before any
+rebinding is done.</p>
+
+<p>If the operating system does not support dynamic linking, you might
+choose to simulate it manually.  Such a process is complex, and some
+thought will have to be given to the desirability of rebinding
+functions.  The process is tantamount to explicit overlaying.</p>
+
+<p>This all has a straightforward bearing on rebinding
+functions. Rebinding a function involves changing the definition of
+the procedure that is invoked by referencing it.  What has been
+discussed are ways of changing such a procedure definition.  Note that
+if the code to execute a function is inserted in-line in the basic
+editor, it cannot be rebound by any of these methods.</p>
+
+<p>If dynamic linking is not available and is not feasible to
+simulate, there is still one way out.  This way will only provide
+static rebinding.  Instead of just using one dispatch table which
+indicates a procedure to be called directly, use two.  Use use the
+first table to map from keys to the operation to be performed
+(<i>e.g.</i>, ^F is mapped to &quot;moving forward one
+character&quot;) and the second table to map from the operation to be
+performed to a procedure that will perform it (<i>e.g.</i>,
+&quot;moving forward one character&quot; is mapped to the
+<b>Forward_Char</b> procedure).</p>
+
+<h2>Modes</h2>
+
+<p>A <i>mode</i> is a collection of command rebindings. Modes can be
+invoked implicitly, explicitly, or automatically.</p>
+
+<p>An <i>implicitly</i> invoked mode is one that is not visible to the
+user.  Implicit modes are used to support large, infrequently used
+commands.  For example, suppose that you had an editor command that
+played the game Adventure.  You probably wouldn't want the code for
+that command to be occupying resources whenever you were using your
+editor for editing. However, you might still want to make your
+&quot;adventure&quot; command available at all times.  In this case,
+you would use an implicit mode.  The &quot;adventure&quot; command
+would then take these steps:</p>
+
+<ul>
+<li>Load the modules that implement the command.
+<li>Rebind the key that invoked the &quot;adventure&quot; command to
+run the new code.
+<li>Run the code the first time.
+</ul>
+
+<p>From now on, whenever the user gives the &quot;adventure&quot;
+command, the editor will directly execute that code.</p>
+
+<p>An <i>explicitly</i> invoked mode is one that the user asks to use.
+Examples of such modes are &quot;auto fill&quot; mode, &quot;auto
+save&quot; mode, and alternate command sets.  The common element is
+that the user gives a command, knowing that that command itself has no
+function other than to persistently alter the key bindings.</p>
+
+<p>An <i>automatically</i> invoked mode is one which the
+implementation determines is appropriate to invoke, based on a command
+given by the user that &quot;appeared&quot; to do something else.</p>
+
+<p>One example of an automatically invoked mode is a language mode
+(for example, a &quot;C&quot; mode). This mode will automatically be
+invoked whenever the user edits a C source file (by convention, one
+whose name ends in &quot;.c&quot; or &quot;.h&quot;).  Such a mode
+might do the following:</p>
+
+<ul>
+<li>Rebind the internal variable that identifies which characters are
+legal in tokens (<i>i.e.</i>, variable names) to also include the
+&quot;_&quot; character, which can occur within C names.  This change
+would make the <b>Forward_Word</b> function treat a C variable name as
+a word.
+
+<li>Similarly rebind the sentence and paragraph operations to operate
+on statements and language blocks.
+
+<li>Rebind the &quot;;&quot; key to be an &quot;electric&quot;
+semicolon so that typing a &quot;;&quot; to finish one statement would
+cause the editor to determine and insert the appropriate indentation.
+
+<li>Similarly rebind the Tab, Return, and Line Feed keys.
+
+<li>Replace the &quot;fill&quot; or &quot;reformat&quot; paragraph
+command with one that &quot;prettyprints&quot; the current language
+block.
+</ul>
+
+<p>And so forth.  Another example of an automatically invoked mode is
+the specialized mode that the editor places you in when executing such
+commands as &quot;help,&quot; &quot;read mail,&quot; and &quot;view a
+directory.&quot; In these commands, the user is effectively placed in
+a specialized application that shares as much as possible with the
+regular editor commands, but does have its own extra commands.  For
+example, in the &quot;view a directory&quot; application, the
+&quot;d&quot; key might delete a file, the &quot;r&quot; key might
+rename a file, and so forth.  However, the &quot;buffer&quot; or
+&quot;window&quot; switch command should still be available so that
+the user can perform other editing while the special application is
+active.</p>
+
+<h3>Modes and Dynamic Rebinding</h3>
+
+<p>The function rebindings that are commonly done by an editor are
+known in advance and so they can be done by any implementation (see
+the preceding section for a discussion of the difficulties involved in
+function rebinding).  Fully dynamic rebinding (the new definition of
+the procedure is not known until run time) is desirable for several
+reasons:</p>
+
+<ul>
+<li>Debugging is greatly eased if the trial-and-error cycle time is
+reduced by not having to compile and link the whole editor each time.
+Instead, only one function has to be recompiled and linked.
+
+<li>Space savings are achieved if unneeded modes and autoloaded single
+functions are not brought into memory until called.
+
+<li>If the editor is implemented in an interpreted language, users can
+develop their own functions relatively easily.  Such
+&quot;sideline&quot; development is advantageous because it allows
+many people to develop useful programs.  Thus, the editor can be
+specialized in many more ways than any reasonable support group could
+ever implement on its own.  Implementation in an interpreted language
+also encourages tailoring the editor to a user's own taste, enhancing
+his or her productivity.
+</ul>
+
+<h3>Implementing Modes</h3>
+
+<p>Modes are defined on a per-buffer basis and so an implementation
+must provide for changing these bindings as the current buffer is
+switched.  The general technique for doing this is to have a set of
+default bindings for the editor, a set of current bindings for each
+buffer, and a set of procedures that can be invoked to change the
+former into the latter.  When a buffer switch is made, the current
+bindings are used to dispatch all commands.</p>
+
+<p>Whenever a change to the mode list is made -- especially one that
+removes a mode -- the editor must initialize the current bindings to
+the default bindings, then invoke each mode procedure in turn to make
+its changes.</p>
+
+<h2>Changing Your Mind</h2>
+
+<p>This section discusses the methods used to help users who want to
+change their minds about an editing command.</p>
+
+<h3>Command Set Design</h3>
+
+<p>By far the most effective step that you can take is to design the
+command set to minimize both state variables and changes of
+perspective.  Such proper design is far more effective than any other
+tool.  However, as these topics are covered in the next chapter and in
+Chapter 1, they won't be discussed here.</p>
+
+<h3>Kill Ring</h3>
+
+<p>The most basic way in which a user can change his or her mind is to
+delete something, then say &quot;oops, I didn't want to delete
+that.&quot; After all, if the user inserted extra text, deleting it is
+easy and straightforward.  However, retyping accidentally deleted text
+is in general neither easy nor straightforward.  Hence, an important
+feature to provide is the ability to save that text for the user.
+This feature can be added as a single-level save (referred to as the
+<i>kill buffer</i>) or a multiple-level save (the <i>kill
+ring</i>).</p>
+
+<p>As an extra benefit, once the deleted text is saved, that feature
+can be used for &quot;cut and paste&quot; operations.  In addition,
+the saved text can be tied into the system &quot;clipboard&quot; or
+similar facility.</p>
+
+<p>An Emacs-type editor records multiple text-deletions in a
+&quot;kill ring&quot; (for historical reasons, commands that save the
+deleted text were called &quot;kill&quot; commands).  Some small but
+fixed number of the successive deletions are stored together.  The
+&quot;yank&quot; or &quot;paste&quot; command retrieves the last such
+deletion (inserting it at the point).  Alternate &quot;yank&quot;
+commands are available that cycle through the kill ring, re-deleting
+the last-yanked text and replacing it with the next item.  (A ring is
+better than a single kill buffer because it can store multiple
+deletions.  It is superior to a stack of separate buffers because of
+the ease with which various &quot;undeletions&quot; can be tried
+out.)</p>
+
+<p>It is easy to implement such a kill ring.  A buffer is designated
+as the one to hold the deleted text and the commands that perform the
+deletion simply copy the text that they are about to delete to that
+buffer before performing the actual deletion.  There are two fine
+points to the implementation.</p>
+
+<p>First, successive deletion commands should add to the current
+deletion, not create a new one.  Thus, the Emacs commands:</p>
+
+<pre>
+	^U ^[ d
+</pre>
+
+<p>which deletes the next four words, should have exactly the same
+effect as:</p>
+
+<pre>
+	^[ d ^[ d ^[ d ^[ d
+</pre>
+
+<p><i>i.e.</i>, four successive &quot;delete word&quot; commands.  In
+both cases, all four words should be part of the same deletion.</p>
+
+<p>Second, your implementation must take care to delete properly.
+Deleting <i>following</i> items (characters, words, sentences, etc.)
+should add to the <i>end</i> of the deleted text.  Deleting
+<i>previous</i> items should add to the <i>beginning</i> of the
+deleted text.  Not coincidentally, all deletion commands in the
+command set of Emacs-type editors are of the form &quot;delete
+following...&quot; or &quot;delete previous...&quot; with the
+exception of the &quot;delete current line&quot; command.  This
+command must take the text from the point to the end of the line and
+add it to the end of the deleted text, and take the text from the
+point to the beginning of the line and add it to the start.</p>
+
+<h3>Undo</h3>
+
+<p>The &quot;kill ring&quot; approach requires explicit support from
+the user commands and provides considerable power, yet there are many
+ways in which it does not make it easy for a user to change his or her
+mind.  An &quot;undo&quot; facility is the most general way that you
+help a user when he or she changes his or her mind.</p>
+
+<p>In principle, an undo facility provides a mechanism for reversing
+changes made by the user.  These effects can be as simple as moving
+the point or inserting or deleting a character, or as complex as a
+file write or global replace.</p>
+
+<p>Note, however, that you may still want to provide the kill ring, as
+it offers both one intuitive (if limited) type of undo, as well as
+operations that undo cannot perform.  For example, you cannot
+implement &quot;cut and paste&quot; with undo, except for the limited
+case where you only want to paste the text exactly where you cut it
+from!</p>
+
+<p>Unlike the kill ring, which requires explicit support in the user
+commands, the best place to provide support for undo is in the
+sub-editor interface.  Note that this is in the interface, not the
+sub-editor itself, although in general the undo facility will work
+closely with the sub-editor.</p>
+
+<p>The support works like this: each sub-editor procedure that makes
+any change to a state variable or the buffer first makes a note of
+what is to be changed, then records the pre-change value, then finally
+makes the change.  For example, the <b>Point_Set</b> routine would
+record &quot;the point is about to change,&quot; and the old (current)
+location of the point.  It would then change the point's location.
+Note that some procedures (such as the ones to delete a block of text)
+must record arbitrarily large amounts of state information.</p>
+
+<p>This type of recording allows you to back up as far as you like.
+Since, in essence, each change to the state information is recorded,
+all earlier states are recoverable by reversing each state change (in
+reverse order, of course).</p>
+
+<p>There is more to implementing undo than just recording state
+changes, but the additional items are more icing than cake.</p>
+
+<p>First, most undo commands operate on a user-command, not sub-editor
+call, basis.  Thus you must also record when a new user command is
+given.  Thus, each undo then undoes consecutive changes until it
+reaches such a command marker.  In this way, even a complex global
+replace can be undone.  Note that in general you will wish to have
+repeated undo commands undo successively-earlier other commands.</p>
+
+<p>Second, it probably makes sense to undo an entire consecutive set
+of newly typed characters as a single command.</p>
+
+<p>Third, the resources available to retain the undo information may
+be limited.  This design minimizes that problem, as the
+&quot;excess&quot; undo state can simply drop off the end.  The part
+that is retained will still be consistent.</p>
+
+<p>Fourth, the operating system may not support the undoing of
+file-level operations or other commands.  In some cases, you can
+simulate such undoing (say, by making a backup file), but in general
+you will have to live with some limits to undo.  (Undoing a print
+operation after the printing is complete is quite difficult.)</p>
+
+<p>Fifth, state information is kept in places other than in the
+sub-editor.  These other places must also be incorporated into the
+undo facility.</p>
+
+<h3>An Undo Heresy</h3>
+
+<p>Is undo a nice feature to offer?  Yes.  Is it vital to an editor?
+Probably not.  Will adding it make a poorly designed editor into a
+good one?  No.  Will it make such an editor acceptable?  Maybe.  As
+was said earlier, the best way to help the user is with a good command
+set design: it will minimize the need or desire for an undo.</p>
+
+<p>While undo is a general-purpose facility that has good
+applications, it is not clear that a text editor is one of them.  The
+&quot;good design&quot; approach (using the Emacs command set as an
+example) and the undo approach will now be compared in their approach
+to moving around in text and deleting text.</p>
+
+<p>Moving around in text is simply solving the problem &quot;I am at X
+and I want to be at Y.&quot; The good design solution involves
+translating this difference into a sequence of commands to move the
+point from X to Y.  If a mistake is made in the process of
+implementing the solution, the problem is merely restated to &quot;I
+am at X' and I want to be at Y&quot; and it is re-solved.  The undo
+solution differs by detecting the error (<i>i.e.</i>, deviation from
+the intended solution), saying &quot;undo&quot; to put you back on the
+original path, and proceeding.  Ordinarily this difference between the
+two solutions is not very great.</p>
+
+<p>If the user has accidentally moved a large distance (say, to the
+start of the buffer), it becomes a little more difficult for the user
+to recover his or her earlier position.  Emacs-type editors resolve
+this issue by having the large-movement commands set the mark to where
+you were. Thus, an interchange point and mark sequence will recover
+from the error.  Keep in mind that almost all of the time, the user
+does not care where the mark happens to be.</p>
+
+<p>The two approaches are all but identical in the text deletion case.
+On the one hand, accidentally-deleted text is recovered with a
+&quot;yank&quot; command, and on the other hand, with an
+&quot;undo&quot; command.</p>
+
+<p>In conclusion, undo is a nice extra feature, but is no substitute
+for a good design.</p>
+
+<h3>Redo</h3>
+
+<p>Redo is the mechanism for undoing an undo.  Conceptually, the
+record of undos is:</p>
+
+<ol>
+<li>most-recent command changes
+<li>next-most-recent command changes
+<li>next-next-most-recent command changes
+<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+</ol>
+
+<p>The first invocation of the &quot;undo&quot; command undoes #1.
+The next invocation undoes #2, and so forth.  Redo redoes the most
+recent undo, with repeated &quot;redo&quot; commands moving back up
+the undo stack.  Let's look at an implementation:</p>
+
+<pre>
+	FLAG Undo(FLAG *is_argptr, int *argptr, FLAG *is_exitptr, char c)
+		{
+		if (undo_ptr == NULL) undo_ptr = last_command_undo;
+		Undo_Command(undo_ptr);
+		undo_ptr = Previous(undo_ptr);
+		return(TRUE);
+		}
+
+	FLAG Redo(FLAG *is_argptr, int *argptr, FLAG *is_exitptr, char c)
+		{
+		if (undo_ptr == NULL)
+			Error(&quot;No undo to redo&quot;);
+		else {
+			Redo_Command(undo_ptr);
+			undo_ptr = Next(undo_ptr);
+			}
+		return(TRUE);
+		}
+</pre>
+
+<p>and, in the main command loop:</p>
+
+<pre>
+	if (last_cmd != Undo &amp;&amp; last_cmd != Redo) undo_ptr = NULL;
+</pre>
+
+<p>The <b>Undo</b> procedure checks and, if it hasn't been called
+&quot;recently,&quot; starts at the latest command.  It undoes the
+command, then sets a pointer to point to the undo information for the
+previous command.</p>
+
+<p>The <b>Redo</b> procedure checks and, if <b>Undo</b> hasn't been
+called &quot;recently,&quot; can't run, as there is no undo to redo.
+Otherwise, it redoes the command and sets a pointer to point to the
+undo information for the next command.</p>
+
+<p>The main command loop determines whether the <b>Undo</b> or
+<b>Redo</b> procedures have been called &quot;recently.&quot;
+Basically, if the last command wasn't undo or redo, it resets the undo
+pointer to null.</p>
+
+<p>This implementation allows arbitrary undoing and redoing in any
+combination, so long as the commands are given sequentially.  Bear in
+mind that with the &quot;change in state&quot; recording of undo
+information, it is only legal to apply those changes in the correct
+order.</p>
+
+<p>This implementation ignored the arguments to the undo and redo
+commands.  Feel free to assign reasonable interpretations to the
+arguments in your implementations.</p>
+
+<h2>Macros</h2>
+
+<p>In a sense, macros allow a user to give commands by specifying them
+implicitly instead of explicitly.  Macros fall into three general
+levels.</p>
+
+<h3>Again</h3>
+
+<p>The &quot;again&quot; facility allows a user to say &quot;do what I
+just did again.&quot; For it to be most useful (<i>i.e.</i>, easier to
+type than retyping the command), it should be assigned to a short key
+sequence (<i>i.e.</i>, one shifted key).</p>
+
+<p>The &quot;repeat count&quot; argument to the &quot;again&quot;
+command should be used instead of the previous &quot;repeat
+count&quot; argument to the command being repeated.</p>
+
+<h3>Keystroke Recording</h3>
+
+<p>This facility allows the user to say &quot;start recording,&quot;
+then give a series of commands (observing their effects as they are
+typed), then say &quot;stop recording.&quot; Later, the entire
+sequence of keystrokes can be replayed with a &quot;play
+recording&quot; command.  A &quot;repeat count&quot; argument to the
+&quot;play recording&quot; command will cause the recording to be
+replayed the specified number of times.  Note that commands within the
+recording can have repeat count arguments of their own.</p>
+
+<h3>Macro Languages</h3>
+
+<p>Finally, the editor should provide the user full access to the
+editor's macro language (if any).  This language will in general
+provide a full programming language, thus allowing the user to specify
+an arbitrary set of editing operations as well as a way of naming
+these procedures for later invocation and key rebinding.</p>
+
+<h3>Redisplay Interaction</h3>
+
+<p>The introduction of keystroke recording and macro languages only
+servers to underscore the separation between the redisplay code and
+the rest of the editor described in the previous chapter.  The
+playback of recorded keystrokes will almost certainly complete with no
+intervening redisplay.  Thus, if any of the code based its actions on
+the current window contents, it would almost certainly execute
+incorrectly.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Expand the main command loop to include other types of input such
+as mouse operations.  (Easy)</p>
+
+<p>Generalize the main command loop and related code to use a general
+event-driven mechanism. (Medium)</p>
+
+<p>Write routines to move by a word and to delete a sentence, but be
+sure to consider all of the punctuation and white space aspects of the
+problem. (Medium)</p>
+
+<p>What is a good memory management scheme to use for holding the undo
+information? (Medium)</p>
+
+<p>What fundamental support is required in the editor to best
+implement the keystroke recorder?  (Easy)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-8.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

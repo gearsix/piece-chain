@@ -1,0 +1,351 @@
+<html>
+<head><script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app217.us.archive.org';v.server_ms=203;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="/_static/js/bundle-playback.js?v=36gO9Ebf" charset="utf-8"></script>
+<script type="text/javascript" src="/_static/js/wombat.js?v=UHAOicsW" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace4.html","20080327053652","https://web.archive.org/","web","/_static/",
+	      "1206596212");
+</script>
+<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=fantwOh2" />
+<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
+<!-- End Wayback Rewrite JS Include -->
+</head>
+<title> Design and Implementation of an Advanced Text Editor: Text Input and "Sloshing" </title>
+<body background="https://web.archive.org/web/20080327053652im_/http://home.mcom.com/assist/net_sites/bg/paper/blue_paper.gif"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
+<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20080327053652/http%3A//www.canberra.edu.au/~scott/C%253DHacking/C-Hacking11/zedace4.html"
+	    scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><div id="wm-ipp-inside">
+  <div id="wm-toolbar" style="position:relative;display:flex;flex-flow:row nowrap;justify-content:space-between;">
+    <div id="wm-logo" style="/*width:110px;*/padding-top:12px;">
+      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
+    </div>
+    <div class="c" style="display:flex;flex-flow:column nowrap;justify-content:space-between;flex:1;">
+      <form class="u" style="display:flex;flex-direction:row;flex-wrap:nowrap;" target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace4.html" onfocus="this.focus();this.select();" style="flex:1;"/><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20080327053652" /><input type="submit" value="Go" />
+      </form>
+      <div style="display:flex;flex-flow:row nowrap;align-items:flex-end;">
+		<div class="s" id="wm-nav-captures">
+	  	  <a class="t" href="/web/20080327053652*/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace4.html" title="See a list of every capture for this URL">18 captures</a>
+	  <div class="r" title="Timespan for captures of this URL">21 Apr 2001 - 27 Mar 2008</div>
+	  </div>
+	<div class="k" style="flex:1;">
+	  <a href="" id="wm-graph-anchor">
+	    <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+	      <canvas id="wm-sparkline-canvas" width="675" height="27" border="0"></canvas>
+	    </div>
+	  </a>
+	</div>
+      </div>
+    </div>
+    <div class="n">
+      <table>
+	<tbody>
+	  <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+	  <tr class="m">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071221042243/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace4.html" title="21 Dec 2007"><strong>Dec</strong></a></td>
+	    <td class="c" id="displayMonthEl" title="You are here: 05:36:52 Mar 27, 2008">MAR</td>
+	    <td class="f" nowrap="nowrap">Apr</td>
+	  </tr>
+	  <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+	  <tr class="d">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071221042243/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace4.html" title="04:22:43 Dec 21, 2007"><img src="/_static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a></td>
+	    <td class="c" id="displayDayEl" style="width:34px;font-size:22px;white-space:nowrap;" title="You are here: 05:36:52 Mar 27, 2008">27</td>
+	    <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
+	  </tr>
+	  <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+	  <tr class="y">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20060717014018/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace4.html" title="17 Jul 2006"><strong>2006</strong></a></td>
+	    <td class="c" id="displayYearEl" title="You are here: 05:36:52 Mar 27, 2008">2008</td>
+	    <td class="f" nowrap="nowrap">2009</td>
+	  </tr>
+	</tbody>
+      </table>
+    </div>
+    <div class="r" style="display:flex;flex-flow:column nowrap;align-items:flex-end;justify-content:space-between;">
+      <div id="wm-btns" style="text-align:right;height:23px;">
+        	<span class="xxs">
+          <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="#"
+	     title="Share via My Web Archive" >
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php" title="Sign In" id="wm-sign-in">
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
+	</span>
+        	<a class="xxs" href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+	<a id="wm-tb-close" href="#close" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share" class="xxs">
+        <a href="/web/20080327053652/http://web.archive.org/screenshot/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace4.html"
+           id="wm-screenshot"
+           title="screenshot">
+          <span class="wm-icon-screen-shot"></span>
+        </a>
+        <a href="#" id="wm-video" title="video">
+          <span class="iconochive-movies"></span>
+        </a>
+	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20080327053652/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace4.html" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20080327053652/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace4.html" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+      <div style="padding-right:2px;text-align:right;white-space:nowrap;">
+	<a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span class="xxs" style="font-size:80%;">About this capture</span></a>
+      </div>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+                    <div id="wm-capinfo-collected-by">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center">COLLECTED BY</div>
+    <div style="padding:3px;position:relative" id="wm-collected-by-content">
+            <div style="display:inline-block;vertical-align:top;width:50%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexacrawls);"></span>
+		Organization: <a style="color:#33f;" href="https://archive.org/details/alexacrawls" target="_new"><span class="wm-title">Alexa Crawls</span></a>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Starting in 1996, <a href="http://www.alexa.com/">Alexa Internet</a> has been donating their crawl data to the Internet Archive.  Flowing in every day, these data are added to the <a href="http://web.archive.org/">Wayback Machine</a> after an embargo period.
+	</div>
+	      </div>
+      <div style="display:inline-block;vertical-align:top;width:49%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/50_crawl)"></span>
+		<div>Collection: <a style="color:#33f;" href="https://archive.org/details/50_crawl" target="_new"><span class="wm-title">50_crawl</span></a></div>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  this data is currently not publicly accessible.
+	</div>
+	      </div>
+    </div>
+    </div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
+    </div>
+    </div>
+  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20080327053652/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace4.html</div>
+<script type="text/javascript">
+__wm.bt(675,27,25,2,"web","http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace4.html","20080327053652",1996,"/_static/",["/_static/css/banner-styles.css?v=fantwOh2","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1><a name="zedace">Design and Implementation of an Advanced Text Editor</a></h1>
+<b>by <a href="https://web.archive.org/web/20080327053652/http://ccnga.uwaterloo.ca/~csbruce/index.html">Craig Bruce</a> (<a href="https://web.archive.org/web/20080327053652/mailto:csbruce@ccnga.uwaterloo.ca">csbruce@ccnga.uwaterloo.ca</a> )</b>
+<h2> 4. TEXT INPUT AND "SLOSHING" </h2>
+ 
+So far, we can load up a document and whiz around inside of it, but we can't 
+actually change anything.  This section describes the single-character 
+modification operations of character input, rub, and delete, and the text 
+"sloshing" algorithm that is needed to make sure that lines are always as 
+full as they can be without going over the target length ("Come on down!"). 
+ 
+<h3> 4.1. TEXT INPUT, DELETION </h3>
+ 
+Adding a single character to a document isn't really very difficult. There 
+are two modes for single-character inputting: insert and overtype.  Insert 
+mode is generally more useful and more often used, but overtyping can be 
+very useful when dealing with tabular or specially formatted text. 
+Therefore, we must support both modes.  In some other text editors, overtype 
+mode is the natural mode because the cost of inserting a character can be 
+so high, but not here. 
+<p>
+Actually, there isn't a whole lot of difference in the implementations of 
+the two modes.  For overtype mode, you just fetch the current line, take the 
+inputted character and store it into the line buffer at the current 
+position, stash the line back into memory, and repaint the line.  For insert 
+mode, we do the same thing, except that we copy the line from the cursor to 
+the end to one position beyond the cursor (backwards) and bump its length up 
+by one before storing the new character on the line. 
+ <p>
+Rubbing out a character (Commodore-DEL) is done in quite the same way, 
+except that we copy the rest of the line back one space and decrement the 
+length.  Oh, and when the length of the new line is different from the 
+length of the old line, we have to deallocate the old line and allocate new 
+memory for the new line, and surgically link it in with the rest of the 
+document.  I have a subroutine that does this. 
+ <p>
+The DEL key is handled as if you had typed Cursor Left then RUB, except when 
+you press DEL on the first column of a line and the previous line ends with 
+a hard return, the hard return of the previous line is removed instead.  I 
+decided to make the RUB (Co-DEL) key return an error instead of joining 
+lines together like DEL, because sometimes it is convenient to just lean on 
+the RUB key to delete to the end of a line. 
+ 
+<h3>4.2. TEXT SLOSHING </h3>
+ 
+But, we're not done with text modifications yet.  If we just left the 
+modifications as described in the previous sections, we would be end up with 
+lines that are longer than the target length, with ragged lines, and with 
+lines that don't join together like they should after pressing DEL in the 
+first column. 
+ <p>
+After each of the modifications, the text-sloshing routine is called to 
+straighten everything up and figure out how to redisplay the screen.  Often, 
+only one line needs to change, but sometimes, many lines or even the whole 
+screen will have to be updated, as sloshing text can continue for many lines 
+as line overflows and underflows cascade forward from the line that has just 
+been modified.  In fact, the text-sloshing routine is enormously complicated 
+and has many, many special cases. (Although, for all of its complexity, it 
+is only 400 lines long, although it still needs a few more features). 
+ <p>
+There are many more cases that could cause sloshing than you might think. 
+There are the obvious inserting/deleting one-too-many characters in the 
+current line, but there is also the case that an insertion or deletion 
+causes a space character to move to the right position on a line to allow 
+the line to be sloshed backward, or maybe you remove a space from the end of 
+a line that creates a word that would be too long to be contained on one 
+line and therefore needs to be sloshed forward. 
+ <p>
+The sloshing algorithm doesn't introduce or take away any characters from 
+the body of the document; it just reorganizes the existing characters.  All 
+of the spaces are retained at the ends of wrapped lines.  We don't want to 
+delete spaces, since it is difficult to reconstruct them, since two spaces 
+are normally between two sentences in text, but it is difficult for a 
+computer to figure out where a sentence ends.  In fact, keeping these spaces 
+can sometimes cause an anomaly: if all of the spaces won't fit on the end of 
+one line, then they will be displayed at the beginning of the next line. 
+ <p>
+The variables that are maintained by the algorithm are as follows: 
+ <pre>
+sloshLinesAltered  = work2+0 ;(1) ;a simple count 
+sloshRedisplayAll  = work2+1 ;(1) ;$80=redisplay to bottom, $ff=force all 
+sloshRedisplayPrev = work2+2 ;(1) ;whether previous line needs to be repainted 
+sloshMaxChars      = work2+3 ;(1) ;number of chars that can be sloshed 
+sloshTailChar      = work2+4 ;(1) ;the last char of prev line 
+sloshTheCr         = work2+5 ;(1) ;whether a CR should be sloshed 
+sloshLinesInserted = work2+6 ;(1) ;number of new line records created 
+sloshLinesDeleted  = work2+7 ;(1) ;number of existing line records deleted 
+sloshCurAltered    = work2+8 ;(1) ;whether the current line has been altered 
+sloshTerminate     = work2+9 ;(1) ;flag to terminate (hit a hard return) 
+sloshCurTailChar   = work2+10 ;(1);last char of current line 
+ </pre>
+The algorithm has a main loop that is repeated for each line that can be 
+sloshed.  The loop exits when we either run into a hard return or we run 
+into a line that does not need to be sloshed.  We start scanning from the 
+cursor line of the main document. 
+ <p>
+We first look at the previous line and see how many more characters it can 
+accommodate before being full.  Then, we scan the current line from this 
+point (the number of characters that could potentially be sloshed backwards) 
+back to the start of the line searching for spaces.  If there are no spaces, 
+then the current line cannot be sloshed back onto the previous line.  If we 
+do run into a space, then we stop searching and know that we can (and must) 
+slosh back the current line.  So, we remove the characters from the current 
+line and write it back (maintaining links as appropriate) and then go back 
+to the previous line and append these characters to it. 
+ <p>
+If the cursor happened to be on the line in a position that got sloshed 
+back, then we must adjust the cursor position and move it back to the 
+previous line.  If the previous line is before the start of the screen, 
+we must set the flag to redisplay the entire screen later.  If the current 
+line is the first line of the slosh area but the cursor didn't get moved 
+back to the previous line, then we must set the flag to indicate that 
+we must redisplay the previous line too when we repaint the screen. 
+ <p>
+If it turns out that we have sloshed back ALL of the characters on the 
+current line, then we must remove the empty line record of the current line 
+from the document and adjust the global line count.  We also have to worry 
+about sloshing back a hard return, and if we do, then we bail out of the 
+algorithm since we are done.  Oh, and we have to keep in mind whether we are 
+displaying carriage returns or not in calculating line lengths. 
+ <p>
+After shoshing backward, we check if the current line needs to be sloshed 
+forward.  It needs to be sloshed forward if it is either longer than the 
+target length or it ends in a non-space character and the first 
+word on the next line cannot be sloshed back.  The latter is a special case 
+and needs to be checked for specially, even thought the functionality 
+for doing so is redundant. 
+ <p>
+If we do need to slosh forward, we start scanning the current line at the 
+target-line-length point and scan backwards until we hit the first space. 
+If there is no space, then the current word is longer than the target length 
+and must remain abruptly broken over two (or more) lines.  We wrap it at the 
+target length.  If we do find a space earlier on the line, then we wrap the 
+line right after that space.  Oh, I forgot to mention: we need to do 
+something special for lines that end with non-spaces for backward sloshing 
+too.  If the previous line ends in a non-space (presumably because it 
+contains a single very long word), then we don't find any spaces to slosh 
+back to the end of the word, then we slosh back as many characters as will 
+fit, since the word is broken anyway, and we want it to have as many 
+characters as possible on a single line. 
+ <p>
+To wrap the line, we set the length of the current line to the new length 
+and replace the old version of the line in memory.  Then, we create a new 
+line record and store the characters that were wrapped in it and link this 
+line record in with the rest of the document.  And this is all that we do 
+here; we don't actually insert the wrapped characters into the next line, 
+since that would be more complicated, and since it might cause that line to 
+overflow.  If we just leave the wrapped characters, they will be joined with 
+the next line (if necessary) on the next iteration of the main sloshing loop 
+in a slosh-back operation.  We must adjust the cursor location, like before, 
+if the cursor was on the part of the line that got wrapped around. 
+ <p>
+At the end of a loop, we check to see if we have passed a hard return in 
+the document, in which case, we exit.  Otherwise, if either the current 
+line has been modified or if the current line is the first line to 
+be sloshed, then we go on to the next line and repeat the above 
+procedure. 
+ <p>
+On our way out, we do a little fine tuning of the "sloshLinesAltered", 
+"sloshRedisplayAll", and "sloshRedisplayPrev" variables, which were 
+described earlier.  These variables will be used to repaint the changed 
+portions of the screen display.  Part of the fine adjustment includes 
+comparing the number of lines that have been inserted and deleted from the 
+document.  If these two numbers match, then the bottom portion of the screen 
+doesn't have to be repainted, only the altered lines themselves; otherwise, 
+we need to repaint from the current line all the way to the bottom of the 
+screen. 
+ <p>
+The sloshing algorithm currently does not handle non-wrap mode; lines will 
+always be word wrapped.  Later, all lines will be broken at the N-th column 
+if you are not in word-wrap mode.  Also, the algorithm can produce an 
+anomalous wrapping in one case involving lines that end with non-spaces that 
+I can't seem to remember that this algorithm will fail in (but, the document 
+will still be interally consistent).  And finally, if you change the target 
+line length while editing a document (which you can't currently do), then 
+the algorithm may not be able to give optimal word wrapping in all cases 
+(though, again, the document will always be interally consistent). 
+ <p>
+<a href="zedace5.html">On to Chapter 5.</a>
+<hr>
+Last Updated: 1995-12-06 Rev A
+</body>
+</html>
+
+<!--
+     FILE ARCHIVED ON 05:36:52 Mar 27, 2008 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 20:33:49 Apr 27, 2022.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 67.975
+  exclusion.robots: 0.264
+  exclusion.robots.policy: 0.252
+  RedisCDXSource: 1.002
+  esindex: 0.006
+  LoadShardBlock: 43.538 (3)
+  PetaboxLoader3.datanode: 80.99 (4)
+  CDXLines.iter: 20.585 (3)
+  load_resource: 131.427
+  PetaboxLoader3.resolve: 60.714
+-->

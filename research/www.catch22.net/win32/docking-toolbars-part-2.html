@@ -1,0 +1,552 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/docking-toolbars-part-2 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Docking Toolbars - Part 2 - Catch22</title>
+<meta name="description" content="Updated 3 May 2005">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Docking Toolbars - Part 2">
+<meta property="og:url" content="docking-toolbars-part-2.html">
+
+
+  <meta property="og:description" content="Updated 3 May 2005">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2002-06-30T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="docking-toolbars-part-2.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Docking Toolbars - Part 2</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dock2.zip">dock2.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Docking Toolbars - Part 2">
+    <meta itemprop="description" content="Updated 3 May 2005">
+    <meta itemprop="datePublished" content="June 30, 2002">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Docking Toolbars - Part 2
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Docking Toolbars - Part 2</h1-->
+<!--h3>How to implement docking toolbars</h3-->
+
+<h2 id="updated-3-may-2005">Updated 3 May 2005</h2>
+
+<p>The following projects are enhancements of the original docking code found in this tutorial.</p>
+
+<ul>
+  <li>Docking Windows using DWinLib by David O’Neil <a href="http://www.randommonkeyworks.com/programming/computer/DWinLib/DockingWindows.shtml">www.randommonkeyworks.com</a></li>
+  <li>Docking Toolbars by Jeff Glatt <a href="http://www.codeproject.com/useritems/dockwnd.asp">www.codeproject.com/useritems/dockwnd.asp</a></li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>After a long delay I’ve finally finished part 2 of the Docking Toolbar series. The previous article took you through the steps necessary to create floating tool windows. This article will discuss the techniques necessary to get these floating windows to “dock” with a main window. I’m not going to present must source-code in this tutorial, because quite alot is involved. Of course, you can download the code using the link above, but I’m going to take a higher-level approach with this tutorial.</p>
+
+<p><img src="http://www.catch22.net/assets/img/dockwnd4.gif" alt="{short description of image}" class="align-center" /></p>
+
+<h2 id="what-is-involved">What is involved?</h2>
+
+<p>First of all I need to define the terms “Docked” and “Undocked”. A window is docked when it is a child of another window. i.e. it is contained by some parent window, which moves and sizes it appropriately when the main window is resized. It is important to understand that it is the parent window which is responsible for positioning the “docked” window. On the other hand, a window is undocked (or floating) when it is a popup window. i.e. the tool window still has an owner, but it is not contained in any way.</p>
+
+<p>There are many different ways to implement docking windows. This is because there is no standard, built-in docking window support in Windows. The result of this is that application developers have had to implement their own docking windows, or rely on 3rd party libraries to do the work for them (such as MFC).</p>
+
+<p>However, there are two major types of docking window which you can choose from. The most common (and intuitive, in my opinion) is the type that you drag around the screen using the mouse. When you move one of these windows, instead of the window moving, a drag-rectangle (feedback rectangle) is XORed on the screen, showing the outline of where the window will move to when you release the mouse - like the way windows work when full-window dragging is turned off. With this method, when a window is dragged to / from a window, the feedback rectangle visibly changes to indicate that the window can be dropped. This is the docking behaviour that I will be presenting in this tutorial.</p>
+
+<p>The second type of docking can be found in some newer style applications (such as Microsoft Outlook). Instead of a feedback rectangle, windows can be directly “teared” or “snapped” on or off a main window - i.e, they snap into place as soon as you manipulate them. Personally, I don’t like this type of user-interface, so I’m not going to do any work on this.</p>
+
+<h2 id="providing-an-intuitive-user-experience">Providing an Intuitive User Experience</h2>
+
+<p>Docking toolbars are so common that it is natural to stick with the same conventions as other applications. Our docking windows will have the following characteristics:</p>
+
+<ul>
+  <li>A docking window will use a feedback (drag) rectangle to indicate it being moved around the screen - even if the “full window drag” system setting is in operation.</li>
+  <li>When a docking window is dragged around the screen, at some point it will intersect the main application window. When this happens, the feedback rectangle will need to visibly change in order to reflect the fact that there is a docking “region”. Normal convention is for a wide (say three pixel) shaded border to represent a floating position, and for a single-pixel border to represent a docked position.</li>
+  <li>When the mouse is released after dragging a dock-window, a test must be made to see if the window should be made to dock or float.</li>
+  <li>A docking window can be forced to float, even when the drag-rectangle is released over the main window. This is usually achieved by holding the <code class="highlighter-rouge">&lt;Control&gt;</code> key down.</li>
+  <li>A docking window can be resized when it is floating, because it is just a normal window. No special processing is required to do this - the standard Windows sizing behaviour can be used in this case.</li>
+</ul>
+
+<p>Now that we have decided what our goal is, the next step is to start coding!</p>
+
+<h2 id="docking-and-undocking-a-window">Docking and Undocking a window</h2>
+
+<p>The first problem you will encounter is trying to make a window toggle between being a child window and a popup window. This is not as easy as it sounds, but can be accomplished with the code shown below.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">ToggleDocking</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">dwStyle</span> <span class="o">=</span> <span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_STYLE</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">dwStyle</span> <span class="o">&amp;</span> <span class="n">WS_CHILD</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/* toggle from WS_CHILD to WS_POPUP. */</span>
+        <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_STYLE</span><span class="p">,</span> <span class="p">(</span><span class="n">dwStyle</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">WS_CHILD</span><span class="p">)</span> <span class="o">|</span> <span class="n">WS_POPUP</span><span class="p">);</span>
+        <span class="n">SetParent</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="cm">/* toggle from WS_POPUP to WS_CHILD */</span>
+        <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_STYLE</span><span class="p">,</span> <span class="p">(</span><span class="n">dwStyle</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">WS_POPUP</span><span class="p">)</span> <span class="o">|</span> <span class="n">WS_CHILD</span><span class="p">);</span>
+        <span class="n">SetParent</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GetWindow</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GW_OWNER</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Look at the first <code class="highlighter-rouge">SetParent</code> API call in the code above. The only way to make a child window into a popup window is to set it’s parent window to zero (NULL). This may seem as if the popup window no longer has a parent, and won’t float above the main window anymore. However, the tool-window will always have an owner window (the parent window specified during creation), even if it’s parent is subsequently set to NULL. Therefore the toolwindow will always float above the main window, when it has the <code class="highlighter-rouge">WS_POPUP</code> style.</p>
+
+<h2 id="tool-window-frames">Tool Window Frames</h2>
+
+<p>The purpose of a frame window is to simply contain some other window or windows within it. In the case of our dockable tool windows, we will use a container window to hold our actual Toolbar or TreeView, or whatever it is that we want the user to interact with.</p>
+
+<p>Bearing this in mind, it doesn’t matter if the tool window is docked or undocked - the important part (the contents) will always be a child window contained in a frame. This means that the child window (a dialog template, TreeView, whatever) doesn’t need any special attention because the docking behaviour is now entirely separate from the contents. This is good software design, because it allows us to define distinct software elements which do not need to be dependent on each other.</p>
+
+<p>At this stage you must make a decision. There are basically two types of window “management” you can choose from:</p>
+
+<ol>
+  <li>Host and docked tool-windows directly in the application main window (easiest to implement, less code). This does mean that the main window has be able to manage an unknown number of docked windows - size them, reposition them etc, which could make a larger application a bit more fiddly to code.</li>
+  <li>Create a second type of window, a “tool window container”. This container window would manage any docked windows placed on it - sizing them, looking after them etc. The container window would always be present in the main frame-window, so the main application code would only have to worry about this one window. This method would probably provide for a better designed application in the long-run, but does require more careful thought (and more coding).</li>
+</ol>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="http://www.catch22.net/assets/img/dockwnd2.gif" alt="{short description of image}" /></td>
+      <td><img src="http://www.catch22.net/assets/img/dockwnd3.gif" alt="{short description of image}" /></td>
+    </tr>
+    <tr>
+      <td><strong>Method 1</strong></td>
+      <td><strong>Method 2</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The choice is up to you, really. The docking library you can download from this page uses the first type of docking window, but depending on how you want to implement your application, you might want to decide to opt for the second.</p>
+
+<h2 id="create-a-docking-window">Create a docking window</h2>
+
+<p>There are many different ways to create a docking window. I imagine most of the code on the Internet uses well-designed C++ classes to hide the implementation. However, I still prefer to code in C, so the design of this library will be a non-object oriented approach.</p>
+
+<p>First, some assumptions must be made. We are creating docking windows, right? Docking windows can be in one of two states: docked, or undocked. This means that we need to remember where the docking window is, so that when we dock/undock the window, it is always positioned in the right place. Also, when we quit our application and restart it, the user will normally expect his/her window arrangement to be exactly the same. So, we need some kind of structure to track the state of a docking window, don’t we? (Yes, we do!)</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">dwStyle</span><span class="p">;</span> <span class="c1">//styles..
+</span>    <span class="kt">int</span> <span class="n">xpos</span><span class="p">;</span> <span class="c1">//coordinates of FRAME when floating
+</span>    <span class="kt">int</span> <span class="n">ypos</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">cxFloating</span><span class="p">;</span> <span class="c1">//size of CONTENTS when floating 
+</span>    <span class="kt">int</span> <span class="n">cyFloating</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nDockedSize</span><span class="p">;</span> <span class="c1">//width/height of CONTENTS when docked..
+</span>    <span class="n">BOOL</span> <span class="n">fDocked</span><span class="p">;</span> <span class="c1">//is window docked?
+</span>    <span class="n">HWND</span> <span class="n">hwndContents</span><span class="p">;</span> <span class="c1">//handle to the window to host} DockWnd;
+</span></code></pre></div></div>
+
+<p>This structure will be our starting point for a docking window. For every docking window that we want to create, we must maintain a unique <code class="highlighter-rouge">DockWnd</code> structure, which describes the docking window state. This structure would probably be a global variable. So, even if the docking window is hidden (or has been destroyed), we always know the exact state that it should be recreated in.</p>
+
+<p>There are basically two main groups of information that we use in one of these structures: floating position, and docked position.</p>
+
+<p>When a dock-window is floating, we need to know it’s coordinates on the screen, and also it’s size. We actually keep track of the size of the dock-window contents (it’s child window) instead of the physical size of the dock-window. This is because we always want the contents to remain the same size, even when the system settings change (i.e. the titlebar height is modified using Control Panel).</p>
+
+<p>When a dock-window is docked, we only need to know one dimension: the width (or height) of the window. We need just one dimension, because when a window is docked (say at the top of the main window), it will be stretched to fit the width of the main window. It is only the height of the docked window that can be represented in our structure (using the nDockedSize member).</p>
+
+<p>The following function will create a docking window. I don’t want to describe any coding details, because it’s all in the source-download.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HWND</span> <span class="n">CreateDockWnd</span><span class="p">(</span><span class="n">DockWnd</span> <span class="o">*</span><span class="n">dwp</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hwndParent</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="n">szCaption</span><span class="p">[]);</span>
+</code></pre></div></div>
+
+<p>The first parameter must be the address of one of our <code class="highlighter-rouge">DockWnd</code> structures. This structure must be already set up correctly before calling <code class="highlighter-rouge">CreateDockWnd</code>. The function call creates and positions the docking window, based on the members in the structure. Below is a small example of how you would use the function call.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DockWnd</span> <span class="n">dock1</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="cm">/* Set the DockWnd structure up */</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">dwStyle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">xpos</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">ypos</span> <span class="o">=</span> <span class="mi">456</span><span class="p">;</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">cxFloating</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">cyFloating</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">nDockedSize</span> <span class="o">=</span> <span class="mi">80</span><span class="p">;</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">fDocked</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span> <span class="cm">/* Make window float initially */</span>
+<span class="n">dock1</span><span class="p">.</span><span class="n">hwndContents</span> <span class="o">=</span> <span class="n">hwndEdit</span><span class="p">;</span> <span class="cm">/* Some child window *//* Create a docking window! */</span>
+
+<span class="n">HWND</span> <span class="n">hwndDock1</span> <span class="o">=</span> <span class="n">CreateDockWnd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dock1</span><span class="p">,</span> <span class="n">hwndMain</span><span class="p">,</span> <span class="s">"Docking Toolbar #1"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Now that we can create a docking window, we can move on and give it a bit of functionality.</p>
+
+<h2 id="moving-a-window-with-a-drag-rectangle">Moving a window with a drag-rectangle</h2>
+
+<p>The first obstacle you will encounter is getting Windows to show a feedback rectangle when you move a floating window around. Starting with Windows 95, a new user-interface feature was introduced. This is feature is normally referred to as “Show window contents whilst dragging”. When enabled, windows are no longer moved and sized using the standard feedback rectangle.</p>
+
+<p>Unfortunately there is no way to turn this feature off for specific windows.The <code class="highlighter-rouge">SystemParametersInfo</code> API call, (with the <code class="highlighter-rouge">SPI_GETDRAGFULLWINDOWS</code> setting) can turn this feature on and off, but this is a system-wide setting, and is not really suitable. Of course, we could devise a method where we temporarily turned off the drag-window system setting when just during the window movement (actually, this would be very straight-forward). The point is, it’s a bit of a hack, and I prefer proper solutions to problems like this.</p>
+
+<p>The only solution is to override the standard windows behaviour and manually provide a feedback rectangle. This means processing a few mouse messages. Now, I don’t want to show any code - again, the source-download clearly demonstrates how to get this working. What I will do is give a basic outline of the processing that is required.</p>
+
+<h3 id="prevent-default-window-dragging">Prevent default window dragging</h3>
+
+<p>The most important task is to stop the user from dragging the window around with the mouse. I know this sounds counter-productive, but we need to completely take over the standard window movement logic. This is actually quite simple - our docking window procedure just needs to handle <code class="highlighter-rouge">WM_NCLBUTTONDOWN</code>, and return 0 if the mouse is clicked in the caption area. By preventing the default window procedure from handling this message, window dragging is completely disabled.</p>
+
+<h3 id="moving-the-drag-rectangle">Moving the drag-rectangle</h3>
+
+<p>In order to simulate the window being moved, we need to handle a few mouse messages. Only three need processing:</p>
+
+<ol>
+  <li><code class="highlighter-rouge">WM_NCLBUTTONDOWN</code> - in addition to what was described above, this message handler must draw the feedback rectangle, and set the mouse capture, using the SetCapture API call.</li>
+  <li><code class="highlighter-rouge">WM_MOUSEMOVE</code> - this message will be received whenever the mouse is moved. Our response will be to redraw the feedback rectangle in the new position (erase it in the old position and draw it in the new position). In addition, we need to decide what type of rectangle to draw, depending on if the current feedback rectangle will result in a docked / floating window position when the mouse is released.</li>
+  <li><code class="highlighter-rouge">WM_LBUTTONUP</code> - when the mouse is released, we need to remove the feedback rectangle from the screen, and then take the appropriate action to physically reposition the dock-window. This may mean docking / undocking, or simply moving the window if it was already floating.</li>
+</ol>
+
+<p>As you can see, there’s a little bit of work involved, but nothing particularly complicated. The big advantage of using this method is that the same mouse code can be used when the window is docked or floating - this keeps the code short and simple.</p>
+
+<h3 id="drawing-a-drag-rectangle">Drawing a drag-rectangle</h3>
+
+<p>A drag-rectangle is basically just a simple rectangle. This rectangle ideally needs to be drawn using XOR blitting logic - so that we can easily draw / erase the rectangle as it is moving around.</p>
+
+<p><img src="http://www.catch22.net/assets/img/dockwnd1.gif" alt="{short description of image}" /></p>
+
+<p>The code below draws a shaded rectangle with the specified coordinates. The equivalent function in the source-download does a little more than the code below (it draws both types of drag-rectangle), but I’ve stripped it down to keep it simple.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">DrawXorFrame</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/* Raw bits for bitmap - enough for an 8x8 monochrome image */</span>
+    <span class="k">static</span> <span class="n">WORD</span> <span class="n">_dotPatternBmp1</span><span class="p">[]</span> <span class="o">=</span> 
+    <span class="p">{</span>
+        <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span><span class="p">,</span> <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span><span class="p">,</span> <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span><span class="p">,</span> <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span>
+    <span class="p">};</span>
+
+    <span class="n">HBITMAP</span> <span class="n">hbm</span><span class="p">;</span>
+    <span class="n">HBRUSH</span> <span class="n">hbr</span><span class="p">;</span>
+    <span class="n">HANDLE</span> <span class="n">hbrushOld</span><span class="p">;</span>
+    <span class="n">WORD</span> <span class="o">*</span><span class="n">bitmap</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">border</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="n">HDC</span> <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="cm">/* Create a patterned bitmap to draw the borders */</span>
+    <span class="n">hbm</span> <span class="o">=</span> <span class="n">CreateBitmap</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_dotPatternBmp1</span><span class="p">);</span>
+    <span class="n">hbr</span> <span class="o">=</span> <span class="n">CreatePatternBrush</span><span class="p">(</span><span class="n">hbm</span><span class="p">);</span>
+
+    <span class="n">hbrushOld</span> <span class="o">=</span> <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hbr</span><span class="p">);</span>
+
+    <span class="cm">/* Draw the rectangle in four stages - top, right, bottom, left */</span>
+    <span class="n">PatBlt</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">border</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">-</span><span class="n">border</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">PATINVERT</span><span class="p">);</span>
+    <span class="n">PatBlt</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">width</span><span class="o">-</span><span class="n">border</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">border</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">height</span><span class="o">-</span><span class="n">border</span><span class="p">,</span> <span class="n">PATINVERT</span><span class="p">);</span>
+    <span class="n">PatBlt</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">height</span><span class="o">-</span><span class="n">border</span><span class="p">,</span> <span class="n">width</span><span class="o">-</span><span class="n">border</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">PATINVERT</span><span class="p">);</span>
+    <span class="n">PatBlt</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">height</span><span class="o">-</span><span class="n">border</span><span class="p">,</span> <span class="n">PATINVERT</span><span class="p">);</span>
+
+    <span class="cm">/* Clean up */</span>
+    <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hbrushOld</span><span class="p">);</span>
+    <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hbr</span><span class="p">);</span>
+    <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hbm</span><span class="p">);</span>
+    <span class="n">ReleaseDC</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">hdc</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="decide-when-a-window-can-be-docked">Decide when a window can be docked</h2>
+
+<p>When a docking window is repositioned (basically, dragged around using the mouse), it’s docking status may need to be toggled. The problem is, this decision making is probably going to be different from application to application - when and how a window is able to dock is really up to the programmer. A simple strategy to start with might be this: if the dock-window intersects (overlaps) the main window, then it is eligible to be docked with that window, otherwise it will be made to float (i.e. when it does not overlap the main window).</p>
+
+<p>This decision will have to be made many times during the repositioning of a dock-window. Therefore, we will introduce a new windows message, which we will send via the <code class="highlighter-rouge">WM_NOTIFY</code> message:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define DWN_ISDOCKABLE ... </span><span class="cm">/* some value that doesn't already exist */</span><span class="cp">
+</span></code></pre></div></div>
+
+<p>This message will have one parameter (sent through lParam) - a pointer to a <code class="highlighter-rouge">DockWndQuery</code> structure, defined below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwndDock</span><span class="p">;</span> <span class="cm">/* Handle to dock-window */</span>
+    <span class="n">DockWnd</span> <span class="o">*</span><span class="n">pDockWnd</span><span class="p">;</span> <span class="cm">/* Pointer to the DockWnd structure for that window */</span>
+    <span class="n">RECT</span> <span class="o">*</span><span class="n">dragrect</span><span class="p">;</span> <span class="cm">/* Current drag-rectangle */</span>
+<span class="p">}</span> <span class="n">DockWndQuery</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>A dock-window will send this message to it’s parent (or owner) window when it is being repositioned and needs to know if the drag-rectangle position will result in the dock-window being docked or floating. It will be the responsibility of the parent window (normally, the main frame window) to handle this message.</p>
+
+<p>I have provided a “helper” function, <code class="highlighter-rouge">DockWnd_GetDockSide</code> , which can be used to handle this special message. Just look in the sample application download for more information.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s about all for the moment. The source-code download presents a fairly complete docking window library, and a small sample application to show you how to use it. Hopefully you should be able to plug this library straight into your applications and get instant docking windows!</p>
+
+<p>I realise that this is quite a tricky subject area, and unfortuntately there is no simple solution to the problem. Anyway, I’d definitely like have your feedback, to make sure I’ve covered enough material. Although the source-code is fairly well commented, it may not be optimal. If you make any improvements, be sure to let me have a copy! Remember as well, that this is just one of the many methods of implementing docking windows. Even if my design doesn’t fit into your particular scenario, you should get enough ideas from the code to implement your own framework.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dock2.zip">dock2.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2002-06-30T00:00:00+00:00">June 30, 2002</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="custom-messagebox.html" class="pagination--pager" title="Custom MessageBox
+">Previous</a>
+    
+    
+      <a href="system-image-list.html" class="pagination--pager" title="System Image List
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/docking-toolbars-part-2 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

@@ -1,0 +1,422 @@
+<html>
+<title>The Craft of Text Editing: Appendix C</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Appendix-C.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Appendix C: The Emacs Command Set</h1>
+
+<p>First, there is no such thing as an &quot;official&quot; Emacs
+command set.  One of the main reasons why Emacs-type text editors
+exist is that each user is free to change the commands to suit his or
+her own tastes.  Another reason is that there are many different
+implementations of Emacs editors and each will have a slightly
+different command set.  You should consult the documentation that
+comes with your implementation (or the documentation that you write
+for your own implementation) for specifics.</p>
+
+<p>That said, this appendix will list most of the default command set
+that comes with GNU-Emacs.  It will also list my own alterations to
+these defaults.</p>
+
+<p>Emacs-type text editors implement the &quot;one-dimensional array
+of bytes&quot; editing model.  Line breaks are represented as single
+Newline characters, regardless of the representation used by the
+operating system.</p>
+
+<h3>Notation</h3>
+
+<p>The first Emacs took advantage of a particular keyboard's features.
+This keyboard allowed you to type all of the normal characters.  In
+addition, both <b>Control</b> and <b>Meta</b> keys were available.
+These keys acted as full Shift keys, allowing the user to specify
+Control- and/or Meta-shifts to any key.  For example, one could
+type:</p>
+
+<dl compact="compact">
+<dt><b>notation</b></dt><dd><b>key combinations</b></dd>
+<br>
+<br>
+<dt><b>5</b></dt><dd>5</dd>
+<dt><b>%</b></dt><dd>Shift-5</dd>
+<dt><b>C-5</b></dt><dd>Control-5</dd>
+<dt><b>C-%</b></dt><dd>Control-Shift-5</dd>
+<dt><b>M-5</b></dt><dd>Meta-5</dd>
+<dt><b>M-%</b></dt><dd>Meta-Shift-5</dd>
+<dt><b>M-C-5</b></dt><dd>Meta-Control-5</dd>
+<dt><b>M-C-%</b></dt><dd>Meta-Control-Shift-5</dd>
+</dl>
+
+<p>The last two could also be written C-M-5 and C-M-%.  Most current
+keyboards can only send the usual ASCII characters.  That limitation
+removes the possibility of typing the multiply shifted characters and
+hence the need for the unusual notation.  The command sets presented
+here will thus use the familiar caret notation, a copy of which is
+listed in Appendix E.  There are still some systems that use extended
+keyboards like these.  The documentation for those systems will use
+the original notation.</p>
+
+<p>The Escape key (usually labelled &quot;Esc&quot;) which sends the
+escape character is used as a prefix to make up for the missing Meta
+shift key.  By convention, those keyboards that have an extra shift
+key (perhaps labelled Meta or Alt) can specify meta commands by
+setting bit 2^7 in characters sent from the keyboard.</p>
+
+<p>Emacs commands are, by convention, always upper/lower
+case-independent.  Thus, ^X B and ^X b both refer to the same command.
+The only exception is the &quot;self-insert&quot; command, where B
+inserts a &quot;B&quot; and b inserts a &quot;b&quot;.  Only the
+uppercase versions will be listed.</p>
+
+<p>The terms &quot;S-exp&quot; and &quot;defun,&quot; while familiar
+to Lisp programmers, are probably not familiar to others.
+&quot;S-exp&quot; refers to a parenthesized list and &quot;defun&quot;
+refers to a function definition.  Most Emacs language modes remap
+these Lisp-specific commands to comparable commands for other
+programming languages.</p>
+
+<h3>Default GNU-Emacs Command List</h3>
+
+<dl compact="compact">
+<dt><b>^@</b></dt><dd>Place the mark at the point.</dd>
+<dt><b>^A</b></dt><dd>Move to the beginning of the current line.</dd>
+<dt><b>^B</b></dt><dd>Move backward one character.</dd>
+<dt><b>^C</b></dt><dd>Prefix for mode-specific commands.</dd>
+<dt><b>^D</b></dt><dd>Delete the following character.</dd>
+<dt><b>^E</b></dt><dd>Move to the end of the current line.</dd>
+<dt><b>^F</b></dt><dd>Move forward one character.</dd>
+<dt><b>^G</b></dt><dd>Abort execution and return to the edit loop.</dd>
+<dt><b>^H</b></dt><dd>Help</dd>
+<dt><b>^I</b></dt><dd>Tab to indentation in a language-specific manner.</dd>
+<dt><b>^J</b></dt><dd>Insert a line break and indent in a language-specific manner.</dd>
+<dt><b>^K</b></dt><dd>Delete the text to the end of the current line; if at the end of the line, delete the line break.  With an argument, delete that many complete lines.</dd>
+<dt><b>^L</b></dt><dd>Rebuild the display from scratch, centering the point.</dd>
+<dt><b>^M</b></dt><dd>Insert a line break, leaving the point after the break.</dd>
+<dt><b>^N</b></dt><dd>Move down one line, staying in as nearly the same column as possible.  If at the end of the buffer, grow the buffer.</dd>
+<dt><b>^O</b></dt><dd>Insert a line break, leaving the point before the break.</dd>
+<dt><b>^P</b></dt><dd>Move up one line, staying in as nearly the same column as possible.</dd>
+<dt><b>^Q</b></dt><dd>Quote: Insert the following character as typed.</dd>
+<dt><b>^R</b></dt><dd>Reverse search (see ^S).</dd>
+<dt><b>^S</b></dt><dd>Search incrementally for a string after the point:
+
+<dl compact="compact">
+<dt><b>^R</b></dt><dd>Search for the previous occurrence.</dd>
+<dt><b>^S</b></dt><dd>Search for the next (2nd, 3rd...) occurrence.</dd>
+<dt><b>^?</b></dt><dd>&quot;Untypes&quot; the last character (including ^R, ^S, etc.)</dd>
+<dt><b>^G</b></dt><dd>Abort search: return to starting place.</dd>
+<dt><b>^[</b></dt><dd>Complete the search.</dd>
+<dt><b>^Q</b></dt><dd>Quote a search command.</dd>
+<dt><b>ctrl-XX</b></dt><dd>Complete the search and execute the XX command.</dd>
+<dt><b>other</b></dt><dd>Add the character to the search string.</dd>
+</dl>
+</dd>
+
+<dt><b>^T</b></dt><dd>Interchange the characters on each side of the point, leaving the point after the second one.</dd>
+<dt><b>^U</b></dt><dd>Universal argument. There are two forms:</dd>
+
+<dl compact="compact">
+<dt><b><i>^U ^U .... &lt;cmd&gt;</i></b></dt><dd>does &lt;cmd&gt; 4, 16, 64, 256, ... times depending upon the number of ^Us (each ^U is a multiplier by 4).</dd>
+<dt><b><i>^U &lt;integer&gt; &lt;cmd&gt;</i></b></dt><dd>does &lt;cmd&gt; &lt;integer&gt; times. (<i>e.g.</i>, ^U 3 5 ^F means to ^F 35 times).</dd>
+</dl>
+</dd>
+
+<dt><b>^V</b></dt><dd>Move the bottom of the current screen to the top of the screen: <i>i.e.</i>, move down one screen.</dd>
+<dt><b>^W</b></dt><dd>Delete the text between the point and the mark (&quot;cut&quot;).</dd>
+<dt><b>^X</b></dt><dd>Prefix for the ^X commands listed below.</dd>
+<dt><b>^Y</b></dt><dd>Copy the top item from the kill ring to the point; place the mark at the beginning of the block and the point at the end (&quot;paste&quot;).</dd>
+<dt><b>^Z</b></dt><dd>Suspend the program's execution and return to whatever invoked the editor.</dd>
+<dt><b>^[</b></dt><dd>Prefix for the Meta commands listed below.</dd>
+<dt><b>^\</b></dt><dd>Undefined.</dd>
+<dt><b>^]</b></dt><dd>Aborts a recursive edit.</dd>
+<dt><b>^^</b></dt><dd>Undefined.</dd>
+<dt><b>^_</b></dt><dd>Undo.</dd>
+<br>
+<br>
+<dt><b>SP ... ~</b></dt><dd>Insert themselves.</dd>
+<br>
+<br>
+<dt><b>^?</b></dt><dd>Delete the preceding character.</dd>
+<br>
+<br>
+<dt><b>BS</b></dt><dd>Same as ^H, also BACK SPACE.</dd>
+<dt><b>TAB</b></dt><dd>Same as ^I.</dd>
+<dt><b>LF</b></dt><dd>Same as ^J, also LINE FEED.</dd>
+<dt><b>CR</b></dt><dd>Same as ^M, also CARRIAGE RETURN or RETURN.</dd>
+<dt><b>ESC</b></dt><dd>Same as ^[, also ESCAPE.</dd>
+<dt><b>DEL</b></dt><dd>Same as ^?, also DELETE or RUBOUT (obsolete).</dd>
+</dl
+
+<p>Help Commands:</p>
+
+<dl compact="compact">
+<dt><b>^H ^C</b></dt><dd>Describe the copying policy.</dd>
+<dt><b>^H ^D</b></dt><dd>Describe the distribution policy.</dd>
+<dt><b>^H ^H</b></dt><dd>Help on help.</dd>
+<dt><b>^H ^N</b></dt><dd>View Emacs news.</dd>
+<dt><b>^H ^W</b></dt><dd>Describe the (lack of) warranty.</dd>
+<dt><b>^H ?</b></dt><dd>Help on help.</dd>
+<dt><b>^H A</b></dt><dd>Apropos (which commands deal with ...?).</dd>
+<dt><b>^H B</b></dt><dd>Describe the current key bindings.</dd>
+<dt><b>^H C</b></dt><dd>Briefly describe a key.</dd>
+<dt><b>^H D</b></dt><dd>Describe a function.</dd>
+<dt><b>^H F</b></dt><dd>Describe a function.</dd>
+<dt><b>^H I</b></dt><dd>Invoke the &quot;info&quot; subsystem.</dd>
+<dt><b>^H K</b></dt><dd>Describe a key.</dd>
+<dt><b>^H L</b></dt><dd>Describe problems with the (current) version (&quot;lossage&quot;).</dd>
+<dt><b>^H M</b></dt><dd>Describe a mode.</dd>
+<dt><b>^H N</b></dt><dd>View Emacs news.</dd>
+<dt><b>^H S</b></dt><dd>Describe syntax.</dd>
+<dt><b>^H T</b></dt><dd>Tutorial.</dd>
+<dt><b>^H V</b></dt><dd>Describe a variable.</dd>
+<dt><b>^H W</b></dt><dd>Where is ...?</dd>
+</dl>
+
+<p>Control-X (^X) Commands:</p>
+
+<dl compact="compact">
+<dt><b>^X ^@</b></dt><dd>Flush mouse queue.</dd>
+<dt><b>^X ^A</b></dt><dd>Add mode abbreviation.</dd>
+<dt><b>^X ^B</b></dt><dd>Display a list of all buffers and associated information.</dd>
+<dt><b>^X ^C</b></dt><dd>Exit editor.</dd>
+<dt><b>^X ^D</b></dt><dd>Display the current directory.</dd>
+<dt><b>^X ^E</b></dt><dd>Evaluate the last S-exp.</dd>
+<dt><b>^X ^F</b></dt><dd>Ask for the name of a file and read it into a new buffer whose name is derived from the file name.</dd>
+<dt><b>^X ^G</b></dt><dd>Cancel ^X prefix.</dd>
+<dt><b>^X ^H</b></dt><dd>Remove mode abbreviation.</dd>
+<dt><b>^X ^I</b></dt><dd>Indent rigidly</dd>
+<dt><b>^X ^L</b></dt><dd>Convert the region to lower case.</dd>
+<dt><b>^X ^N</b></dt><dd>Set the goal column.</dd>
+<dt><b>^X ^O</b></dt><dd>Delete the blank lines around the point.</dd>
+<dt><b>^X ^P</b></dt><dd>Place the point and the mark around the current page.</dd>
+<dt><b>^X ^Q</b></dt><dd>Toggle the &quot;read only&quot; marker.</dd>
+<dt><b>^X ^R</b></dt><dd>As ^X ^F, but mark the file &quot;read only.&quot;</dd>
+<dt><b>^X ^S</b></dt><dd>Save the current buffer if it has been modified.</dd>
+<dt><b>^X ^T</b></dt><dd>Transpose lines.</dd>
+<dt><b>^X ^U</b></dt><dd>Convert the region to upper case.</dd>
+<dt><b>^X ^V</b></dt><dd>Find alternate file.</dd>
+<dt><b>^X ^W</b></dt><dd>Ask for the name of a file and write the buffer to that file.</dd>
+<dt><b>^X ^X</b></dt><dd>Exchange the point and mark.</dd>
+<dt><b>^X ^[</b></dt><dd>Repeat a complex command.</dd>
+<dt><b>^X $</b></dt><dd>Set selective display.</dd>
+<dt><b>^X '</b></dt><dd>Expand an abbreviation.</dd>
+<dt><b>^X (</b></dt><dd>Start collecting a keyboard macro.</dd>
+<dt><b>^X )</b></dt><dd>End collecting a keyboard macro.</dd>
+<dt><b>^X +</b></dt><dd>Add global abbreviation.</dd>
+<dt><b>^X -</b></dt><dd>Remove global abbreviation.</dd>
+<dt><b>^X .</b></dt><dd>Set the fill prefix.</dd>
+<dt><b>^X /</b></dt><dd>Point to register.</dd>
+<dt><b>^X 0</b></dt><dd>Delete window.</dd>
+<dt><b>^X 1</b></dt><dd>Delete other windows.</dd>
+<dt><b>^X 2</b></dt><dd>Split window vertically (one above the other).</dd>
+<dt><b>^X 3</b></dt><dd>Split window vertically (one above the other), but stay in the first.</dd>
+<dt><b>^X 4</b></dt><dd>Prefix for the Control-X 4 commands listed below.</dd>
+<dt><b>^X 5</b></dt><dd>Split window horizontally (one beside the other).</dd>
+<dt><b>^X ;</b></dt><dd>Set the comment column.</dd>
+<dt><b>^X &lt;</b></dt><dd>Scroll the window left.</dd>
+<dt><b>^X =</b></dt><dd>Display the current cursor position.</dd>
+<dt><b>^X &gt;</b></dt><dd>Scroll the window right.</dd>
+<dt><b>^X A</b></dt><dd>Append the region to a buffer.</dd>
+<dt><b>^X B</b></dt><dd>Switch to a buffer.</dd>
+<dt><b>^X D</b></dt><dd>Edit directory (&quot;DIRED&quot;).</dd>
+<dt><b>^X E</b></dt><dd>Invoke the last keyboard macro.</dd>
+<dt><b>^X F</b></dt><dd>Set the fill column to the horizontal position.</dd>
+<dt><b>^X G</b></dt><dd>Insert a register.</dd>
+<dt><b>^X H</b></dt><dd>Place the point and the mark around the entire buffer.</dd>
+<dt><b>^X I</b></dt><dd>Insert a file.</dd>
+<dt><b>^X J</b></dt><dd>Register to point.</dd>
+<dt><b>^X K</b></dt><dd>Kill a buffer.</dd>
+<dt><b>^X L</b></dt><dd>Count the number of lines in the page.</dd>
+<dt><b>^X M</b></dt><dd>Send electronic mail.</dd>
+<dt><b>^X N</b></dt><dd>Narrow the editing bounds to the region.</dd>
+<dt><b>^X O</b></dt><dd>Switch to the other window.</dd>
+<dt><b>^X P</b></dt><dd>Narrow the editing bounds to the page.</dd>
+<dt><b>^X Q</b></dt><dd>Keyboard macro query.</dd>
+<dt><b>^X R</b></dt><dd>Copy a rectangle to a register.</dd>
+<dt><b>^X S</b></dt><dd>Save some buffers.</dd>
+<dt><b>^X U</b></dt><dd>Advertised undo.</dd>
+<dt><b>^X W</b></dt><dd>Widen the editing bounds.</dd>
+<dt><b>^X X</b></dt><dd>Copy to a register.</dd>
+<dt><b>^X [</b></dt><dd>Move backward one page.</dd>
+<dt><b>^X ]</b></dt><dd>Move forward one page.</dd>
+<dt><b>^X ^</b></dt><dd>Grow the current window.</dd>
+<dt><b>^X `</b></dt><dd>Move to the location implied by the next error message.</dd>
+<dt><b>^X {</b></dt><dd>Shrink a window horizontally.</dd>
+<dt><b>^X }</b></dt><dd>Grow a window horizontally.</dd>
+<dt><b>^X ^?</b></dt><dd>Delete to the beginning of the current sentence.</dd>
+</dl>
+
+<p>Control-X 4 Commands:</p>
+
+<dl compact="compact">
+<dt><b>^X 4 ^F</b></dt><dd>Find file other window.</dd>
+<dt><b>^X 4 .</b></dt><dd>Find tag other window.</dd>
+<dt><b>^X 4 A</b></dt><dd>Add change log entry other window.</dd>
+<dt><b>^X 4 B</b></dt><dd>Switch buffer other window.</dd>
+<dt><b>^X 4 D</b></dt><dd>DIRED other window.</dd>
+<dt><b>^X 4 F</b></dt><dd>Find file other window.</dd>
+<dt><b>^X 4 M</b></dt><dd>Mail other window.</dd>
+</dl>
+
+<p>Meta (^[) Commands:</p>
+
+<dl compact="compact">
+<dt><b>^[ ^@</b></dt><dd>Place the point and the mark around the S-exp.</dd>
+<dt><b>^[ ^A</b></dt><dd>Move to the beginning of the current defun.</dd>
+<dt><b>^[ ^B</b></dt><dd>Move backward one S-exp.</dd>
+<dt><b>^[ ^C</b></dt><dd>Exit recursive edit.</dd>
+<dt><b>^[ ^D</b></dt><dd>Move down one level of list structure.</dd>
+<dt><b>^[ ^E</b></dt><dd>Move to the end of the current defun.</dd>
+<dt><b>^[ ^F</b></dt><dd>Move forward one S-exp.</dd>
+<dt><b>^[ ^G</b></dt><dd>Format (&quot;grind&quot;) the current S-exp.</dd>
+<dt><b>^[ ^H</b></dt><dd>Place the point and the mark around the S-exp.</dd>
+<dt><b>^[ ^I</b></dt><dd>Complete a Lisp symbol.</dd>
+<dt><b>^[ ^J</b></dt><dd>Indent a new comment line.</dd>
+<dt><b>^[ ^K</b></dt><dd>Delete the following S-exp.</dd>
+<dt><b>^[ ^N</b></dt><dd>Move forward one list.</dd>
+<dt><b>^[ ^O</b></dt><dd>Split line: move the rest of this line vertically down.</dd>
+<dt><b>^[ ^P</b></dt><dd>Move backward one list.</dd>
+<dt><b>^[ ^Q</b></dt><dd>Indent an S-exp.</dd>
+<dt><b>^[ ^S</b></dt><dd>Incremental search forward using regular expressions.</dd>
+<dt><b>^[ ^T</b></dt><dd>Transpose the adjoining S-exp.</dd>
+<dt><b>^[ ^V</b></dt><dd>Scroll the other window.</dd>
+<dt><b>^[ ^W</b></dt><dd>Append the next delete to the top item on the kill ring.</dd>
+<dt><b>^[ ^X</b></dt><dd>Evaluate a defun.</dd>
+<dt><b>^[ ^[</b></dt><dd>Evaluate an expression.</dd>
+<dt><b>^[ ^\</b></dt><dd>Indent the region.</dd>
+<dt><b>^[ SP</b></dt><dd>Insert exactly one space.</dd>
+<dt><b>^[ !</b></dt><dd>Ask for and execute a shell command.</dd>
+<dt><b>^[ $</b></dt><dd>Invoke the spelling checker on a word.</dd>
+<dt><b>^[ %</b></dt><dd>Query replace: ask for an old string and a new string. At each occurrence of the old string, display it and ask for a command:
+
+<dl compact="compact">
+<dt><b>^L</b></dt><dd>Redisplay the screen.</dd>
+<dt><b>^R</b></dt><dd>Invoke the editor recursively.</dd>
+<dt><b>^W</b></dt><dd>Delete the old string and invoke the editor recursively.</dd>
+<dt><b>^[</b></dt><dd>Exit.</dd>
+<dt><b>SP</b></dt><dd>Replace the old with the new and continue.</dd>
+<dt><b>,</b></dt><dd>Replace and wait for confirmation.</dd>
+<dt><b>.</b></dt><dd>Replace and exit.</dd>
+<dt><b>!</b></dt><dd>Replace the rest without asking.</dd>
+<dt><b>^</b></dt><dd>Return to previous old string (jump to mark).</dd>
+<dt><b>^?</b></dt><dd>Don't replace but continue.</dd>
+</dl>
+</dd>
+
+<dt><b>^[ '</b></dt><dd>Set abbreviation prefix mark.</dd>
+<dt><b>^[ (</b></dt><dd>Insert paired parentheses.</dd>
+<dt><b>^[ )</b></dt><dd>Move past the closing parenthesis.</dd>
+<dt><b>^[ ,</b></dt><dd>Tags loop continue.</dd>
+<dt><b>^[ -</b></dt><dd>Make the argument negative.</dd>
+<dt><b>^[ .</b></dt><dd>Find a tag.</dd>
+<dt><b>^[ /</b></dt><dd>Abbreviation expand.</dd>
+<dt><b>^[ 0 .. 9</b></dt><dd>Use digits as argument (similar to ^U).</dd>
+<dt><b>^[ ;</b></dt><dd>Indent for comment.</dd>
+<dt><b>^[ &lt;</b></dt><dd>Move to the beginning of the current buffer.</dd>
+<dt><b>^[ =</b></dt><dd>Count the lines within the region.</dd>
+<dt><b>^[ &gt;</b></dt><dd>Move to the end of the current buffer.</dd>
+<dt><b>^[ @</b></dt><dd>Place the point and mark around the current word.</dd>
+<dt><b>^[ A</b></dt><dd>Move to the beginning of the current sentence.</dd>
+<dt><b>^[ B</b></dt><dd>Move backward one word.</dd>
+<dt><b>^[ C</b></dt><dd>Capitalize the following word.</dd>
+<dt><b>^[ D</b></dt><dd>Delete the following word.</dd>
+<dt><b>^[ E</b></dt><dd>Move to the end of the current sentence.</dd>
+<dt><b>^[ F</b></dt><dd>Move forward one word.</dd>
+<dt><b>^[ G</b></dt><dd>Fill text in the region.</dd>
+<dt><b>^[ H</b></dt><dd>Place the point and the mark around the current paragraph.</dd>
+<dt><b>^[ I</b></dt><dd>Tab to tab stop.</dd></dd>
+<dt><b>^[ J</b></dt><dd>Indent new comment line.</dd>
+<dt><b>^[ K</b></dt><dd>Delete the remainder of the current sentence.</dd>
+<dt><b>^[ L</b></dt><dd>Convert the following word to lower case.</dd>
+<dt><b>^[ M</b></dt><dd>Move back to indentation.</dd>
+<dt><b>^[ Q</b></dt><dd>Fill the current paragraph.  ^U ^[ Q means to justify the paragraph.</dd>
+<dt><b>^[ R</b></dt><dd>Move to window line.</dd>
+<dt><b>^[ T</b></dt><dd>Transpose the adjoining words.</dd>
+<dt><b>^[ U</b></dt><dd>Convert the following word to upper case.</dd>
+<dt><b>^[ V</b></dt><dd>Move the top of the current screen to the bottom of the screen: <i>i.e.</i>, move up one screen.</dd>
+<dt><b>^[ W</b></dt><dd>Copy the region to the kill buffer.</dd>
+<dt><b>^[ X</b></dt><dd>Execute extended command.</dd>
+<dt><b>^[ Y</b></dt><dd>After ^Y: Delete the just-yanked text and yank the previously killed text.</dd>
+<dt><b>^[ Z</b></dt><dd>Zap to character.</dd>
+<dt><b>^[ [</b></dt><dd>Move to the beginning of the current paragraph.</dd>
+<dt><b>^[ \</b></dt><dd>Delete the spaces and tabs around the point.</dd>
+<dt><b>^[ ]</b></dt><dd>Move to the end of the current paragraph.</dd>
+<dt><b>^[ ^</b></dt><dd>Delete the indentation on the current line.</dd>
+<dt><b>^[ |</b></dt><dd>Execute a shell command on the region (&quot;pipe the region through a shell command&quot;).</dd>
+<dt><b>^[ ~</b></dt><dd>Clear the buffer modified flag.</dd>
+<dt><b>^[ ^?</b></dt><dd>Delete the previous word.</dd>
+</dl>
+
+<h3>The Author's Command Set</h3>
+
+<p>This section lists the changes the author makes to the
+just-presented default command set.</p>
+
+<dl compact="compact">
+<dt><b>^C</b></dt><dd>Rotate case of word: foo -&gt; Foo -&gt; FOO -&gt; foo ...</dd>
+<dt><b>^H</b></dt><dd>Delete the previous character.</dd>
+<dt><b>^I</b></dt><dd>Just insert a TAB: no special indentation.</dd>
+<dt><b>^J</b></dt><dd>Insert a line break and indent the new line the same as the current one.</dd>
+<dt><b>^K</b></dt><dd>Delete lines as usual, but don't treat an argument specially.</dd>
+<dt><b>^M</b></dt><dd>Just insert a line break: no special actions.</dd>
+<dt><b>^N</b></dt><dd>Move to the next line: don't extend the buffer.</dd>
+<dt><b>^T</b></dt><dd>Always transpose the two preceding characters.</dd>
+<dt><b>^V</b></dt><dd>A slightly different move down screen.</dd>
+<dt><b>^Z</b></dt><dd>Move up screen.</dd>
+<dt><b>^\</b></dt><dd>Delete all white space (indentation) on the current line.</dd>
+<dt><b>^]</b></dt><dd>Invoke keyboard macro.</dd>
+<dt><b>^_</b></dt><dd>Suspend the program's execution and return to whatever invoked the editor.</dd>
+<dt><b>^?</b></dt><dd>Delete the previous character with no special actions.</dd>
+<br>
+<br>
+<dt><b>^X ^E</b></dt><dd>Execute one shell command.</dd>
+<dt><b>^X ^I</b></dt><dd>Insert a file.</dd>
+<dt><b>^X ^M</b></dt><dd>Invoke a subshell.</dd>
+<dt><b>^X ^N</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^X ^P</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^X ^R</b></dt><dd>Re-read file.</dd>
+<dt><b>^X ^T</b></dt><dd>Return to top-level editing (exit all recursive editors).</dd>
+<dt><b>^X \</b></dt><dd>Get rid of all &quot;^H_&quot; strings in the buffer (used to make UNIX man pages more readable after doing &quot;^X ^E man <i>title</i>&quot;).</dd>
+<dt><b>^X C</b></dt><dd>Invoke compiler.</dd>
+<dt><b>^X ^H</b></dt><dd>Help.</dd>
+<dt><b>^X N</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^X P</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^X R</b></dt><dd>Read electronic mail.</dd>
+<br>
+<br>
+<dt><b>^[ ^H</b></dt><dd>Delete previous word.</dd>
+<dt><b>^[ ^R</b></dt><dd>Query replace.</dd>
+<dt><b>^[ ^[</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ SP</b></dt><dd>Set the mark.</dd>
+<dt><b>^[ &lt;</b></dt><dd>Move to the beginning of the buffer.  With an argument, move to the specified line number.</dd>
+<dt><b>^[ =</b></dt><dd>Display the number of lines in the buffer and the number of the line that the point is on.</dd>
+<dt><b>^[ &gt;</b></dt><dd>Move to the end of the buffer.  With an argument, move to the specified line number.</dd>
+<dt><b>^[ G</b></dt><dd>Ask for a line number and go to the specified line.</dd>
+<dt><b>^[ I</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ J</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ M</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ N</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ O</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ P</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ R</b></dt><dd>Replace string (as ^[ ^R, but don't ask).</dd>
+<dt><b>^[ S</b></dt><dd>Center the current line.</dd>
+<dt><b>^[ Z</b></dt><dd>Null (to prevent typing by accident).</dd>
+<dt><b>^[ \</b></dt><dd>Delete all surrounding spaces, tabs, and line breaks and re-insert one space.</dd>
+</dl>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Appendix-C.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

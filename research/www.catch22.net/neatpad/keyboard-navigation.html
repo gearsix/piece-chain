@@ -1,0 +1,1115 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/keyboard-navigation by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Keyboard Navigation - Catch22</title>
+<meta name="description" content="Keeping with the Uniscribe theme brings us to the next area of Neatpad’s development that hasn’t been touched on yet, which is keyboard-input. I’ve deliberately left this stage until now because I knew that without Uniscribe keyboard-navigation would be very difficult indeed. The problem with keyboard-handling is not how to process keyboard input (which is easy), but rather how to navigate through a Unicode file - taking into account combining sequences, surrogates, graphaeme clusters etc.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Keyboard Navigation">
+<meta property="og:url" content="keyboard-navigation.html">
+
+
+  <meta property="og:description" content="Keeping with the Uniscribe theme brings us to the next area of Neatpad’s development that hasn’t been touched on yet, which is keyboard-input. I’ve deliberately left this stage until now because I knew that without Uniscribe keyboard-navigation would be very difficult indeed. The problem with keyboard-handling is not how to process keyboard input (which is easy), but rather how to navigate through a Unicode file - taking into account combining sequences, surrogates, graphaeme clusters etc.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-05-14T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="keyboard-navigation.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Keyboard Navigation</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad16.zip">neatpad16.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="active">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Keyboard Navigation">
+    <meta itemprop="description" content="Keeping with the Uniscribe theme brings us to the next area of Neatpad’s development that hasn’t been touched on yet, which is keyboard-input. I’ve deliberately left this stage until now because I knew that without Uniscribe keyboard-navigation would be very difficult indeed. The problem with keyboard-handling is not how to process keyboard input (which is easy), but rather how to navigate through a Unicode file - taking into account combining sequences, surrogates, graphaeme clusters etc.">
+    <meta itemprop="datePublished" content="May 14, 2006">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Keyboard Navigation
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Keyboard Navigation</h1-->
+<!--h3>Keyboard navigation with Uniscribe</h3-->
+
+<p>Keeping with the Uniscribe theme brings us to the next area of Neatpad’s development that hasn’t been touched on yet, which is keyboard-input. I’ve deliberately left this stage until now because I knew that without Uniscribe keyboard-navigation would be very difficult indeed. The problem with keyboard-handling is not how to process keyboard input (which is easy), but rather how to navigate through a Unicode file - taking into account combining sequences, surrogates, graphaeme clusters etc.</p>
+
+<p>Up until this point the Uniscribe API has been used extensively provide text-rendering support. Fortunately Uniscribe can be used for more than just text output, and we will be looking in detail at the <code class="highlighter-rouge">ScriptBreak</code> API and how it can help us manage keyboard navigation.</p>
+
+<h2 id="keyboard-messages-in-win32">Keyboard messages in Win32</h2>
+
+<p>All Windows programs receive keyboard input in the form of <code class="highlighter-rouge">WM_KEYDOWN</code> and <code class="highlighter-rouge">WM_KEYUP</code> messages. When a key is pressed, a series of <code class="highlighter-rouge">WM_KEYDOWN</code> messages are sent to an application’s message-queue, and when the key is released a single <code class="highlighter-rouge">WM_KEYUP</code> message is sent. These two messages are relatively ‘low level’ but together still form the foundation of keyboard-input in Windows.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Key Pressed</td>
+      <td>Key Released</td>
+    </tr>
+    <tr>
+      <td>Normal Keystroke</td>
+      <td><code class="highlighter-rouge">WM_KEYDOWN</code></td>
+      <td><code class="highlighter-rouge">WM_KEYUP</code></td>
+    </tr>
+    <tr>
+      <td>System Keystroke</td>
+      <td><code class="highlighter-rouge">WM_SYSKEYDOWN</code></td>
+      <td><code class="highlighter-rouge">WM_SYSKEYUP</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The table above summarises the two basic keyboard-input messages, and also their ‘system’ counterparts - <code class="highlighter-rouge">WM_SYSKEYDOWN</code> and <code class="highlighter-rouge">WM_SYSKEYUP</code>. These last two messages are seldom used by Windows programs and have no relevance to Neatpad’s development so I won’t bother describing them here.</p>
+
+<p>The <code class="highlighter-rouge">WM_KEYDOWN</code> message is most commonly used by applications to detect when specific keys on the keyboard have been pressed. This is a good way to detect keys such as <code class="highlighter-rouge">&lt;control&gt;</code>, <code class="highlighter-rouge">&lt;shift&gt;</code> and arrow keys. However when it comes to text-entry, processing specific key presses is not actually the best way to go about things.</p>
+
+<p>For example, when processing specific key presses, there is no easy way to determine the case of a letter. The user could have hit the ‘A’ key, but is this in lowercase or uppercase? All we know is the virtual-keystroke ‘A’ was entered, but we don’t know anything about the state of the CAPSLOCK button or whether the user is holding the SHIFT key down. Obviously the actual character entered would be different depending on these factors - in this simple case it could be either ‘a’ or ‘A’. Things get even more complicated when you move beyond English keyboards into the realm of Unicode, Input Method Editors and system locales, where multiple key-strokes can result in wildly different characters.</p>
+
+<p>Fortunately there is another mechanism for handling <em>character</em> input in Windows - the <code class="highlighter-rouge">WM_CHAR</code> and <code class="highlighter-rouge">WM_UNICHAR</code> messages. These messages are specifically intended to represent characters rather keystrokes. Interestingly, <code class="highlighter-rouge">WM_CHAR</code> is not automatically sent to an application when a key is pressed on the keyboard. It is not until the <code class="highlighter-rouge">TranslateMessage</code> function is called inside an application’s message-loop that the <code class="highlighter-rouge">WM_CHAR</code> message is dispatched.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span><span class="p">(</span><span class="n">GetMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">TranslateMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+    <span class="n">DispatchMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Above is the standard message-loop of many Win32 programs. Most programmers probably copy+paste this loop straight into their code without giving it much thought, but the <code class="highlighter-rouge">TranslateMessage</code> function in particular has a very specific purpose. It translates certain messages (such as <code class="highlighter-rouge">WM_KEYDOWN</code>) into a series of corresponding <code class="highlighter-rouge">WM_CHAR</code> messages. <code class="highlighter-rouge">TranslateMessage</code> takes into account certain things such as the state of the SHIFT or CAPSLOCK keys, and also the current locale. Note that the <code class="highlighter-rouge">WM_KEYDOWN</code> message being translated is not modified in any way - instead a new <code class="highlighter-rouge">WM_CHAR</code> message is constructed by <code class="highlighter-rouge">TranslateMessage</code> and posted back into the current thread’s message-queue for subsequent processing.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>Characters</td>
+      <td>Dead Characters</td>
+    </tr>
+    <tr>
+      <td>UTF-16 Character</td>
+      <td><code class="highlighter-rouge">WM_CHAR</code></td>
+      <td><code class="highlighter-rouge">WM_DEADCHAR</code></td>
+    </tr>
+    <tr>
+      <td>UTF-32 Character</td>
+      <td><code class="highlighter-rouge">WM_UNICHAR</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Input Method Editor</td>
+      <td><code class="highlighter-rouge">WM_IME_CHAR</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>System Character</td>
+      <td><code class="highlighter-rouge">WM_SYSCHAR</code></td>
+      <td><code class="highlighter-rouge">WM_DEADSYSCHAR</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The table above this time summarises the various character-input messages available to Windows programs. We don’t be performing actual data-entry into Neatpad until much later on in this series so there is no point in looking at these messages now.</p>
+
+<h2 id="keyboard-navigation-with-wm_keydown">Keyboard Navigation with WM_KEYDOWN</h2>
+
+<p>The purpose of this tutorial is to cover the implementation of <em>Keyboard Navigation</em> - so we are only interested in physical keys such as the arrow-keys, page-up, page-down, home &amp; end, etc. Therefore will only need to handle the <code class="highlighter-rouge">WM_KEYDOWN</code> message at this time - actual character-input (and the <code class="highlighter-rouge">WM_CHAR</code> /<code class="highlighter-rouge">WM_UNICHAR</code> messages) will wait until later in this series until we actually have a mechanism to modify the TextDocument.</p>
+
+<p>In general, keyboard navigation in Windows text-editors is fairly consistent. The arrow keys (left, right, up, down) are used to move the text-caret in these four basic directions, and <em>page-up</em>, <em>page-down</em>, <em>home</em> and <em>end</em> are all well established in what they should achieve. In addition holding the <em>control</em> or <em>shift</em> keys should modify the behaviour of whatever navigation key is being pressed at the time - the <em>shift</em> key being used to alter the text-selection as the cursor is being moved.</p>
+
+<p>The table below summarises the behaviours that we wil be implementing in Neatpad.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Key Code</td>
+      <td>Normal Action</td>
+      <td>TextView Method</td>
+      <td>With &lt;Control&gt;</td>
+      <td>TextView Method</td>
+    </tr>
+    <tr>
+      <td>VK_LEFT</td>
+      <td>Character left</td>
+      <td><code class="highlighter-rouge">MoveCharPrev</code></td>
+      <td>Word left</td>
+      <td><code class="highlighter-rouge">MoveWordPrev</code></td>
+    </tr>
+    <tr>
+      <td>VK_RIGHT</td>
+      <td>Character right</td>
+      <td><code class="highlighter-rouge">MoveCharNext</code></td>
+      <td>Word right</td>
+      <td><code class="highlighter-rouge">MoveWordNext</code></td>
+    </tr>
+    <tr>
+      <td>VK_UP</td>
+      <td>Line up</td>
+      <td><code class="highlighter-rouge">MoveLineUp(1)</code></td>
+      <td>Scroll line up</td>
+      <td><code class="highlighter-rouge">Scroll</code></td>
+    </tr>
+    <tr>
+      <td>VK_DOWN</td>
+      <td>Line down</td>
+      <td><code class="highlighter-rouge">MoveLineDown(1)</code></td>
+      <td>Scroll line down</td>
+      <td><code class="highlighter-rouge">Scroll</code></td>
+    </tr>
+    <tr>
+      <td>VK_PRIOR</td>
+      <td>Page up</td>
+      <td><code class="highlighter-rouge">MoveLineUp(x)</code></td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>VK_NEXT</td>
+      <td>Page down</td>
+      <td><code class="highlighter-rouge">MoveLineDown(x)</code></td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>VK_HOME</td>
+      <td>Line start</td>
+      <td><code class="highlighter-rouge">MoveLineStart</code></td>
+      <td>Document start</td>
+      <td><code class="highlighter-rouge">MoveFileStart</code></td>
+    </tr>
+    <tr>
+      <td>VK_END</td>
+      <td>Line end</td>
+      <td><code class="highlighter-rouge">MoveLineEnd</code></td>
+      <td>Document end</td>
+      <td><code class="highlighter-rouge">MoveFileEnd</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each action will be represented by a TextView member-function that will perform the associated operation. As you can see there are actually quite a number of different actions that we must implement. This is due in part to the effect of the control-key which almost doubles the number of methods we must implement.</p>
+
+<p>The <code class="highlighter-rouge">WM_KEYDOWN</code> handler in Neatpad’s TextView is shown below. A switch-statement is used to process each keystroke that we are interested in:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnKeyDown</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nKeyCode</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nFlags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">fCtrlDown</span> <span class="o">=</span> <span class="n">IsKeyPressed</span><span class="p">(</span><span class="n">VK_CONTROL</span><span class="p">);</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">nKeyCode</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">VK_LEFT</span><span class="p">:</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">fCtrlDown</span><span class="p">)</span> <span class="n">MoveWordPrev</span><span class="p">();</span>
+        <span class="k">else</span> <span class="n">MoveCharPrev</span><span class="p">();</span>
+
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">VK_RIGHT</span><span class="p">:</span>
+    <span class="p">...</span>
+    <span class="p">}</span> 
+
+    <span class="o">&lt;&lt;</span> <span class="n">extend</span> <span class="n">selection</span> <span class="k">if</span> <span class="o">&lt;</span><span class="n">shift</span><span class="o">&gt;</span> <span class="n">is</span> <span class="n">held</span> <span class="n">down</span> <span class="o">&gt;&gt;</span> 
+
+    <span class="o">&lt;&lt;</span> <span class="n">update</span> <span class="n">text</span><span class="o">-</span><span class="n">caret</span> <span class="n">position</span> <span class="o">&gt;&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The purpose of the <code class="highlighter-rouge">MoveXxxx</code> functions is to update the <code class="highlighter-rouge">m_nCursorOffset</code> variable to reference a new position within the current file. Each <code class="highlighter-rouge">MoveXxxx</code> function adjusts <code class="highlighter-rouge">m_nCursorOffset</code> in a different way depending on what keyboard action should be processed. I won’t include the entire function here because hopefully you can get the general idea from the snippet above.</p>
+
+<p>Once a keypress has resulted in <code class="highlighter-rouge">m_nCursorOffset</code> being updated, the next step is to handle text-selections:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Extend selection if &lt;shift&gt; is down
+</span><span class="k">if</span><span class="p">(</span><span class="n">IsKeyPressed</span><span class="p">(</span><span class="n">VK_SHIFT</span><span class="p">))</span>
+<span class="p">{</span>		
+    <span class="n">InvalidateRange</span><span class="p">(</span><span class="n">m_nSelectionEnd</span><span class="p">,</span> <span class="n">m_nCursorOffset</span><span class="p">);</span>
+    <span class="n">m_nSelectionEnd</span> <span class="o">=</span> <span class="n">m_nCursorOffset</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// Otherwise clear the selection
+</span><span class="k">else</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m_nSelectionStart</span> <span class="o">!=</span> <span class="n">m_nSelectionEnd</span><span class="p">)</span>
+        <span class="n">InvalidateRange</span><span class="p">(</span><span class="n">m_nSelectionStart</span><span class="p">,</span> <span class="n">m_nSelectionEnd</span><span class="p">);</span>
+
+    <span class="n">m_nSelectionEnd</span> <span class="o">=</span> <span class="n">m_nCursorOffset</span><span class="p">;</span>
+    <span class="n">m_nSelectionStart</span> <span class="o">=</span> <span class="n">m_nCursorOffset</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Extending the text-selection is simply a matter of checking the state of the <em>shift</em> key (up/down), and then modifying the <code class="highlighter-rouge">m_nSelectionStart</code> and <code class="highlighter-rouge">m_nSelectionEnd</code> TextView variables appropriately. When the selection should be extended (shift key is down) then only the <code class="highlighter-rouge">m_nSelectionEnd</code> variable is modified. Otherwise both variables are updated to the same value, effectively ‘zeroing’ the selection.</p>
+
+<p>The final step is to update the physical caret-position from the cursor-offset. This is an important concept because at no time during the keyboard navigation does the caret’s physical on-screen position need to be taken into account. All keyboard navigation is based soley on a single logical character-offset and it is only after the cursor-offset has been updated (due to a keypress) is the caret repositioned:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// update text-caret location (xpos, line#) from the offset
+</span><span class="n">UpdateCaretOffset</span><span class="p">(</span><span class="n">m_nCursorOffset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_nCaretPosX</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_nCurrentLine</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UpdateCaretOffset</code> is already being used to position the caret from a previous tutorial (using the <code class="highlighter-rouge">UspOffsetToX</code> and <code class="highlighter-rouge">SetCaretPos</code> APIs), so this function is simply reused for our keyboard handling.</p>
+
+<blockquote>
+  <p><em>All keyboard navigation in Uniscribe is based around logical offsets. In other words, the cursor advances through the backing store (the file) in WCHAR units. When it comes to navigating through <strong>bidirectional</strong> strings the caret still advances logically through the file. We rely on Uniscribe converting the logical cursor-offset to a physical location on screen (using the ScriptCPtoX function). This may mean that the cursor appears to move both ‘left’ and ‘right’ within the same string even if a single arrow-key is being used. Don’t worry about displaying the caret in bidirectional strings - because we are using Uniscribe it handles all these details for us automatically.</em></p>
+</blockquote>
+
+<p>Lastly note the use of the <code class="highlighter-rouge">IsKeyPressed</code> function, which is a simple wrapper around the <code class="highlighter-rouge">GetKeyState</code> API. It’s purpose is to simplify the test for whether a key is pressed or not and returns a boolean value indicating this fact.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">IsKeyPressed</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nVirtKey</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">GetKeyState</span><span class="p">(</span><span class="n">nVirtKey</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nb">true</span> <span class="o">:</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="scriptbreak">ScriptBreak</h2>
+
+<p><code class="highlighter-rouge">ScriptBreak</code> works alongside <code class="highlighter-rouge">ScriptItemize</code> to identify the <em>logical attributes</em> of each character in a string. <code class="highlighter-rouge">ScriptBreak</code> must be called once for each individual item-run in the string (as identified by <code class="highlighter-rouge">ScriptItemize</code>) and returns an array of <code class="highlighter-rouge">SCRIPT_LOGATTR</code> structures. Each entry in the array represents a single <code class="highlighter-rouge">WCHAR</code> in the Unicode string, and must be allocated by the caller to have the same number of elements as there are WCHARs in the run.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptBreak</span> <span class="p">(</span> 
+  <span class="n">WCHAR</span> <span class="o">*</span> <span class="n">pwcChars</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">cChars</span><span class="p">,</span> 
+  <span class="n">SCRIPT_ANALYSIS</span> <span class="o">*</span> <span class="n">psa</span><span class="p">,</span> 
+  <span class="n">SCRIPT_LOGATTR</span> <span class="o">*</span> <span class="n">psla</span> 
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>The individual attributes for each character are held within the <code class="highlighter-rouge">SCRIPT_LOGATTR</code> structure, shown below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">SCRIPT_LOGATTR</span> 
+<span class="p">{</span> 
+  <span class="n">BYTE</span> <span class="n">fSoftBreak</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> 
+  <span class="n">BYTE</span> <span class="n">fWhiteSpace</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> 
+  <span class="n">BYTE</span> <span class="n">fCharStop</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> 
+  <span class="n">BYTE</span> <span class="n">fWordStop</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> 
+  <span class="n">BYTE</span> <span class="n">fInvalid</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> 
+  <span class="n">BYTE</span> <span class="n">fReserved</span> <span class="o">:</span> <span class="mi">3</span><span class="p">;</span> 
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Although each field of the <code class="highlighter-rouge">SCRIPT_LOGATTR</code> structure has a specific purpose, this information as returned by <code class="highlighter-rouge">ScriptBreak</code> is generally useful for two purposes: word-wrapping and keyboard navigation:</p>
+
+<ul>
+  <li><strong>fSoftBreak</strong> indicates the positions within a string where word-wrapping can take place - in other words, the positions where the string can be broken into smaller units suitable for display over multiple lines.</li>
+  <li><strong>fWhiteSpace</strong> indicates that the corresponding character should be treated as white-space. This could potentially be set for many more characters than just tabs and spaces.</li>
+  <li><strong>fCharStop</strong> and <strong>fWordStop</strong> identify valid caret positions within the string. These positions can be used to support single character- based navigation and ‘word’ navigation.</li>
+</ul>
+
+<p>Don’t under-estimate just how <em>much</em> work <code class="highlighter-rouge">ScriptBreak</code> is doing on our behalf. The identification of character and word positions alone saves us a tremendous amount of effort. Added to this is the fact that <code class="highlighter-rouge">ScriptBreak</code> supports all of the various Unicode scripts, so for languages such as Thai (which require dictionary support to identify ‘soft breaks’), all of the hard work is already done.</p>
+
+<p>The task of calling <code class="highlighter-rouge">ScriptBreak</code> for each item-run is handled by the <code class="highlighter-rouge">UspAnalyze</code> function, which we looked at in previous tutorials. The <code class="highlighter-rouge">SCRIPT_LOGATTR</code> buffer is allocated and stored inside the <code class="highlighter-rouge">USPDATA</code> object’s <code class="highlighter-rouge">breakList</code> * member. A simple loop is then used to iterate over each item-run, and the results of <code class="highlighter-rouge">ScriptBreak</code> stored inside the <code class="highlighter-rouge">USPDATA::breakList</code> array. The array holds the results for all item-runs, concatenated together:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;&lt;</span> <span class="n">UspLib</span><span class="p">.</span><span class="n">c</span> <span class="o">-</span> <span class="n">UspAnalyze</span><span class="p">(...)</span> <span class="o">&gt;&gt;</span>
+
+ <span class="c1">// allocate memory for SCRIPT_LOGATTR structures
+</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">breakList</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">wlen</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">SCRIPT_LOGATTR</span><span class="p">));</span>
+
+ <span class="c1">// Generate the word-break information for each item-run
+</span> <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">itemRunCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="n">ITEM_RUN</span> <span class="o">*</span><span class="n">itemRun</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">uspData</span><span class="o">-&gt;</span><span class="n">itemRunList</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+     <span class="n">ScriptBreak</span><span class="p">(</span>
+          <span class="n">wstr</span> <span class="o">+</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">charPos</span><span class="p">,</span> 
+          <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">,</span> 
+         <span class="o">&amp;</span><span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">analysis</span><span class="p">,</span> 
+          <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">breakList</span> <span class="o">+</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">charPos</span>
+     <span class="p">);</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Any string (or paragraph) of text analyzed with UspAnalyze will therefore automatically have it’s <code class="highlighter-rouge">SCRIPT_LOGATTR</code> information stored inside the <code class="highlighter-rouge">USPDATA</code> object. Because the information for each run has been concatenated into the same buffer in effect individual item-runs do not need to be taken into account when inspecting the logical-attributes for each character in the string.</p>
+
+<p>Let’s look at a quick example and see how the string “Hello يُساوِي World” would be treated by <code class="highlighter-rouge">ScriptBreak</code>. Note that there are two spaces in the string, one either side of the Arabic phrase:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>SCRIPT_LOGATTR</td>
+      <td> </td>
+      <td>H</td>
+      <td>E</td>
+      <td>L</td>
+      <td>L</td>
+      <td>O</td>
+      <td> </td>
+      <td>ي</td>
+      <td>ُ</td>
+      <td>س</td>
+      <td>ا</td>
+      <td>و</td>
+      <td>ِ</td>
+      <td>ي</td>
+      <td> </td>
+      <td>W</td>
+      <td>O</td>
+      <td>R</td>
+      <td>L</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>SoftBreak</td>
+      <td> </td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>WhiteSpace</td>
+      <td> </td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>SoftBreak</td>
+      <td> </td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>CharStop</td>
+      <td> </td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>1</strong></td>
+    </tr>
+    <tr>
+      <td>WordStop</td>
+      <td> </td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td><strong>1</strong></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Invalid</td>
+      <td> </td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="tabs-and-whitespace">Tabs and Whitespace</h2>
+
+<p><code class="highlighter-rouge">ScriptBreak</code> does not identify tab-characters as whitespace by default. This poses a problem because every text-editor under the sun understands that tabs are basically the same as spaces and should therefore be treated the same. The solution is to parse the Unicode string looking for tab-characters and modify the corresponding entries in the <code class="highlighter-rouge">breakList</code> :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">wlen</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">wstr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'\t'</span><span class="p">)</span>
+        <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">breakList</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fWhiteSpace</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The loop above can be found inside <code class="highlighter-rouge">UspAnalyze</code> and is executed after the <code class="highlighter-rouge">ScriptBreak</code> information has been obtained.</p>
+
+<h2 id="uspgetlogattr">UspGetLogAttr</h2>
+
+<p>I have introduced a new UspLib function called <codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><code class="highlighter-rouge">UspGetLogAttr</code> <codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe><codfe></codfe>, which is similar in concept to the <code class="highlighter-rouge">Script_pLogAttr</code> function. It returns a pointer to the <code class="highlighter-rouge">breakList</code> buffer inside each <code class="highlighter-rouge">USPDATA</code> object. The difference is however, that a <em>non-const</em><code class="highlighter-rouge">SCRIPT_LOGATTR</code> array is returned which can be modified by the caller of the function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SCRIPT_LOGATTR</span> <span class="o">*</span> <span class="nf">UspGetLogAttr</span><span class="p">(</span> <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">breakList</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As you can see the <code class="highlighter-rouge">UspGetLogAttr</code> function is really very simple - all it does is return a pointer to the <code class="highlighter-rouge">breakList</code> buffer which is held inside each <code class="highlighter-rouge">uspData</code> object. Of course the real work in building this buffer was performed by the <code class="highlighter-rouge">UspAnalyze</code> function.</p>
+
+<p>The reason this function exists is to allow the caller to modify the internal <code class="highlighter-rouge">SCRIPT_LOGATTR</code> structure inside each <code class="highlighter-rouge">USPDATA</code> object. This is important, because when it comes to syntax-highlighting I invisage that we will have to fine-tune the <code class="highlighter-rouge">SCRIPT_LOGATTR</code> buffer for each line to cater for more specific language-syntax details.</p>
+
+<p>For now the <code class="highlighter-rouge">UspGetLogAttr</code> function is purely used by the keyboard navigation functions to control cursor-placement within each line of text.</p>
+
+<h2 id="character-and-word-navigation">Character and Word navigation</h2>
+
+<p>Character and Word navigation are quite closely related to each other. Both actions operate within a single line of text and both use the <code class="highlighter-rouge">SCRIPT_LOGATTR</code> information returned by <code class="highlighter-rouge">ScriptBreak</code> to position the caret at valid character/word positions:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="n">TextView</span><span class="o">::</span><span class="n">MoveCharPrev</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">USPCACHE</span> <span class="o">*</span> <span class="n">uspCache</span><span class="p">;</span>
+    <span class="n">CSCRIPT_LOGATTR</span> <span class="o">*</span> <span class="n">logAttr</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">lineOffset</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">charPos</span><span class="p">;</span>
+
+    <span class="c1">// get Uniscribe data for current line
+</span>    <span class="n">uspCache</span> <span class="o">=</span> <span class="n">GetUspCache</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m_nCurrentLine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lineOffset</span><span class="p">);</span>
+    <span class="n">logAttr</span> <span class="o">=</span> <span class="n">UspGetLogAttr</span><span class="p">(</span><span class="n">uspCache</span><span class="o">-&gt;</span><span class="n">uspData</span><span class="p">);</span>
+
+    <span class="c1">// get character-offset relative to start of line
+</span>    <span class="n">charPos</span> <span class="o">=</span> <span class="n">m_nCursorOffset</span> <span class="o">-</span> <span class="n">lineOffset</span><span class="p">;</span>
+
+    <span class="c1">// find the previous valid character-position
+</span>    <span class="k">for</span><span class="p">(</span> <span class="o">--</span><span class="n">charPos</span><span class="p">;</span> <span class="n">charPos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">charPos</span><span class="o">--</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">logAttr</span><span class="p">[</span><span class="n">charPos</span><span class="p">].</span><span class="n">fCharStop</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">&lt;&lt;</span> <span class="n">move</span> <span class="n">up</span> <span class="n">to</span> <span class="n">end</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">last</span> <span class="n">line</span> <span class="k">if</span> <span class="n">necessary</span> <span class="o">&gt;&gt;</span>
+
+    <span class="c1">// update cursor position
+</span>    <span class="n">m_nCursorOffset</span> <span class="o">=</span> <span class="n">lineOffset</span> <span class="o">+</span> <span class="n">charPos</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">MoveCharPrev</code> begins by obtaining the cached UspData object for the current line, and the <code class="highlighter-rouge">SCRIPT_LOGATTR</code> structure for that line is retrieved by calling <code class="highlighter-rouge">UspGetLogAttr</code>. The <code class="highlighter-rouge">SCRIPT_LOGATTR</code> array is then parsed to detect valid character-stop positions. Because UspData objects represent individual lines, all processing is relative to the start of each line:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// find the previous valid character-position
+</span><span class="k">for</span><span class="p">(</span> <span class="o">--</span><span class="n">charPos</span><span class="p">;</span> <span class="n">charPos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">charPos</span><span class="o">--</span><span class="p">)</span>
+<span class="p">{</span>
+     <span class="k">if</span><span class="p">(</span><span class="n">logAttr</span><span class="p">[</span><span class="n">charPos</span><span class="p">].</span><span class="n">fCharStop</span><span class="p">)</span>
+         <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The loop above is quite simple. All it does is continue looping until a character-stop position is found. When the loop exits the <code class="highlighter-rouge">charPos</code> variable has been modified and the text-caret can be repositioned.</p>
+
+<p>Word-navigation is a little more complicated. The <code class="highlighter-rouge">MoveWordNext</code> logic can be seen below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// if already on a word-break, go to next char
+</span><span class="k">if</span><span class="p">(</span><span class="n">logAttr</span><span class="p">[</span><span class="n">charPos</span><span class="p">].</span><span class="n">fWordStop</span><span class="p">)</span>
+    <span class="n">charPos</span><span class="o">++</span><span class="p">;</span>
+
+<span class="c1">// skip whole characters until we hit a word-break/more whitespace
+</span><span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">charPos</span> <span class="o">&lt;</span> <span class="n">uspCache</span><span class="o">-&gt;</span><span class="n">length_CRLF</span><span class="p">;</span> <span class="n">charPos</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">logAttr</span><span class="p">[</span><span class="n">charPos</span><span class="p">].</span><span class="n">fWordStop</span> <span class="o">||</span> <span class="n">logAttr</span><span class="p">[</span><span class="n">charPos</span><span class="p">].</span><span class="n">fWhiteSpace</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// skip trailing whitespace
+</span><span class="k">while</span><span class="p">(</span><span class="n">charPos</span> <span class="o">&lt;</span> <span class="n">uspCache</span><span class="o">-&gt;</span><span class="n">length_CRLF</span> <span class="o">&amp;&amp;</span> <span class="n">logAttr</span><span class="p">[</span><span class="n">charPos</span><span class="p">].</span><span class="n">fWhiteSpace</span><span class="p">)</span>
+    <span class="n">charPos</span><span class="o">++</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Remember that all we are doing so far is altering the logical cursor-offset for the TextView. The actual text-caret is positioned independently and does not require any form of sophisticated processing on our part. This is the great thing about Uniscribe - as a programmer we only have to deal with logical character units - all of the complicated display-related code is handled automatically for us.</p>
+
+<h2 id="line-wrapping">Line Wrapping</h2>
+
+<p>I was hoping that this stage would not be necessary due to the linear (offset-based) coordinate system that we are using for Neatpad. However because of the way Neatpad handles CR/LF sequences, specific checks must be in place to detect when the cursor moves past the beginning/end of a line. Should this occur the cursor is moved onto the previous/next line accordingly.</p>
+
+<p>The difficulty occurs because the text-caret should not be allowed to move past the CR/LF at the end of each line. In effect the CR/LF sequences are ‘dead’ characters that cannot be used as character-stop positions. The image below illustrates this by showing the caret at the very last position it can reach, despite there being a line-feed character at the end.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1602.gif" alt="&lt;&gt;" /></p>
+
+<p>The task of wrapping to the previous/next line is deferred to the <code class="highlighter-rouge">MoveLineEnd</code> and <code class="highlighter-rouge">MoveLineStart</code> functions. You will therefore see the following code in many of the <code class="highlighter-rouge">MoveXxxxPrev</code> functions:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">charPos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">charPos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">m_nCurrentLine</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">MoveLineEnd</span><span class="p">(</span><span class="n">m_nCurrentLine</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>…and the following code in the corresponding <code class="highlighter-rouge">MoveXxxxNext</code> functions:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">charPos</span> <span class="o">==</span> <span class="n">uspCache</span><span class="o">-&gt;</span><span class="n">length_CRLF</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m_nCurrentLine</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">m_nLineCount</span><span class="p">)</span>
+        <span class="n">MoveLineStart</span><span class="p">(</span><span class="n">m_nCurrentLine</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I was hoping to use the <code class="highlighter-rouge">SCRIPT_LOGATTR</code> arrays somehow to ‘skip’ CR/LF sequences rather than have specific code just for this purpose. I realise that I have probably not found the neatest way to deal with line-wrapping but I’ve been working at this for so long now I’m just going to release what I’ve got. I anyone can suggest a nice way to deal with line-wrapping that doesn’t require any additional processing then please get in touch…</p>
+
+<h2 id="line-navigation-and-anchoring">Line navigation and Anchoring</h2>
+
+<p>Conceptually line-based navigation is very simple - on the surface all that is required is for the cursor’s line-number to be adjusted - in order for the cursor to move up/down a specified number of lines. Unfortunately the implementation is slightly more complicated than that because of the necessity to support variable-width fonts.</p>
+
+<p>The problem occurs when the user moves the cursor (or text-caret) up or down a line. The user’s expectation when he/she hits the up/down arrows is for the cursor to be shifted vertically to the previous/next line. For fixed-width fonts this is not an issue - the caret’s y-position can be adjusted quite freely and this is all that is usually required. However variable-width fonts require that the caret’s x-position be potentially modified to ensure that the caret always locates to a valid character position. In effect the caret must always ‘snap’ to the nearest character-stop boundary when moving up or down.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1601.gif" alt="&lt;&gt;" /></p>
+
+<p>The image above illustrates this idea. As the cursor moves down through the file, you can see various numbered caret-positions being displaced horizontally around a fixed vertical line. This vertical line brings us onto the next concept to explore which is sometimes referred to as ‘anchoring’.</p>
+
+<p>Quite simply, anchoring is the process where the text-cursor is kept as close as possible to a specific horizontal coordinate within each line when moving up or down through a file. Imagine that the user places the text-caret at a character-position using the mouse. This location is represented by an x-coordinate within the current line and also the line-number itself. When the user moves up or down the file using the arrow keys, they expect the cursor to follow the vertical line that <em>they chose</em> as closely as possible. In Neatpad’s TextView I refer to this process as <em>anchoring</em>.</p>
+
+<p>The anchor position is represented by the <code class="highlighter-rouge">m_nAnchorPosX</code> variable. It is set whenever the user moves left/right along a line, or instead places the caret using the mouse. Importantly, the anchor position is not set when the up/down arrow keys are used as this would defeat the object of the exercise.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UspXToOffset</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">m_nAnchorPosX</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">charPos</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">trailing</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Now when moving to the previous/next lines, the appropriate character-position can be identified by calling Uniscribe’s <code class="highlighter-rouge">ScriptXToCP</code>, which converts the anchoring-coordinate to a logical character offset. This function has been encapsulated by the <code class="highlighter-rouge">UspXToOffset</code> function within UspLib and can be seen above.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="n">TextView</span><span class="o">::</span><span class="n">MoveLineUp</span><span class="p">(</span><span class="kt">int</span> <span class="n">numLines</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">lineOffset</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">charPos</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="n">trailing</span><span class="p">;</span>
+
+    <span class="c1">// move 'up' the specified number of lines
+</span>    <span class="n">m_nCurrentLine</span> <span class="o">-=</span> <span class="n">min</span><span class="p">(</span><span class="n">m_nCurrentLine</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">numLines</span><span class="p">);</span>
+
+    <span class="c1">// get Uniscribe data for that line
+</span>    <span class="n">uspData</span> <span class="o">=</span> <span class="n">GetUspData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m_nCurrentLine</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lineOffset</span><span class="p">);</span>
+
+    <span class="c1">// move to character position nearest the anchoring x-coordinate
+</span>    <span class="n">UspXToOffset</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">m_nAnchorPosX</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">charPos</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">trailing</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">m_nCursorOffset</span> <span class="o">=</span> <span class="n">lineOffset</span> <span class="o">+</span> <span class="n">charPos</span> <span class="o">+</span> <span class="n">trailing</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">MoveLineUp</code> function (above) shows how the cursor is adjusted when moving up through the file. The key detail here is the call to <code class="highlighter-rouge">UspXToOffset</code>. This UspLib function takes the <em>caret-anchoring</em> position and finds the closest Unicode character-offset.</p>
+
+<h2 id="coming-up-in-part-17">Coming up in Part 17</h2>
+
+<p>Keyboard Navigation has the potential to be incredibly complicated due to Unicode. Fortunately the Uniscribe API solves all the complexity with the <code class="highlighter-rouge">ScriptBreak</code> API. This is another huge benefit of moving to Uniscribe - the amount of code that we have been saved from writing is quite significant.</p>
+
+<p>Next up will be syntax-highlighting. I have decided that regular expressions are definitely the best method in this regard, however there are many issues that must first be solved before any further work is completed. Some of the forthcoming topics will probably be regular expressions, parsing techniques and finite-state machines (FSM). If you have any comments in this regard then I’d be happy to hear them!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad16.zip">neatpad16.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2006-05-14T00:00:00+00:00">May 14, 2006</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="integrating-usplib.html" class="pagination--pager" title="Integrating UspLib
+">Previous</a>
+    
+    
+      <a href="../win32/tips-and-tricks-part-2.html" class="pagination--pager" title="Win32 Tips &amp; Tricks - Part 2
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/keyboard-navigation by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

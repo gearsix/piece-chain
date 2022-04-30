@@ -1,0 +1,479 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/memory-techniques-part-2 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Memory Techniques - Part 2 - Catch22</title>
+<meta name="description" content="(Part 2 - Algorithms and Techniques)">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Memory Techniques - Part 2">
+<meta property="og:url" content="memory-techniques-part-2.html">
+
+
+  <meta property="og:description" content="(Part 2 - Algorithms and Techniques)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-08-30T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="memory-techniques-part-2.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Memory Techniques - Part 2</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Memory Techniques - Part 2">
+    <meta itemprop="description" content="(Part 2 - Algorithms and Techniques)">
+    <meta itemprop="datePublished" content="August 30, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Memory Techniques - Part 2
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Memory Techniques - Part 2</h1-->
+<!--h3>Memory management techniques for large file editors</h3-->
+
+<h2 id="part-2---algorithms-and-techniques">(Part 2 - Algorithms and Techniques)</h2>
+
+<p>So, you already know how to load and view a 4Gb file because you’ve just finished reading Part 1 of this article series. Now you know how manage large amounts of memory, we can move on and explore a very powerful technique for actually editing a large file.</p>
+
+<p>Let’s have a quick recap of the original task at hand. We are developing a file editor capable of loading, viewing and editing a 4Gb file, which is the biggest file size currently supported by both Windows 9x and Windows NT/2000. I presented the source-code to the HexView mini-application, which is currently just a very simple file viewer with no editing capabilities. I also presented the <code class="highlighter-rouge">sequence</code> class, which represents a file, or sequence of bytes in an abstract manner.</p>
+
+<p>The article will present an overview of the span-table data structure, which is used is the same data structure used by HexEdit to manage its files. The source-code supplied builds on the sequence class to use the span-table data structure. I’m not going to be getting down to any low-level coding, so you’ll need to look at the sources if you want to see how its done.</p>
+
+<h2 id="inserting-and-deleting-data-from-a-file">Inserting and deleting data from a file</h2>
+
+<p>The best way to describe what this means is to use a diagram. The example below shows a file containing part of the well known saying “The quick brown fox jumped over the lazy dog”. The file itself has the word “brown” removed from it. To illustrate the action of inserting text into a file, the word “brown “ is inserted into the file to produce the proper saying.</p>
+
+<p><img src="http://www.catch22.net/assets/img/mempr05.gif" alt="" class="align-center" />
+<em class="align-center">Figure 1</em></p>
+
+<p>By inserting or deleting data from a file, you can see that the file contents has to be shifted around to make room for the new data, or in the case of deletions, to overwrite the portion of the file that we want to delete. For now I’ll concentrate on inserting data into a file, because the same principles apply if we delete data as well.</p>
+
+<h2 id="solution-1--quick-to-code-but-slow-to-execute">Solution #1 – Quick to code but slow to execute</h2>
+
+<p>The easiest and most obvious method to insert data is to take a two-step approach:</p>
+
+<ol>
+  <li>Shift along the file contents after the insertion point to make room for the inserted data</li>
+  <li>Copy the data to insert into the space left by the shifted portion of file.</li>
+</ol>
+
+<p>Whilst this seems like a perfectly good solution, the technique becomes seriously compromised when large amounts of data need to be shifted around. Think about inserting one character into a 4Gb file using a file editor – if the character is inserted at the start, the entire 4Gb needs to be shifted along to make room for this single insertion. This operation will take a very long time to complete, and is not an acceptable solution.</p>
+
+<h2 id="solution-2--the-span-table">Solution #2 – The Span Table</h2>
+
+<p>The answer is to represent the large 4Gb file in some other way than a simple buffer or array. Whilst there are many different data structures which can be used to represent a file in an editor, there is only one sensible choice for our multi-gigabyte hex editor.</p>
+
+<p>It is called a span-table (or piece-table). The name derives from the fact that a file is represented as a series of spans (or pieces) of data. These spans provide a level of indirection to the contents of the file. Whilst the file itself remains as a contiguous block of data, access to the file is always through the span-table. Instead of editing the file contents when an edit occurs, the span-table is modified to reflect the edit. The under-lying file contents will always remain unchanged, but because the span-table has been modified, it will reflect the contents in a different manner.</p>
+
+<p><img src="http://www.catch22.net/assets/img/mempr06.gif" alt="" class="align-center" />
+<em class="align-center">Figure 2</em></p>
+
+<p>The diagram above illustrates an unmodified file, with the span table containing a single span which encompasses the whole file.</p>
+
+<h2 id="what-is-a-span">What is a span?</h2>
+
+<p>Glad you asked. A span is just a very simple data structure which contains enough information to represent a range of data in a file. The technical term for a span is probably a “descriptor” or something like that, but I prefer the name “span” because it is short and to the point. This is what a span would look like if you were using C or C++.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">span</span>
+<span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">buffer</span><span class="p">;</span> <span class="cm">/* identifies the buffer this span references */</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">offset</span><span class="p">;</span> <span class="cm">/* start of the range of data this span covers */</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">length</span><span class="p">;</span> <span class="cm">/* length of data */</span>  
+
+  <span class="n">span</span> <span class="o">*</span><span class="n">prev</span><span class="p">,</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span> <span class="cm">/* linked-list */</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Pretty simple, right? Figure 2 (above) illustrates a span with offset 0 and length 38, but does not show the value corresponding to the buffer. I have delibrately not shown the “buffer” id in the examples on this page because it is not really necessary for these simple examples (you can see for yourself what buffers are being used). Also, it keeps the diagrams simpler without the extra numbers flying around.</p>
+
+<h2 id="what-is-a-span-table">What is a span table?</h2>
+
+<p>A span table is any data structure used to collect a series of spans together in a sequential order. In my HexEdit application I use a doubly linked list to store the spans.</p>
+
+<p>Apart from the actual span-list, there are two other important data structures used by our data sequence.</p>
+
+<ol>
+  <li>The first is a read-only buffer containing the file’s contents. This file-buffer never changes! The buffer is loaded once when the span-table is initialized. By using operating system support (in our case, memory-mapped-files) this load can be very quick, especially because we only need read-only access.The “filebuffer” will have a buffer-id of 0 (zero).</li>
+  <li>The second is an append-only buffer which over time contains any inserted data. This buffer must obviously have write access, and must be capable of being resized. When the span-table is initialized, the “modifybuffer” is initally empty. It has a buffer-id of 1 (one).</li>
+</ol>
+
+<p>There are obviously going to be other variables used by our span-table, but the three mentioned so far are the most important. Also, it doesn’t really matter what id’s you give to the file and modify buffers - as long as they are unique, you can use any scheme you want.</p>
+
+<h2 id="inserting-data-into-the-span-table">Inserting data into the span table</h2>
+
+<p>Now the fun begins. The first example will be the same as the original (inserting the text “ brown” into the sequence at offset 9 - note the leading space). The diagram below shows the span-table after the text has been inserted.</p>
+
+<p><img src="http://www.catch22.net/assets/img/mempr07.gif" alt="" class="align-center" />
+<em class="align-center">Figure 3</em></p>
+
+<p>The thing you must look at here is the spans in the span table. The original span which covered the whole file buffer has been replaced with three new spans. The first span refers to the data before the insertion point. The last span refers to the data after the insertion point. Both of these spans’ lengths and offsets are set so that the spans cover the correct ranges of data. Also, both spans still have the same buffer-id.</p>
+
+<p>The middle span references the inserted data (the word “ brown”). This text has been appended into the modify-buffer. The middle span’s offset and length are set to refer to just this string of text.</p>
+
+<p>Hopefully you have appreciated what has happened so far. If you don’t quite “get it” yet, then sit back and stare good and hard at the diagram until it sinks in!</p>
+
+<h2 id="inserting-even-more-data-into-the-span-table">Inserting even more data into the span table!</h2>
+
+<p>Our sequence now contains the text “The quick brown fox jumped over the lazy dog”.</p>
+
+<p>The next example shows the span-table after the text “est “ has been inserted (at index 9 again). Please note that this index does not refer to an index the original file, but to the logical position in the sequence.</p>
+
+<p><img src="http://www.catch22.net/assets/img/mempr08.gif" alt="{short description of image}" class="align-center" />
+<em class="align-center">Figure 4</em></p>
+
+<p>This time you will see that the only one new span has been inserted into the span-table. The insert occured at a position in the sequence which was at a span boundary. In this case, a single span was inserted with the text “est”. The inserted text has also been appended to the modify-buffer. Our sequence now holds the text phrase “The quickest brown fox jumped over the lazy dog”.</p>
+
+<h2 id="what-does-this-mean">What does this mean?</h2>
+
+<p>It means we can insert any amount of data to any position in a file! This insertion process can be divided into three separate cases. The main difference occurs when data is inserted at a position in the sequence which is either in the middle of a span, or in-between two spans (on a “span boundary”).</p>
+
+<ol>
+  <li><strong>Inserting data in the middle of a span.</strong><br />
+In this case, the span must be replaced with three new spans - spans which represent the data before the insertion point, after the insertion point, and actual the inserted data itself.</li>
+  <li><strong>Inserting data at a span boundary.</strong>
+When text is to be inserted in this case, only one new span is required (to represent the inserted text). This new span can be simply linked in-between the two spans which reside either side of the insertion point (or index).</li>
+  <li><strong>Inserting immediately after a previous insertion.</strong><br />
+This is a special case. No new spans are created. Instead, the previous inserted span’s length is adjusted to include the new data, and this data is simply appended to the end of the modify-buffer. This saves memory because no new spans are created, and also keeps the span-table as simple as possible.</li>
+</ol>
+
+<h2 id="deleting-data-from-the-span-table">Deleting data from the span table</h2>
+
+<p>The next logical operation to cover is the act of deleting data from the sequence. As always, a picture speaks a thousand words, so here’s a diagram. In this example, the data from offset 9 to 29 (20 bytes) has been removed from the original sequence, to produce the phrase “The quick lazy dog”.</p>
+
+<p><img src="http://www.catch22.net/assets/img/mempr09.gif" alt="" class="align-center" />
+<em class="align-center">Figure 5</em></p>
+
+<p>What has happened here is that the single span covering the original file has been split into two new spans, the first to represent the data before the deletion, and the second to represent the data after the deletion. Hopefully you can use your imagination to realise the further possibilities of span manipulation.</p>
+
+<p>This data removal can be divided into three separate cases.</p>
+
+<ol>
+  <li><strong>Deleting data from the middle of a span.</strong>
+This is the case described in the above diagram. In this case, the span is replaced with two new spans, the first to represent the data before the deletion, the second for the data after the deletion.</li>
+  <li><strong>Deleting on a span boundary (at the start or end of a span).</strong><br />
+In this case, the existing span’s offset (when deleting at the start of a span) or length (when deleting at the end) can be simply modified to reflect the change.</li>
+  <li><strong>Deleting data which is covered by several spans.</strong><br />
+This is the worst case, and requires careful coding. In this case, several spans may need to be removed from the list to represent the new sequence of data.</li>
+</ol>
+
+<h2 id="replacing-data-over-writing">Replacing data (over-writing)</h2>
+
+<p>Data replacement is a hybrid form of insertion and deletion. I won’t describe the process here, and I advise anyone not to attempt this operation until they have a fully functional delete operation.</p>
+
+<p>The fundamental steps are the same as those of the delete (or removal) operation. Existing spans in the table must be removed to make way for the new data. Instead of simply linking the two halves of the sequence back together after the deletion (as happens with the delete method), a new span is inserted into the table to represent the new over-writing data. This is where the similarity of the insert operation comes into play.</p>
+
+<h2 id="multi-level-undo-and-redo">Multi-level Undo and Redo</h2>
+
+<p>I won’t describe in detail how to achieve this, but just give a very simple overview instead.</p>
+
+<p>I have been talking throughout this discussion on replacing spans with new spans, and so on. What I didn’t talk about was what to do with these spans once they have been removed from the span-table. The obvious thing to do is just to delete them (i.e. with the C++ delete[] operator), but there is a much better solution.</p>
+
+<p>Any span that is removed during a span-table “edit” is added to a stack (of spans!). These spans still have their linked-list pointers (<code class="highlighter-rouge">prev</code>, <code class="highlighter-rouge">next</code>) left untouched. So, the spans on the undo-stack still point to valid spans in the span-table, even though they aren’t in the table themselves.</p>
+
+<p>When the time comes to undo the last edit, we perform two steps. The first is to pop off the spans from the undo-stack, and look at their linked-list pointers. This tells us exactly where in the span-table to put these spans back into! The second thing to do is to take the “newer” spans in the table that our undo-spans replace, and push them onto the redo-stack! Can you see where this is going…?</p>
+
+<p>The concept is simple, and the implementation is not much more difficult. Just look in the sources to see it in action!</p>
+
+<h2 id="rendering-the-span-table">Rendering the span-table</h2>
+
+<p>It’s all well and good inserting and deleting data from our sequence, but it doesn’t mean a thing unless we have some way of actually viewing the sequence contents.</p>
+
+<p>This is actually a very simple process. All we do is a linked-list traversal, visiting each span in turn, and retrieving the region of data from the buffer that the span represents. This is what your code might look like:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">span</span> <span class="o">*</span><span class="n">sptr</span> <span class="o">=</span> <span class="n">spanhead</span><span class="p">;</span> <span class="c1">// spanhead points to the first span in the list
+</span>
+<span class="k">while</span><span class="p">(</span><span class="n">sptr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+
+  <span class="c1">// get a pointer to the memory that this span refers to.
+</span>  <span class="kt">char</span> <span class="o">*</span><span class="n">mem</span> <span class="o">=</span> <span class="n">get_adjusted_ptr</span><span class="p">(</span><span class="n">sptr</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">,</span> <span class="n">sptr</span><span class="o">-&gt;</span><span class="n">index</span><span class="p">);</span>
+
+  <span class="c1">// copy the data that this span represents into our local buffer.
+</span>  <span class="n">memcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mem</span><span class="p">[</span><span class="n">sptr</span><span class="o">-&gt;</span><span class="n">index</span><span class="p">],</span> <span class="n">sptr</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">);</span>
+
+  <span class="c1">//null-terminate.
+</span>  <span class="n">buf</span><span class="p">[</span><span class="n">sptr</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'\0'</span><span class="p">;</span>  
+ 
+  <span class="c1">//print it out!
+</span>  <span class="n">printf</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+
+  <span class="c1">//goto the next span!
+</span>  <span class="n">sptr</span> <span class="o">=</span> <span class="n">sptr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Remember the <code class="highlighter-rouge">get_adjusted_ptr</code> function from the previous article? This is where it pays off - you can see how simple the above loop is. The beauty of the design of the span-table is that it doesn’t matter which buffer / file a span refers to - at the end of the day, it is just a block of memory, and the <code class="highlighter-rouge">get_adjusted_ptr</code> function performs the hard work of retrieving that memory for us.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>As you can see, the span-table is a very flexible method to implement modifications to a file, or sequence of data. Because edits to the span table can be achieved in constant time, it does not matter how big the under-lying file is - inserting data into a 1Kb file takes the same time as inserting into a 1Gb file.</p>
+
+<p>There are disadvantages to using the span-table method though, but these are managable.</p>
+
+<p>The first problem comes when it is time to save the sequence back to disk. The entire sequence must be rendered into a temporary file, which is then copied back over the original file (and the sequence re-initialized with this new file, and the span-table reset also). We can cope with this though. This is a one-time operation, and all the memory copying only occurs this once, instead of every time a modification occurs as is the case with other file handling methods.</p>
+
+<p>The second problem is indexing a particular byte in the sequence. Because we are using a linked list of spans, it is not possible to jump directly to a particular position in the span-table. Therefore to locate a specific span, we need to traverse the span-table from the start each time. This is fine when there haven’t been many edits to the table (and the list is short), but could become time consuming if there are many thousands of spans in the table.</p>
+
+<p>This is not as bad as it seems though. We can operate some form of span caching, to reduce the number of span traversals needed to locate a particular span. We can also optimize inserts and deletes (described in their appropriate sections), so that when appropriate we can concatenate inserts and deletes into a single operation, thus reducing the span-count in the table. The last thing to bear in mind is that it isn’t very likely that someone will make thousands of seperate modifications to a file in our hex-editor without periodically saving the sequence, so in reality these negative points don’t come into effect. Just download the HexEdit application from this site and see for yourself how fast this span-table method is!</p>
+
+<h2 id="full-source-available">Full source available!</h2>
+
+<p>You may have noticed the size of the download at the top of this page. This is the full source-code to the HexView library I use in my HexEdit application. That’s right, the full source. Included is a complete implemention of the span-table, encapsulated by the sequence class. This library comes complete with absolutely NO SUPPORT what-so-ever! Unless you have any comments or suggestions for improvement, then I probably won’t be able to help you out unless you have a very simple question - I really don’t have the time (or the inclination) to support something like this. Afterall, I’m doing this for free, and in my spare time.</p>
+
+<h2 id="coming-soon--part-3">Coming soon – Part 3</h2>
+
+<p>I havn’t decided what the next article in this series is going to be yet. If you have a particular aspect of the span-table you’d like me to cover, then feel free to email me</p>
+
+<p>Have fun! James.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-08-30T00:00:00+00:00">August 30, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="directory-list-control.html" class="pagination--pager" title="Directory list control
+">Previous</a>
+    
+    
+      <a href="cards-dll-direct-bitmap-access.html" class="pagination--pager" title="Cards.dll direct bitmap access
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/memory-techniques-part-2 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

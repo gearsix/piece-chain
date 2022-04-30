@@ -1,0 +1,890 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/scrollbars-scrolling by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Scrollbars &amp; Scrolling - Catch22</title>
+<meta name="description" content="Welcome to the third installment of the “Design and Implementation of a Win32 Text Editor” article series! In this part we will look at adding scrollbars and scrolling to our TextView control.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Scrollbars &amp; Scrolling">
+<meta property="og:url" content="scrollbars-scrolling.html">
+
+
+  <meta property="og:description" content="Welcome to the third installment of the “Design and Implementation of a Win32 Text Editor” article series! In this part we will look at adding scrollbars and scrolling to our TextView control.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-02-20T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="scrollbars-scrolling.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Scrollbars & Scrolling</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad3.zip">neatpad3.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="active">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Scrollbars &amp; Scrolling">
+    <meta itemprop="description" content="Welcome to the third installment of the “Design and Implementation of a Win32 Text Editor” article series! In this part we will look at adding scrollbars and scrolling to our TextView control.">
+    <meta itemprop="datePublished" content="February 20, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Scrollbars &amp; Scrolling
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Scrollbars & Scrolling</h1-->
+<!--h3>Adding scrollbars and scrolling to the TextView</h3-->
+
+<p>Welcome to the third installment of the “Design and Implementation of a Win32 Text Editor” article series! In this part we will look at adding scrollbars and scrolling to our TextView control.</p>
+
+<h2 id="scrolling-in-win32">Scrolling in Win32</h2>
+
+<p>In Windows, scrolling is divided into three areas: The first is the physical scrollbars, whether they be scrollbars built into a window, or separate scrollbar controls. There is a complete scrollbar API to set and retrieve the positional information described by a scrollbar - <code class="highlighter-rouge">GetScrollPos</code> , <code class="highlighter-rouge">SetScrollInfo</code> etc.</p>
+
+<p>The next area is the window-messages that scrollbars send to their parent window when they are manipulated by the user - i.e. the <code class="highlighter-rouge">WM_VSCROLL</code> and <code class="highlighter-rouge">WM_HSCROLL</code> messages. These special scrolling messages can be used by an application to update it’s user-interface in response to the user’s interactions.</p>
+
+<p>The last category is the GDI scrolling API - i.e. <code class="highlighter-rouge">ScrollWindow</code> and <code class="highlighter-rouge">ScrollWindowEx</code>. Although they are grouped in the same category as the “regular” scrollbar API in the Platform SDK, these two GDI routines don’t have anything to do with scrollbars - instead they are used to move/offset a bitmap region within a window to give the illusion of scrolling.</p>
+
+<p>We will have to bring all these areas together to implement full scrolling support in our TextView control.</p>
+
+<h2 id="scrollbars---built-in-or-separate">Scrollbars - built in or separate?</h2>
+
+<p>The first thing I want to discuss before we start is what type of scrollbar to use. We have two choices - “built-in” scrollbars which would be part of the TextView’s non-client window area, or separate scrollbar controls.</p>
+
+<p>There isn’t much difference between the two types. With built-in scrollbars, the <code class="highlighter-rouge">WM_xSCROLL</code> messages are sent to the same window to which the scrollbars belong. With separate scrollbar controls, the scrollbar messages get sent to the control’s <em>parent</em> window. However it would be very simple to forward the scrollbar messages from a parent window to the real TextView window, so this wouldn’t be any kind of set-back.</p>
+
+<p>The real difference comes when we have to position our TextView control, because the scrollbar controls have to be carefully positioned at the same time to make sure they are aligned correctly at the bottom/right edges of the TextView. We would probably delegate this task to a “container” window which managed the layout of a single TextView and it’s associated scrollbars.</p>
+
+<p>Whilst separate scrollbar controls can provide additional flexibility (we can add grippers, buttons etc alongside the scrollbars), the extra work involved would detract from the task at hand. So for the time being the TextView will use normal built-in scrollbar controls - however later on in the tutorial series we will look at how to utilize separate controls because it is actually very simple, but just a little tedious to be concerned with at the moment.</p>
+
+<h2 id="scrollbar-settings">Scrollbar settings</h2>
+
+<p>A scrollbar’s state (i.e. it’s range and current thumb position) is set using the <code class="highlighter-rouge">SetScrollInfo</code> API, using a <code class="highlighter-rouge">SCROLLINFO</code> structure to specify each attribute. This structure is shown below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">SCROLLINFO</span>
+<span class="p">{</span>    
+    <span class="n">UINT</span> <span class="n">cbSize</span><span class="p">;</span>
+    <span class="n">UINT</span> <span class="n">fMask</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">nMin</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nMax</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nPage</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nPos</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The diagram below illustrates these four scrollbar properties and how they relate to each other. For the sake of this small example, the data range that the scrollbar represents is 100 lines. Although I’ve used a picture of a horizontal scrollbar, a vertical scrollbar is no different in operation.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor07.gif" alt="&lt;&gt;" /></p>
+
+<p>The <code class="highlighter-rouge">nMin</code> and <code class="highlighter-rouge">nMax</code> values represents the total number of “scrolling units” (or lines) that the scrollbar contain. For our TextView, we would set <code class="highlighter-rouge">nMin</code> to be zero as it makes no sense to allow scrolling to negative line numbers. <code class="highlighter-rouge">nMax</code> must be the total number of lines in the text document, minus one - in the case of our “100 line file”, nMax must be 99.</p>
+
+<p>The <code class="highlighter-rouge">nPos</code> value represents the current scrollbar position, in “scrolling units”. This is not a pixel or coordinate based value, rather it is an arbitrary value somewhere within the range <code class="highlighter-rouge">nMin...nMax</code>.</p>
+
+<p>This leaves us with the “odd one out” - <code class="highlighter-rouge">nPage</code>. This value has nothing to do with the scrolling range, the number of lines in a file or the current scrollbar position. It is used purely to specify how many scrolling units there are in the <em>current window client-area</em>. For example, if our window was big enough to hold 15 lines of text, then we would set <code class="highlighter-rouge">nPage</code> to equal 15. The built-in scrollbar will use this value to work out how big to make the scrollbar thumb - at no time do you have to do anything complicated to work out how big the thumb should be.</p>
+
+<p>Note that the maximum thumb position will never equal <code class="highlighter-rouge">nMax</code> because the thumb width prevents it from reaching this far. Therefore we have two “maximum” values that relate to our scrollbar - what the scrollbar requires for it’s si.nMax value, and what results as the thumb position maximum value - which is always nPage units less than the scrollbar’s nMax.</p>
+
+<h2 id="adding-scrollbars-to-a-window">Adding scrollbars to a Window</h2>
+
+<p>Adding scrollbars to a window is very simple - all we have to do is add the <code class="highlighter-rouge">WS_HSCROLL</code> and <code class="highlighter-rouge">WS_VSCROLL</code> window styles, which we can do when we create the window:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CreateWindowEx</span><span class="p">(</span><span class="n">WS_EX_CLIENTEDGE</span><span class="p">,</span> <span class="n">TEXTVIEW_CLASS</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">WS_VSCROLL</span> <span class="o">|</span> <span class="n">WS_HSCROLL</span> <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Before we can do anything useful with our scrollbars we must create some variables which will represent the “scrollbar state” for TextView C++ class:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TextView</span>
+<span class="p">{</span>
+<span class="p">...</span>
+    <span class="n">ULONG</span> <span class="n">m_nVScrollPos</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">m_nHScrollPos</span><span class="p">;</span>
+
+    <span class="n">ULONG</span> <span class="n">m_nVScrollMax</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">m_nHScrollMax</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_nWindowLines</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_nWindowColumns</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">m_nLongestLine</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">m_nLineCount</span><span class="p">;</span>	
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>These variables (when initialized) will allow us to take into account the current scrollbar position when we are drawing our lines of text into the display.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">m_nVScrollPos</code> and <code class="highlighter-rouge">m_nHScrollPos</code></li>
+</ul>
+
+<p>Represents the vertical and horizontal scrollbar thumb positions.</p>
+<ul>
+  <li><code class="highlighter-rouge">m_nVScrollMax</code> and <code class="highlighter-rouge">m_nHScrollMax</code></li>
+</ul>
+
+<p>Represents the maximum values that the scrollbar thumb positions can reach (<em>not</em> the maximum number of columns/lines in the file).</p>
+<ul>
+  <li><code class="highlighter-rouge">m_nWindowColumns</code> and <code class="highlighter-rouge">m_nWindowLines</code></li>
+</ul>
+
+<p>Stores the width and height (respectively) of the client area.</p>
+<ul>
+  <li><code class="highlighter-rouge">m_nLongestLine</code> and <code class="highlighter-rouge">m_nLineCount</code></li>
+</ul>
+
+<p>Hold the real text-file “dimensions”.</p>
+
+<p>Note that the <code class="highlighter-rouge">m_nLongestLine</code> variable has been introduced. This is used to represent the maximum <em>horizontal</em> scrolling extent. It should be obvious why we need to use the longest line in the text document to determine this horizontal scrolling range, and not some arbitrary fixed value.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="n">TextDocument</span><span class="o">::</span><span class="n">longestline</span><span class="p">(</span><span class="kt">int</span> <span class="n">tabwidth</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The TextDocument has been given the task of calculating the width (in logical text units) of the longest line. The current tab-width setting must be specified so that tab characters can be taken into account. I won’t include the code necessary to perform this task - just take a look at the sourcecode download.</p>
+
+<h2 id="configuring-the-scrollbars">Configuring the scrollbars</h2>
+
+<p>Repeated Win32 projects have taught me that scrollbars only really need to be setup in one place in a program - during a window-size change. A single function can be used to setup both the horizontal and vertical scrollbars at the same time:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="n">TextView</span><span class="o">::</span><span class="n">SetupScrollbars</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>First of all a SCROLLINFO structure is configured to set the vertical scrollbar properties:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="n">TextView</span><span class="o">::</span><span class="n">SetupScrollbars</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">SCROLLINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+
+    <span class="n">si</span><span class="p">.</span><span class="n">fMask</span> <span class="o">=</span> <span class="n">SIF_POS</span> <span class="o">|</span> <span class="n">SIF_PAGE</span> <span class="o">|</span> <span class="n">SIF_RANGE</span> <span class="o">|</span> <span class="n">SIF_DISABLENOSCROLL</span><span class="p">;</span>
+    <span class="n">si</span><span class="p">.</span><span class="n">nPos</span> <span class="o">=</span> <span class="n">m_nVScrollPos</span><span class="p">;</span> <span class="c1">// scrollbar thumb position
+</span>    <span class="n">si</span><span class="p">.</span><span class="n">nPage</span> <span class="o">=</span> <span class="n">m_nWindowLines</span><span class="p">;</span> <span class="c1">// number of lines in a page (i.e. rows of text in window)
+</span>    <span class="n">si</span><span class="p">.</span><span class="n">nMin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">si</span><span class="p">.</span><span class="n">nMax</span> <span class="o">=</span> <span class="n">m_nLineCount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// total number of lines in file (i.e. total scroll range)
+</span>
+    <span class="n">SetScrollInfo</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">SB_VERT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<p>The horizontal scrollbar is configured in a very similar way:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>	
+    <span class="n">si</span><span class="p">.</span><span class="n">nPos</span> <span class="o">=</span> <span class="n">m_nHScrollPos</span><span class="p">;</span> <span class="c1">// scrollbar thumb position
+</span>    <span class="n">si</span><span class="p">.</span><span class="n">nPage</span> <span class="o">=</span> <span class="n">m_nWindowColumns</span><span class="p">;</span> <span class="c1">// number of columns in the window
+</span>    <span class="n">si</span><span class="p">.</span><span class="n">nMin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">si</span><span class="p">.</span><span class="n">nMax</span> <span class="o">=</span> <span class="n">m_nLongestLine</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// width of longest line (i.e. total scroll range)
+</span>
+    <span class="n">SetScrollInfo</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">SB_HORZ</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+
+<span class="p">...</span>
+</code></pre></div></div>
+
+<p>The very last thing to do is calculate the maximum positions that the scrollbar thumbs can take:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+    <span class="n">m_nVScrollMax</span> <span class="o">=</span> <span class="n">m_nLineCount</span> <span class="o">-</span> <span class="n">m_nWindowLines</span><span class="p">;</span>
+    <span class="n">m_nHScrollMax</span> <span class="o">=</span> <span class="n">m_nLongestLine</span> <span class="o">-</span> <span class="n">m_nWindowColumns</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It is important that you understand these last two lines. The <code class="highlighter-rouge">m_nVScrollMax</code> and <code class="highlighter-rouge">m_nHScrollMax</code> values are <em>not</em> used to set the scrollbar’s si.nMax properties - the <code class="highlighter-rouge">m_nLongestLine</code> and <code class="highlighter-rouge">m_nLineCount</code> are used for this purpose. Instead, the <code class="highlighter-rouge">m_n_XScrollMax</code> values represent the maximum thumb positions - much more useful for our purposes because we will use these values alot in the TextView.</p>
+
+<h2 id="window-size-affects-scrolling-range">Window size affects scrolling range</h2>
+
+<p>The first thing we must understand is that whenever we resize our TextView control, the amount of visible text within that window will change, and therefore the scrollbar’s <code class="highlighter-rouge">nPage</code> value must change to reflect this. Therefore when our TextView window resizes we can react to the <code class="highlighter-rouge">WM_SIZE</code> message that is received:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_SIZE</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">tvp</span><span class="o">-&gt;</span><span class="n">OnSize</span><span class="p">(</span><span class="n">LOWORD</span><span class="p">(</span><span class="n">lParam</span><span class="p">),</span> <span class="n">HIWORD</span><span class="p">(</span><span class="n">lParam</span><span class="p">));</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnSize</span><span class="p">(</span><span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_nWindowLines</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">m_nFontHeight</span><span class="p">,</span> <span class="n">m_nLineCount</span><span class="p">);</span>
+    <span class="n">m_nWindowColumns</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="n">m_nFontWidth</span><span class="p">,</span> <span class="n">m_nLongestLine</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">PinToBottomCorner</span><span class="p">())</span>
+        <span class="n">RefreshWindow</span><span class="p">();</span>
+
+    <span class="n">SetupScrollbars</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The first two lines simply work out how many lines/columns of text there are in the window. The <code class="highlighter-rouge">min()</code> function is used to handle the case when the window can display more text than there is available (i.e. when the entire file fits within the window).</p>
+
+<p>Once these two values have been calculated the scrollbars can be configured using the SetupScrollbars function we wrote above. This leads us onto the next question:</p>
+
+<h2 id="what-is-pinning-">What is “Pinning” ?</h2>
+
+<p>Imagine the following scenario. We have loaded a text document and scrolled right the way down to the bottom. We then drag the bottom window-border down to make the window larger. The question is, what happens to the file contents when we do this? We have two options to choose from, both of which are acceptable:</p>
+
+<p>Do we leave the current scrollbar position intact and expose “void” space at the end of the file? This option would not affect the file’s position - i.e. it would remain static. Some people prefer this because the text display remains in the same place on the screen.</p>
+
+<p>The other option is to drag the file contents down at the same time (exposing more content at the top of the window), adjusting the scrollbar position at the same time, so that we always have a window full of text - in effect, “pinning” the file-content to the bottom edge of the window’s client-area.</p>
+
+<p>Have a look at the regular notepad utility and see what it does - you will find that it (or rather, the standard multi-line edit control) “pins” it’s content to the bottom-right corner of the control when the control is resized. This is the behaviour that we will use in our edit control.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">TextView</span><span class="o">::</span><span class="n">PinToBottomCorner</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">repos</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">m_nHScrollPos</span> <span class="o">+</span> <span class="n">m_nWindowColumns</span> <span class="o">&gt;</span> <span class="n">m_nLongestLine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_nHScrollPos</span> <span class="o">=</span> <span class="n">m_nLongestLine</span> <span class="o">-</span> <span class="n">m_nWindowColumns</span><span class="p">;</span>
+        <span class="n">repos</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">m_nVScrollPos</span> <span class="o">+</span> <span class="n">m_nWindowLines</span> <span class="o">&gt;</span> <span class="n">m_nLineCount</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_nVScrollPos</span> <span class="o">=</span> <span class="n">m_nLineCount</span> <span class="o">-</span> <span class="n">m_nWindowLines</span><span class="p">;</span>
+        <span class="n">repos</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">repos</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The function above simply adjusts the scrollbar position to make sure that it is always within the scroll-range, and returns a boolean value to indicate if anything changed - so we know if we need to redraw the window or not.</p>
+
+<p>Note that the alternative (exposing empty space at the end rather than dragging the file down) would also be acceptable - in fact this is what Visual Studio and many other editors do. We might look at adding this behaviour as an optional extra later on in the series. Personally I prefer the “pinning” method much more so that’s what I have implemented first of all.</p>
+
+<h2 id="taking-the-scrollbar-position-into-account-when-drawing">Taking the scrollbar position into account when drawing</h2>
+
+<p>Currently our text-display is quite primitive because no scrollbar information is used when painting the display. Subsequently the text-file is firmly rooted to the top-left of the TextView client-area and we have to drag the window larger if we want to see more text. Fortunately very little work is required to make our TextView fully scrollable.</p>
+
+<p>If you remember from the last tutorial, the <code class="highlighter-rouge">TextView::OnPaint</code> routine calculated the first and last rows of text to update using a simple formula:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">first</span> <span class="o">=</span> <span class="n">ps</span><span class="p">.</span><span class="n">rcPaint</span><span class="p">.</span><span class="n">top</span> <span class="o">/</span> <span class="n">m_nFontHeight</span><span class="p">;</span>
+ <span class="n">last</span> <span class="o">=</span> <span class="n">ps</span><span class="p">.</span><span class="n">rcPaint</span><span class="p">.</span><span class="n">bottom</span> <span class="o">/</span> <span class="n">m_nFontHeight</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>It is a simple matter to take the vertical-scrollbar position into account:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">first</span> <span class="o">=</span> <span class="n">m_nVScrollPos</span> <span class="o">+</span> <span class="p">(</span><span class="n">ps</span><span class="p">.</span><span class="n">rcPaint</span><span class="p">.</span><span class="n">top</span> <span class="o">/</span> <span class="n">m_nFontHeight</span><span class="p">);</span>
+ <span class="n">last</span> <span class="o">=</span> <span class="n">m_nVScrollPos</span> <span class="o">+</span> <span class="p">(</span><span class="n">ps</span><span class="p">.</span><span class="n">rcPaint</span><span class="p">.</span><span class="n">bottom</span> <span class="o">/</span> <span class="n">m_nFontHeight</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Basically what this does is change the line-index that we draw, so as the scrollbar moves down, the lines of text effectively move up the display. We still draw lines at the same physical location within the window, but we draw <em>different</em> lines to give the illusion that we are scrolling through the document.</p>
+
+<p>Now that we can correctly identify which logical line of text needs updating, we can look at the actual text-output.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">TextView</span><span class="o">::</span><span class="n">PaintLine</span><span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">GetClientRect</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">// calculate rectangle for entire length of line in window
+</span>    <span class="n">rect</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="o">-</span><span class="n">m_nHScrollPos</span> <span class="o">*</span> <span class="n">m_nFontWidth</span><span class="p">;</span>
+    <span class="n">rect</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">;</span>
+    <span class="n">rect</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="p">(</span><span class="n">nLineNo</span> <span class="o">-</span> <span class="n">m_nVScrollPos</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_nFontHeight</span><span class="p">)</span>
+    <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">m_nFontHeight</span><span class="p">;</span>
+
+    <span class="c1">// rest of function body omitted
+</span>
+    <span class="c1">// draw text and fill line background at the same time
+</span>    <span class="n">TabbedExtTextOut</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>First of all understand the horizontal text-positioning - the <code class="highlighter-rouge">rect.left</code> and <code class="highlighter-rouge">rect.right</code> values: When the horizontal scrollbar’s position is increased (i.e. we scroll to the right), we would expect the page to scroll to the left. So as the scroll position increases, the text position must decrease. This is why the “<code class="highlighter-rouge">-m_nHScrollPos</code> “ is used. This logical text position is then multiplied by the current font-width to produce a pixel-based coordinate that can be used for drawing. This is ideal for fixed-width font displays.</p>
+
+<p>The right-most edge of the line of text must still be fixed to the right-edge of the window, so this value is left unchanged. This basically results in the following occurance: As we scroll to the right, the length of text that we draw gets larger and larger because the starting x-coordinate becomes more and more negative. If the device-context <em>didn’t</em> clip our output, lines of text would look something like this:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor03.gif" alt="&lt;&gt;" /></p>
+
+<p>Of course, instead of offsetting our drawing to the left, we could have simply used the horizontal scrollbar position to find the correct place to draw within the line of buffered characters, and (sensibly) do all drawing from a fixed x-coordinate of zero. This would work well for our simple text display. However “tabbed” text display poses a problem, and once we start more complex syntax colouring and variable-width fonts, this quickly becomes a poor choice. I am undecided at present what the best method is to handle the horizontal scrolling so we will use this simple method for now.</p>
+
+<p>Now onto the vertical scrollbar position. Because our <code class="highlighter-rouge">PaintLine</code> function is being supplied with a “logical” line number ( <code class="highlighter-rouge">nLineNo</code> ) - which is relative to the start of the document - we must subtract the vertical scrollbar’s position from this value to arrive at a zero-based index, relative to the top of the client-area. This value is then multiplied by the font’s height to provide a pixel-based y-coordinate.</p>
+
+<h2 id="scrollbar-messages">Scrollbar Messages</h2>
+
+<p>We are now at a point where we are ready to add real scrolling to the TextView. We will concentrate just on the <code class="highlighter-rouge">WM_VSCROLL</code> message, as the <code class="highlighter-rouge">WM_HSCROLL</code> handler is virtually identical. If you look at the Platform SDK documentation for <code class="highlighter-rouge">WM_VSCROLL</code>, it states that low-order WORD of wParam contains the scrolling code. This can be one of the following values: <code class="highlighter-rouge">SB_TOP</code>, <code class="highlighter-rouge">SB_BOTTOM</code>, <code class="highlighter-rouge">SB_LINEUP</code>, <code class="highlighter-rouge">SB_LINEDOWN</code>, <code class="highlighter-rouge">SB_PAGEUP</code>, <code class="highlighter-rouge">SB_PAGEDOWN</code> etc. Basically, it tells us which part of the scrollbar has been clicked by the mouse.</p>
+
+<p>We’ll start by looking at the <code class="highlighter-rouge">SB_TOP</code> and <code class="highlighter-rouge">SB_BOTTOM</code> messages. The handler for the vertical scrollbar will look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnVScroll</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nSBCode</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nPos</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span><span class="p">(</span><span class="n">nSBCode</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">SB_TOP</span><span class="p">:</span><span class="n">m_nVScrollPos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">RefreshWindow</span><span class="p">();</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">SB_BOTTOM</span><span class="p">:</span><span class="n">m_nVScrollPos</span> <span class="o">=</span> <span class="n">m_nVScrollMax</span><span class="p">;</span>
+        <span class="n">RefreshWindow</span><span class="p">();</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="p">...</span>		
+    <span class="p">}</span>
+
+    <span class="c1">// update the scrollbar metrics
+</span>    <span class="n">SetupScrollbars</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">SB_TOP</code> and <code class="highlighter-rouge">SB_BOTTOM</code> cases are incredibly simple. All that is required is for us to move the scroll position to either extreme of the scrolling range, and then redraw the entire window to reflect the change.</p>
+
+<p>Reacting to the scrollbar “thumb” messages is also very simple:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">SB_THUMBPOS</span><span class="p">:</span> <span class="k">case</span> <span class="n">SB_THUMBTRACK</span><span class="p">:</span>
+        <span class="n">m_nVScrollPos</span> <span class="o">=</span> <span class="n">GetTrackPos32</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">SB_VERT</span><span class="p">);</span>
+        <span class="n">RefreshWindow</span><span class="p">();</span> 
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">GetTrackPos32</code> is just a simple wrapper function around <code class="highlighter-rouge">GetScrollInfo</code> :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="nf">GetTrackPos32</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nBar</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SCROLLINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">),</span> <span class="n">SIF_TRACKPOS</span> <span class="p">};</span>
+    <span class="n">GetScrollInfo</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">nBar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">si</span><span class="p">.</span><span class="n">nTrackPos</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is required because we want the full 32bit scrollbar value rather than the 16bit position that we get from the <code class="highlighter-rouge">WM_VSCROLL</code> message.</p>
+
+<p>The remaining four cases (<code class="highlighter-rouge">SB_LINEUP</code>, <code class="highlighter-rouge">SB_LINEDOWN</code>, <code class="highlighter-rouge">SB_PAGEUP</code> and <code class="highlighter-rouge">SB_PAGEDOWN</code>) are slightly different:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">SB_LINEUP</span><span class="p">:</span>
+        <span class="n">Scroll</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">SB_LINEDOWN</span><span class="p">:</span>
+        <span class="n">Scroll</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span> <span class="k">case</span> <span class="n">SB_PAGEUP</span><span class="p">:</span>
+        <span class="n">Scroll</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">m_nWindowLines</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span> <span class="k">case</span> <span class="n">SB_PAGEDOWN</span><span class="p">:</span>
+        <span class="n">Scroll</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m_nWindowLines</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>As you can see we have deferred the real work to a private scrolling function, which we will implement in just a moment:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="n">TextView</span><span class="o">::</span><span class="n">Scroll</span><span class="p">(</span><span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function takes two signed integer parameters. Their purpose is to specify the direction and amount (in text units) in which to scroll the viewport. If you look at the message-handlers for <code class="highlighter-rouge">SB_LINEUP</code>/DOWN, you can see that to scroll up, we specify a value of -1, and to scroll down we specify a value of 1. Similarly, for <code class="highlighter-rouge">SB_PAGEUP</code>/DOWN, we scroll up/down by an entire page’s worth of text (i.e. the number of lines currently in the window). We will let the Scroll function take care of making sure that we never scroll off the start/end of the document.</p>
+
+<h2 id="scrolling-the-viewport">Scrolling the Viewport</h2>
+
+<p>Scrolling has been isolated inside a single function call. This has a number of advantages - understanding these will help you develop better programs in the future. The first (and most obvious) advantage is the modular design benefits it brings. We will be able to re-use the scrolling function in many other areas of the control (we have already used it twice for the vertical+horizontal scrollbar messages), but we will also make good use of this function when it comes to keyboard and mouse scrolling.</p>
+
+<p>The biggest advantage is not at first obvious, but greatly simplifies our design. By designing a scrolling function that can pan the display around in two directions at once (horizontal and vertical) we can greatly enhance the mouse-scrolling interactions. Many controls resort to sending two scrolling messages simultaneously - one to scroll up/down, and one to scroll left/right. This has the potential to introduce scrolling glitches and artifacts, and is also a little clumsy in operation.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="n">TextView</span><span class="o">::</span><span class="n">Scroll</span><span class="p">(</span><span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// make sure dx,dy don't scroll past the end of the document!
+</span>
+    <span class="c1">// adjust the scrollbar thumb position
+</span>    <span class="n">m_nVScrollPos</span> <span class="o">+=</span> <span class="n">dy</span><span class="p">;</span>
+    <span class="n">m_nHScrollPos</span> <span class="o">+=</span> <span class="n">dx</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">dx</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">dy</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// perform the scroll
+</span>        <span class="n">ScrollWindowEx</span><span class="p">(</span>
+            <span class="n">m_hWnd</span><span class="p">,</span> 
+            <span class="o">-</span><span class="n">dx</span> <span class="o">*</span> <span class="n">m_nFontWidth</span><span class="p">,</span> 
+            <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="n">m_nFontHeight</span><span class="p">,</span>
+            <span class="nb">NULL</span><span class="p">,</span>              
+            <span class="nb">NULL</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SW_INVALIDATE</span>
+           <span class="p">);</span>
+
+        <span class="n">SetupScrollbars</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The function above is not quite complete - it is missing some important logic to ensure that <code class="highlighter-rouge">dx</code> and <code class="highlighter-rouge">dy</code> never allow us to scroll outside the boundaries of the current file. The source-code download does include this code however.</p>
+
+<p>All that I really wanted to show was the the <code class="highlighter-rouge">ScrollWindowEx</code> API to update the display. The <code class="highlighter-rouge">TextView::Scroll</code> function is very simple at the moment but it does work well - i.e. it scrolls the window smoothly with no flickering. We will revisit this function in the next tutorial when we look at selection-scrolling with the mouse.</p>
+
+<h2 id="mousewheel-support">MouseWheel support</h2>
+
+<p>Whilst we are looking at scrolling we may as well implement support for mouse-wheel scrolling because it is incredibly simple to do. The <code class="highlighter-rouge">WM_MOUSEWHEEL</code> message was added with Windows 98 and Windows NT4 to implement mouse-wheel scrolling. In order to support this message we will need a new-ish Platform SDK installed, and we must also define the <code class="highlighter-rouge">_WIN32_WINNT</code> variable before #including &lt;windows.h&gt;, so that the message is available for us to use.</p>
+
+<p>Our handler for <code class="highlighter-rouge">WM_MOUSEWHEEL</code> simply extracts the wheel-rotation delta (i.e. the forwards/backwards vector) and calls the real message-handler in our TextView class:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_MOUSEWHEEL</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ptv</span><span class="o">-&gt;</span><span class="n">OnMouseWheel</span><span class="p">((</span><span class="kt">short</span><span class="p">)</span><span class="n">HIWORD</span><span class="p">(</span><span class="n">wParam</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>The handler uses the <code class="highlighter-rouge">SPI_GETWHEELSCROLLLINES</code> system-setting to work out how many lines to scroll:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnMouseWheel</span><span class="p">(</span><span class="kt">int</span> <span class="n">nDelta</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">nScrollLines</span><span class="p">;</span>
+
+    <span class="n">SystemParametersInfo</span><span class="p">(</span><span class="n">SPI_GETWHEELSCROLLLINES</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nScrollLines</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">uScrollLines</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">uScrollLines</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="n">Scroll</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">nDelta</span><span class="o">/</span><span class="mi">120</span><span class="p">)</span> <span class="o">*</span> <span class="n">uScrollLines</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That’s all it takes, because we have made good use of the <code class="highlighter-rouge">Scroll</code> function we developed to do the hard work. See, I told you it would be useful ;-)</p>
+
+<h2 id="coming-up-in-part-4">Coming up in Part 4</h2>
+
+<p>I hope you will take the time to download the zipfile at the top of this tutorial and have a play with the latest incarnation of Neatpad. For such a small amount of code it is quite a useful tool already - it is a pretty effective text-document viewing application. Of course large files aren’t handled at all but it should give you a good idea about where to proceed.</p>
+
+<p>Mouse support will be the aim of the next tutorial. We will look at how to add focus and text-caret support, caret positioning with the mouse, and full text selection. This will require modifications to the drawing code of course. We will also implement “mouse scrolling” - i.e. where the text selection is extended beyond the window and the contents must be scrolled into view. The scrolling work we have done so far will make this task very simple.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad3.zip">neatpad3.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-02-20T00:00:00+00:00">February 20, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="loading-text-file.html" class="pagination--pager" title="Loading a text file
+">Previous</a>
+    
+    
+      <a href="../win32/introduction-to-device-drivers.html" class="pagination--pager" title="Introduction to Device Drivers
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/scrollbars-scrolling by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

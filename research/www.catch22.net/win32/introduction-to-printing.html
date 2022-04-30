@@ -1,0 +1,552 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/introduction-to-printing by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Introduction to Printing - Catch22</title>
+<meta name="description" content="This tutorial will show you how to print a correctly, including how to calculate the page margins. We are going to let the standard print and page setup dialogs do most of the hard work for us, but there is still a little work to do. In the example I will present won’t do anything fancy - just work out the page margins, calculate how many lines per page and how many pages to print, and lastly draw a few lines of text.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Introduction to Printing">
+<meta property="og:url" content="introduction-to-printing.html">
+
+
+  <meta property="og:description" content="This tutorial will show you how to print a correctly, including how to calculate the page margins. We are going to let the standard print and page setup dialogs do most of the hard work for us, but there is still a little work to do. In the example I will present won’t do anything fancy - just work out the page margins, calculate how many lines per page and how many pages to print, and lastly draw a few lines of text.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-05-22T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="introduction-to-printing.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Introduction to Printing</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Introduction to Printing">
+    <meta itemprop="description" content="This tutorial will show you how to print a correctly, including how to calculate the page margins. We are going to let the standard print and page setup dialogs do most of the hard work for us, but there is still a little work to do. In the example I will present won’t do anything fancy - just work out the page margins, calculate how many lines per page and how many pages to print, and lastly draw a few lines of text.">
+    <meta itemprop="datePublished" content="May 22, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Introduction to Printing
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Introduction to Printing</h1-->
+<!--h3>How to print from a Windows application</h3-->
+
+<p>This tutorial will show you how to print a correctly, including how to calculate the page margins. We are going to let the standard print and page setup dialogs do most of the hard work for us, but there is still a little work to do. In the example I will present won’t do anything fancy - just work out the page margins, calculate how many lines per page and how many pages to print, and lastly draw a few lines of text.</p>
+
+<h2 id="the-printer-device-context">The Printer Device Context</h2>
+
+<p>Printing is performed by drawing to a device context, in exactly the same way graphics are drawn to a window’s device context. The only difference is that the printer’s device context will be a different aspect ratio to the screen, and will be much higher resolution as well.</p>
+
+<p>The absolute best way to get a device context is to use the <code class="highlighter-rouge">PrintDlg</code> function, which is found in the common controls library. This function displays the standard Print dialog box which allows the user to select which printer to print to, how many pages to print and so on. <code class="highlighter-rouge">PrintDlg</code> requires a single argument - a pointer to a <code class="highlighter-rouge">PRINTDLG</code> structure. This structure is contains quite a few members, but we only need to use a few of them in this example. Here’s how to set up the <code class="highlighter-rouge">PRINTDLG</code> structure and call <code class="highlighter-rouge">PrintDlg</code> itself:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PRINTDLG</span> <span class="n">pd</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">ZeroMemory</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pd</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">pd</span><span class="p">));</span>
+
+<span class="n">pd</span><span class="p">.</span><span class="n">lStructSize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">pd</span><span class="p">);</span> <span class="c1">// always remember to set this!
+</span><span class="n">pd</span><span class="p">.</span><span class="n">hInstance</span> <span class="o">=</span> <span class="n">hInst</span><span class="p">;</span> <span class="c1">// application process handle
+</span><span class="n">pd</span><span class="p">.</span><span class="n">hwndOwner</span> <span class="o">=</span> <span class="n">hwnd</span><span class="p">;</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">hDevMode</span> <span class="o">=</span> <span class="n">hDevMode</span><span class="p">;</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">hDevNames</span> <span class="o">=</span> <span class="n">hDevNames</span><span class="p">;</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">Flags</span> <span class="o">=</span> <span class="n">PD_ALLPAGES</span><span class="o">|</span><span class="n">PD_HIDEPRINTTOFILE</span><span class="o">|</span><span class="n">PD_NOPAGENUMS</span><span class="o">|</span><span class="n">PD_RETURNDC</span><span class="p">;</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">nCopies</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="p">...</span>
+<span class="c1">// now we can show the print dialog
+</span>
+<span class="c1">// if the user chose cancel, then quit out.
+</span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PrintDlg</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pd</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Notice that <code class="highlighter-rouge">PD_RETURNDC</code> is set in the <code class="highlighter-rouge">Flags</code> member. This is how we get a device context to print into. When <code class="highlighter-rouge">PrintDlg</code> returns, the <code class="highlighter-rouge">hDC</code> member will contain a handle to a valid device context to print into.</p>
+
+<p>You will also notice the two variables highlighted in the code. <code class="highlighter-rouge">PrintDlg</code> and <code class="highlighter-rouge">PageSetupDlg</code> both require these two handles each time they are called. If these members are set to <code class="highlighter-rouge">NULL</code> in the <code class="highlighter-rouge">PRINTDLG</code> structure, then <code class="highlighter-rouge">PrintDlg</code> will automatically allocate space for them, and store the handles in the <code class="highlighter-rouge">hDevMode</code> and <code class="highlighter-rouge">hDevNames</code> members when it returns. I recommend allocating these memory objects once at the start of your program, and storing the returned handles in two global variables. Then each time you need to call <code class="highlighter-rouge">PrintDlg</code> or <code class="highlighter-rouge">PageSetupDlg</code> for real, you can use the two saved handles. You can use the function below to allocate these two memory blocks. Note that <code class="highlighter-rouge">PSD_RETURNDC</code> is not set in the <code class="highlighter-rouge">Flags</code> member.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">HANDLE</span> <span class="n">hDevMode</span><span class="p">,</span> <span class="n">hDevNames</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="n">HANDLE</span> <span class="n">GetDevMode</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">PAGESETUPDLG</span> <span class="n">ps</span><span class="p">;</span>
+    <span class="n">ZeroMemory</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ps</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">ps</span><span class="p">);</span>
+
+    <span class="n">ps</span><span class="p">.</span><span class="n">lStructSize</span> <span class="o">=</span> <span class="k">sizeof</span> <span class="n">ps</span><span class="p">;</span>
+    <span class="n">ps</span><span class="p">.</span><span class="n">Flags</span> <span class="o">=</span> <span class="n">PSD_RETURNDEFAULT</span><span class="p">;</span>
+
+    <span class="n">PageSetupDlg</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+    <span class="n">CopyRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rcMargin</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">.</span><span class="n">rtMargin</span><span class="p">);</span>
+
+    <span class="n">hDevMode</span> <span class="o">=</span> <span class="n">ps</span><span class="p">.</span><span class="n">hDevMode</span><span class="p">;</span>
+    <span class="n">hDevNames</span> <span class="o">=</span> <span class="n">ps</span><span class="p">.</span><span class="n">hDevNames</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">ps</span><span class="p">.</span><span class="n">hDevMode</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="calculating-the-margins">Calculating the margins</h2>
+
+<p>It is more than likely that you will want to set up the margins on the printed page to correspond with the user’s margin settings.</p>
+
+<p>The first thing to realise is that most (if not all) printers cannot print to the edge of a piece of paper. There will always be a small border around the outside of this printable area which cannot be printed to. The printable area of a printing device is represented by four numbers, which can be obtained using the <code class="highlighter-rouge">GetDeviceCaps</code> API call.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">PHYSICALWIDTH</code></td>
+      <td>The width of the physical page, in device units.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">PHYSICALHEIGHT</code></td>
+      <td>The height of the physical page, in device units.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">PHYSICALOFFSETX</code></td>
+      <td>The distance from the left edge of the physical page to the left edge of the printable area, in device units.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">PHYSICALOFFSETY</code></td>
+      <td>The distance from the top edge of the physical page to the top edge of the printable area, in device units.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Assuming that the user selects a 1 inch margin around the page, we must calculate the position of the page area. The real margin will be the user’s margin minus the size of the unprintable area. The picture below shows the relationship between the page area, the unprintable area and the margin size.</p>
+
+<p><img src="http://www.catch22.net/assets/img/printing01.gif" alt="Page-margins" class="align-center" /></p>
+
+<p>Right, on with the coding. The first step is to convert the current user-selected page margins into device units. We do this because currently the margins are specified using either inches or millimetres. So, we need to convert these units into something that is meaningful to the printer device.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">margins</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">MulDiv</span><span class="p">(</span><span class="n">rcMargin</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">LOGPIXELSX</span><span class="p">),</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="n">margins</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">MulDiv</span><span class="p">(</span><span class="n">rcMargin</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">LOGPIXELSY</span><span class="p">),</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="n">margins</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">MulDiv</span><span class="p">(</span><span class="n">rcMargin</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">LOGPIXELSX</span><span class="p">),</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="n">margins</span><span class="p">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">MulDiv</span><span class="p">(</span><span class="n">rcMargin</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">LOGPIXELSY</span><span class="p">),</span> <span class="mi">1000</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Once we know physically how big the margins should look like, we need to adjust these margins to take into account the border around the outside of the printable area. We do this by subtracting the physical borders from the user-defined borders. This leaves us with a set of offsets which can be added onto each edge of the printable area to finally yield the correct borders.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">iLeftAdjust</span> <span class="o">=</span> <span class="n">margins</span><span class="p">.</span><span class="n">left</span> <span class="o">-</span> <span class="n">iPhysOffsetX</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">iTopAdjust</span> <span class="o">=</span> <span class="n">margins</span><span class="p">.</span><span class="n">top</span> <span class="o">-</span> <span class="n">iPhysOffsetY</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">iRightAdjust</span> <span class="o">=</span> <span class="n">margins</span><span class="p">.</span><span class="n">right</span> <span class="o">-</span> <span class="p">(</span><span class="n">iPhysWidth</span> <span class="o">-</span> <span class="n">iPhysOffsetX</span> <span class="o">-</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">HORZRES</span><span class="p">));</span>
+<span class="kt">int</span> <span class="n">iBottomAdjust</span> <span class="o">=</span> <span class="n">margins</span><span class="p">.</span><span class="n">right</span> <span class="o">-</span> <span class="p">(</span><span class="n">iPhysHeight</span> <span class="o">-</span> <span class="n">iPhysOffsetY</span> <span class="o">-</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">VERTRES</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>The final thing to do is to work out how big an area we have to print to, taking into account the borders we have just worked out. The code below tells us how big each page is. Remember that we can still print outside of this area - these are self-imposed printing limits rather than physical limits.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iWidth</span> <span class="o">=</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">HORZRES</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">iLeftAdjust</span> <span class="o">+</span> <span class="n">iRightAdjust</span><span class="p">);</span>
+<span class="n">iHeight</span> <span class="o">=</span> <span class="n">GetDeviceCaps</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">VERTRES</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">iTopAdjust</span> <span class="o">+</span> <span class="n">iBottomAdjust</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="how-many-lines-on-a-page">How many lines on a page?</h2>
+
+<p>Before we can print anything, we need to know how many lines of text we can fit on each page before we start the next one. To do this, we need to know how many lines will be printed in total. Only you know the answer to this one. The other piece of information we need is the height of a line of text on the printed page. We can get this by using the <code class="highlighter-rouge">GetTextMetrics</code> call.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEXTMETRIC</span> <span class="n">tm</span><span class="p">;</span>
+<span class="n">HFONT</span> <span class="n">hfont</span> <span class="o">=</span> <span class="p">(</span><span class="n">HFONT</span><span class="p">)</span><span class="n">GetStockObject</span><span class="p">(</span><span class="n">ANSI_FIXED_FONT</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">yChar</span><span class="p">;</span>
+
+<span class="c1">// Setup the current device context
+</span><span class="n">SetMapMode</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">MM_TEXT</span><span class="p">);</span>
+<span class="n">SelectObject</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">hfont</span><span class="p">);</span>
+
+<span class="c1">// work out the character dimensions for the current font
+</span><span class="n">GetTextMetrics</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tm</span><span class="p">);</span>
+<span class="n">yChar</span> <span class="o">=</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmHeight</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Now that we know the height of a single line of text (the <code class="highlighter-rouge">yChar</code> variable), we can calculate how many lines fit onto a single page.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//work out how much data can be squeezed onto each page
+</span><span class="kt">int</span> <span class="n">iHeaderHeight</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">iTotalLines</span> <span class="o">=</span> <span class="o">???</span><span class="p">;</span>   
+<span class="kt">int</span> <span class="n">iLinesPerPage</span> <span class="o">=</span> <span class="p">(</span><span class="n">iHeight</span> <span class="o">-</span> <span class="n">iHeaderHeight</span><span class="p">)</span> <span class="o">/</span> <span class="n">yChar</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">iTotalPages</span> <span class="o">=</span> <span class="p">(</span><span class="n">iTotalLines</span> <span class="o">+</span> <span class="n">iLinesPerPage</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">iLinesPerPage</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">iHeaderHeight</code> variable could be used if you display some form of header at the top of each page (e.g. page numbering or a title). If you don’t display anything here, then <code class="highlighter-rouge">iHeaderHeight</code> can be set to zero, or omitted completely.</p>
+
+<h2 id="printing-at-last">Printing (at last!)</h2>
+
+<p>That all probably seems like alot of effort for nothing. However, we are now ready to print our page out. The method we use here is based around the one Charles Petzold uses in his “Programming Windows” book. For more details I would advise you to refer to this.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DOCINFO</span> <span class="n">di</span><span class="p">;</span>
+<span class="n">BOOL</span> <span class="n">bSuccess</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="n">BOOL</span> <span class="n">bUserAbort</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="n">ZeroMemory</span><span class="p">(</span><span class="o">&amp;</span><span class="n">di</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">di</span><span class="p">));</span>
+
+<span class="n">di</span><span class="p">.</span><span class="n">cbSize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">di</span><span class="p">);</span>
+<span class="n">di</span><span class="p">.</span><span class="n">lpszDocName</span> <span class="o">=</span> <span class="n">szFileName</span><span class="p">;</span> <span class="c1">// name of the file you are printing.
+</span>                                <span class="c1">// this will appear in the print manager
+</span></code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">StartDoc</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">di</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">iColCopy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iColCopy</span> <span class="o">&lt;</span> <span class="p">((</span><span class="n">pd</span><span class="p">.</span><span class="n">Flags</span> <span class="o">&amp;</span> <span class="n">PD_COLLATE</span><span class="p">)</span> <span class="o">?</span> <span class="n">pd</span><span class="p">.</span><span class="n">nCopies</span> <span class="o">:</span> <span class="mi">1</span><span class="p">);</span> <span class="n">iColCopy</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">iPage</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iPage</span> <span class="o">&lt;</span> <span class="n">iTotalPages</span><span class="p">;</span> <span class="n">iPage</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">iNonColCopy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iNonColCopy</span> <span class="o">&lt;</span> <span class="p">((</span><span class="n">pd</span><span class="p">.</span><span class="n">Flags</span> <span class="o">&amp;</span> <span class="n">PD_COLLATE</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">nCopies</span><span class="p">);</span> <span class="n">iNonColCopy</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">HANDLE</span> <span class="n">hold</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">StartPage</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">bSuccess</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="c1">// Make all printing be offset by the amount specified for the margins
+</span>                <span class="n">SetViewportOrgEx</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">iLeftAdjust</span><span class="p">,</span> <span class="n">iTopAdjust</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+                <span class="c1">// select the fixed-width font into the printer DC
+</span>                <span class="n">hold</span> <span class="o">=</span> <span class="n">SelectObject</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">hfont</span><span class="p">);</span>
+
+                <span class="c1">//print the current file line by line
+</span>                <span class="k">for</span><span class="p">(</span><span class="n">iLine</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iLine</span> <span class="o">&lt;</span> <span class="n">iLinesPerPage</span><span class="p">;</span> <span class="n">iLine</span><span class="o">++</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="kt">char</span> <span class="n">szBuffer</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+                    <span class="n">iLineNum</span> <span class="o">=</span> <span class="n">iLinesPerPage</span> <span class="o">*</span> <span class="n">iPage</span> <span class="o">+</span> <span class="n">iLine</span><span class="p">;</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">iLineNum</span> <span class="o">&gt;</span> <span class="n">iTotalLines</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+
+                    <span class="c1">//get line (iLine) from the application, and store it
+</span>                    <span class="c1">//into szBuffer
+</span>
+                    <span class="c1">//output a line of text to the printer
+</span>                    <span class="n">TextOut</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">yChar</span> <span class="o">*</span> <span class="n">iLine</span> <span class="o">+</span> <span class="n">iHeaderHeight</span><span class="p">,</span> <span class="n">szBuffer</span><span class="p">,</span> 
+                    
+                    <span class="n">lstrlen</span><span class="p">(</span><span class="n">szBuffer</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>                    
+                    <span class="n">bUserAbort</span> <span class="o">=</span> <span class="o">!</span><span class="n">QueryAbort</span><span class="p">();</span>
+                <span class="p">}</span>
+
+                <span class="n">SelectObject</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">,</span> <span class="n">hold</span><span class="p">);</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="n">EndPage</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">bSuccess</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="n">bUserAbort</span> <span class="o">=</span> <span class="o">!</span><span class="n">QueryAbort</span><span class="p">();</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">bUserAbort</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bSuccess</span> <span class="o">||</span> <span class="n">bUserAbort</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">bSuccess</span> <span class="o">||</span> <span class="n">bUserAbort</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+    <span class="n">bSuccess</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The code above looks pretty complicated because of all the nested <code class="highlighter-rouge">for</code> loops. The printing is structured like this to take into account two important factors. The user may have selected to print out multiple copies of the same document, and might have also selected to collate (collect) pages together as well. The for-loops take care of these situations.</p>
+
+<h2 id="cancelling-printing">Cancelling Printing</h2>
+
+<p>What happens if the user want to cancel printing half-way through? This is what the <code class="highlighter-rouge">QueryAbort</code> function does. It runs its own message loop and detects if the user presses the Escape key.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UINT</span> <span class="n">CALLBACK</span> <span class="nf">ab</span><span class="p">(</span><span class="n">size_w</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size_w</span> <span class="n">len</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">MSG</span> <span class="n">msg</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="n">bAbort</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">bAbort</span> <span class="o">&amp;&amp;</span> <span class="n">PeekMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PM_REMOVE</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">TranslateMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">switch</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">message</span><span class="p">)</span>
+        <span class="p">{</span>
+        <span class="k">case</span> <span class="n">WM_QUIT</span><span class="p">:</span>
+
+            <span class="n">PostQuitMessage</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+            <span class="n">bAbort</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">WM_KEYDOWN</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">wParam</span> <span class="o">==</span> <span class="n">VK_ESCAPE</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">bAbort</span> <span class="o">=</span> <span class="n">QueryAbortDlg</span><span class="p">();</span>
+                <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">WM_LBUTTONDOWN</span><span class="p">:</span> <span class="k">case</span> <span class="n">WM_RBUTTONDOWN</span><span class="p">:</span> <span class="k">case</span> <span class="n">WM_MBUTTONDOWN</span><span class="p">:</span>
+            <span class="n">bAbort</span> <span class="o">=</span> <span class="n">QueryAbortDlg</span><span class="p">();</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">DispatchMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">!</span><span class="n">bAbort</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="cleaning-up">Cleaning Up</h2>
+
+<p>After the document has been printed (or printing cancelled), then we need to release the printer device context. We also need to commit the document to the printer spooler, or cancel the document if the user aborted for some reason.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">bSuccess</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">bUserAbort</span><span class="p">)</span> 
+    <span class="n">EndDoc</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">);</span>
+<span class="k">else</span>
+    <span class="n">AbortDoc</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">);</span>
+
+<span class="n">DeleteDC</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">hDC</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Well, I never said it was going to be easy. I ran out of steam at the end so I havn’t described the actual printing process very well. For now I’d refer to Charles Petzold’s book “Programming Windows 5th Ed”. Maybe someday I’ll update this tutorial, but for now this is how it stands.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-05-22T00:00:00+00:00">May 22, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="fixed-width-font-enumeration.html" class="pagination--pager" title="Fixed-width Font Enumeration
+">Previous</a>
+    
+    
+      <a href="splitter-windows.html" class="pagination--pager" title="Splitter Windows
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/introduction-to-printing by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

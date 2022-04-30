@@ -1,0 +1,441 @@
+<html>
+<title>The Craft of Text Editing by Craig A. Finseth</title>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:44:40 GMT -->
+<meta name="description" content="The Craft of Text Editing">
+<meta name="keywords" content="craft,emacs,text editing,how to">
+
+<body>
+<a name="top"> </a>
+<h1><center>The Craft of Text Editing<br>
+--or--<br>
+Emacs for the Modern World
+</center></h1>
+
+<p><center>by <font size="+2">Craig A. Finseth</font>, <a href="mailto:fin@finseth.com">fin@finseth.com</a>.</center></p>
+
+<p>Copyright 1999 by Craig A. Finseth.  Contact the author with
+questions about distribution rights.</p>
+
+<p>This web site contains the full text of the book &quot;The Craft of
+Text Editing.&quot; That book was published in 1991 by Springer-Verlag
+& Co.  By arrangement between the author and the publisher, the book
+version is now out of print and all rights have been returned to the
+author.  Note that there may be some slight differences in typograhic
+corrections between this version and the printed one.</p>
+
+<p>If you wish to cite this work, please use the following URL:</p>
+
+<p><center>http://www.finseth.com/~fin/craft</center></p>
+
+<p>If you should notice typos or formatting problems, please let me
+know.  I am not, however, planning on revising or updating the book
+anytime soon.</p>
+
+<p><a href="craft.html">Here</a> is a tar file that contains the
+complete work and <a href="craft.tar.html">Here.gz</a> is a gzip'd
+tar.</p>
+
+<br>
+<hr>
+<br>
+
+<h3>Quick Contents:</h3>
+
+<p><br>
+<a href="Preface.html">Preface</a><br>
+<a href="Introduction.html">Introduction: What Is Text Editing All About?</a><br>
+<a href="Chapter-1.html">Chapter 1: Users</a><br>
+<a href="Chapter-2.html">Chapter 2: User Interface Hardware</a><br>
+<a href="Chapter-3.html">Chapter 3: Implementation Languages</a><br>
+<a href="Chapter-4.html">Chapter 4: Editing Models</a><br>
+<a href="Chapter-5.html">Chapter 5: File Formats</a><br>
+<a href="Chapter-6.html">Chapter 6: The Internal Sub-Editor</a><br>
+<a href="Chapter-7.html">Chapter 7: Redisplay</a><br>
+<a href="Chapter-8.html">Chapter 8: User-Oriented Commands: The Command Loop</a><br>
+<a href="Chapter-9.html">Chapter 9: Command Set Design</a><br>
+<a href="Chapter-10.html">Chapter 10: Emacs-Type Editors</a><br>
+<a href="Epilogue.html">Epilogue</a><br>
+<a href="Appendix-A.html">Appendix A: A Five-Minute Introduction to C</a><br>
+<a href="Appendix-B.html">Appendix B: Emacs Implementations</a><br>
+<a href="Appendix-C.html">Appendix C: The Emacs Command Set</a><br>
+<a href="Appendix-D.html">Appendix D: The TECO Command Set</a><br>
+<a href="Appendix-E.html">Appendix E: ASCII Chart</a><br>
+<a href="Bibliography.html">Bibliography</a><br>
+<a href="Book-Index.html">Book Index</a></p>
+
+<br>
+<hr>
+<br>
+
+<h3>Credits</h3>
+
+<p>The chapter quotes comprise the verse &quot;Jabberwocky&quot; by Lewis Carroll, from the work <i>Through the Looking Glass.</i>
+
+<h3>Trademarks</h3>
+
+<p>Annex is a registered trademark of Xylogics.</p>
+
+<p>CP/M is a registered trademark of Digital Research.</p>
+
+<p>DEC, Tops-20, VT52, VT100, VT200 and VAX/VMS are registered
+trademarks of Digital Equipment Corp.</p>
+
+<p>FinalWord and MINCE are registered trademarks of Mark of the Unicorn.</p>
+
+<p>IBM and IBM PC are registered trademarks of IBM Corp.</p>
+
+<p>Apple ][ is a registered trademark of Apple Computer, Inc.</p>
+
+<p>Macintosh is a trademark licensed to Apple Computer, Inc.</p>
+
+<p>MS/DOS is a registered trademark of Microsoft Corp.</p>
+
+<p>TTY is a registered trademark of Teletype Corp.</p>
+
+<p>UNIX is a registered trademark of AT&T</p>
+
+<br>
+<hr>
+<br>
+
+<h2>Table of Contents</h2>
+
+<p><a href="Preface.html">Preface</a></p>
+
+<p><a href="Introduction.html">Introduction: What Is Text Editing All About?</a></p>
+
+<blockquote>
+The Basic Get_Line<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version One<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version Two<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version Three<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version Four<br>
+The Forest<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-1.html">Chapter 1: Users</a></p>
+
+<blockquote>
+Users Categories<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amount of Experience<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type of Experience<br>
+&quot;Religion&quot;<br>
+User Goals<br>
+Physiological Constraints<br>
+Applying These Physiological Constraints<br>
+Users Who Have Handicaps<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-2.html">Chapter 2: User Interface Hardware</a></p>
+
+<blockquote>
+Display Types<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TTY and Glass TTY<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Basic Displays<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Advanced Displays<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Memory Mapped&quot; Displays<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics Displays<br>
+Keyboards<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Special Function Keys<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extra Shift Keys<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Placement<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example Keyboards<br>
+Graphical Input<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Touch Sensitive Display<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tablet<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mouse<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trackball<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joystick<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A Different Mouse<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Devices<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conclusion<br>
+Communications Path Issues<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Speed and Character Format<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flow Control<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Echo Negotiation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fancy Modems<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-3.html">Chapter 3: Implementation Languages</a></p>
+
+<blockquote>
+General Considerations<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Availability and Implementation Quality<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text Handling Power<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Support for Extensibility<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Large Project Support<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Efficiency<br>
+Specific Language Notes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TECO<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lisp<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PL/1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Systems Languages<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fortran<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pascal<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Basic<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ada<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sine<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Custom Editor Languages<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-4.html">Chapter 4: Editing Models</a></p>
+
+<blockquote>
+One-Dimensional Array of Bytes<br>
+Two-Dimensional Array of Bytes<br>
+List of Lines<br>
+Paged Models<br>
+Objects<br>
+Dealing With Real Text<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-5.html">Chapter 5: File Formats</a></p>
+
+<blockquote>
+Text Files<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line Boundaries<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line Contents<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End of File<br>
+Binary Files<br>
+Structured Files<br>
+Where to Store the &quot;Extra&quot; Information<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In-Band<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Out-of-Band<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conclusion<br>
+The Additional Information<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fonts, Sizes, Attributes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line, Paragraph, Page, and Other Formats<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Non-Text Objects<br>
+Internationalization<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-6.html">Chapter 6: The Internal Sub-Editor</a></p>
+
+<blockquote>
+Basic Concepts and Definitions<br>
+Internal Data Structures<br>
+Procedure Interface Definitions<br>
+Characteristics of Implementation Methods<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No Management<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Extra Space at the End<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Buffer Gap<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Multiple Gaps and Why They Don't Work<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Hidden Second Gap<br>
+Implementation Method Overview<br>
+Buffer Gap<br>
+Linked Line<br>
+Paged Buffer Gap<br>
+Other Methods<br>
+Method Comparisons<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Storage<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Crash Recovery<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Efficiency of Editing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Efficiency of Buffer/File I/O<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Efficiency of Searching<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Multiple Buffers<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paged Virtual Memory<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recommedations<br>
+Editing Extremely Large Files<br>
+Difference Files<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-7.html">Chapter 7: Redisplay</a></p>
+
+<blockquote>
+Constraints<br>
+Procedure Interface Definitions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Editor Procedures<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Display Independent Procedures<br>
+Considerations<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status Line<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End of the Buffer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Horizontal Scrolling<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line Wrap<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Word Wrap<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Control Characters<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Proportionally Spaced Text<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Attributes, Fonts and Scripts<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Breaking Out Between Lines<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Multiple Windows<br>
+Redisplay Itself<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Framer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Basic Algorithm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub-Editor Interaction<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Advanced Algorithm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Redisplay for Memory Mapped Displays<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-8.html">Chapter 8: User-Oriented Commands: The Command Loop</a></p>
+
+<blockquote>
+The Core Loop: Read, Evaluate, Print<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Evaluate Procedure<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Move by a Character<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Insert a Character<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Second-Level Dispatch<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Accept an Argument<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Philosophy<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A Minimalist Command Set Design<br>
+Errors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Internal Errors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;External Errors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exiting<br>
+Arguments<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numeric (Prefix) Arguments<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String (Suffix) Arguments<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Positional Arguments<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selection Arguments<br>
+Rebinding<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rebinding Keys<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rebinding Functions<br>
+Modes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modes and Dynamic Rebinding<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Implementing Modes<br>
+Changing Your Mind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Command Set Design<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kill Ring or &quot;Clipboard&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Undo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An Undo Heresy<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Redo<br>
+Macros<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Again<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Keystroke Recording<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro Languages<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Redisplay Interaction<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-9.html">Chapter 9: Command Set Design</a></p>
+
+<blockquote>
+Responsiveness<br>
+Consistency<br>
+Permissiveness<br>
+Progress<br>
+Simplicity<br>
+Uniformity<br>
+Extensibility<br>
+Modes<br>
+Use of Language<br>
+Guideline Summary<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Overall<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use of Language<br>
+Structure Editors<br>
+Programing Assistance<br>
+Command Behavior<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Does Down Move the Point or the Text?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scrolling vs. Paging<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Page Breaks<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How Many Ways Can You Move by a Word?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Moving by Words<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deleting by Words<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Where Do Sentences and Paragraphs End?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How to Search<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commands to Handle Typos<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Capitalization Commands<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Twiddling<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Chapter-10.html">Chapter 10: Emacs-Type Editors</a></p>
+
+<blockquote>
+&quot;What Do You Mean, 'Emacs-type?' &quot;<br>
+The Command Set<br>
+The Extended Environment<br>
+Extensibility<br>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Epilogue.html">Epilogue</a></p>
+
+<blockquote>
+Questions to Probe Your Understanding<br>
+</blockquote>
+
+<p><a href="Appendix-A.html">Appendix A: A Five-Minute Introduction to C</a></p>
+
+<blockquote>
+Case Conventions<br>
+Data Types and Declarations<br>
+Constants<br>
+Pre-defined Constants<br>
+Procedure Structure<br>
+Statements<br>
+Operators<br>
+Standard Library Functions Used in This Book<br>
+Non-Standard Library Functions Used in This Book<br>
+</blockquote>
+
+<p><a href="Appendix-B.html">Appendix B: Emacs Implementations</a></p>
+
+<p>The following sections appeared in the book's table of contents.  This
+entire appendix has been replaced with a pointer to the current Emacs
+Implementations lisst.</p>
+
+<blockquote>
+Acronyms<br>
+Implementations Mentioned in my Thesis (Pre-1980)<br>
+GNU-Emacs<br>
+Newer Implementations Available for No Charge<br>
+Newer Implementations Sold by Vendors<br>
+</blockquote>
+
+<p><a href="Appendix-C.html">Appendix C: The Emacs Command Set</a></p>
+
+<blockquote>
+Notation<br>
+Default GNU-Emacs Command Set<br>
+The Author's Command Set<br>
+</blockquote>
+
+<p><a href="Appendix-D.html">Appendix D: The TECO Command Set</a></p>
+
+<p><a href="Appendix-E.html">Appendix E: ASCII Chart</a></p>
+
+<p><a href="Bibliography.html">Bibliography</a></p>
+
+<blockquote>
+Current<br>
+Thesis<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Emacs-Type Editors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ITS EMACS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lisp Machine Zwei<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Multics Emacs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MagicSix TVMacs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Emacs-Type Text Editors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Non-Emacs Display Editors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Structure Editors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Editors<br>
+</blockquote>
+
+<p><a href="Book-Index.html">Book Index</a></p>
+
+<br>
+<hr>
+<br>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+<p>Visits since no time in particular...<img src="http://www.visi.com/cgi-bin/Count.cgi?dd=022|df=fin-craft.dat"></p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

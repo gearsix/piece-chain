@@ -1,0 +1,554 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/2012-01-22-c-and-c-tricks/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>C &amp; C++ Tricks - Catch22</title>
+<meta name="description" content="This section contains code snippets which I have acquired over time. Most of the code samples are in the C programming language. Just a couple require C++. Wherever possible, I have accredited the code with the respective authors. However, there are quite a few samples of which I have lost the original author’s details. In these cases I have left the snippets unaccredited. If you see a code snippet below, and you believe you know who originally published it, please drop me a line and I’ll update this page immediately.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="C &amp; C++ Tricks">
+<meta property="og:url" content="index.html">
+
+
+  <meta property="og:description" content="This section contains code snippets which I have acquired over time. Most of the code samples are in the C programming language. Just a couple require C++. Wherever possible, I have accredited the code with the respective authors. However, there are quite a few samples of which I have lost the original author’s details. In these cases I have left the snippets unaccredited. If you see a code snippet below, and you believe you know who originally published it, please drop me a line and I’ll update this page immediately.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2012-01-22T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="index.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">C & C++ Tricks</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="C &amp; C++ Tricks">
+    <meta itemprop="description" content="This section contains code snippets which I have acquired over time. Most of the code samples are in the C programming language. Just a couple require C++. Wherever possible, I have accredited the code with the respective authors. However, there are quite a few samples of which I have lost the original author’s details. In these cases I have left the snippets unaccredited. If you see a code snippet below, and you believe you know who originally published it, please drop me a line and I’ll update this page immediately.">
+    <meta itemprop="datePublished" content="January 22, 2012">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">C &amp; C++ Tricks
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>C & C++ Tricks</h1-->
+<!--h3>Collection of unusual tips for C & C++</h3-->
+
+<p>This section contains code snippets which I have acquired over time. Most of the code samples are in the C programming language. Just a couple require C++. Wherever possible, I have accredited the code with the respective authors. However, there are quite a few samples of which I have lost the original author’s details. In these cases I have left the snippets unaccredited. If you see a code snippet below, and you believe you know who originally published it, please drop me a line and I’ll update this page immediately.</p>
+
+<p>Please send any comments or suggestions to:</p>
+
+<h2 id="bit-twiddling">Bit Twiddling</h2>
+
+<p>Is an integer number a power of 2?</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define ISPOW2(x) (x &amp;&amp; !(x &amp; (x-1)))
+</span>
+<span class="cp">#define ISPOW2(n) (!( n &amp; (n-1))
+</span>
+<span class="cp">#define ISPOW2(x) ((~(~0U &gt;&gt; 1) | x) &amp; x - 1)
+</span></code></pre></div></div>
+
+<p>Swap two integer numbers</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">a</span> <span class="o">^=</span> <span class="n">b</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">^=</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">^=</span> <span class="n">b</span><span class="p">;</span>
+
+<span class="p">...</span>
+<span class="cm">/* note that this is not portable */</span>
+<span class="n">a</span> <span class="o">^=</span> <span class="n">b</span> <span class="o">^=</span> <span class="n">a</span> <span class="o">^=</span> <span class="n">b</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Detect if there is a zero byte in a 32bit word:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define has_null_byte(x) (((x) - 0x01010101) &amp; ~(x) &amp; 0x80808080)
+</span></code></pre></div></div>
+
+<p>Divide an integer number by 15</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">unsigned</span> <span class="nf">div15</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">s</span><span class="p">,</span><span class="n">t</span><span class="p">;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">)</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">+=</span> <span class="n">t</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">unsigned</span> <span class="kt">short</span> <span class="nf">div15</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">t</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">+=</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">+=</span> <span class="n">t</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">+=</span> <span class="n">t</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">short</span><span class="p">)(</span><span class="n">t</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">long</span> <span class="nf">div15</span><span class="p">(</span><span class="kt">long</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="kt">long</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">);</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">s</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">s</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="bit-counting">Bit Counting</h2>
+
+<p>Count the number of bits in an integer</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">countbits</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">num</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+    
+    <span class="k">for</span><span class="p">(</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">num</span><span class="p">;</span> <span class="n">num</span> <span class="o">&amp;=</span> <span class="n">num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Using a lookup table:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">lookup</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+
+<span class="kt">void</span> <span class="nf">buildlookup</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">t</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">lookup</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">t</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">lookup</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">t</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">countbits</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">[</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">]</span> <span class="o">+</span> 
+            <span class="n">lookup</span><span class="p">[(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">]</span> <span class="o">+</span>
+            <span class="n">lookup</span><span class="p">[(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">]</span> <span class="o">+</span>
+            <span class="n">lookup</span><span class="p">[(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">];</span>
+
+
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Using some ingenious bit-twiddling</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Bit counter by Ratko Tomic */</span>
+<span class="kt">int</span> <span class="nf">countbits</span><span class="p">(</span><span class="kt">long</span> <span class="n">i</span><span class="p">)</span>
+
+<span class="p">{</span>
+      <span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0xAAAAAAAAL</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0x55555555L</span><span class="p">);</span>
+      <span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0xCCCCCCCCL</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0x33333333L</span><span class="p">);</span>
+      <span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0xF0F0F0F0L</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0x0F0F0F0FL</span><span class="p">);</span>
+      <span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0xFF00FF00L</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0x00FF00FFL</span><span class="p">);</span>
+      <span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0xFFFF0000L</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0x0000FFFFL</span><span class="p">);</span>
+      <span class="k">return</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="number-rounding">Number Rounding</h2>
+
+<p>Round an integer up to the nearsest alignment boundary.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">ALIGN</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">ALIGN</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">ALIGN</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num</span> <span class="o">=</span> <span class="n">mod</span> <span class="o">*</span> <span class="p">((</span><span class="n">num</span> <span class="o">+</span> <span class="n">mod</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">mod</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Assuming the mod is a power of 2, the rounding can take place using bitwise operators .</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="o">+</span> <span class="n">mod</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">mod</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="base-conversion">Base conversion</h2>
+
+<p>A FAST cast from float to long</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">long</span> <span class="nf">float2long</span><span class="p">(</span><span class="kt">float</span> <span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cp">#define MAGIC (((65536.0 * 65536.0 * 16.0) + 32768.0) * 65536.0)
+</span>    <span class="kt">double</span> <span class="n">dtemp</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">MAGIC</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">long</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">dtemp</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0x80000000</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="string--memory-routines">String &amp; Memory routines</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">memcmp2</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">mem1</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">mem2</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">length</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">mptr1</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">mem1</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">mptr2</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">mem2</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">mptr1</span><span class="o">++</span> <span class="o">!=</span> <span class="o">*</span><span class="n">mptr2</span><span class="o">++</span><span class="p">)</span> <span class="k">return</span> <span class="o">!</span><span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">tempch</span> <span class="o">=</span> <span class="n">mem1</span><span class="p">[</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+
+    <span class="n">mem1</span><span class="p">[</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">~</span><span class="n">mem2</span><span class="p">[</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+
+    <span class="cm">/* do the comparison */</span>
+    <span class="k">while</span><span class="p">(</span><span class="o">*</span><span class="n">mptr1</span><span class="o">++</span> <span class="o">!=</span> <span class="o">*</span><span class="n">mptr2</span><span class="o">++</span><span class="p">);</span>
+
+    <span class="n">mem1</span><span class="p">[</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tempch</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">mptr1</span> <span class="o">==</span> <span class="p">(</span><span class="n">mem1</span> <span class="o">+</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>A weird memory copy, using Duff’s Device to check the loop termination 1 in every 8 iterations</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">switch</span><span class="p">(</span><span class="n">length</span> <span class="o">&amp;</span> <span class="mh">0x7</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">do</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="mi">7</span><span class="p">:</span> <span class="o">*</span><span class="n">dest</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span> 
+    <span class="k">case</span> <span class="mi">6</span><span class="p">:</span> <span class="o">*</span><span class="n">dest</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">5</span><span class="p">:</span> <span class="o">*</span><span class="n">dest</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">4</span><span class="p">:</span> <span class="o">*</span><span class="n">dest</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">3</span><span class="p">:</span> <span class="o">*</span><span class="n">dest</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">2</span><span class="p">:</span> <span class="o">*</span><span class="n">dest</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">1</span><span class="p">:</span> <span class="o">*</span><span class="n">dest</span><span class="o">++</span> <span class="o">=</span> <span class="o">*</span><span class="n">src</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">length</span> <span class="o">-=</span> <span class="mi">8</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="miscallaneous">Miscallaneous</h2>
+
+<p>The weirdest C program? Requires 8086 family of processors.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">main</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mh">0xc3</span> <span class="p">};</span>
+</code></pre></div></div>
+
+<p>Compiles as you type! Requies a unix tty terminal</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "/dev/tty0"
+</span></code></pre></div></div>
+
+<p>Halt with a compile error if the target platform’s word size is not 32bits</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">error_not_32bits</span><span class="p">[</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Calculate if a year is a leap year or not</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* 'The C Programming Language' by Kernigan &amp; Richie */</span>
+<span class="kt">int</span> <span class="nf">isleapyear</span><span class="p">(</span><span class="kt">int</span> <span class="n">year</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">year</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">year</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">year</span> <span class="o">%</span> <span class="mi">400</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Work out what the day of the week is for a given date</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Tomohiko Sakamoto */</span>
+<span class="kt">int</span> <span class="nf">dayofweek</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span> <span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">t</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span> <span class="p">};</span>
+	 
+    <span class="n">y</span> <span class="o">-=</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">/</span><span class="mi">100</span> <span class="o">+</span> <span class="n">y</span><span class="o">/</span><span class="mi">400</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="o">%</span> <span class="mi">7</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>A C program which source is the same as its output (format as one line)</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="s">"char *s = %c%s%c; </span><span class="err">
+</span><span class="s">main(){printf(s,34,s,34);}"</span><span class="p">;</span> 
+<span class="n">main</span><span class="p">(){</span><span class="n">printf</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="mi">34</span><span class="p">);}</span>
+</code></pre></div></div>
+
+<p>Calculate the value of PI</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">PI</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">atan</span><span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Calculate a random number in the range 0..N</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">bad:</span> <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span> <span class="cm">/* not very random */</span>
+<span class="n">better</span><span class="o">:</span> <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">/</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>An even better method (i.e. more random) was suggested by Jerry Coffin - thanks!</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">rand_lim</span><span class="p">(</span><span class="kt">int</span> <span class="n">limit</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="cm">/* return a random number between 0 and limit inclusive. */</span>
+
+    <span class="kt">int</span> <span class="n">divisor</span> <span class="o">=</span> <span class="n">RAND_MAX</span> <span class="o">/</span> <span class="p">(</span><span class="n">limit</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">retval</span><span class="p">;</span>
+
+    <span class="k">do</span> 
+    <span class="p">{</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="n">divisor</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">retval</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2012-01-22T00:00:00+00:00">January 22, 2012</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../../neatpad/unicode-text-editing.html" class="pagination--pager" title="Unicode Text Editing
+">Previous</a>
+    
+    
+      <a href="../../source/archive.html" class="pagination--pager" title="Source Archive
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/2012-01-22-c-and-c-tricks/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+</html>

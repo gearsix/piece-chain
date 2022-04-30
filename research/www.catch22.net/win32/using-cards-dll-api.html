@@ -1,0 +1,452 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/using-cards-dll-api by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Using cards.dll API - Catch22</title>
+<meta name="description" content="The aim of this article is to describe exactly how to use cards.dll, the dynamic link library that has shipped with all versions of windows since version 3.0. This library contains all of the playing card bitmapped images that games such as Windows Solitare use to display their graphics.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Using cards.dll API">
+<meta property="og:url" content="using-cards-dll-api.html">
+
+
+  <meta property="og:description" content="The aim of this article is to describe exactly how to use cards.dll, the dynamic link library that has shipped with all versions of windows since version 3.0. This library contains all of the playing card bitmapped images that games such as Windows Solitare use to display their graphics.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-05-22T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="using-cards-dll-api.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Using cards.dll API</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/cards.zip">cards.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Using cards.dll API">
+    <meta itemprop="description" content="The aim of this article is to describe exactly how to use cards.dll, the dynamic link library that has shipped with all versions of windows since version 3.0. This library contains all of the playing card bitmapped images that games such as Windows Solitare use to display their graphics.">
+    <meta itemprop="datePublished" content="May 22, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Using cards.dll API
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Using cards.dll API</h1-->
+<!--h3>How to access the cards.dll API</h3-->
+
+<p>The aim of this article is to describe exactly how to use cards.dll, the dynamic link library that has shipped with all versions of windows since version 3.0. This library contains all of the playing card bitmapped images that games such as Windows Solitare use to display their graphics.</p>
+
+<p><img src="http://www.catch22.net/assets/img/card02.gif" alt="" class="align-center" /></p>
+
+<p>There are actually two versions of cards.dll. The Windows 95 series of operating systems (this includes Windows 98 and Windows ME) use the original 16bit version which shipped way back with Windows 3.0. Obviously there are going to be problems using this 16bit DLL from your 32bit application, but I will come on to that later. The second version is a 32bit DLL, and ships with the Windows NT series (Windows NT, Windows 2000 etc). I will explain how to use this version first. </p>
+
+<h2 id="exported-functions-from-cardsdll">Exported functions from cards.dll</h2>
+
+<p>Cards.dll exports five functions which your program can use to draw card images. These functions are the the only interface that cards.dll provides to draw cards. Note that these functions never let you have access to the bitmaps; rather, you supply a device context and the card functions draw the card bitmaps for you. Here is a description of each function, and its prototype.</p>
+
+<h3 id="cdtinit">cdtInit</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="n">cdtInit</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">height</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Initializes the cards.dll library for your application. You must supply the addresses of two variables, in which cards.dll stores the width and height (in pixels) of a card.</p>
+
+<h3 id="cdtdraw">cdtDraw</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="n">cdtDraw</span> <span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">card</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">color</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Draws a card at position <code class="highlighter-rouge">x</code> , <code class="highlighter-rouge">y</code> on the device context <code class="highlighter-rouge">hdc</code>. The <code class="highlighter-rouge">type</code> parameter controls whether the front, the back, or the inverted front of the card is drawn.</p>
+
+<p>The <code class="highlighter-rouge">card</code> parameter controls which card is drawn. This parameter is dependent on the value of <code class="highlighter-rouge">type</code>. If a card face is to be drawn (type is 0 or 2), then <code class="highlighter-rouge">card</code> must be a value from 0 through 51 to represent each card. If <code class="highlighter-rouge">type</code> specifies that a card back is to be drawn (type is 1), then <code class="highlighter-rouge">card</code> must be a value from 53 to 68 (inclusive), to represent one of the 16 possible card backs.</p>
+
+<p>The card faces are organised in increasing order. That is, the aces come first, then the two’s and so on. In each group, the cards are ordered by suit. The order is clubs, diamons, hearts, spades. This pattern is repeated as the card values increase.</p>
+
+<p>You can use the following values to represent each card suit.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define ecsCLUBS 0
+#define ecsDIAMONDS 1
+#define ecsHEARTS 2
+#define ecsSPADES 3
+</span></code></pre></div></div>
+
+<p>To calculate the value of card given a suit (0-3) and a face value (0-13, 0 being aces, 13 being kings), you can use this simple formula:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">card</span> <span class="o">=</span> <span class="n">suit</span> <span class="o">+</span> <span class="n">face</span> <span class="o">*</span> <span class="mi">4</span>
+</code></pre></div></div>
+
+<p>Here is a list of the 16 possible card backgrounds that you can use in your code.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define ecbCROSSHATCH 53
+#define ecbWEAVE1 54
+#define ecbWEAVE2 55
+#define ecbROBOT 56
+#define ecbFLOWERS 57
+#define ecbVINE1 58
+#define ecbVINE2 59
+#define ecbFISH1 60
+#define ecbFISH2 61
+#define ecbSHELLS 62
+#define ecbCASTLE 63
+#define ecbISLAND 64
+#define ecbCARDHAND 65
+#define ecbUNUSED 66
+#define ecbTHE_X 67
+#define ecbTHE_O 68
+</span></code></pre></div></div>
+
+<p>Lastly, the <code class="highlighter-rouge">color</code> parameter sets the background color for the ecbCrossHatch card back, which uses a pattern drawn with lines. All the other backs and fronts are bitmaps, so <code class="highlighter-rouge">color</code> has no effect.</p>
+
+<h3 id="cdtdrawext">cdtDrawExt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="n">cdtDrawExt</span> <span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">,</span> 
+    <span class="kt">int</span> <span class="n">card</span><span class="p">,</span> <span class="kt">int</span> <span class="n">suit</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">color</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This procedure is the same as cdtDraw except that you specify the <code class="highlighter-rouge">dx</code> and <code class="highlighter-rouge">dy</code> parameters to indicate the size of the card. The card bitmaps are stretched or compressed to the specified size.</p>
+
+<h3 id="cdtanimate">cdtAnimate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="n">cdtAnimate</span> <span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cardback</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">frame</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This function animates the backs of cards by overlaying part of the card back with an alternative bitmap. It creates effects: blinking lights on the robot, the sun donning sunglasses, bats flying across the castle, and a card sliding out of a sleeve. The function works only for cards of normal size drawn with <code class="highlighter-rouge">cdtDraw</code>. To draw each state, start with <code class="highlighter-rouge">frame</code> set to 0 and increment through until <code class="highlighter-rouge">cdtAnimate</code> returns 0.</p>
+
+<h3 id="cdtterm">cdtTerm</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">WINAPI</span> <span class="n">cdtTerm</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This function cleans up the card resources from your program. It takes no parameters, and returns no values. It is a good idea to call this function just before your card game exits.</p>
+
+<h2 id="how-to-load-a-dynamic-link-library">How to load a Dynamic Link Library</h2>
+
+<p>The best way to access the cards.dll libary is to use the <code class="highlighter-rouge">LoadLibrary</code> API call, and then use <code class="highlighter-rouge">GetProcAddress</code> to access the individual functions that cards.dll exports.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HMODULE</span> <span class="n">hCardDll</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="n">BOOL</span> <span class="n">InitCardsDll</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">hCardDll</span> <span class="o">=</span> <span class="n">LoadLibrary</span><span class="p">(</span><span class="s">"cards.dll"</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">hCardDll</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="n">cdtInit</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfcdtInit</span><span class="p">)</span> <span class="n">GetProcAddress</span><span class="p">(</span><span class="n">hCardDll</span><span class="p">,</span> <span class="s">"cdtInit"</span><span class="p">);</span>
+    <span class="n">cdtDraw</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfcdtDraw</span><span class="p">)</span> <span class="n">GetProcAddress</span><span class="p">(</span><span class="n">hCardDll</span><span class="p">,</span> <span class="s">"cdtDraw"</span><span class="p">);</span>
+    <span class="n">cdtDrawEx</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfcdtDrawEx</span><span class="p">)</span> <span class="n">GetProcAddress</span><span class="p">(</span><span class="n">hCardDll</span><span class="p">,</span> <span class="s">"cdtDrawExt"</span><span class="p">);</span>
+    <span class="n">cdtTerm</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfcdtTerm</span><span class="p">)</span> <span class="n">GetProcAddress</span><span class="p">(</span><span class="n">hCardDll</span><span class="p">,</span> <span class="s">"cdtTerm"</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You should use the following typedef’s to define each function prototype:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="n">BOOL</span> <span class="p">(</span><span class="n">WINAPI</span> <span class="o">*</span><span class="n">pfcdtInit</span><span class="p">)(</span><span class="kt">int</span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="n">BOOL</span> <span class="p">(</span><span class="n">WINAPI</span> <span class="o">*</span><span class="n">pfcdtDraw</span><span class="p">)(</span><span class="n">HDC</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">card</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">color</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="n">BOOL</span> <span class="p">(</span><span class="n">WINAPI</span> <span class="o">*</span><span class="n">pfcdtDrawEx</span><span class="p">)(</span><span class="n">HDC</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">,</span> <span class="kt">int</span> <span class="n">card</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">color</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="n">BOOL</span> <span class="p">(</span><span class="n">WINAPI</span> <span class="o">*</span><span class="n">pfcdtAnimate</span><span class="p">)(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cardback</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">state</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="n">WINAPI</span> <span class="o">*</span><span class="n">pfcdtTerm</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Note that all parameters to the 32bit library are themselves 32bits in size.</p>
+
+<p>That’s really all there is to it. Don’t forget to release the library with <code class="highlighter-rouge">FreeLibrary</code> before your program exits.</p>
+
+<h2 id="using-the-16bit-cardsdll-library">Using the 16bit cards.dll library</h2>
+
+<p>If you want your card game to run on Windows 95 then you have a problem, because 16bit DLLs are not directly compatible with a 32bit application. You have two options to choose from. The first is to distribute the 32bit version of cards.dll with your game. This is a bad idea, because firstly it’s probably illegal to do this unless you have permission from Microsoft, and secondly, cards.dll is around 150Kb, which is a bit on the hefty side. Your second option is to access the 16bit dll from your 32bit code using a technique called Flat Thunking.</p>
+
+<p>Flat Thunking is documented (I won’t say fully) in MSDN. It involves writing two additional thunking DLLs; a 32bit DLL which thunks down to 16bit mode, and a 16bit DLL which calls the functions inside the “target” 16bit DLL.</p>
+
+<p>Whilst this is OK in itself, I’ve always thought it was a little messy to have to distribute two additional DLLs. Fortunately there is an undocumented method to perform a Flat Thunk directly from your win32 application.</p>
+
+<p>There is an undocumented function in KERNEL32.DLL called <code class="highlighter-rouge">QT_Thunk</code>. This function is used by a flat-thunk DLL pair to perform a thunk from 32 to 16bits. Using a little assembly language we can use this function directly from our own application without any additional DLLs. I won’t describe here exactly how to perform this trick as it is fully documented in the source code.</p>
+
+<p>Assuming that we can now access the 16bit version of cards.dll, there are a couple of points to mention. The first is that we are dealing with a 16bit executable module. This means that the default size of an integer is 16bits. The consequence of this is that we need to make sure that we only pass 16bit integers to cards.dll. <code class="highlighter-rouge">DWORD</code> values can stay as 32bits. The source-code handles this correctly.</p>
+
+<p>The demonstration program uses the same 32bit function prototypes to access cards.dll regardless of which version of Windows you are using. The flat thunking is hidden behind a set of 32bit wrapper functions, so the test program does not need to know which version of Windows it is running under when it calls the cards.dll functions.</p>
+
+<p>You may want to check out these two links for additional information on this flat thunking trick.</p>
+
+<p><a href="http://www.ddj.com/articles/1996/9614/9614c/9614c.htm">Original article by Matt Pietrek</a></p>
+
+<p><a href="http://codeguru.earthweb.com/system/sysres.shtml">Codeguru article on the same subject</a></p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/cards.zip">cards.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-05-22T00:00:00+00:00">May 22, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="splitter-windows.html" class="pagination--pager" title="Splitter Windows
+">Previous</a>
+    
+    
+      <a href="memory-management-techniques-part-1.html" class="pagination--pager" title="Memory Techniques - Part 1
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/using-cards-dll-api by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

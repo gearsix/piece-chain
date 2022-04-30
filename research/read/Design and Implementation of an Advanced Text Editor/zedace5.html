@@ -1,0 +1,408 @@
+<html>
+<head><script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app201.us.archive.org';v.server_ms=478;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="/_static/js/bundle-playback.js?v=36gO9Ebf" charset="utf-8"></script>
+<script type="text/javascript" src="/_static/js/wombat.js?v=UHAOicsW" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace5.html","20080331140638","https://web.archive.org/","web","/_static/",
+	      "1206972398");
+</script>
+<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=fantwOh2" />
+<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
+<!-- End Wayback Rewrite JS Include -->
+</head>
+<title> Design and Implementation of an Advanced Text Editor: Other Features</title>
+<body background="https://web.archive.org/web/20080331140638im_/http://home.mcom.com/assist/net_sites/bg/paper/blue_paper.gif"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
+<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20080331140638/http%3A//www.canberra.edu.au/~scott/C%253DHacking/C-Hacking11/zedace5.html"
+	    scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><div id="wm-ipp-inside">
+  <div id="wm-toolbar" style="position:relative;display:flex;flex-flow:row nowrap;justify-content:space-between;">
+    <div id="wm-logo" style="/*width:110px;*/padding-top:12px;">
+      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
+    </div>
+    <div class="c" style="display:flex;flex-flow:column nowrap;justify-content:space-between;flex:1;">
+      <form class="u" style="display:flex;flex-direction:row;flex-wrap:nowrap;" target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace5.html" onfocus="this.focus();this.select();" style="flex:1;"/><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20080331140638" /><input type="submit" value="Go" />
+      </form>
+      <div style="display:flex;flex-flow:row nowrap;align-items:flex-end;">
+		<div class="s" id="wm-nav-captures">
+	  	  <a class="t" href="/web/20080331140638*/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace5.html" title="See a list of every capture for this URL">18 captures</a>
+	  <div class="r" title="Timespan for captures of this URL">21 Apr 2001 - 31 Mar 2008</div>
+	  </div>
+	<div class="k" style="flex:1;">
+	  <a href="" id="wm-graph-anchor">
+	    <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+	      <canvas id="wm-sparkline-canvas" width="675" height="27" border="0"></canvas>
+	    </div>
+	  </a>
+	</div>
+      </div>
+    </div>
+    <div class="n">
+      <table>
+	<tbody>
+	  <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+	  <tr class="m">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071221042252/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace5.html" title="21 Dec 2007"><strong>Dec</strong></a></td>
+	    <td class="c" id="displayMonthEl" title="You are here: 14:06:38 Mar 31, 2008">MAR</td>
+	    <td class="f" nowrap="nowrap">Apr</td>
+	  </tr>
+	  <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+	  <tr class="d">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071221042252/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace5.html" title="04:22:52 Dec 21, 2007"><img src="/_static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a></td>
+	    <td class="c" id="displayDayEl" style="width:34px;font-size:22px;white-space:nowrap;" title="You are here: 14:06:38 Mar 31, 2008">31</td>
+	    <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
+	  </tr>
+	  <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+	  <tr class="y">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20060717014030/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace5.html" title="17 Jul 2006"><strong>2006</strong></a></td>
+	    <td class="c" id="displayYearEl" title="You are here: 14:06:38 Mar 31, 2008">2008</td>
+	    <td class="f" nowrap="nowrap">2009</td>
+	  </tr>
+	</tbody>
+      </table>
+    </div>
+    <div class="r" style="display:flex;flex-flow:column nowrap;align-items:flex-end;justify-content:space-between;">
+      <div id="wm-btns" style="text-align:right;height:23px;">
+        	<span class="xxs">
+          <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="#"
+	     title="Share via My Web Archive" >
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php" title="Sign In" id="wm-sign-in">
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
+	</span>
+        	<a class="xxs" href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+	<a id="wm-tb-close" href="#close" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share" class="xxs">
+        <a href="/web/20080331140638/http://web.archive.org/screenshot/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace5.html"
+           id="wm-screenshot"
+           title="screenshot">
+          <span class="wm-icon-screen-shot"></span>
+        </a>
+        <a href="#" id="wm-video" title="video">
+          <span class="iconochive-movies"></span>
+        </a>
+	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20080331140638/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace5.html" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20080331140638/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace5.html" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+      <div style="padding-right:2px;text-align:right;white-space:nowrap;">
+	<a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span class="xxs" style="font-size:80%;">About this capture</span></a>
+      </div>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+                    <div id="wm-capinfo-collected-by">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center">COLLECTED BY</div>
+    <div style="padding:3px;position:relative" id="wm-collected-by-content">
+            <div style="display:inline-block;vertical-align:top;width:50%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexacrawls);"></span>
+		Organization: <a style="color:#33f;" href="https://archive.org/details/alexacrawls" target="_new"><span class="wm-title">Alexa Crawls</span></a>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Starting in 1996, <a href="http://www.alexa.com/">Alexa Internet</a> has been donating their crawl data to the Internet Archive.  Flowing in every day, these data are added to the <a href="http://web.archive.org/">Wayback Machine</a> after an embargo period.
+	</div>
+	      </div>
+      <div style="display:inline-block;vertical-align:top;width:49%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/50_crawl)"></span>
+		<div>Collection: <a style="color:#33f;" href="https://archive.org/details/50_crawl" target="_new"><span class="wm-title">50_crawl</span></a></div>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  this data is currently not publicly accessible.
+	</div>
+	      </div>
+    </div>
+    </div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
+    </div>
+    </div>
+  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20080331140638/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace5.html</div>
+<script type="text/javascript">
+__wm.bt(675,27,25,2,"web","http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace5.html","20080331140638",1996,"/_static/",["/_static/css/banner-styles.css?v=fantwOh2","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1><a name="zedace">Design and Implementation of an Advanced Text Editor</a></h1>
+<b>by <a href="https://web.archive.org/web/20080331140638/http://ccnga.uwaterloo.ca/~csbruce/index.html">Craig Bruce</a> (<a href="https://web.archive.org/web/20080331140638/mailto:csbruce@ccnga.uwaterloo.ca">csbruce@ccnga.uwaterloo.ca</a> )</b>
+<h2>5. OTHER FEATURES </h2>
+ 
+This secion discusses the other features of the editor that have not been 
+described yet.  In general, the operation of this version follows closely 
+from the standalone version, so you can read its documentation for more 
+details.  First, I will give a summary of all of the implemented and planned 
+commands, and then I will discuss the operation of a few selected commands. 
+ 
+<h3>5.1. COMMAND SUMMARY </h3>
+ 
+Here is a command summary.  The "I" column in this list tells whether the 
+feature is currently implemented or not.  A blank means "no", and an 
+asterisk means "yes".  Note that "currently" means "by the time that you 
+read this" (which will be a couple of weeks after I have written this).  The 
+"CODE" column tells the internal ACE-PETSCII code for the key.  A plus 
+symbol following it means that the shift status of the key is checked to 
+distinguish this key.  The "KEY" column tells what keystroke you must make 
+("CT-" means Ctrl, "CO-" means Commodore, "SH-" means Shift, and "AL-" means 
+Alt).  The "ACTION" column tells you what happens. 
+ <pre>
+I CODE  KEY      ACTION 
+- ----  -------  ------- 
+  $e0   CT-@     Exchange cursor position with mark position 
+* $e1   CT-A     Alter case of letter under cursor 
+  $e2   CT-B     Go on to next document buffer 
+  $e2+  SH-CT-B  Go on to previous document buffer 
+  $e3   CT-C     Copy range 
+* $e4   CT-D     Delete range 
+* $e5   CT-E     Exit with save 
+* $e6   CT-F     Find next occurrence of hunt string 
+  $e6+  SH-CT-F  Find previous occurrence of hunt string 
+  $e7   CT-G     Go to given line number 
+  $e7+  SH-CT-G  Go to given _physical_ line number 
+* $e8   CT-H     Set Hunt string 
+* $e9   CT-I     Insert new file into current one 
+  $ea   CT-J     Juggle the lines of paragraphs, keep separate 
+  $eb   CT-K     Kill current line 
+* $ec   CT-L     Load file 
+  $ed   CT-M     Set Mark for range operations 
+* $ee   CT-N     Set Name of current file 
+  $ef   CT-O     Set Options: input/output translation/tab-expansion, etc. 
+  $f0   CT-P     Print current file 
+* $f1   CT-Q     Quit without save 
+* $f2   CT-R     Recall text from the Kill buffer 
+* $f2+  SH-CT-R  Recall text from the Rub buffer 
+* $f3   CT-S     Save file 
+  $f4   CT-T     Tie together multiple lines into one big line (paragraph) 
+  $f5   CT-U     Undo the last change made to the document 
+  $f6   CT-V     Verify file 
+  $f7   CT-W     Write range with new name 
+  $f8   CT-X     Extract the individual lines from a paragraph 
+  $f9   CT-Y     Replace (all the other letters were taken!) 
+* $fa   CT-Z     Goto bottom of screen 
+* $fb   CT-[     Toggle insert mode 
+* $fc   CT-\     Toggle modified flag 
+* $fd   CT-]     Toggle indent mode 
+  $fe   CT-^     Change the current working directory 
+  $ff   CT-_     Compose ISO-8859-1 character 
+ 
+I CODE  KEY          ACTION 
+- ----  ---          ------ 
+* $91   UP           Cursor up 
+* $11   DOWN         Cursor down 
+* $9d   LEFT         Cursor left 
+* $1d   RIGHT        Cursor right 
+* $06   SH-LEFT      Word left 
+* $0b   SH-RIGHT     Word right 
+* $16   CT-UP        Page up 
+* $17   CT-DOWN      Page down 
+* $19   CT-LEFT      Page left 
+* $1a   CT-RIGHT     Page right 
+* $0c   CO-UP        Goto top of document 
+* $0f   CO-DOWN      Goto bottom of document 
+* $10   CO-LEFT      Goto beginning of line 
+* $15   CO-RIGHT     Goto end of line 
+ 
+* $0d   RETURN       Split current line (indent not yet implemented) 
+  $8d   SH-RETURN    Go to next paragraph 
+  $01   CT-RETURN    Go up one paragraph 
+  $09   TAB          Tab 
+  $02   SH-TAB       Backtab 
+  $18   CT-TAB       Insert to next tab stop 
+* $14   DEL          Delete character 
+* $08   CO-DEL       Rubout 
+* $94   INST         Insert one space 
+* $13   HOME         <nothing> 
+* $93   CLR          Cursor home 
+  $04   HELP         Bring up help window 
+  $84   SH-HELP      Display help screen 
+* $0a   LINEFEED     <nothing> 
+* $07   SH-LINEFEED  <nothing> 
+* $1b   ESCAPE       Redisplay screen 
+* $0e   SH-ESCAPE    <nothing> 
+* $03   STOP         <stop some operations> 
+* $83   RUN          <nothing> 
+ 
+  $90   CT-1         Clear document 
+  $05   CT-2         Clear buffer 
+  $1c   CT-3         Enter hexadecimal PETSCII character code 
+  $9f   CT-4         Display directory 
+  $9c   CT-5         Destroy current document buffer 
+  $1e   CT-6         Create new document buffer 
+  $1f   CT-7         Display PETSCII code of current character 
+* $9e   CT-8         Scroll left margin of status line 
+* $12   CT-9         Reverse screen on 
+* $92   CT-0         Screen reverse off 
+ 
+  $81   CO-1         Set display to show single buffer 
+  $95   CO-2         Set display to show two buffers 
+  $96   CO-3         Set display to show three buffers 
+  $97   CO-4         Set display to 40 columns, default rows 
+  $98   CO-5         Set display to take full screen 
+  $99   CO-6         Set display to default number of rows 
+  $9a   CO-7         Set display to maximum number of rows 
+  $9b   CO-8         Set display to 80 columns, default rows 
+ 
+  $85   F1           Function key 1  : user-defined string 
+  $89   SH-F1        Function key 2  : user-defined string 
+  $86   F3           Function key 3  : user-defined string 
+  $8a   SH-F3        Function key 4  : user-defined string 
+  $87   F5           Function key 5  : user-defined string 
+  $8b   SH-F5        Function key 6  : user-defined string 
+  $88   F7           Function key 7  : user-defined string 
+  $8c   SH-F7        Function key 8  : user-defined string 
+  $80   CT-F1        Function key 9  : user-defined string 
+  $82   CT-F3        Function key 10 : user-defined string 
+  $8e   CT-F5        Function key 11 : user-defined string 
+  $8f   CT-F7        Function key 12 : user-defined string 
+ </pre>
+<h3>5.2. TEXT SAVE </h3>
+ 
+This function is, of course, implemented, since the text-modification 
+functions of the editor would be useless without it.  It is really quite 
+simple, because of the data structure of the document.  First, we try to 
+open the file for writing.  If not successful and we get a "file exists" 
+error, then we scratch the old file.  Then, we re-open for writing. 
+ <p>
+To save the file contents, we start at the top line, and fetch each line in 
+turn until we hit the trailer line of the document, at which point we are 
+finished.  After fetching the line, we check if it ends with a hard return, 
+and if so, we append the line buffer with a carriage return character and 
+bump up the line length.  We then call the ACE "write" primitive with the 
+line buffer as the argument to write out the line.  Writing in this size of 
+chunk rather than in single bytes gives ACE the opportunity to carry out 
+this operation as efficiently as it can. 
+ <p>
+We then close the file and we are done.  We display status information to 
+the user during all phases of this operation, and we certainly tell him if 
+anything goes wrong. 
+ 
+<h3>5.3. RANGE DELETION &amp; RECALL </h3>
+ 
+Range delete and recall are implemented, since they are very useful for 
+general editing.  What will normally happen is that the user will set the 
+mark with Ctrl-M (mark) to one end of the range to be deleted, and then move 
+the cursor to the other end of the range and press Ctrl-D (delete).  The 
+text then disappears into the kill buffer and can be recalled any number of 
+times at any point in the document using the Ctrl-R (recall). 
+ <p>
+One difference between this <b>ZED</b> and the operations mentioned here are 
+"character oriented" rather than "line oriented".  So, you can now delete 
+only portions of lines rather than entire lines.  You just have to keep in 
+mind that the cursor is logically located "between" the previous character 
+and the character that the cursor is currently over.  For example, if the 
+cursor was on the "y" in "xyz", then the mark would be set to between the 
+"x" and "y" if you pressed Ctrl-M at that point.  This also means that if 
+you wanted to delete an entire line (that ended with a hard return), then 
+you would move the cursor to the first character of the line and press 
+Ctrl-M and then move the cursor to the first character of the NEXT line and 
+press Ctrl-D.  (The Hard Return itself won't be included in the delete 
+operation if you move the cursor to the end of the line to be deleted--this 
+is one of the reasons for having a displayable trailer line). 
+ <p>
+To implement the delete operation, all of the lines in the operation are 
+unlinked from the main document and are linked into the kill buffer.  If 
+there already was something in the kill buffer, then it is deallocated and 
+the kill buffer is cleared.  A trailer line is permanently allocated to the 
+kill buffer, to make it work consistently with the main document.  Partial 
+lines (potentially, the first and last lines of the range) are a bit of a 
+pain and have to be split into two lines at the point of the mark/cursor, 
+where one of the broken lines stays with the document and the other goes 
+into the kill buffer.  After extracting the range, the lines around the 
+extracted region are sewn back together ("sponge, nurse!") and text is 
+"sloshed" about the stitch point (if necessary).  The number of bytes and 
+lines involved are counted up and are subtracted from the global counts 
+for the main document. 
+ <p>
+Ctrl-C (copy) is very similar to the delete operation, except that the data 
+to be deleted is actually copied to the kill buffer and the document is left 
+unmodified.  Range copy is not currently implemented, since its operation 
+can be emulated with a Ctrl-D followed immediately by a Ctrl-R. 
+ <p>
+To implement the recall operation, the kill buffer is replicated into a 
+temporary document and the current line of the main document is broken into 
+two lines at the recall point (if necessary).  Then, the temporary document 
+is linked into the main document at the recall point and the text is 
+"sloshed" about the two stitch points.  The line and byte counts are 
+adjusted, and we are done. 
+ 
+<h3>5.4. TEXT SEARCHING </h3>
+ 
+Forward text searching is implemented, since it is very useful for both 
+finding things and for moving quickly around in a document.  (Reverse search 
+and Range search and replace are not currently implemented, since they are 
+less useful). 
+ <p>
+The implementation is quite straightforward.  The user will first use Ctrl-H 
+(hunt-string) to set the string to search for.  The user will input this on 
+the top line of the screen, and we don't have to do much work for inputting 
+the string, since ACE already provides a console-input routine complete with 
+left/right cursor movement and a scroll-back buffer (although it is a bit 
+hard to use if the input line is longer than the input window on the 
+screen). 
+ <p>
+After the search string is set, the user will press Ctrl-F (find) to find 
+the next occurrence of the string.  So, we just search for that string, 
+starting at the cursor position to the right of the current position.  A 
+simple algorithm of keeping a pointer to the current scan position in the 
+hunt string and pointers to both the current position in the document and to 
+the position in the document corresponding to the start of the string is 
+used. 
+ <p>
+If the current document character matches the current hunt-string character, 
+then both the document and hunt-string pointers are advanced.  If the hunt 
+string is exhausted by this, then we have found a match and can stop 
+searching.  We move the cursor to the saved document position of the start 
+of the hunt string and exit.  If the characters don't match, then we move 
+the current document pointer back to the postition corresponding to the 
+start of the hunt string, advance it by one, save it, and start searching 
+again.  Our algorithm needs to be able to wrap around soft returns in the 
+main document. 
+ <p>
+<a href="zedace6.html">On to Chapter 6.</a>
+<hr>
+Last Updated: 1995-12-06 Rev A
+</body>
+</html>
+
+<!--
+     FILE ARCHIVED ON 14:06:38 Mar 31, 2008 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 20:33:57 Apr 27, 2022.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 369.657
+  exclusion.robots: 0.17
+  exclusion.robots.policy: 0.164
+  cdx.remote: 0.057
+  esindex: 0.009
+  LoadShardBlock: 315.106 (3)
+  PetaboxLoader3.datanode: 344.255 (4)
+  CDXLines.iter: 15.143 (3)
+  load_resource: 104.306
+  PetaboxLoader3.resolve: 28.849
+-->

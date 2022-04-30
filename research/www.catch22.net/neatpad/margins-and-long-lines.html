@@ -1,0 +1,682 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/margins-and-long-lines by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Margins and Long Lines - Catch22</title>
+<meta name="description" content="This will probably be quite a short tutorial as the subject of margins is really quite simple to implement. This time around we will look at implementing a selection margin (complete with full-line selection), line numbers, line-indicator icons (e.g. like the breakpoint bitmaps in Visual Studio), and lastly the problem of long-line display.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Margins and Long Lines">
+<meta property="og:url" content="margins-and-long-lines.html">
+
+
+  <meta property="og:description" content="This will probably be quite a short tutorial as the subject of margins is really quite simple to implement. This time around we will look at implementing a selection margin (complete with full-line selection), line numbers, line-indicator icons (e.g. like the breakpoint bitmaps in Visual Studio), and lastly the problem of long-line display.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-08-07T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="margins-and-long-lines.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Margins and Long Lines</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad7.zip">neatpad7.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="active">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Margins and Long Lines">
+    <meta itemprop="description" content="This will probably be quite a short tutorial as the subject of margins is really quite simple to implement. This time around we will look at implementing a selection margin (complete with full-line selection), line numbers, line-indicator icons (e.g. like the breakpoint bitmaps in Visual Studio), and lastly the problem of long-line display.">
+    <meta itemprop="datePublished" content="August 07, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Margins and Long Lines
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Margins and Long Lines</h1-->
+<!--h3>Selection margin, line numbers and long-line highlighting</h3-->
+
+<p>This will probably be quite a short tutorial as the subject of margins is really quite simple to implement. This time around we will look at implementing a selection margin (complete with full-line selection), line numbers, line-indicator icons (e.g. like the breakpoint bitmaps in Visual Studio), and lastly the problem of long-line display.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor32.gif" alt="" /></p>
+
+<h2 id="drawing-a-margin">Drawing a margin</h2>
+
+<p>The main screenshot shows Neatpad with a selection-margin, line-numbers, bitmapped bookmarks and long-line highlights. Although it looks quite complicated drawing a margin is really easy, as long as you understand that it is just a rectangular area to the left of the display that is drawn and scrolled differently.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor34.gif" alt="" /></p>
+
+<p>I’ve highlighted the picture above to illustrate that even though we’ve added a vertical margin, lines are still drawn horizontally one-by-one. However the line-drawing process (the <code class="highlighter-rouge">TextView::PaintLine</code> function) has changed to allow for the margins.</p>
+
+<p>First of all the margin is drawn using the new function <code class="highlighter-rouge">TextView::PaintMargin</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">TextView</span><span class="o">::</span><span class="n">PaintMargin</span><span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span><span class="n">margin</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The area taken by the margin is then <em>clipped</em> to prevent anything drawing over it. Next, the text is drawn as normal - but offset to the right of the margin. The clipping is important because it ensures that when we scroll horizontally the lines of text don’t overdraw the margin and instead “disappear” behind the margin. Basically the process looks like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">TextView</span><span class="o">::</span><span class="n">PaintLine</span><span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span> 
+
+    <span class="c1">// work out where to draw the line// handle the margins
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">LeftMarginWidth</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">RECT</span> <span class="n">margin</span><span class="p">;</span> <span class="c1">// work out the margin coordinates
+</span>
+        <span class="c1">// paint the margin
+</span>        <span class="n">PaintMargin</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">nLineNo</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">margin</span><span class="p">);</span>
+
+        <span class="c1">// clip the margin so the text doesn't draw over it
+</span>        <span class="n">ExcludeClipRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">margin</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">margin</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">margin</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">margin</span><span class="p">.</span><span class="n">bottom</span><span class="p">);</span>
+
+        <span class="c1">// offset the text placement
+</span>        <span class="n">rect</span><span class="p">.</span><span class="n">left</span> <span class="o">+=</span> <span class="n">LeftMarginWidth</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// paint the text as normal
+</span>    <span class="n">PaintText</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">nLineNo</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>	
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The key point to understand is that the normal line-text must be offset to the right to take into account the margin. It’s really very simple so just take a look at the sourcecode download to see it in action.</p>
+
+<p>Two more important things to mention: I have also had to modify the scrolling routine so that the margin is <strong>not</strong> scrolled when the main text is scrolled. This was very simple as the clipping rectangle we specify in <code class="highlighter-rouge">ScrollWindowEx</code> is simply adjusted so that the margin does not get included.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRGN</span> <span class="n">TextView</span><span class="o">::</span><span class="n">ScrollRgn</span><span class="p">(</span><span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fReturnUpdateRgn</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="p">...</span>
+
+    <span class="c1">// take margin into account
+</span>    <span class="n">clip</span><span class="p">.</span><span class="n">left</span> <span class="o">+=</span> <span class="n">LeftMarginWidth</span><span class="p">();</span>
+    
+    <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The other modification was the mouse-input (selection) code. The cursor-position must be adjusted so that the margin is again taken into account. I really don’t want to include any code for this as you should be getting the idea by now. Basically, any x-coordinate is shifted to the right by the size of the margin before any input or drawing takes place.</p>
+
+<h2 id="line-bitmaps">Line bitmaps</h2>
+
+<p>Just a quick word about the line-indicator bitmaps you can see. I’ve added a new ImageList member variable to the TextView class which can hold a user-specified collection of bitmaps:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HIMAGELIST</span> <span class="n">m_hImageList</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The image-list can be set using the new TextView <code class="highlighter-rouge">TXM_SETIMAGELIST</code> message (or the <code class="highlighter-rouge">TextView_SetImageList</code> macro).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HIMAGELIST</span> <span class="n">hImageList</span> <span class="o">=</span> <span class="n">ImageList_LoadImage</span><span class="p">(...);</span>
+
+<span class="n">TextView_SetImageList</span><span class="p">(</span><span class="n">hwndTextView</span><span class="p">,</span> <span class="n">hImageList</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Using an image-list is the simplest way to work with images as it manages the bitmap memory, and also provides drawing support as well - so storing/drawing bitmaps is really easy.</p>
+
+<p>The difficult part comes when we draw each line. How do we know what image to place in the margin-area? For a text-editors which use an array or linked-list of lines this is really easy - because additional information can be easily stored for each line entry in the editor. However for our Neatpad design this is not possible because we have to support large-file editing at some point - and having a line-buffer for a 4gb file would not be a good idea.</p>
+
+<p>For this reason I have used a separate array which holds only those lines that have bitmaps associated with them. The array is always <strong>sorted</strong> so that we can use a binary-search to quickly determine if a specific line has any bitmap assocated with it.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">nImageIdx</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">LINEINFO</span><span class="p">;</span><span class="n">LINEINFO</span> <span class="n">m_LineInfo</span><span class="p">[</span><span class="n">MAX_LINE_INFO</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Each time a line is drawn the LINEINFO array is searched using the <code class="highlighter-rouge">TextView::GetLineInfo</code> function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LINEINFO</span><span class="o">*</span> <span class="n">TextView</span><span class="o">::</span><span class="n">GetLineInfo</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">LINEINFO</span> <span class="n">key</span> <span class="o">=</span> <span class="p">{</span> <span class="n">nLineNo</span><span class="p">,</span> <span class="mi">0</span> <span class="p">};</span>
+
+    <span class="c1">// perform the binary search
+</span>    <span class="k">return</span> <span class="p">(</span><span class="n">LINEINFO</span> <span class="o">*</span><span class="p">)</span> <span class="n">bsearch</span><span class="p">(</span>
+                          <span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> 
+                          <span class="n">m_LineInfo</span><span class="p">,</span>
+                          <span class="n">m_nLineInfoCount</span><span class="p">,</span>
+                          <span class="k">sizeof</span><span class="p">(</span><span class="n">LINEINFO</span><span class="p">),</span>
+                          <span class="p">(</span><span class="n">COMPAREPROC</span><span class="p">)</span><span class="n">CompareLineInfo</span>
+                       <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This function returns a pointer to the appropriate <code class="highlighter-rouge">LINEINFO</code> structure if successful, or NULL if there is no stored information for the specified line.</p>
+
+<p>I anticipate that more information could be stored about lines such as a whole-line highlight colour, bookmarks, annotations etc. However for now I have just included support for an image-index. The images for each line can be set using another new TextView message, TXM_SETLINEIMAGE:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TextView_SetLineImage</span><span class="p">(</span><span class="n">hwndTextView</span><span class="p">,</span> <span class="n">nLineNo</span><span class="p">,</span> <span class="n">nImageIdx</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="line-selection-and-mouse-input">Line-selection and mouse input</h2>
+
+<p>Now that we have a margin to the left of the main text display we can use this area to initiate line-based selections.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor35.gif" alt="" /></p>
+
+<p>To allow for this line-based selection method, we need to keep track of more than just the fact that we are making a selection. The previous boolean <code class="highlighter-rouge">m_fSelection</code> (which was just used to indicate if a selection was in progress or not) has been replaced by a new variable:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SELMODE</span> <span class="n">m_nSelectionMode</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">m_nSelectionMode is a SELMODE</code> enumeration with the following values:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">enum</span> <span class="n">SELMODE</span> 
+<span class="p">{</span> 
+   <span class="n">SELMODE_NONE</span><span class="p">,</span> 
+   <span class="n">SELMODE_NORMAL</span><span class="p">,</span> 
+   <span class="n">SELMODE_MARGIN</span> 
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>So at the moment we support two types of selection - “normal” and “margin”. At some point in the future this could be extended to support other types of selection such as <em>column</em> and <em>block</em> selections. Of course the mouse-routines have been modified to understand the new types of selection.</p>
+
+<h2 id="highlighting-long-lines">Highlighting long lines</h2>
+
+<p>One feature which I find particularly useful is the highlighting of long lines. I can still remember the Borland C++ 4.0 IDE for Windows 3.1 which featured a single vertical-line margin to indicate where column-80 was. I actually found this a little tacky but I wanted to create a similar effect.</p>
+
+<p>The reason for highlighting longs lines is provide a way to indicate to the user when a line of text becomes too long. This is most useful for programmers who don’t want their text to “wrap” when it is printed out - so the aim is to keep all lines of text under a certain limit.</p>
+
+<p>There are basically two ways of implementing long-line highlights:</p>
+
+<ul>
+  <li>Use a two-stage approach. The first stage prepares the background using two colours to distinguish “normal” text on the left and “clipped” text on the right. i.e. A fixed-sized area is filled using the normal background colour, up to (say) column-position 80. The background after this is either filled using a different shade, or a vertical line is drawn to indicate the long-line limit.</li>
+</ul>
+
+<p>The text is then drawn over the top of this background in <em>transparent</em> mode - so the background shows through. This is really a “pixel-based” approach because the text drawing is independent of the long-line display.</p>
+
+<ul>
+  <li>The alternative method is to simply change the background-colour of any character that is drawn past column 80. This is what the Scintilla text-editor component does and is alot simpler than the method above - so this is what I’ve implemented inside Neatpad.</li>
+</ul>
+
+<p>In order to support this new long-line display I’ve had to extend the <code class="highlighter-rouge">TextView::ApplyTextAttributes</code> member-function with a new parameter - <code class="highlighter-rouge">&amp;nColumn</code> :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">TextView</span><span class="o">::</span><span class="n">ApplyTextAttributes</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">nOffset</span><span class="p">,</span> <span class="n">ULONG</span> <span class="o">&amp;</span><span class="n">nColumn</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nTextLen</span><span class="p">,</span> <span class="n">ATTR</span> <span class="o">*</span><span class="n">attr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Notice that <code class="highlighter-rouge">nColumn</code> is a C++ <em>reference</em>. It is continually updated by <code class="highlighter-rouge">ApplyTextAttributes</code> to keep track of the current column-position (we need a C++ reference so that the value is preserved through successive calls). Once <code class="highlighter-rouge">nColumn</code> reaches a certain value, <code class="highlighter-rouge">ApplyTextAttributes</code> will use a different default background colour for the text.</p>
+
+<p>A new message (<code class="highlighter-rouge">TXM_SETLONGLINE</code>) has been added to the TextView to allow the long-line limit to be programmatically altered. The <code class="highlighter-rouge">TextView_SetLongLine</code> can be used to set this value:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TextView_SetLongLine</span><span class="p">(</span><span class="n">hwndTextView</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="64bit-support">64bit support</h2>
+
+<p>This probably a little late in the day (it should have happened from day#1) but I’ve started to make the Neatpad and TextView projects 64bit compatible. You will therefore need to use a recent Platform SDK when compiling Neatpad in order to get the new mixed 32bit/64bit definitions. This has also resulted so far in the following change:</p>
+
+<ul>
+  <li>Get/SetWindowLong has changed to Get/SetWindowLongPtr</li>
+</ul>
+
+<p>To test that these changes actually worked I compiled the project using the Microsoft 64bit compiler, targetted for the IA64 architecture. Follow the steps below to duplicate this:</p>
+
+<ul>
+  <li>Export the Neatpad project as a makefile:<code class="highlighter-rouge">Project -&gt; Export Makefile</code></li>
+  <li>Open the Platform SDK 64bit build environment from the start-menu:<code class="highlighter-rouge">Microsoft Platform SDK -&gt; Windows XP 64bit Build Environment</code></li>
+  <li>Change to the Neatpad project directory and open Neatpad.mak\Neatpad07\Neatpad</li>
+  <li>Modify the LINK32_FLAGS so that both the /machine switches reads “IA64” instead of “I386”, and remove any reference to ODBC32.LIB and ODBCCP32.LIB</li>
+  <li>Make sure that the Neatpad project has been “cleaned” then build using the 64bit tools:<code class="highlighter-rouge">nmake Neatpad.mak</code></li>
+</ul>
+
+<p>There are still alot of changes to make (ULONG vs ULONG64 issues) and as I don’t have access to a 64bit machine currently I won’t be able to make any more modifications until I can test properly. However I hope to have Neatpad fully 64bit compatible before the end of the series!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This tutorial was a little off-track as margins and long-line highlights are not really that important for a text-editor’s design. Anyhow I wanted to get it out of the way so I could concentrate on the core functionality.</p>
+
+<p>Coming up in Part 8 will be support for UTF-8 and Unicode!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad7.zip">neatpad7.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-08-07T00:00:00+00:00">August 07, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="scrolling-mouse.html" class="pagination--pager" title="Scrolling with the Mouse
+">Previous</a>
+    
+    
+      <a href="../win32/64bit-scrollbars.html" class="pagination--pager" title="64bit Scrollbars
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/margins-and-long-lines by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

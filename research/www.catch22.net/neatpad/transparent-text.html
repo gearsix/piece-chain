@@ -1,0 +1,609 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/transparent-text by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Transparent Text - Catch22</title>
+<meta name="description" content="It’s been almost three months since I posted the last Neatpad tutorial, and it’s also been over a year since I started this project. During this time I have been steadily working on the migration to the Uniscribe API. Alot of issues have become apparent with the way I am rendering text in Neatpad, so this tutorial will hopefully highlight these issues and offer a solution. There isn’t going to be any code-download this time as I will be incorporating the ideas presented here into subsequent tutorials (which will be about Uniscribe).">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Transparent Text">
+<meta property="og:url" content="transparent-text.html">
+
+
+  <meta property="og:description" content="It’s been almost three months since I posted the last Neatpad tutorial, and it’s also been over a year since I started this project. During this time I have been steadily working on the migration to the Uniscribe API. Alot of issues have become apparent with the way I am rendering text in Neatpad, so this tutorial will hopefully highlight these issues and offer a solution. There isn’t going to be any code-download this time as I will be incorporating the ideas presented here into subsequent tutorials (which will be about Uniscribe).">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-02-25T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="transparent-text.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Transparent Text</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="active">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Transparent Text">
+    <meta itemprop="description" content="It’s been almost three months since I posted the last Neatpad tutorial, and it’s also been over a year since I started this project. During this time I have been steadily working on the migration to the Uniscribe API. Alot of issues have become apparent with the way I am rendering text in Neatpad, so this tutorial will hopefully highlight these issues and offer a solution. There isn’t going to be any code-download this time as I will be incorporating the ideas presented here into subsequent tutorials (which will be about Uniscribe).">
+    <meta itemprop="datePublished" content="February 25, 2006">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Transparent Text
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Transparent Text</h1-->
+<!--h3>Overview of the issues involved in rendering text selections</h3-->
+
+<p>It’s been almost three months since I posted the last Neatpad tutorial, and it’s also been over a <em>year</em> since I started this project. During this time I have been steadily working on the migration to the Uniscribe API. Alot of issues have become apparent with the way I am rendering text in Neatpad, so this tutorial will hopefully highlight these issues and offer a solution. There isn’t going to be any code-download this time as I will be incorporating the ideas presented here into subsequent tutorials (which <em>will</em> be about Uniscribe).</p>
+
+<h2 id="rendering-text">Rendering text</h2>
+
+<p>So before we start looking at Uniscribe I want to take a moment to re-examine the process of text rendering. This is not going to be a very in-depth discussion - rather it will be an overview of text-rendering in general. As the basis for our discussion a single letter ‘F’ in italics will be used, as shown below.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1022.gif" alt="" class="align-center" /></p>
+
+<p>The image shows a black glyph, representing the lower-case italic letter ‘f’, drawn on top of a grey rectangular background. The grey background represents the bounding rectangle of the character. Notice how the character overhangs the rectangle on the left and right edges. These measurements are called the left-bearing and right-bearing of a glyph.</p>
+
+<p>In Windows the total width of a character is also represented as three values, called the ABC width. The A-width represents the width of the left-most overhanging portion of the glyph, whilst the C-width represents the right-most overhanging portion. The B-width measures the <em>extent</em> of the glyph. For characters such as the lower-case ‘F’ above, the A and C-widths are frequently negative values, which allows the characters to be positioned closer together when displayed as part of a string. Of course when a character has a negative A or C-width, it will overlap the space occupied by it’s neighbouring characters. The purpose of this short tutorial is to highlight the issue with rendering glyphs that have negative A and C-widths.</p>
+
+<p>All applications (including Neatpad) render text using one of the Windows text-display APIs - usually <code class="highlighter-rouge">DrawText</code> or <code class="highlighter-rouge">TextOut</code>. Text in Windows can be drawn in one of two ways - with and without a background rectangle. Text drawn with a background fill is referred to as <em>opaque</em> text, whilst text drawn without is called <em>transparent</em> text. This text-drawing feature is controlled with the <code class="highlighter-rouge">SetBkMode</code> API, or the <code class="highlighter-rouge">ETO_OPAQUE</code> option when calling <code class="highlighter-rouge">ExtTextOut</code>.</p>
+
+<p>The problem of overhanging glyphs only presents itself when breaking a string into smaller segments and rendering them individually. The issue occurs because the act of filling the background causes the overhanging portions of a glyph to be overpainted, resulting in the characters being <em>clipped</em> by the neighbouring background rectangles. The image below illustrates the two methods of painting text. The text is made up of six individually rendered ‘F’s, each in a different colour.</p>
+
+<table class="table-figure-center">
+  <tbody>
+    <tr>
+      <td><img src="https://www.catch22.net/assets/img/editor1009.gif" alt="" /></td>
+      <td><img src="https://www.catch22.net/assets/img/editor1008.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td><em>Clipping (opaque text)</em></td>
+      <td><em>No clipping (transparent text)</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The image on the left illustrates the text drawn using an <em>opaque</em> background-fill mode. This is the simplest way to draw text, because the text and background is rendered in one go. This is how Neatpad currently renders text. However problems occur when text is broken up into blocks. Of course the problem is made much worse by the Italic text - for most Roman text this issue never occurs.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SetBkMode</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">OPAQUE</span><span class="p">);</span>
+<span class="n">TextOut</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">nTextLen</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The image on the right illustrates the ideal way to display multi-coloured text. In order to render the text this way the process had to be split in two phases. Firstly, the background was drawn in it’s entirety (from left-to-right). Then the text was drawn ‘transparently’ over the top of the background.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FillRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">backgroundRect</span><span class="p">);</span>
+
+<span class="n">SetBkMode</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">TRANSPARENT</span><span class="p">);</span>
+<span class="n">TextOut</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">nTextLen</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Breaking the text with two phases will introduce flickering, so to remedy this side-effect we must resort to ‘double-buffering’ whenever we draw text. This means that we must draw each line of text into an off-screen buffer before displaying it visually. It is entirely necessary to draw text this way, and this is the direction I am heading in with Neatpad. However the consequence of moving to a double-buffering scheme means we can re-examine how selection-highlights are drawn.</p>
+
+<h2 id="drawing-selection-higlighting">Drawing Selection Higlighting</h2>
+
+<p>Selection-highlighting has always seemed to be a rather elusive subject - at least to me. The problem is, there aren’t really any strict guidelines as to how one should represent text-selections, and it was only after delving into the world of Uniscribe and ‘low level’ glyph rendering, that I fully understood the issues involved.</p>
+
+<p>The images below illustrate the two main methods of representing text-selection. For the purposes of this example I am using the same string of six ‘F’s. This time however two of the six glyphs are shown as ‘selected’ - using the default Windows system colours.</p>
+
+<table class="table-figure-center">
+  <tbody>
+    <tr>
+      <td><img src="https://www.catch22.net/assets/img/editor1025.gif" alt="" /></td>
+      <td><img src="https://www.catch22.net/assets/img/editor1014.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td><em>Background highlighting</em></td>
+      <td><em>Inversion highlighting</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The two basic strategies can be referred to quite simply as <em>Background</em> highlighting, and <em>Inversion</em> highlighting.</p>
+
+<ul>
+  <li>Background highlighting is the simplest way to represent text-selections. In fact all that is required is to modify the text foreground and background colours to represent the selected range of text. Because the text has been drawn transparently on top of the background, you will notice how the glyphs overhang their character-boundaries. Wordpad and Internet Explorer use this method, as do many other text-editors such as Scintilla.</li>
+  <li>Inversion highlighting is more complex to achieve but produces better results (in my opinion). The effect is very similar to the old method of literally <em>inverting</em> the pixels within a rectanglar area. Of course to maintain the standard Windows colour-scheme the selected area is painted normally instead of truely inverting the colours. It also looks as if the selection highlight is on top of the text, rather than behind it. Notepad is a very good example that demonstrates this type of selection-highlighting.</li>
+</ul>
+
+<p>My preference is for the ‘inversion’ method. When text is highlighted I like to think of the selection-rectangle being overlayed on top of the text, rather than being behind it. Personally I don’t like the look and feel of the background-highlighting method. Because of the typical colour-scheme in Windows (white background, white selected text), some selected text seems to disappear when the selection highlight moves over them. If you look closely at the example you can see this effect clearly - because the two selected characters are white, any overlap onto a white background makes it look as if the characters have been truncated. I am moving to the ‘inversion’ method in Neatpad simply because it looks more professional.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1023.gif" alt="" class="align-center" /></p>
+
+<p>The process of ‘inversion highlighting’ is rather more involved than you might expect. The problem we face is the issue of overhanging characters. In the example above the character is shown as selected - however the leading and trailing edges fall into unselected areas and must be painted in separate colours. When displaying this character in a selected state it must somehow be split apart - with the main character body rendered one way, and the left-and-right overhanging segments rendered diffierently. My solution to this problem is to use a three-phase rendering strategy, which is outlined below.</p>
+
+<table class="table-figure-center">
+  <tbody>
+    <tr>
+      <td><img src="https://www.catch22.net/assets/img/editor1012.gif" alt="" /></td>
+      <td><img src="https://www.catch22.net/assets/img/editor1020.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td><em>1a. Background</em></td>
+      <td><em>1b. Mask selected areas</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The first stage is to paint the background using a series of simple flat fills. Every character has it’s regular bounding rectangle painted this way, with both normal and selected areas being rendered. An important detail to understand is the use of <em>clipping</em> at this early stage. Any selected-areas are <em>masked</em> immediately after being painted. What this means is that the <code class="highlighter-rouge">ExcludeClipRect</code> API is used to remove the selected areas from the current device-context’s clipping-region. The reason why this detail is important will soon become clear.</p>
+
+<table class="table-figure-center">
+  <tbody>
+    <tr>
+      <td><img src="https://www.catch22.net/assets/img/editor1021.gif" alt="" /></td>
+      <td><img src="https://www.catch22.net/assets/img/editor1018.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td><em>2a. Normal text</em></td>
+      <td><em>2b. Invert mask</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Once the background has been painted in it’s entirety (for all characters/glyphs), the second stage is to render the text over the top. A transparent drawing-mode is used to paint the text (<code class="highlighter-rouge">SetBkMode</code> with the <code class="highlighter-rouge">TRANSPARENT</code> setting). Because of the clipping-region created during the first pass, any selected (blue) areas are protected as the text is drawn over the them.</p>
+
+<p>After the text been drawn the clipping-region for the device-context is <em>inverted</em> (<code class="highlighter-rouge">ExtSelectClipRgn</code> with <code class="highlighter-rouge">RGN_XOR</code>), which results in the selected areas becoming unmasked. The text we have just rendered will now be protected from subsequent drawing operations.</p>
+
+<table class="table-figure-center">
+  <tbody>
+    <tr>
+      <td><img src="https://www.catch22.net/assets/img/editor1019.gif" alt="" /></td>
+      <td><img src="https://www.catch22.net/assets/img/editor1014.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td><em>3a. Selected text</em></td>
+      <td><em>3b. The result</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The final stage is to <em>redraw</em> the text. The exact same text is drawn, directly over the top of the text we just drew. The difference is that the text is drawn in a single colour this time - using the system-highlight colour (i.e. white). Because of the clipping-region we have created, only the selected (blue) areas are modified this time. When the clipping-region removed the drawing is complete. The result is high quality text-output that would be suitable for a word-processing package.</p>
+
+<p>The use of <em>clipping</em> is the key to making this method work. Although it seems as if the text is overdrawn, in reality it is not because of the careful use of clipping-regions. Importantly, when <strong>ClearType</strong> or another form of anti-aliasing is enabled, using clipping this way is absolutely necessary, because if we really did overdraw the text we would ruin the ClearType effect. Using clipping in the method outlined above protects us from this ‘overdraw’, even though we attempt to draw the text twice.</p>
+
+<p>Of course there are always going to be issues with rendering text this way. Performing three separate passes will introduce a fair amount of flickering and basically dictates that we must use double-buffering when drawing all text. There is also the potential performance-decrease of drawing the text twice. Note however that this last issue can be managed quite easily by only performing this ‘double drawing’ when necessary - most of the time we can avoid drawing text twice (such as when there is no selection in the text, or if all the text is selected).</p>
+
+<p>Although the method I have described here might seem quite strange if you’ve not encountered it before, I can promise you that it is not that unusual. The <code class="highlighter-rouge">ScriptString</code> API (and therefore apps like Notepad) use this exact same method, and you can be sure that any text-editing package that uses the ‘inversion method’ will use something very similar also. The point is, there really isn’t any alternative to the method I have chosen. If your goal is high-quality text display then concessions must be made.</p>
+
+<h2 id="coming-up-in-part-11">Coming up in Part 11!</h2>
+
+<p>It should be noted that I have taken an extreme example here. Most English text in a Roman typeface will not require complex rendering such as this - however because we must support all forms of text (especially the more exotic Unicode scripts) we must do things properly from this point on. In fact the inversion-method is entirely necessary for rendering with Uniscribe as we will find out shortly.</p>
+
+<p>This tutorial is really just a preview of things to come. The technique of inversion-highlighting will be incorporated into Neatpad’s text-display engine as we migrate to the Uniscribe API.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2006-02-25T00:00:00+00:00">February 25, 2006</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="unicode-text-processing.html" class="pagination--pager" title="Unicode Text Processing
+">Previous</a>
+    
+    
+      <a href="introduction-uniscribe.html" class="pagination--pager" title="Introduction to Uniscribe
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/transparent-text by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

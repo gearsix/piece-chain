@@ -1,0 +1,386 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/2005-03-28-remote-debugging-using-vmware/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Remote Debugging using VMWare - Catch22</title>
+<meta name="description" content="Introduction">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Remote Debugging using VMWare">
+<meta property="og:url" content="index.html">
+
+
+  <meta property="og:description" content="Introduction">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-03-28T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="index.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Remote Debugging using VMWare</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Remote Debugging using VMWare">
+    <meta itemprop="description" content="Introduction">
+    <meta itemprop="datePublished" content="March 28, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Remote Debugging using VMWare
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Remote Debugging using VMWare</h1-->
+<!--h3>How to debug a device-driver using WinDbg and VMWare</h3-->
+
+<h2 id="introduction">Introduction</h2>
+
+<p>There are two ways to debug a device-driver in Windows. The first is to install the driver on your development machine and run a local kernel-mode debugger such as <strong>SoftIce</strong>. Although SoftIce is a very powerful tool, debugging a driver on your development machine is not a good idea because you will be guaranteed to destroy all your work if the driver crashes the system. You really need to install your driver on a separate machine and use remote kernel-debugging with a null-modem serial cable to protect your development box.</p>
+
+<p>However if you are like me and either can’t afford a separate machine, or simply don’t have the space to keep one then keep reading because there is a nice solution for you. We will be using virtual-machine technology (i.e. <strong>VMWare</strong> or <strong>VirtualPC</strong> ), and using named pipes to emulate the serial-port connections.</p>
+
+<h2 id="installing-windbg">Installing WinDbg</h2>
+
+<p>The preferred debugging method by most developers is to use <strong>Microsoft WinDbg</strong> - firstly because it is free - but more importantly because it is an incredibly powerful kernel-mode debugger which can be used to remotely debug a target machine via a null-modem serial cable. Follow the instructions below to install and configure WinDbg for remote debugging:</p>
+
+<ol>
+  <li>
+    <p>Install WinDbg from the following location:</p>
+
+    <p>http://www.microsoft.com/whdc/devtools/debugging/default.mspx</p>
+  </li>
+  <li>
+    <p>Open the <strong>Symbol Search Path</strong> dialog from the file menu:</p>
+
+    <p><code class="highlighter-rouge">File -&gt; Symbol File Path...</code> (Ctrl+S)</p>
+  </li>
+  <li>
+    <p>Configure WinDbg to use Microsoft’s online <strong>Symbol Server</strong> and cache debug symbols locally:</p>
+
+    <p><code class="highlighter-rouge">srv*c:\windows\symbols*http://msdl.microsoft.com/download/symbols</code></p>
+  </li>
+  <li>
+    <p>Create a shortcut on your desktop to WinDbg, and specify the following command line:</p>
+
+    <p><code class="highlighter-rouge">windbg -b -k com:pipe,port=\\.\pipe\com_1,resets=0</code></p>
+  </li>
+</ol>
+
+<p>Once you have configured WinDbg, use the shortcut you created in step#4 to attach to a “remote” machine which has debugging enabled. In order to debug part of your driver, you will usually embed an “int 3” to make the debugger break. And if you installed the debug version of your driver, WinDbg will automatically find the corresponding source-file for that driver and step through it line-by-line.</p>
+
+<h2 id="configure-vmware-to-be-the-remote-host">Configure VMWare to be the remote host</h2>
+
+<p><strong>VMWare</strong> is an amazing product which allows you to run a complete OS inside a single window on your PC. The product is far cheaper than buying a separate machine and is infinitely more flexible, because you can host multiple OS images (saved as files on your hard-disk). For example, you could have every version of Windows available to you for testing, all on one physical PC!</p>
+
+<p>Once you have VMWare installed (note: <strong>VirtualPC</strong> from Microsoft will also work, but it isn’t quite as good), follow the steps below to enable the virtual machine to act as a kernel-debug <em>target</em> for WinDbg. The idea is that instead of using a null-modem cable between physical machines, we can set up a named pipe and attach it to the virtual machine’s COM port. WinDbg will then attach to the named pipe, and remote-debug the hosted OS inside VMWare.</p>
+
+<p>The sequence of steps below was originally found at <a href="http://silverstr.ufies.org/lotr0/index.html">http://silverstr.ufies.org/lotr0</a> so I have reproduced them here.</p>
+
+<p><img src="http://www.catch22.net/assets/img/vm01sm.gif" alt="alt &gt;" /></p>
+
+<ol>
+  <li>Open the <strong>Configuration Editor</strong> from the <strong>Settings</strong> menu</li>
+  <li>Click the <strong>Add</strong> button to open the <strong>Add Hardware Wizard</strong>.</li>
+  <li>Select <strong>Serial Port</strong> and click the <strong>Next</strong> button.</li>
+  <li>Select <strong>Use Named Pipe</strong> , and change the name to:
+<code class="highlighter-rouge">\\.\pipe\com_1</code></li>
+  <li>Select <strong>This end is the server</strong>.</li>
+  <li>Select <strong>The other end is an application</strong>.</li>
+  <li>Click on <strong>Advanced</strong> , and select the “ <strong>Yield on CPU poll</strong>” option.</li>
+  <li>Click <strong>Finish</strong> and then <strong>OK</strong> to save your options. When you power up your VM image, the <strong>Devices-&gt;Serial0</strong> menu will be available.</li>
+  <li>
+    <p>When the virtual machine boots up, edit the <code class="highlighter-rouge">boot.ini</code> file inside the VM OS’s root directory. Add a new OS line to tell the “virtual” Windows OS (when it boots) to enable it’s kernel debugger. Two options need to be added to enable this feature:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/debugport=com1 /baudrate=115200
+</code></pre></div>    </div>
+
+    <p>In practise you simply copy one of your OS configurations in <code class="highlighter-rouge">boot.ini</code> onto a new line, and add the additional two options onto the end:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[boot loader]
+timeout=30
+default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS
+
+[operating systems]
+multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="Microsoft Windows XP Professional" /fastdetect
+multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="Microsoft Windows XP Professional - DEBUG" /fastdetect /debugport=com1 /baudrate=115200
+</code></pre></div>    </div>
+
+    <p>Note that all the options should be on one line, not wrapped-around like they are above. Save boot.ini (it will probably be read-only so disable that first) and reboot.</p>
+  </li>
+  <li>At this point take a <strong>SnapShot</strong> of your VM Image so that you can roll back to this state at any time.</li>
+</ol>
+
+<p>Using VMWare’s <strong>SnapShot</strong> feature is incredibly useful. Whenever your driver causes a blue-screen, you can simply <strong>Restore</strong> the VM Image and have another go! This saves an amazing amount of time - the repetitive task of rebooting, installing drivers and setting up the environment instantly disappears. If you get into this habit device driver development will be far less tiresome.</p>
+
+<h2 id="debugging-using-windbg">Debugging using WinDbg</h2>
+
+<p>To debug your driver simply reboot the VMWare OS. You will be presented with the OS loader menu which was modified by editing the boot.ini file. Select the <strong>DEBUG</strong> configuration and hit return!</p>
+
+<p><img src="http://www.catch22.net/assets/img/kernel04.gif" alt="" class="align-center" /></p>
+
+<p>Once the OS has started booting you can simply double-click your WinDbg shortcut and WinDbg will automatically attach itself to the VMWare session (using the named pipe “com_1”) and enter the kernel-debug mode. Note that this isn’t the same as running the debug version of Windows - we have simply enabled the guest OS’s kernel debugger that is present in all Windows NT OSs. Once you have “broken in” to the debuggee, the entire virtual machine will be stopped - not even the mouse will be active inside VMWare.</p>
+
+<p>At this point you can just hit F5 in WinDbg to let the hosted OS continue booting.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I strongly advise anyone doing software development, and especially those doing driver work, to invest in either VMWare or VirtualPC. It’s a one-off payment and you won’t regret spending the money. The flexibility and ease of use it gives you for remote debugging just cannot be emphasised enough. Although a stand-alone dedicated test machine is better, the VM solution can solve many of your debugging scenarios.</p>
+
+<p>One important thing to mention is the use of debug symbols. At the top of this tutorial we configured WinDbg to use Microsoft’s <strong>Debug Symbol Server</strong>. WinDbg will automatically connect to this server and download the appropriate debug symbols for your <em>target</em> operating system - so you won’t have to manually install symbols.</p>
+
+<p>Note that we do <em>not</em> require the debug version of Windows. There are two versions of any Windows product - Debug and Retail (or Normal). The debug build contains a special version of the kernel which can be used to aid debugging. This modified kernel contains extra code and sanity checks to help you debug the kernel and your drivers. Not only is it quite a bit slower than the normal OS, but the modified kernel behaviour can be unhelpful at times. All we require are the debug <em>symbols</em> for the <em>Release</em> version of Windows - which is where the symbol server comes in useful.</p>
+
+<p>The last thing to mention is the use of SMP machines (dual/multi-processor machines). All good programmers understand how important it is to develop (and test) on a multi-processor machine. This is especially important with device-driver writing. The problem with VMWare is that it only uses one of your CPUs even if you have two installed** - so at some point you will have to bite the bullet and buy a dual-processor machine. But it will be worth it just for the extra horse power!</p>
+
+<p>**Update: The latest versions of VMWare now do support SMP machines, but there is still no substitute for a real hardware when you’re testing driver-code.</p>
+
+<p>Well hopefully you have found this tutorial useful, if you have any feedback I’d love to hear it..</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-03-28T00:00:00+00:00">March 28, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../visual-c-tips-and-tricks.html" class="pagination--pager" title="Visual C++ Tips &amp; Tricks
+">Previous</a>
+    
+    
+      <a href="../../neatpad/enhanced-drawing-painting.html" class="pagination--pager" title="Enhanced Drawing &amp; Painting
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/2005-03-28-remote-debugging-using-vmware/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

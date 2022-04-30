@@ -1,0 +1,585 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/self-deleting-executables by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Self-deleting Executables - Catch22</title>
+<meta name="description" content="This is a subject that tends to come up every so often in the newsgroups, so I thought I’d write an article about the techniques I’ve collected to enable an executable to delete itself from disk (whilst running, that is). There is very little information on the web, and what information exists is also hard to find.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Self-deleting Executables">
+<meta property="og:url" content="self-deleting-executables.html">
+
+
+  <meta property="og:description" content="This is a subject that tends to come up every so often in the newsgroups, so I thought I’d write an article about the techniques I’ve collected to enable an executable to delete itself from disk (whilst running, that is). There is very little information on the web, and what information exists is also hard to find.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-10-01T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="self-deleting-executables.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Self-deleting Executables</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/selfdel.zip">selfdel.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Self-deleting Executables">
+    <meta itemprop="description" content="This is a subject that tends to come up every so often in the newsgroups, so I thought I’d write an article about the techniques I’ve collected to enable an executable to delete itself from disk (whilst running, that is). There is very little information on the web, and what information exists is also hard to find.">
+    <meta itemprop="datePublished" content="October 01, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Self-deleting Executables
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Self-deleting Executables</h1-->
+<!--h3>Techniques which allow an executable file to delete itself whilst running</h3-->
+
+<p>This is a subject that tends to come up every so often in the newsgroups, so I thought I’d write an article about the techniques I’ve collected to enable an executable to delete itself from disk (whilst running, that is). There is very little information on the web, and what information exists is also hard to find.</p>
+
+<p>Why would you want a program to delete itself? The only good reason I know of is an un-install program that needs to remove an application, as well as itself in order to completely remove the application from disk. I’m sure there are other good reasons for self-deleting executables, but un-installation is probably the most common.</p>
+
+<p>I know many different methods, each of which I will describe shortly. I must take this opportunity to mention that only one of these techniques has been developed by myself. Apart from the last method, I am presenting the same material described by Jeffrey Richter in his January 1996 MSJ column, titled “Win32 Q&amp;A”. Click <a href="http://www.microsoft.com/msj/defaulttop.asp?page=/msj/archive/SF9C.htm">here</a> to read the original article. The rest of the techniques were originally developed by Gary Nebbett - or heavily influenced by his work. So, I hope no-one thinks I am ripping off other people’s ideas because <em>all</em> these techniques have existed for years before I encountered them.</p>
+
+<p>There used to be two methods for a program to delete itself - actually doing it from the same program, and forcing a separate program to do it on your behalf. When Windows XP came out the “self-deleting” executable became a part of history - it is no longer possible for a Windows program (which runs on any version of Windows) to delete itself. However there are lots of techniques which can achieve the same effect - the ones I know about are listed below.</p>
+
+<h2 id="why-the-obvious-doesnt-work">Why the obvious doesn’t work</h2>
+
+<p>If you try to run the following code, nothing will happen.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCHAR</span> <span class="n">szFilePath</span><span class="p">[</span><span class="n">_MAX_PATH</span><span class="p">];</span>
+
+<span class="c1">// Get current executable path
+</span><span class="n">GetModuleFileName</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">szFilePath</span><span class="p">,</span> <span class="n">_MAX_PATH</span><span class="p">);</span>
+
+<span class="c1">// Delete specified file
+</span><span class="n">DeleteFile</span><span class="p">(</span><span class="n">szFilePath</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The code above retrieves the full path to the current executable, and then tries to delete the file whilst running. This code will fail - because all 32bit versions of Windows (95, 98, ME, NT, 2000, XP etc) use a mechanism called memory-mapped files to load an executable image into memory.</p>
+
+<p>When the Windows loader runs an executable, it opens the executable’s disk file and maps that region of disk into memory, effectively loading the executable into memory. This disk file is kept open during the lifetime of the process, and is only closed when the process terminates. Because of this lock on the file, it is normally impossible to delete an executable file whilst it is running. Just run notepad.exe, then try to delete the notepad executable - it won’t work.</p>
+
+<h2 id="the-movefileex-method">The MoveFileEx method</h2>
+
+<p>I’m going to mention this technique even though it doesn’t really solve our problem, because it is quite useful to know and can be handy in other situations.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MoveFileEx</span><span class="p">(</span><span class="n">szExistingFile</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">MOVEFILE_DELAY_UNTIL_REBOOT</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">MoveFileEx</code> API moves a file to a new location. When you pass NULL as the second parameter, this causes the file to be moved “nowhere”, effectively deleting the file. Now, ordinarily this would fail if you tried this with the path to the current executable. However, if we specify <code class="highlighter-rouge">MOVEFILE_DELAY_UNTIL_REBOOT</code> in the <code class="highlighter-rouge">dwFlags</code> parameter, this tells Windows not to move (or delete) the file until the system is shutdown or rebooted.</p>
+
+<p>There are a few problems with this technique. Firstly, you cannot remove the directory that the executable resides in. Second, the file is not deleted immediately - if your system doesn’t get rebooted very often, then the file will stay around. But the biggest problem is that <code class="highlighter-rouge">MoveFileEx</code> is not implemented on Windows 95/98/ME. Today this is not really a problem and the <code class="highlighter-rouge">MoveFileEx</code> is the neatest, safest way for a program to delete itself.</p>
+
+<h2 id="the-wininitini-method">The WININIT.INI method</h2>
+
+<p>Under Windows 95/98/ME, an application called <code class="highlighter-rouge">WININIT.EXE</code> runs each time the system is started. This application looks for a file called <code class="highlighter-rouge">WININIT.INI</code>. If this file exists, <code class="highlighter-rouge">WININIT.EXE</code> looks for a section called <code class="highlighter-rouge">[Rename]</code>. Each entry in the <code class="highlighter-rouge">[Rename]</code> section specifies a file rename operation which will occur (once) when time the system starts. This method is obviously very similar to the <code class="highlighter-rouge">MoveFileEx</code> method described above.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">Rename</span><span class="p">]</span>
+<span class="n">NUL</span><span class="o">=</span><span class="n">c</span><span class="o">:</span><span class="err">\</span><span class="n">dir</span><span class="err">\</span><span class="n">myapp</span><span class="p">.</span><span class="n">exe</span>
+<span class="n">c</span><span class="o">:</span><span class="err">\</span><span class="n">dir</span><span class="err">\</span><span class="k">new</span><span class="p">.</span><span class="n">exe</span><span class="o">=</span><span class="n">c</span><span class="o">:</span><span class="err">\</span><span class="n">dir</span><span class="err">\</span><span class="n">old</span><span class="p">.</span><span class="n">exe</span>
+</code></pre></div></div>
+
+<p>The filename to the left of the equal sign specifies the new name of the filename on the right. When <code class="highlighter-rouge">NUL</code> is used as the new filename, the file is deleted. This means that an application can write an entry into <code class="highlighter-rouge">WININIT.INI</code>, specifying <code class="highlighter-rouge">NUL</code> and the applications own full path.</p>
+
+<p>You must be careful when writing an entry to the <code class="highlighter-rouge">[Rename]</code> section. You cannot use <code class="highlighter-rouge">WritePrivateProfileString</code> API call, because this function prevents any duplicate entries from occuring under the same section. This restriction would prevent there from being more than one “<code class="highlighter-rouge">NUL=</code>” entry. Therefore you must manually write any entry if you want to use this technique.</p>
+
+<h2 id="the-self-deleting-batch-file-method">The Self-Deleting Batch File method</h2>
+
+<p>This is quite a well known method, and was documented in MSDN some time ago. This technique works on both Windows 95 and Windows NT. It works because MS-DOS batch files are able to delete themselves. To test this technique, create a small batch file containing the single command:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">del</span> <span class="o">%</span><span class="mf">0.</span><span class="n">bat</span>
+</code></pre></div></div>
+
+<p>The batch file, when run, deletes itself and issues an error “The batch file cannot be found”. This error is just a simple message, so it can be safely ignored. By itself this isn’t too useful, but when modified to delete our executable it solves our problem, albeit in a rather forceful manner. Our executable will create a batch file (called <code class="highlighter-rouge">C:\DelUs.bat</code> ) with the following content:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">:</span><span class="n">Repeat</span>
+<span class="n">del</span> <span class="s">"C:\MYDIR\MYPROG.EXE"</span>
+<span class="k">if</span> <span class="n">exist</span> <span class="s">"MYPROG.EXE"</span> <span class="k">goto</span> <span class="n">Repeat</span>
+<span class="n">rmdir</span> <span class="s">"C:\MYDIR"</span>
+<span class="n">del</span> <span class="s">"\DelUS.bat"</span>
+</code></pre></div></div>
+
+<p>This batch file repeatedly attempts to delete the specified file, and will run continuously consuming CPU until it succeeds. When the execuable has been deleted, the batch file then deletes itself.</p>
+
+<p>The executable needs to spawn off the batch file using <code class="highlighter-rouge">CreateProcess</code>, and then should exit immediately. It would be a good idea to give the batch file’s thread of execution a low priority so that it doesn’t get much execution time until the original executable has terminated.</p>
+
+<p>The sourcecode download at the top of this article contains the full code to this technique.</p>
+
+<h2 id="the-comspec-method">The COMSPEC method</h2>
+
+<p>This is a method kindly shared by Tony Varnas, who recently emailed me this snippet:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">SelfDelete</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">TCHAR</span> <span class="n">szFile</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">],</span> <span class="n">szCmd</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+
+  <span class="k">if</span><span class="p">((</span><span class="n">GetModuleFileName</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">szFile</span><span class="p">,</span><span class="n">MAX_PATH</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+     <span class="p">(</span><span class="n">GetShortPathName</span><span class="p">(</span><span class="n">szFile</span><span class="p">,</span><span class="n">szFile</span><span class="p">,</span><span class="n">MAX_PATH</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">))</span>
+  <span class="p">{</span>
+    <span class="n">lstrcpy</span><span class="p">(</span><span class="n">szCmd</span><span class="p">,</span><span class="s">"/c del "</span><span class="p">);</span>
+    <span class="n">lstrcat</span><span class="p">(</span><span class="n">szCmd</span><span class="p">,</span><span class="n">szFile</span><span class="p">);</span>
+    <span class="n">lstrcat</span><span class="p">(</span><span class="n">szCmd</span><span class="p">,</span><span class="s">" &gt;&gt; NUL"</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">((</span><span class="n">GetEnvironmentVariable</span><span class="p">(</span><span class="s">"ComSpec"</span><span class="p">,</span><span class="n">szFile</span><span class="p">,</span><span class="n">MAX_PATH</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+       <span class="p">((</span><span class="n">INT</span><span class="p">)</span><span class="n">ShellExecute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">szFile</span><span class="p">,</span><span class="n">szCmd</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">SW_HIDE</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">32</span><span class="p">))</span>
+       <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This method is very similar to the batch-file method (above) but is alot neater in its implementation. It works under all 32bit versions of Windows (95,98,ME,NT,2000,XP), as long as the <code class="highlighter-rouge">COMSPEC</code> environment variable is defined. This is always defined (by default) to be the full path to the operating system’s command interpreter. For Windows 95, this is “command.exe”. For Windows NT, this is “cmd.exe”.</p>
+
+<p>The function will only work if the executable has exited, so it is important to call this function and then exit immediately. It works by spawning a copy of the system’s command interpreter, and asking it to perform the following command:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">del</span> <span class="n">exepath</span> <span class="o">&gt;&gt;</span> <span class="n">NUL</span>
+</code></pre></div></div>
+
+<p>This deletes the current executable, and pipes the output to NUL (no output). The shell process is created with a hidden window as well, so the whole process is invisible.</p>
+
+<h2 id="the-delete_on_close-method">The DELETE_ON_CLOSE method</h2>
+
+<p>The <code class="highlighter-rouge">CreateFile</code> API call accepts several flags which affect how a file is created or opened. One of these flags, <code class="highlighter-rouge">FILE_FLAG_DELETE_ON_CLOSE</code>, specifies that the file will be deleted when the last handle to it is closed. The basis to this technique will be to run an executable with this flag set, so that when it exits, it is deleted automatically.</p>
+
+<p>The first step is to create an empty file with the <code class="highlighter-rouge">DELETE_ON_CLOSE</code> flag specified. The exact binary content of the current executable file is then copied into this new file, in effect duplicating the executable on disk. A new process is then created (using the new executable file). This has the effect that the duplicate file’s handle count is incremented. Also, when the new process was created, the full path of the current process was passed through the command-line argument.</p>
+
+<p>Next, the current executable (which wants to delete itself) closes the file handle used to create the new process, and then exits. Now, the duplicate’s file-handle count is decremented, but because <code class="highlighter-rouge">CreateProcess</code> incremented its handle count when it started, the file is not deleted.</p>
+
+<p>At this point, the duplicate executable has started running. The PID specified on the command-line is used to open a handle to the original process. The duplicate waits for the original process to terminate, using <code class="highlighter-rouge">WaitForSingleObject</code>. When this call returns, the duplicate can call DeleteFile on the filename also specified through its command-line argument. The original executable (the one that wanted to delete itself) has been successfully deleted. This just leaves the duplicate copy, which exits normally. The duplicate’s file-handle count drops to zero, the <code class="highlighter-rouge">DELETE_ON_CLOSE</code> flag comes into effect, and the duplicate file is deleted also.</p>
+
+<p>It sounds a bit complicated, but it’s not too difficult. Here’s the steps one more time:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Current process]
+1. Create a new file with FILE_FLAG_DELETE_ON_CLOSE.
+2. Copy the current executable's content into the new file.
+3. Create a new process with the duplicate executable:
+4. Pass the current executable's full path and PID in the call to CreateFile.
+5. Sleep for a short time to give the new process time to start.
+6. Close the new file.
+7. Exit current process.
+
+[Duplicate process]
+8. Wait for the process specified on command-line to die.
+9. Delete file specified on command-line.
+10. Exit duplicate process.
+</code></pre></div></div>
+
+<p>There are just a couple of technicalities to mention. First, when the “new” process is spawned, the “old” process must sleep for a short period, enough to let the Windows loader open the file and create the process (thus incrementing it’s file count).</p>
+
+<p>Second, the new process must wait until the old process terminates, which releases its file count.</p>
+
+<p>Third, when the duplicate executable is created, it must also have the <code class="highlighter-rouge">FILE_SHARE_DELETE</code> flag specified, otherwise <code class="highlighter-rouge">CreateProcess</code> will fail, because it won’t be able to open the file whilst we have it open with the <code class="highlighter-rouge">DELETE_ON_CLOSE</code> flag set.</p>
+
+<p>Obviously this method will require careful coding, because the program must be written in such a way so that it can perform these dual tasks. The “new” executable must know that it’s job is to delete the file specified on the command line, for instance.</p>
+
+<p>It’s a little messy, but it does work very well. In fact, the uninstall program that I wrote, which is included with the software you can download from this site, uses this very method. I’ve included an example program which demonstrates this technique.</p>
+
+<p>An alternative method is to write a very small stand-alone executable, which it’s sole task is to delete the file-name specified on it’s command-line. This executable could then be imbedded as a “payload” to the executable which wants to delete itself. This payload would be created and executed in the same way as described above.</p>
+
+<h2 id="the-ultimate-self-deleting-executable">The Ultimate Self-Deleting Executable!</h2>
+
+<p>This inline assembly snippet is short and simple. I can’t claim credit for this code - I found it posted on usenet some time ago. The author’s name is Gary Nebbett, author of “Windows NT Native API Reference”. Actually this technique was first published in Windows Developer Journal around 1996.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="n">HMODULE</span> <span class="n">module</span><span class="p">;</span>
+
+    <span class="n">module</span> <span class="o">=</span> <span class="n">GetModuleHandle</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">GetModuleFileName</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">MAX_PATH</span><span class="p">);</span>
+    <span class="n">CloseHandle</span><span class="p">((</span><span class="n">HANDLE</span><span class="p">)</span><span class="mi">4</span><span class="p">);</span>
+
+    <span class="kr">__asm</span> 
+    <span class="p">{</span>
+      <span class="n">lea</span> <span class="n">eax</span><span class="p">,</span> <span class="n">buf</span>
+      <span class="n">push</span> <span class="mi">0</span>
+      <span class="n">push</span> <span class="mi">0</span>
+      <span class="n">push</span> <span class="n">eax</span>
+      <span class="n">push</span> <span class="n">ExitProcess</span>
+      <span class="n">push</span> <span class="n">module</span>
+      <span class="n">push</span> <span class="n">DeleteFile</span>
+      <span class="n">push</span> <span class="n">UnmapViewOfFile</span>
+      <span class="n">ret</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This snippet ONLY works under Windows NT and 2000. As soon as you compile and run the above program, it just disappears from disk! It works because under NT and 2000 the OS keeps a usermode HANDLE reference to the memory-mapped file which backs the executable image on disk. This HANDLE always has a value of “4” under these OSs.</p>
+
+<p>Unfortunately this gem only works under NT/2000, not XP or .NET Server. This is because these OSs no longer maintain a usermode HANDLE to the executable’s memory-mapped file - this section object is only accessible in kernel using a pointer reference. So although this technique is incredibly slick (it is the only true self-deleting method) it is no longer as-is.</p>
+
+<h2 id="now-for-windows-9x">Now for Windows 9x!</h2>
+
+<p>Thanks must go to Tony Varnas again for some great detective work. He managed to unearth the following assembler snippet which works exactly like the snippet above, but this time for Windows 95,98,ME (tested on all three).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+    <span class="n">HMODULE</span> <span class="n">module</span><span class="p">;</span>
+
+    <span class="n">module</span> <span class="o">=</span> <span class="n">GetModuleHandle</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">GetModuleFileName</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">MAX_PATH</span><span class="p">);</span>
+
+    <span class="kr">__asm</span> 
+    <span class="p">{</span>
+      <span class="n">lea</span> <span class="n">eax</span><span class="p">,</span> <span class="n">buf</span>
+      <span class="n">push</span> <span class="mi">0</span>
+      <span class="n">push</span> <span class="mi">0</span>
+      <span class="n">push</span> <span class="n">eax</span>
+      <span class="n">push</span> <span class="n">ExitProcess</span>
+      <span class="n">push</span> <span class="n">module</span>
+      <span class="n">push</span> <span class="n">DeleteFile</span>
+      <span class="n">push</span> <span class="n">FreeLibrary</span>
+      <span class="n">ret</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="solution-for-xp">Solution for XP+</h2>
+
+<p>After the original self-deleting technique Gary Nebbett posted a solution on Jan 19 2002 which works for XP. The following code should be packaged as a DLL which is callable from RunDLL32. The idea is that an external program (RunDLL32) is used which first waits for the original executable to finish. The DLL which is loaded into RunDLL then performs the original self-deleting trick. This is possible because the kernel maintains references to DLLs differently to the main executable.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt; 
+</span>
+<span class="cp">#pragma comment(linker, "-export:CleanupA=_CleanupA@16­")
+</span>
+<span class="k">extern</span> <span class="s">"C"</span> <span class="kt">void</span> <span class="n">CALLBACK</span> <span class="n">CleanupA</span><span class="p">(</span><span class="n">HWND</span><span class="p">,</span> <span class="n">HINSTANCE</span><span class="p">,</span> <span class="n">PSTR</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> 
+<span class="p">{</span> 
+    <span class="k">static</span> <span class="n">MEMORY_BASIC_INFORMATION</span> <span class="n">mbi</span><span class="p">;</span> 
+    <span class="n">VirtualQuery</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mbi</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mbi</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">mbi</span><span class="p">);</span>
+ 
+    <span class="n">PVOID</span> <span class="n">module</span> <span class="o">=</span> <span class="n">mbi</span><span class="p">.</span><span class="n">AllocationBase</span><span class="p">;</span>
+    <span class="n">CHAR</span> <span class="n">buf</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span> 
+
+    <span class="n">GetModuleFileName</span><span class="p">(</span><span class="n">HMODULE</span><span class="p">(</span><span class="n">module</span><span class="p">),</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">buf</span><span class="p">);</span>
+
+     <span class="kr">__asm</span> 
+    <span class="p">{</span> 
+        <span class="n">lea</span> <span class="n">eax</span><span class="p">,</span> <span class="n">buf</span> 
+        <span class="n">push</span> <span class="mi">0</span> 
+        <span class="n">push</span> <span class="mi">0</span> 
+        <span class="n">push</span> <span class="n">eax</span> 
+        <span class="n">push</span> <span class="n">ExitProcess</span> 
+        <span class="n">push</span> <span class="n">module</span> 
+        <span class="n">push</span> <span class="n">DeleteFile</span> 
+        <span class="n">push</span> <span class="n">FreeLibrary</span> 
+        <span class="n">ret</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The idea that an external program could be used to self-delete it’s parent is what influenced me to develop the following technique which works for all versions of Windows, but does not require a separate DLL which is dropped to disk.</p>
+
+<h2 id="the-definitive-self-deleting-executable">The Definitive Self Deleting Executable</h2>
+
+<p>I am pleased to present what I believe is the definitive self-deleting executable, for all versions of Windows.</p>
+
+<p><strong>Update:</strong> Ranju. V. has taken this method even further. See his article for more details:<a href="http://blogorama.nerdworks.in/comment.aspx?entryID=21">http://blogorama.nerdworks.in/comment.aspx?entryID=21</a></p>
+
+<p>Now this technique is <em>complicated</em> so I won’t include the code here - please get it from the sourcecode zipfile (selfdel05.c). Instead I will describe how it works and the issues involved.</p>
+
+<ul>
+  <li>Firstly a child process is created in a suspended state (any process will do - i.e. explorer.exe).</li>
+  <li>Some code is then injected into the address-space of the child process.</li>
+  <li>The injected code waits for the parent-process to exit.</li>
+  <li>The parent-process is then deleted.</li>
+  <li>The injected code then calls <code class="highlighter-rouge">ExitProcess</code>, which terminates the child process.</li>
+</ul>
+
+<p>The neat thing about this technique is that the spawned child process never really executes (no windows ever appear) - only the “self-deleting” code in the child gets to execute. After the parent process terminates and is deleted, the child process terminates using <code class="highlighter-rouge">ExitProcess</code>, preventing anything further from happening. Effectively an arbitrary child-process is hijacked and coerced into deleting it’s parent.</p>
+
+<p>My first version of this technique (inside selfdelxp.c) used <code class="highlighter-rouge">CreateRemoteThread</code> to inject the code into the suspended child process. This was quite neat because the child never ran - only the injected thread with the self-deleting code ever executed. The downside to this technique is that it only ran on Windows-NT based platforms.</p>
+
+<p>The latest version (selfdel05.c) does not use <code class="highlighter-rouge">CreateRemoteThread</code> to inject code into the child. It therefore works on all versions of Windows. The self-deleting code is injected into the spawned child by hijacking the primary thread of the process. The thread’s stack is manipulated in such a way so that space is “allocated” on the stack - into which the self-deleting code is written. The instruction-pointer for the thread is then altered so that it points to the injected code on the thread’s stack. When the child process (and primary thread) is resumed the code executes right off the stack, deleting the parent process, and then exits.</p>
+
+<p>There are issues involved with this last technique. The first is the injection of code into an already running thread - this is not a desirable thing to do, but because the thread’s “real” execution is never resumed (the process exits as soon as the parent is deleted) it seems like a viable way to do this.</p>
+
+<p>The second issue involves the Win32 environment. When a child process is created in a suspended state the program has not started executing yet - there is still alot of Win32 environment setup that must be performed before the entry-point to the executable is called. So when we hijack this thread to do our bidding, we are doing so in an environment that is not yet fully initialized, and is not ready for Win32 API calls (it is still mid-way through executing some internel part of the OS!). The API calls that are made (<code class="highlighter-rouge">WaitForSingleObject</code>, <code class="highlighter-rouge">DeleteFile</code> etc) do however work - but this is not guaranteed in furture OS releases.</p>
+
+<p>The exact same issue exists when you <code class="highlighter-rouge">CreateRemoteThread</code> into a process that was started as suspended - the OS hasn’t yet finished intializing your process’s environment before the remote thread starts to execute. This is why alot of Win32 API calls will fail (such as <code class="highlighter-rouge">RemoveDirectory</code>).</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I’ve used this article to describe all the methods I know of to delete an executable whilst it is running. You can take your pick of the techniques, but the last method presented is currently the only one which works well for all versions of Windows.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/selfdel.zip">selfdel.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-10-01T00:00:00+00:00">October 01, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="reducing-executable-size.html" class="pagination--pager" title="Reducing Executable Size
+">Previous</a>
+    
+    
+      <a href="url-control.html" class="pagination--pager" title="URL Control
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/self-deleting-executables by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

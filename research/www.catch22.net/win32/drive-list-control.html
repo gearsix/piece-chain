@@ -1,0 +1,453 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/drive-list-control by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Drive-list control - Catch22</title>
+<meta name="description" content="This tutorial will show you how to implement a drop-down list of all the logical drives installed on a Windows system. There are basically three major steps involved in achieving this goal, listed in the order that we will tackle them.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Drive-list control">
+<meta property="og:url" content="drive-list-control.html">
+
+
+  <meta property="og:description" content="This tutorial will show you how to implement a drop-down list of all the logical drives installed on a Windows system. There are basically three major steps involved in achieving this goal, listed in the order that we will tackle them.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-08-25T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="drive-list-control.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Drive-list control</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/drivelist.zip">drivelist.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Drive-list control">
+    <meta itemprop="description" content="This tutorial will show you how to implement a drop-down list of all the logical drives installed on a Windows system. There are basically three major steps involved in achieving this goal, listed in the order that we will tackle them.">
+    <meta itemprop="datePublished" content="August 25, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Drive-list control
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Drive-list control</h1-->
+<!--h3>A drop-down list displaying drive names and icons</h3-->
+
+<p>This tutorial will show you how to implement a drop-down list of all the logical drives installed on a Windows system. There are basically three major steps involved in achieving this goal, listed in the order that we will tackle them.</p>
+
+<p><img src="http://www.catch22.net/assets/img/drive02.gif" alt="DriveList screen-shot" class="align-center" /></p>
+
+<ul>
+  <li>Enumerating the disk drives on the current system.</li>
+  <li>Obtaining the correct icon images used to draw the drives.</li>
+  <li>Handling the <code class="highlighter-rouge">WM_DRAWITEM</code> message to draw the drop-down list.</li>
+</ul>
+
+<h2 id="enumerating-disk-drives">Enumerating disk drives</h2>
+
+<p>This one is really easy. All we do is call the <code class="highlighter-rouge">GetLogicalDriveStrings</code> API call to retrieve the complete list of all logical drives currently installed.</p>
+
+<p>The returned buffer contains a number of zero-terminated strings, one after the other. The buffer is terminated by an additional null character, to mark the end of the drive names. The code below demonstates how to retrieive the list of drive names, and extract each name in turn from the string buffer.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">szDrives</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+<span class="kt">char</span> <span class="n">szText</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">drivelen</span><span class="p">;</span>
+
+<span class="n">drivelen</span> <span class="o">=</span> <span class="n">GetLogicalDriveStrings</span><span class="p">(</span><span class="mi">1023</span><span class="p">,</span> <span class="n">szDrives</span><span class="p">);</span>
+
+<span class="k">while</span><span class="p">(</span><span class="n">drivelen</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">drivetype</span><span class="p">,</span> <span class="n">len</span><span class="p">;</span>
+    <span class="n">len</span> <span class="o">=</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">driveptr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//plus the NULL
+</span>
+    <span class="n">drivelen</span> <span class="o">-=</span> <span class="n">len</span><span class="p">;</span>
+
+    <span class="c1">//convert drive name to lower case
+</span>    <span class="n">driveptr</span> <span class="o">=</span> <span class="n">strlwr</span><span class="p">(</span><span class="n">driveptr</span><span class="p">);</span>
+    <span class="n">lstrcpyn</span><span class="p">(</span><span class="n">szText</span><span class="p">,</span> <span class="n">driveptr</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">//only copy the 'X:' portion
+</span>
+    <span class="c1">//retrieve the index of the icon in the system image list
+</span>
+    <span class="c1">//add the drive name to the combo box
+</span>    <span class="n">driveptr</span> <span class="o">+=</span> <span class="n">len</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="getting-the-icon-image">Getting the icon image</h2>
+
+<p>This is the easiest job of all. We don’t need to draw our own icons, because we can use the icons that the Windows shell uses to display drives. These system icons are located in a resource called the System Image List. So, we need to obtain the <code class="highlighter-rouge">HIMAGELIST</code> handle to this image list, and the index into this list of the icon image we want. Thankfully there is a function which obtains an index this for us, called <code class="highlighter-rouge">ShGetFileInfo</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SHFILEINFO</span> <span class="n">shfi</span><span class="p">;</span>
+<span class="n">HIMAGELIST</span> <span class="n">hSysImgList</span><span class="p">;</span>
+
+<span class="c1">//retrieve the index of the icon in the system image list
+</span><span class="n">hSysImgList</span> <span class="o">=</span> <span class="p">(</span><span class="n">HIMAGELIST</span><span class="p">)</span><span class="n">SHGetFileInfo</span><span class="p">(</span><span class="s">"C:"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">shfi</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">SHFILEINFO</span><span class="p">),</span> 
+                                          <span class="n">SHGFI_SYSICONINDEX</span> <span class="o">|</span> <span class="n">SHGFI_SMALLICON</span> <span class="o">|</span> <span class="n">SHGFI_ICON</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The snippet above retrieves a handle to the system image list, and also the index of the icon associated with the “C:” drive. The icon index is stored in the <code class="highlighter-rouge">shfi.iIcon</code> variable when the <code class="highlighter-rouge">ShGetFileInfo</code> function returns.</p>
+
+<h2 id="handling-the-wm_drawitem-message">Handling the WM_DRAWITEM message</h2>
+
+<p>It is also pretty straight-forward to draw the icons along side each drive name. We do this using the standard Owner-Draw feature that a Combo box supports. Owner-Draw is enabled for a combo-box by creating the control with the <code class="highlighter-rouge">CBS_OWNERDRAWFIXED</code> style.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">DriveListMeasure</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uCtrlId</span><span class="p">,</span> <span class="n">MEASUREITEMSTRUCT</span> <span class="o">*</span><span class="n">mis</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HFONT</span> <span class="n">hFont</span> <span class="o">=</span> <span class="p">(</span><span class="n">HFONT</span><span class="p">)</span><span class="n">SendMessage</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_GETFONT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">mis</span><span class="o">-&gt;</span><span class="n">itemHeight</span> <span class="o">=</span> <span class="n">DriveList_GetLineHeight</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hFont</span><span class="p">,</span> <span class="n">nBitmapHeight</span><span class="p">);</span>  
+
+    <span class="c1">//(16)
+</span>    <span class="n">nBitmapYOff</span> <span class="o">=</span> <span class="p">(</span><span class="n">mis</span><span class="o">-&gt;</span><span class="n">itemHeight</span> <span class="o">-</span> <span class="p">(</span><span class="n">nBitmapHeight</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">DriveListDraw</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uCtrlId</span><span class="p">,</span> <span class="n">DRAWITEMSTRUCT</span> <span class="o">*</span><span class="n">dis</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwndCombo</span> <span class="o">=</span> <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">uCtrlId</span><span class="p">);</span>
+    <span class="kt">char</span> <span class="n">szText</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">idx</span><span class="p">;</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemAction</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">ODA_FOCUS</span><span class="p">:</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span> <span class="o">&amp;</span> <span class="n">ODS_NOFOCUSRECT</span><span class="p">))</span>
+            <span class="n">DrawFocusRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">ODA_SELECT</span><span class="p">:</span>
+    <span class="k">case</span> <span class="n">ODA_DRAWENTIRE</span><span class="p">:</span>
+
+        <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">,</span> <span class="n">CB_GETLBTEXT</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemID</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">szText</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span> <span class="o">&amp;</span> <span class="n">ODS_SELECTED</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHTTEXT</span><span class="p">));</span>
+            <span class="n">SetBkColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHT</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOWTEXT</span><span class="p">));</span>
+            <span class="n">SetBkColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOW</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="c1">// we set the SB_SETITEMDATA DWORD to be the system image list index
+</span>        <span class="c1">// for this drive icon. Retrieve the value so we know which picture
+</span>        <span class="c1">// to display for this drive
+</span>        <span class="n">idx</span> <span class="o">=</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemData</span><span class="p">;</span>        
+        
+        <span class="n">ptr</span> <span class="o">=</span> <span class="n">strchr</span><span class="p">(</span><span class="n">szText</span><span class="p">,</span> <span class="sc">':'</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span> <span class="n">ptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'\0'</span><span class="p">;</span>
+
+        <span class="c1">//Draw the drive letter
+</span>        <span class="n">ExtTextOut</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">left</span><span class="o">+</span><span class="mi">22</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">top</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> 
+                   <span class="n">ETO_OPAQUE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">szText</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+        <span class="c1">//Draw the drive volume name
+</span>        <span class="k">if</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span>
+            <span class="n">ExtTextOut</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">left</span><span class="o">+</span><span class="mi">22</span><span class="o">+</span><span class="mi">16</span><span class="p">,</span> 
+             <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">top</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ptr</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">ptr</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span> <span class="o">&amp;</span> <span class="n">ODS_FOCUS</span><span class="p">)</span> 
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span> <span class="o">&amp;</span> <span class="n">ODS_NOFOCUSRECT</span><span class="p">))</span>
+                <span class="n">DrawFocusRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">//Draw the drive icon over the top of the selection
+</span>        <span class="n">ImageList_Draw</span><span class="p">(</span><span class="n">hSysImgList</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span> 
+            <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> 
+            <span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">nBitmapYOff</span><span class="p">,</span> 
+            <span class="n">ILD_TRANSPARENT</span><span class="p">);</span>
+
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s all there is to do for now. I’ve omitted a few details for clarity’s sake, but the source code download shows how to do this in full.</p>
+
+<p>This implementation of a drive-list uses the standard Windows combo box to display the drives. The <code class="highlighter-rouge">ComboBoxEx</code> control which is available in the Common Controls Library could have been used instead. This new style combo box has automatic support for item images through an image list. There were two reasons I chose not to use this new control. The first is that the ComboBoxEx is not available under some versions of Windows (those which have an early version of the common controls library). The second reason is that I wanted to achieve the same look and feel as a “normal” drive list control, so the standard Combo box was chosen.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/drivelist.zip">drivelist.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-08-25T00:00:00+00:00">August 25, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="customize-date-time-controls.html" class="pagination--pager" title="Customize date-time controls
+">Previous</a>
+    
+    
+      <a href="directory-list-control.html" class="pagination--pager" title="Directory list control
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/drive-list-control by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

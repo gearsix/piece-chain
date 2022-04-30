@@ -1,0 +1,48 @@
+<!--
+Author = "gearsix"
+Date = "26 April 2022"
+-->
+
+<!-- overview -->
+A 'Piece Chain' is a data structure for managing textual buffers. It was invented by J Strother Moore while at the Xerox PARC research center in the 1970s (2016 Lu, D.), this algorithm was used for their Bravo text editor, released in the Xerox Alto computer. Bravo  itself was written by Charles Simonyi and Butler Lampson (2006 Brown, J.), their use in the Bravo editor influenced Wirth to use them as the text management system in Project Oberon (2014 Wirth, N.); Simonyi later used the algorithm in Microsoft's PC Word 2.0 (the predecessor to Microsoft Word) (2016 Lu, D.). @TODO
+
+"Steve Jobs had given a visionary talk, that Jeff Harbers of Microsoft had experienced, describing how sand, a source for the silicon substrate of computer chips, could enter one portal of a factory and a finished computer with its associated software could be shipped as the final product. So our contibution to his vision was Sand Word." (2016 Lu, D.) - maybe use to talk about how all the small pieces of the chain are sand that build a beach? idk
+
+<!-- operation -->
+A Piece Chain operates by storing all the textual data within two buffers. One buffer has a fixed-size and operates in a strictly read-only mode, the **read-buffer**, it holds the data to be operated on. The second buffer is strictly append-only, the **append-buffer**, it contains data representing modifications to be made.
+
+Reviewing historical implementions, there are two variations of implementation of the Piece Chain buffers. One keeps them in-memory, the second stores the data in files.
+
+<!-- operation/file-buffer -->
+<!-- operation/memory-buffer -->
+
+The *append-buffer* treats textual data as a sequence of 'pieces', where each 'piece' contains information of a section of data: "(f, pos, len), where the components designate a file, a starting position, and a length respectively." (1992 Wirth, N.); **about storing in-memory buffers, not in files**. All pieces are combined in the order they're generated using a doubly-linked list (forming the 'chain'), the doubly-linked list is able to represent the entire history of operations made to the *read-buffer*.
+
+Using a pointer to a position in the *piece chain* (a **HEAD**) we can represent current state, traversing up/down the chain modifies this state forwards/backwards in time (based on previous pieces) - this behaves in the same way that *undo/redo* operations do in text editors, without the need for any additional data structure/storage.
+
+"shuffle tiny records that describe pieces in a few bytes of memory rather than shuffle actual buffer contents that could contain hundreds of thousand or millions of characters into a new order." (2016 Lu, D)
+
+<!-- operation/insert -->
+
+<!-- operation/delete -->
+
+<!-- performance -->
+The Piece Chain "supports all modifications in O(m), where m is the number of non-consecutive editing operations.", which "could be further improved to O(log m) by use of a balanced search tree" (2017 Tanner, M.A.).
+
+<!-- applications -->
+The most obvious application for a piece chain is a text editor, the undo/redo functionality enabled by using the *HEAD* to traverse the chain make it a powerful.
+
+<!-- alternatives -->
+"In the naive method, you would have to first make room for the newly added characters in a text buffer by moving all characters at the insertion point to the right by the number of characters that were to be added and then copy the new text into the gap that was created.
+
+"In 1970's software, a process that copied hundreds of thousands of characters, cost time that could be measured by watching a clock's second hand, whenever such an operation occured during a program's execution. This was especially noticeable when a large copy operation required that the copied bytes be reflected to a disk file as a measure to preserve space within a program's precious and limited-in-size internal memory allocation." (2016 Lu, D.)
+
+## References
+
+- Wirth, N., Jurg, G. (1992) Project Oberon Design of an Operating System, a Compiler, and a Computer. ch5.2. [online]. Revised Edition 2013. Zurich, Switzerland: ETH Zurich.
+Available from: http://www.inf.ethz.ch/personal/wirth/ProjectOberon/PO.System.pdf [Accessed 26 April 2022].
+- Tanner, M.A. (2017) GitHub, martanne/vis/wiki. Text management using a piece chain.
+Available from: https://github.com/martanne/vis/wiki/Text-management-using-a-piece-chain [Accessed 26 April 2022].
+- Lu, D. (2016) What's been wrought using the Piece Table?. Accessed from: https://web.archive.org/web/20160308183811/http://1017.songtrellisopml.com/whatsbeenwroughtusingpiecetables [Accessed 28 April 2022].
+- Brown, J. (2006) Piece Chains. Accessed from: https://www.catch22.net/tuts/neatpad/piece-chains [Accessed 29 April 2022].
+- Wirth, N. (2014) Reviving a computer system of 25 years ago. Zurich, Switzerland: ETH Zurich. Accessed from: https://video.ethz.ch/conferences/2014/wirth/d40b0ce9-b9fa-4ba3-8dee-cf9d0c6f01a4.html [Accessed 29 April 2022].

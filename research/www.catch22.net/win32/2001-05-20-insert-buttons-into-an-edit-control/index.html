@@ -1,0 +1,615 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/2001-05-20-insert-buttons-into-an-edit-control/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Insert buttons into an edit control - Catch22</title>
+<meta name="description" content="This tutorial will show you how to insert a button into the non-client area of an edit control. The effect of this is very similar to the drop-down button in a combo box. However, there is the potential to do much more than simply display a drop-down arrow. The technique of inserting a button can actually be applied to any type of window. For this example we will use an edit control, but any other window could be used.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Insert buttons into an edit control">
+<meta property="og:url" content="index.html">
+
+
+  <meta property="og:description" content="This tutorial will show you how to insert a button into the non-client area of an edit control. The effect of this is very similar to the drop-down button in a combo box. However, there is the potential to do much more than simply display a drop-down arrow. The technique of inserting a button can actually be applied to any type of window. For this example we will use an edit control, but any other window could be used.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-05-20T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="index.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Insert buttons into an edit control</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/editbut.zip">editbut.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Insert buttons into an edit control">
+    <meta itemprop="description" content="This tutorial will show you how to insert a button into the non-client area of an edit control. The effect of this is very similar to the drop-down button in a combo box. However, there is the potential to do much more than simply display a drop-down arrow. The technique of inserting a button can actually be applied to any type of window. For this example we will use an edit control, but any other window could be used.">
+    <meta itemprop="datePublished" content="May 20, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Insert buttons into an edit control
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Insert buttons into an edit control</h1-->
+<!--h3>How to insert a button into an edit control</h3-->
+
+<p>This tutorial will show you how to insert a button into the non-client area of an edit control. The effect of this is very similar to the drop-down button in a combo box. However, there is the potential to do much more than simply display a drop-down arrow. The technique of inserting a button can actually be applied to any type of window. For this example we will use an edit control, but any other window could be used.</p>
+
+<p>The picture below will give you an idea of what we are trying to achieve.</p>
+
+<p><img src="http://www.catch22.net/assets/img/editbut01.gif" alt="Edit button screen-shot" class="align-center" /></p>
+
+<h2 id="subclassing-the-edit-control">Subclassing the edit control</h2>
+
+<p>The key to this technique is subclassing. We will replace the window procedure of our edit control with a new procedure. This procedure will perform some additional tasks to implement the inserted button, and then use the default window procedure to provide the original functionality of the edit control.</p>
+
+<p>Our inserted button will need to have some kind of state. We need to know where the button will live, and also if it is pressed in or out. We might also want to store a command identifier for the button, so that we can generate <code class="highlighter-rouge">WM_COMMAND</code> messages when the button is clicked. It will therefore be necessary to associate this state information with what ever window we decide to subclass. The following structure will hold our state:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">UINT</span> <span class="n">uCmdId</span><span class="p">;</span> <span class="c1">// sent in a WM_COMMAND message
+</span>    <span class="n">UINT</span> <span class="n">fButtonDown</span><span class="p">;</span> <span class="c1">// is the button up/down?
+</span>    <span class="n">BOOL</span> <span class="n">fMouseDown</span><span class="p">;</span> <span class="c1">// is the mouse activating the button?
+</span>    <span class="n">WNDPROC</span> <span class="n">oldproc</span><span class="p">;</span> <span class="c1">// need to remember the old window procedure
+</span>
+    <span class="c1">// size of the current window borders.
+</span>    <span class="c1">// given these, we know where to insert our button
+</span>    <span class="kt">int</span> <span class="n">cxLeftEdge</span><span class="p">,</span> <span class="n">cxRightEdge</span><span class="p">;</span> 
+    <span class="kt">int</span> <span class="n">cyTopEdge</span><span class="p">,</span> <span class="n">cyBottomEdge</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">InsBut</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Now that we know how our button will be represented, we can write a function to subclass the edit control.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">InsertButton</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uCmdId</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">InsBut</span> <span class="o">*</span><span class="n">pbut</span><span class="p">;</span>
+    <span class="n">pbut</span> <span class="o">=</span> <span class="n">HeapAlloc</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">InsBut</span><span class="p">));</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">pbut</span><span class="p">)</span> <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uCmdId</span> <span class="o">=</span> <span class="n">uCmdId</span><span class="p">;</span>
+    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">fButtonDown</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="c1">// replace the old window procedure with our new one
+</span>    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">oldproc</span> <span class="o">=</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">InsButProc</span><span class="p">);</span>
+
+    <span class="c1">// associate our button state structure with the window
+</span>    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">pbut</span><span class="p">);</span>
+
+    <span class="c1">// force the edit control to update its non-client area
+</span>    <span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SWP_FRAMECHANGED</span> <span class="o">|</span>
+        <span class="n">SWP_NOMOVE</span><span class="o">|</span><span class="n">SWP_NOSIZE</span><span class="o">|</span><span class="n">SWP_NOACTIVATE</span><span class="o">|</span><span class="n">SWP_NOZORDER</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="inserting-the-button">Inserting the button</h2>
+
+<p>Now that our new window procedure is in place we can get to work. The first step is to allocate some space in the non-client area of the edit control. This is performed by handling the <code class="highlighter-rouge">WM_NCCALCSIZE</code> message in the subclass procedure.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RECT</span> <span class="o">*</span><span class="n">prect</span><span class="p">;</span>
+<span class="n">RECT</span> <span class="n">oldrect</span><span class="p">;</span>
+
+<span class="c1">// get the button state structure
+</span><span class="n">InsBut</span> <span class="o">*</span><span class="n">pbut</span> <span class="o">=</span> <span class="p">(</span><span class="n">InsBut</span> <span class="o">*</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">);</span>
+<span class="p">...</span>
+
+<span class="k">case</span> <span class="n">WM_NCCALCSIZE</span><span class="p">:</span>
+    <span class="n">prect</span> <span class="o">=</span> <span class="p">(</span><span class="n">RECT</span> <span class="o">*</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+    <span class="n">oldrect</span> <span class="o">=</span> <span class="o">*</span><span class="n">prect</span><span class="p">;</span>
+
+    <span class="c1">// let the old wndproc allocate space for the borders,
+</span>    <span class="c1">// or any other non-client space.
+</span>    <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">pbut</span><span class="o">-&gt;</span><span class="n">oldproc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+    <span class="c1">// calculate what the size of each window border is,
+</span>    <span class="c1">// we need to know where the button is going to live.
+</span>    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cxLeftEdge</span> <span class="o">=</span> <span class="n">prect</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">-</span> <span class="n">oldrect</span><span class="p">.</span><span class="n">left</span><span class="p">;</span> 
+    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cxRightEdge</span> <span class="o">=</span> <span class="n">oldrect</span><span class="p">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">prect</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cyTopEdge</span> <span class="o">=</span> <span class="n">prect</span><span class="o">-&gt;</span><span class="n">top</span> <span class="o">-</span> <span class="n">oldrect</span><span class="p">.</span><span class="n">top</span><span class="p">;</span>
+    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cyBottomEdge</span> <span class="o">=</span> <span class="n">oldrect</span><span class="p">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">prect</span><span class="o">-&gt;</span><span class="n">bottom</span><span class="p">;</span>
+
+    <span class="c1">// now we can allocate additional space by deflating the
+</span>    <span class="c1">// rectangle even further. Our button will go on the right-hand side,
+</span>    <span class="c1">// and will be the same width as a scrollbar button
+</span>    <span class="n">prect</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">-=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXVSCROLL</span><span class="p">);</span>
+
+    <span class="c1">// that's it! Easy or what!
+</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The source above firstly calls the old window procedure of the edit control, to let the default action of border allocation take place. After this has been done, we can then reserve space for our new button.</p>
+
+<h2 id="drawing-the-button">Drawing the button</h2>
+
+<p>Drawing the button is easy now that we have the space allocated to draw it in. Because we are drawing the button in the non-client area of a window, we need to handle the <code class="highlighter-rouge">WM_NCPAINT</code> message.</p>
+
+<p>The first thing to do is obtain a handle to a device context. We do this with <code class="highlighter-rouge">GetWindowDC</code>. Because this is a window-DC (rather than a client-area DC), all drawing takes place from the upper-left corner of the window (NOT the client area of the window). All coordinates start from 0,0.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// retrieve the coordinates of an inserted button, given the
+// specified window rectangle.
+</span><span class="kt">void</span> <span class="nf">GetButtonRect</span><span class="p">(</span><span class="n">InsBut</span> <span class="o">*</span><span class="n">pbut</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span><span class="n">rect</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">rect</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">-=</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cxRightEdge</span><span class="p">;</span>
+    <span class="n">rect</span><span class="o">-&gt;</span><span class="n">top</span> <span class="o">+=</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cyTopEdge</span><span class="p">;</span>
+    <span class="n">rect</span><span class="o">-&gt;</span><span class="n">bottom</span> <span class="o">-=</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cyBottomEdge</span><span class="p">;</span>
+    <span class="n">rect</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">rect</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">-</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXVSCROLL</span><span class="p">);</span>
+
+    <span class="c1">// take into account any scrollbars in the edit control
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">rect</span><span class="o">-&gt;</span><span class="n">cxRightEdge</span> <span class="o">&gt;</span> <span class="n">rect</span><span class="o">-&gt;</span><span class="n">cxLeftEdge</span><span class="p">)</span>
+        <span class="n">OffsetRect</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cxRightEdge</span> <span class="o">-</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">cxLeftEdge</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HDC</span> <span class="n">hdc</span><span class="p">;</span>
+<span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+
+<span class="c1">// get the button state structure
+</span><span class="n">InsBut</span> <span class="o">*</span><span class="n">pbut</span> <span class="o">=</span> <span class="p">(</span><span class="n">InsBut</span> <span class="o">*</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">);</span>
+
+<span class="p">...</span>
+<span class="k">case</span> <span class="n">WM_NCPAINT</span><span class="p">:</span>
+    <span class="c1">// let the old window procedure draw the borders / other non-client
+</span>    <span class="c1">// bits-and-pieces for us.
+</span>    <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">pbut</span><span class="o">-&gt;</span><span class="n">oldproc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+    <span class="c1">// get the screen coordinates of the window.
+</span>    <span class="c1">// adjust the coordinates so they start from 0,0
+</span>    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">OffsetRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">);</span>
+
+    <span class="c1">// work out where to draw the button
+</span>    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">pbut</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetWindowDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+    <span class="c1">// now draw our inserted button:
+</span>    <span class="c1">// draw a 3d-edge around the button.
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">pbut</span><span class="o">-&gt;</span><span class="n">fButtonDown</span><span class="p">)</span>
+        <span class="n">DrawEdge</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">EDGE_RAISED</span><span class="p">,</span> <span class="n">BF_RECT</span> <span class="o">|</span> <span class="n">BF_FLAT</span> <span class="o">|</span> <span class="n">BF_ADJUST</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">DrawEdge</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">EDGE_RAISED</span><span class="p">,</span> <span class="n">BF_RECT</span> <span class="o">|</span> <span class="n">BF_ADJUST</span><span class="p">);</span>
+
+    <span class="c1">// fill the inside of the button
+</span>    <span class="n">FillRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_BTNFACE</span><span class="p">));</span>
+
+    <span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hdc</span><span class="p">);</span> <span class="c1">// that's it! This is too easy!
+</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="bringing-the-button-to-life">Bringing the button to life</h2>
+
+<p>A static button in an edit control isn’t much use to us. The last step is therefore to handle the appropriate mouse messages to make the button “clickable”. We need to handle three mouse messages:</p>
+
+<h3 id="mouse-button-down-wm_nclbuttondown">Mouse button down (WM_NCLBUTTONDOWN)</h3>
+
+<p>When the left mouse button is clicked, and the mouse cursor is within the area occupied by our button, then we need to react to this event and give the button a depressed look. We will also set the mouse capture so we can get all further mouse messages whilst the mouse button is held down. This means that we can move the mouse outside the window and can still retrieve mouse messages and react to them accordingly.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+<span class="n">POINT</span> <span class="n">pt</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="k">case</span> <span class="n">WM_NCLBUTTONDOWN</span><span class="p">:</span>
+
+    <span class="c1">// get the screen coordinates of the mouse
+</span>    <span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">GET_X_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+    <span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">GET_Y_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+
+    <span class="c1">// get the position of the inserted button
+</span>    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">pbut</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">// check that the mouse is within the inserted button
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">SetCapture</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+        <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uState</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">fMouseActive</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+
+        <span class="c1">//redraw the non-client area to reflect the change
+</span>        <span class="n">RedrawNC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="mouse-movement-wm_mousemove">Mouse Movement (WM_MOUSEMOVE)</h3>
+
+<p>When a window has captured the mouse, it will not receive any more non-client mouse messages. So, if we want to react to the mouse moving (with the capture set), we must handle <code class="highlighter-rouge">WM_MOUSEMOVE</code> , and NOT the <code class="highlighter-rouge">WM_NCMOUSEMOVE</code> message.</p>
+
+<p>When the mouse moves, we need to check the position of the cursor again. If the cursor is inside the button, then we will make it look “depressed”. If the mouse moves outside the button, then the button must automatically pop back up again. This emulates the way a normal button in Windows works.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+<span class="n">POINT</span> <span class="n">pt</span><span class="p">;</span>
+<span class="n">UINT</span> <span class="n">oldstate</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="k">case</span> <span class="n">WM_MOUSEMOVE</span><span class="p">:</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pbut</span><span class="o">-&gt;</span><span class="n">fMouseActive</span> <span class="o">==</span> <span class="n">FALSE</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="c1">// get the CLIENT coordinates of the mouse
+</span>    <span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">GET_X_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+    <span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">GET_Y_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+    
+    <span class="n">ClientToScreen</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pt</span><span class="p">);</span>
+
+    <span class="c1">// get the position of the inserted button
+</span>    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">pbut</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="n">oldstate</span> <span class="o">=</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uState</span><span class="p">;</span>
+
+    <span class="c1">// check that the mouse is within the inserted button
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+        <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uState</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uState</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// redraw the non-client area to reflect the change.
+</span>    <span class="c1">// to prevent flicker, we only redraw the button if its state
+</span>    <span class="c1">// has changed
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">oldstate</span> <span class="o">!=</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uState</span><span class="p">)</span>
+        <span class="n">RedrawNC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+    <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="mouse-button-up-wm_lbuttonup">Mouse button up (WM_LBUTTONUP)</h3>
+
+<p>We’re almost there. All there is to do is detect when the mouse button is released. We do one of two things when this happens. If the mouse is released when it is over the button, then the button has been clicked. We can therefore post a <code class="highlighter-rouge">WM_COMMAND</code> message to the parent window. If the mouse is outside the button when it is released, then we do nothing. In both cases, we redraw the button in its normal state, and release the mouse capture.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+<span class="n">POINT</span> <span class="n">pt</span><span class="p">;</span>
+<span class="n">UINT</span> <span class="n">oldstate</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="k">case</span> <span class="n">WM_LBUTTONUP</span><span class="p">:</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pbut</span><span class="o">-&gt;</span><span class="n">fMouseActive</span> <span class="o">==</span> <span class="n">FALSE</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="c1">// get the CLIENT coordinates of the mouse
+</span>    <span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">GET_X_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+    <span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">GET_Y_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+
+    <span class="n">ClientToScreen</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pt</span><span class="p">);</span>
+
+    <span class="c1">// get the position of the inserted button
+</span>    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">pbut</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">// check that the mouse is within the inserted button
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">PostMessage</span><span class="p">(</span><span class="n">GetParent</span><span class="p">(</span><span class="n">hwnd</span><span class="p">),</span> <span class="n">WM_COMMAND</span><span class="p">,</span> 
+                    <span class="n">MAKEWPARAM</span><span class="p">(</span><span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uCmdId</span><span class="p">,</span> <span class="n">BN_CLICKED</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">ReleaseCapture</span><span class="p">();</span>
+    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">uState</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">fMouseDown</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="c1">// redraw the non-client area to reflect the change.
+</span>    <span class="n">RedrawNC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+    <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>There is one last mouse message to process. We need to handle the <code class="highlighter-rouge">WM_NCHITTEST</code> message, which we receive when the mouse moves over the window. We have to return a code indicating that our inserted button region is a valid window portion. If we don’t do this, then we won’t get any mouse messages when the mouse moves over the button area.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_NCHITTEST</span><span class="p">:</span>
+    <span class="c1">// get the screen coordinates of the mouse
+</span>    <span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">GET_X_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+    <span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">GET_Y_LPARAM</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+
+    <span class="c1">// get the position of the inserted button
+</span>    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">pbut</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">// check that the mouse is within the inserted button
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">HTBORDER</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="wrapping-up">Wrapping Up</h2>
+
+<p>The last step to perform is to clean up after ourselves when the edit control gets destroyed. Because we allocated a structure using <code class="highlighter-rouge">HeapAlloc</code>, we must free it using <code class="highlighter-rouge">HeapFree</code>. The best place to do this is during the processing of the <code class="highlighter-rouge">WM_NCDESTROY</code> message. This is the very last message that a window receives before it is destroyed.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WNDPROC</span> <span class="n">oldproc</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="k">case</span> <span class="n">WM_NCDESTROY</span><span class="p">:</span>
+    <span class="n">oldproc</span> <span class="o">=</span> <span class="n">pbut</span><span class="o">-&gt;</span><span class="n">oldproc</span><span class="p">;</span>
+    <span class="n">HeapFree</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pbut</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">oldproc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>You will notice that the old procedure handle is copied into a temporary variable. We do this because the oldproc member in the button structure becomes invalid as soon as the memory to it is released. This is the only time that the old window procedure isn’t called through the <code class="highlighter-rouge">pbut-&gt;oldproc</code> member.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I hope you have found this tutorial useful. There are still a few things that you can do to improve the inserted button. For a start, it doesn’t have any type of image associated with it. Your next step would be to modify the drawing code to draw whatever effect you want. One possibility would be to draw a set of ellipses (…) on the button. This would then turn the inserted button into a very effective “Browse for file” button. Alternatively, your inserted button could toggle between several different states. For example, the button could control a number displayed in an edit box, and toggle in between decimal and hexadecimal number systems.</p>
+
+<p>The technique presented here can be applied to any sort of window, and can be used to perform many different types of effects. This very technique is the one used by the Cool Scrollbar library, which you will also find in the tutorials section.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/editbut.zip">editbut.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-05-20T00:00:00+00:00">May 20, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../../tips-and-tricks.html" class="pagination--pager" title="Win32 Tips &amp; Tricks
+">Previous</a>
+    
+    
+      <a href="../masked-edit-input.html" class="pagination--pager" title="Masked Edit Input
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/2001-05-20-insert-buttons-into-an-edit-control/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

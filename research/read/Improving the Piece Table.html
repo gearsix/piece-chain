@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Improving the Piece Table</title>
+
+<style type="text/css">
+  body { font-family: Verdana, sans-serif;
+		 font-size: 140%;
+		 margin: 50px; }
+  .code { border: 1px dashed rgb(200,200,200);
+		 padding: 15px;
+		 margin-left: auto;
+		 margin-right: auto;
+		 width: 70%;
+		 background-color: rgb(250,250,250) }
+  .graph { border: 1px dashed rgb(200,200,200);
+		 padding: 15px;
+		 margin-left: auto;
+		 margin-right: auto;
+		 text-align: center;
+		 width: 600px; }
+  span.keyword { font-weight: bold; color: blue }
+</style>
+</head>
+
+<body>
+<h1>Improving the AbiWord's Piece Table</h1>
+
+<p>One of the most critical parts of any word processor is the backend used to
+store its text.  It should be fast to lookup, fast to insert and to erase new
+text at a random location, undo friendly, etc.</p>
+
+<p>The AbiWord backend has all these virtues and some more.  It's (IMHO) the most
+impressive piece of code of the whole AbiWord project, and one that has been
+exceptionally stable over the years.  In short, Jeff's code rocks<sup>TM</sup>.</p>
+
+<p>However, improvement is still possible.  I will show a modified piece
+table that changes the current <b>O(n)</b> complexity of current insertion
+and lookup operations by <b>O(log(n))</b> operations.</p>
+
+<p style="color: red;">Nota Bene: In this discussion, “n” is the
+number of pieces, not the number of characters.</p>
+
+<h2>Current Piece Table</h2>
+
+<p>If you already know how the piece table works, you can skip this section.</p>
+
+<p>TODO: Write this section</p>
+
+<p>In the meantime, you can read several good descriptions in the article
+<a href="http://citeseer.nj.nec.com/cache/papers/cs/1797/http:zSzzSzwww.bolthole.comzSzjwordzSzwppaper.pdf/crowley98data.pdf">Data Structures for Text Sequences</a>
+(by Charles Crowley) and in this <a href="http://adproject.free.fr/Help/technics/Piece_Table.html">Piece
+Table Description</a>.</p>
+
+<p>The piece table that AbiWord uses is like the one explained in these
+articles, except that it has a little cache (the last served piece and the
+next one on the piece table are cached), and that after a change on the piece
+table, when you do a lookup, a vector is created to mirror the doubly linked
+list of pieces (obviously, a <b>O(n)</b> operation).</p>
+
+<p>This vector increases the speed at which pieces are served (as long as it
+remains valid) and looked up (the lookup operation becomes <b>O(log(n))</b>
+once the vector is up to date).</p>
+
+<p>Unfortunatelly, the vector comes with a price.  It slows down the first
+lookup after an insert/erase operation, it takes more memory, and it
+complicates the code that uses the pf_Fragments class, as it has to signal
+when the frags becomes dirty (the AbiWord “fragments” are in
+this document “pieces”).</p>
+
+<h2>Red-Black trees</h2>
+
+<p>You should be able to find plenty of explanations about how red-black
+trees work in the net.</p>
+
+<p>The complexity guarantees of red-black trees are <b>O(log(n))</b> for
+insertion, erase, lookup, next and previous in the worst case. The next and
+previous operations have an average complexity of <b>O(1)</b> (in average,
+you should just follow two pointers to reach the next or previous node).</p>
+
+<p>TODO: Give some pointers to red-black trees descriptions.</p>
+
+<h2>Suggested modifications</h2>
+
+<p>The modification that I suggest is to change the doubly linked list with a
+auto-balanced tree.  We need to stablish a key and a comparation operation
+to make the change possible.</p>
+
+<p>As we want to make lookups (i.e., to pass from a document's position to a
+piece) in <b>O(log(n))</b>, it seems natural to choose as key something related
+to the document's position range that is covered by each piece.</p>
+
+<p>If we choose as key the beginning position and the size of the piece,
+we'll have trees like the next one:</p>
+
+<p class="graph"><img src="piecetable1.png" alt="Piece Table using a red-black tree as backend. Posibility 1."></p>
+
+<p>It's obvious that lookup is done now in <b>O(log(n))</b>, but if we do an
+insertion in the middle of the document, we will have to update the
+“beginning position” of the half upper pieces of the documents
+(half the tree).  As we need to walk from a node to the next one, and we need
+to visit in the worst case <b>O(n)</b> nodes, the insertion operation will be
+<b>O(n)</b>.</p>
+
+<p style="color: red;">Nota Bene: It may seem that it should be
+<b>O(n log(n))</b>, because the worst case of a “go to the next node”
+operation is <b>O(log(n))</b>, but we will prove latter that the average cost
+of this operation is just <b>O(1)</b> (TODO: write down the prove!).</p>
+
+<p>To solve this problem, we will “distribute” the offset
+information among several nodes, so it will be harder to recover the offset
+of a piece (<b>O(log(n))</b> instead of <b>O(1)</b>), but it will be faster
+to “fix” the offsets of all the nodes in the tree (<b>O(log(n))</b>
+instead of <b>O(n)</b>). We will put in each node only the size of its left
+subtree, the size of its right subtree, and its own size.</p>
+
+<p>With this change, the lookup operation remain <b>O(log(n))</b>, and the
+insertion operation becomes also <b>O(log(n))</b>, as we don't have to update
+the whole tree anymore, but just all the parents of the modified piece (and
+any leaf has <b>O(log(n))</b> parents).</p>
+
+<p>With this strategy, the new tree will look like this one:</p>
+
+<p class="graph"><img src="piecetable2.png" alt="Piece Table using a red-black tree as backend. Posibility 2."></p>
+
+<p>Now, if we insert/erase a node, let's say that this node becomes a left
+son, we should just “fix” the size_left of its parent, and then
+repeat the fixation process with our parent. This fixation should be done
+before the eventual rebalance of the tree starts. And, of course, the sizes
+should also be updated after each rotation in the rebalancing of the tree.</p>
+
+<p class="code">
+total = 0;<br>
+<span class="keyword">while</span> (node != root)<br>
+{<br>
+        total = node→size_left + node→size + node→size_right;<br>
+        <span class="keyword">if</span> (node→parent→left == node)<br>
+                node→parent→size_left = total;<br>
+        <span class="keyword">else</span><br>
+                node→parent→size_right = total;<br>
+}<br></p>
+
+<p>As the rebalance of the tree is a <b>O(log(n))</b> operation for a
+red-black tree (the variant of autobalanced tree that I've used here),
+and the “fix size” operation is also a <b>O(log(n))</b> operation,
+the whole cost of the insertion/erase of a new node is <b>O(log(n))</b>.</p>
+
+<p>To calculate the offset of a node, we should start with the size_left
+field of this node, and add the size_left + size of all the ancestors for
+whom this node is in the right subtree.  For example, to calculate the offset
+of the node that has a size of 12, we start with its size_left (0), and we
+jump to its parent (size 1).  As we are the left son, we don't take in account
+the contribution of the parent.  We then jump to the grandparent (size 8), and
+this time, we're in the right subtree of the grandparent, so we add the
+size_left and the size of the grandparent to the previous offset (0 + 9 + 8 = 17).
+We jump to the parent of the grandparent (the root of the tree), and as we're
+in the left subtree, we don't take in account the contribution of the root.
+We're done, the offset of the node is 17.</p>
+
+<p class="code">
+offset = node→size_left;<br>
+<span class="keyword">while</span> (node != root)<br>
+{<br>
+        <span class="keyword">if</span> (node→parent→right == node)<br>
+                offset += node→parent→size_left + node→parent→size;<br>
+<br>
+        node = node→parent;<br>
+}<br></p>
+
+<p>The lookup operation is trivially in <b>O(log(n))</b>, due to the
+invariants of the red-black tree. (The lookup operation is a linear function
+of the height of the tree, and the height of the tree is always less than
+<b>2 log(n)</b> in a RB tree.)</p>
+
+<h2>Never assume, measure!</h2>
+
+<p>I've performed two performance tests. In the first one, I throw 1,000,000
+characters to the piece table, each one of them at a random position.  The
+piece table will finish with roughly 1,000,000 pieces.  That's the equivalent
+of a <b>dense</b> document with 30,000 pages (and with a good deal of format
+changes).</p>
+
+<p>The mean time for the insertion operation goes from ~2 μs (that's
+2 * 10<sup>-6</sup> seconds) when the piece table is empty to ~10 μs when it
+has 1 million pieces (on a 750Mhz computer with 256MB of memory). The
+experimental data are the blue squares, and the theoretical curve is the black line.
+I guess that the two dots that are visibly out of the theoretical curve are just due
+to a process switch between when I start measuring and when I end the measure.
+(One of the other ten processes that were running in my computer should have got
+several cicles while I was measuring.)</p>
+
+<p class="graph"><img src="insertion.png" alt="Profile of insertion in a piece table"></p>
+
+<p>So far, so good. The delete operation, however, hides more surprises than its peer,
+the insert operation. To interpret the next figure, we should divide it in two parts. The first
+one is the inferior branch that starts between 2 and 3 μs and 0 pieces, and ends with
+250,000 pieces and between 7 and 8 μs. The second branch (the upper one) goes from
+250,000 pieces to 0 pieces.</p>
+
+<p class="graph"><img src="delete.png" alt="Profile of delete in a piece table"></p>
+
+<p>When the delete operation is performed in a piece table with a big piece, it will
+split the piece in two. When it is performed in a piece table with plenty of pieces
+that contain only one character, then it will delete a piece.</p>
+
+<p>The delete operation starts making more and more pieces, until it reaches a stability
+point in which the number of destructions equals the number of creation (in our figure,
+when the piece table has 250,000 pieces), after this point the number of destructions
+becomes the dominant factor, and we end coming back to 0 pieces.</p>
+
+<p>Now, why does the delete operation show this histeresis ?  My guess is that the
+tree is extremely dispersed in the computer's memory in the second branch.  The tree
+had 250,000 nodes, who were compacted in several MB.  When we start deleting them
+randomly, the mean distance (in the computer's memory) between two nodes increases,
+and this distance induce more and more page misses (and that becomes the dominant
+factor).  But I'm just guessing.</p>
+
+<p>We're not yet lost, as we can reduce the number of page misses.  To reduce them
+I will focus on:</p>
+
+<ol>
+<li><b>Reduce the memory size</b>.  The “color” of the
+node can be optimized to the point of not adding a single bit to the size of
+the node structure.  The size_right field can also be suppresed entirely
+without any bad consecuence (all the operations keep the same speed, maybe
+even a bit faster) <b>[DONE]</b>.  The node structure can be allocated using a memory pool.
+That way the bookeping memory that the compiler uses to handle the structure
+can be optimized away.</li>
+<li><b>Increment the spacial locality of the nodes</b>.  Using the memory pool (again),
+we can put all the nodes together, and thus put them in the same page (or in a
+reduced set of pages) all the information need to walk through the tree.</li>
+</ol>
+
+<h2>Conclusion</h2>
+
+<p>I've shown than it's possible to have a backend in which all the operations
+have a worst case of <b>O(log(n))</b>, and usual cases (forward and backward
+movement) can still be resolved on an average time of <b>O(1)</b>.</p>
+
+<p>Is it a priority for the AbiWord project to switch to this kind of piece
+table?  IMHO, no.  It's not even near a priority. As I said in the
+introduction, the current piece table is already a high quality
+implementation, and it has got several useful improvements performance-wise
+over the time.</p>
+
+<p>The current bottleneck in AbiWord right now is in the layout part (TODO:
+give some figures.  Assertions without facts suck.). Neverless, the same kind
+of structure that I propose here is automatically usable to also solve the
+<b>O(n)</b> operations that AbiWord has in the layout code.</p><p>
+
+</p><p>Anyway, let's say that I wanted to solve this problem, not because I
+considered it very important, but because it was the second time that I tried
+to solve it, and I <b>knew</b> that it was possible :-)</p>
+
+<p>That said, when the performance problems of the layout code will be fixed,
+the piece table will eventually show its head in profilers, and I hope that
+these modifications will help at that time</p>
+
+<p>I've done a reference implementation of a piece table as the one that I
+describe here.  You can download the code <a href="http://e98cuenc.free.fr/wordprocessor/PieceTable2.zip">PieceTable2.zip</a>.
+In the zip you will find two different backends for the piece table, a
+red-black tree and a double linked list. It also contains an almost complet
+regression test. Update: This version contains a piece table without the size_right member.</p>
+
+<p>The code has been tested with MSVC 6 and gcc 2.95.3.</p>
+
+<p>TODO: Remove exceptions (AbiWord doesn't like C++ exceptions), fix the (2)
+functions that have sub-basic exception guarantees, complete the regression
+test (mostly done), fully comment the code, and profile it (done).</p>
+
+<hr>
+
+<p><i>Joaquin Cuenca Abela</i> (e98cuenc at yahoo dot com)<br>
+4 January 2003</p>
+
+</body>
+</html>

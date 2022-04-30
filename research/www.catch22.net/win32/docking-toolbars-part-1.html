@@ -1,0 +1,585 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/docking-toolbars-part-1 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Docking Toolbars - Part 1 - Catch22</title>
+<meta name="description" content="Introduction">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Docking Toolbars - Part 1">
+<meta property="og:url" content="docking-toolbars-part-1.html">
+
+
+  <meta property="og:description" content="Introduction">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-11-20T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="docking-toolbars-part-1.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Docking Toolbars - Part 1</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dock1.zip">dock1.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Docking Toolbars - Part 1">
+    <meta itemprop="description" content="Introduction">
+    <meta itemprop="datePublished" content="November 20, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Docking Toolbars - Part 1
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Docking Toolbars - Part 1</h1-->
+<!--h3>How to implement floating toolbars</h3-->
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This tutorial will show you how to create docking toolbars, using pure Win32 techniques. I’m going to split this topic in two separate pages. The first tutorial will cover the “floating” aspect of toolbars - i.e. how to get tool windows to stay floating on top of all other windows, how to get the window activation working correctly etc. The second tutorial will show you how to get these floating toolbars to “dock” to the side of a window, and discuss various methods of window management.</p>
+
+<h2 id="how-to-create-a-floating-toolbar">How to create a floating toolbar</h2>
+
+<p>A floating toolbar is just a standard window with the <code class="highlighter-rouge">WS_POPUP</code> style set. When a popup window is created with an owner window, the popup is positioned so that it always stays on top of that owner window. This is how you might create and display a floating window:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// create a tool window
+</span><span class="n">HWND</span> <span class="n">hwnd</span> <span class="o">=</span> <span class="n">CreateWindowEx</span><span class="p">(</span>
+    <span class="n">WS_EX_TOOLWINDOW</span><span class="p">,</span> 
+    <span class="s">"ToolWindowClass"</span><span class="p">,</span> <span class="s">"ToolWindow"</span><span class="p">,</span>
+    <span class="n">WS_POPUP</span> <span class="o">|</span> <span class="n">WS_SYSMENU</span> <span class="o">|</span> <span class="n">WS_THICKFRAME</span> <span class="o">|</span> <span class="n">WS_CAPTION</span><span class="p">,</span>
+    <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">hwndParent</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">GetModuleHandle</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nb">NULL</span>
+    <span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">WS_EX_TOOLWINDOW</code> style doesn’t do anything special, other than to make a window with a smaller titlebar. It doesn’t make the window magically float - this is achieved automatically by specifying <code class="highlighter-rouge">WS_POPUP</code> and an owner window (<code class="highlighter-rouge">hwndParent</code>).</p>
+
+<p><img src="http://www.catch22.net/assets/img/toolwnd1.gif" alt="{short description of image}" class="align-center" /></p>
+
+<p>A window can also be positioned to stay at the top of the Z-order with a call to SetWindowPos:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// position the window to appear above all others
+</span><span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">HWND_TOP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SWP_NOMOVE</span><span class="o">|</span><span class="n">SWP_NOSIZE</span><span class="o">|</span><span class="n">SWP_NOACTIVATE</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="prevent-window-deactivation">Prevent window deactivation</h2>
+
+<p>The image shown above shows the main window’s titlebar as inactive. This is entirely normal, because only one window can be active at any one time in Windows. However, it has become normal practise for tool windows and main windows to appear active at the same time. I think it looks more natural this way, so we need to devise a strategy to keep windows appearing active, even if they aren’t.</p>
+
+<p>The key to the problem is the <code class="highlighter-rouge">WM_NCACTIVATE</code> message. This message is sent when a window’s non-client area needs to be activated or deactivated. As with all window messages, <code class="highlighter-rouge">WM_NCACTIVATE</code> is sent with two parameters - <code class="highlighter-rouge">wParam</code> and <code class="highlighter-rouge">lParam</code> :</p>
+
+<ul>
+  <li>When a window receives <code class="highlighter-rouge">WM_NCACTIVATE</code> with <code class="highlighter-rouge">wParam=TRUE</code> , this indicates that the non-client area (the titlebar and border) needs to become active.</li>
+  <li>When <code class="highlighter-rouge">wParam=FALSE</code> , this indicates that the non-client area needs to become inactive.</li>
+  <li>MSDN states that <code class="highlighter-rouge">lParam</code> will always be <code class="highlighter-rouge">0</code>. However, I have observed that <code class="highlighter-rouge">lParam</code> indicates the window handle of the window being deactivated. This appears to be true under win95,98 and NT,2000.</li>
+  <li>A window can <code class="highlighter-rouge">return TRUE</code> to prevent the non-client area from being deactivated.</li>
+</ul>
+
+<p>Now, when this message is passed to <code class="highlighter-rouge">DefWindowProc</code>, two things happen. The first is to redraw the titlebar as either active or inactive, depending on the value of wParam. The second is to set an internal flag for the window which basically remembers if the window was painted as active or inactive. This enables subsequent <code class="highlighter-rouge">WM_NCPAINT</code> updates to correctly paint the titlebar the way it was requested. It is therefore advisable to always pass <code class="highlighter-rouge">WM_NCACTIVATE</code> to <code class="highlighter-rouge">DefWindowProc</code> for proper processing.</p>
+
+<p>If you havn’t realised already, this <code class="highlighter-rouge">WM_NCACTIVATE</code> messages provides us with a way to make all our application tool windows <em>look</em> active, even if they aren’t. Try adding the following code to any window which you want to keep active (this includes any tool windows and the main frame window):</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_NCACTIVATE</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>By overriding any requests to make the non-client area appear inactive, we can create the effect we want.</p>
+
+<p><img src="http://www.catch22.net/assets/img/toolwnd2.gif" alt="{short description of image}" class="align-center" /></p>
+
+<p>Note that MDI child windows also use this same technique to keep their titlebars active. The only difference is that MDI windows have the <code class="highlighter-rouge">WS_CHILD</code> style set, instead of <code class="highlighter-rouge">WS_POPUP</code>.</p>
+
+<h2 id="proper-window-activation">Proper window activation</h2>
+
+<p>The method shown above is all well and good, but there is a problem. The main window and tool windows will <em>always</em> appear active, even if the application is not in the foreground. Also, whenever we decide to display a message box or a normal dialog box, the main window and tool windows will still appear active, when in this scenario we ideally want to make them look inactive.</p>
+
+<p>This calls for a more careful study of window activation messages. The list below describes the series of window activation messages sent when one window becomes active, and another inactive.</p>
+
+<p><strong>WM_MOUSEACTIVATE</strong> is sent to the window to ask it whether or not the activation request should be allowed. The return value (i.e. <code class="highlighter-rouge">MA_ACTIVATE</code> or <code class="highlighter-rouge">MA_NOACTIVATE</code>) effects the subsequent activation messages.</p>
+
+<p><strong>WM_ACTIVATEAPP</strong> is sent when a window belonging to a different application is about to become active (or inactive). The return value should always be zero, and never effects subsequent message’s behaviour.</p>
+
+<p><strong>WM_NCACTIVATE</strong> is sent when a window’s non-client area needs to be activated or deactivated.</p>
+
+<p><strong>WM_ACTIVATE</strong> is sent last of all, to activate the window itself. The default window procedure sets the input focus to the window being activated.</p>
+
+<p>In addition to these messages, I shall describe a couple of scenarios to get you thinking.</p>
+
+<ol>
+  <li>With all of these activation messages, only two windows are actually involved - the window being deactivated, followed by the window being activated. So, even if we have many floating tool windows, not all of them will be affected by window activation. This means that:</li>
+  <li>When our application is activated / deactivated, ALL toolwindows need to be updated to keep in sync with each other - either to be shown as activate or inactive.</li>
+  <li>This also applies to activation within our own application - all toolwindows need to be kept in sync.</li>
+  <li>When the main window is disabled due to a modal dialog or message box being displayed, then the tool windows (or any modeless dialogs) will remain unaffected. It is usually desirable to enable / disable all tool windows in a group to prevent the user from interacting with them whilst a modal dialog is on screen.</li>
+</ol>
+
+<h2 id="popup-window-list">Popup window list</h2>
+
+<p>In order to keep all popup windows (including the main window) synched to the same state, we need to be able to identify all popup windows at any one time. Therefore we will define a function, <code class="highlighter-rouge">GetPopupList</code> , which will return a list of all floating popup windows that we want to keep synchronised. The function will look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">GetPopupList</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndMain</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hList</span><span class="p">[],</span> <span class="n">DWORD</span> <span class="n">nSize</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fIncMain</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>hwndMain</strong> specifies the parent or owner window of the popups that we want to return.</p>
+
+<p><strong>hList</strong> is the address of an array of window handles (HWNDs), which is where we will store the list of popup windows.</p>
+
+<p><strong>nSize</strong> specifies the number of elements in that array (so we don’t accidently overflow it).</p>
+
+<p><strong>fIncMain</strong> is a boolean flag, which specifies whether or not to include the main window (which is also a popup window) in the list.</p>
+
+<p>There are many different ways to implement this function. In the source-download, I simply keep a private list of floating ToolWindows, and copy that into the array provided.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">GetPopupList</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndMain</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hList</span><span class="p">[],</span> <span class="n">DWORD</span> <span class="n">nSize</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fIncMain</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// just copy our private list of popups.
+</span>    <span class="c1">// Also check to see that each popup is owned by hwndMain.
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nNumDocWnds</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nSize</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">hList</span><span class="p">[</span><span class="n">count</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPrivate</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">fIncMain</span><span class="p">)</span>
+        <span class="n">hList</span><span class="p">[</span><span class="n">count</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">hwndMain</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Depending on how you organise the windows in your project, you may need to provide a different implementation of this function. Another method to get a list of popup windows is to use the <code class="highlighter-rouge">EnumThreadWindows</code> API call, and iterate over the popup windows which are owned by the current process. This would also return all windows such as dialog boxes, and non-toolbar windows, so would require more careful coding.</p>
+
+<h2 id="generic-wm_activate-handler">Generic WM_ACTIVATE handler</h2>
+
+<p>Our first stab at a solution will be to concentrate on the <code class="highlighter-rouge">WM_ACTIVATE</code> message. This message is received whenever a window is activated or deactivated. The direction we will take will be to decide if the window receiving this message is active or inactive, and synchronise all other windows to the same state by sending them a “spoof” <code class="highlighter-rouge">WM_NCACTIVATE</code> message. This spoof message will force the other windows to update their titlebars to the same state as the window receiving the <code class="highlighter-rouge">WM_ACTIVATE</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">HANDLE_ACTIVATE</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndMain</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwndList</span><span class="p">[</span><span class="n">MAX_DOCK_WINDOWS</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">nNumWnds</span><span class="p">;</span>
+
+    <span class="n">BOOL</span> <span class="n">fKeepActive</span> <span class="o">=</span> <span class="p">(</span><span class="n">wParam</span> <span class="o">!=</span> <span class="n">WA_INACTIVE</span><span class="p">);</span>
+
+    <span class="c1">// find list of popups
+</span>    <span class="n">nNumWnds</span> <span class="o">=</span> <span class="n">GetPopupList</span><span class="p">(</span><span class="n">hwndMain</span><span class="p">,</span> <span class="n">hwndList</span><span class="p">,</span> <span class="n">MAX_DOCK_WINDOWS</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+
+    <span class="c1">// Sync all other popups to the same state
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nNumWnds</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">WM_NCACTIVATE</span><span class="p">,</span> <span class="n">fKeepActive</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_ACTIVATE</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It works, after a fashion. All popups activate and deactivate correctly, and all at the same time. This solution is not the best though.</p>
+
+<p>The problem is that every popup window’s titlebar flashes whenever the active window changes. This is because of the way Windows sends the <code class="highlighter-rouge">WM_ACTIVATE</code> message. This message is sent first of all to the window that is being deactivated. This causes our handler (above) to deactivate all the popup windows. <code class="highlighter-rouge">WM_ACTIVATE</code> is then received for the active window, which then (correctly) activates all the popup windows. It is this anomaly that causes all the windows to flash.</p>
+
+<p>A partial solution is to perform a check before synchronising all the popup windows. We know that if a window is being deactived, <code class="highlighter-rouge">lParam</code> identifies the window being activated. And if this window is one of our popup windows, we can completely skip synchronizing all the windows, because the popup window that is about to become active will do this anyway.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">fKeepActive</span> <span class="o">==</span> <span class="n">FALSE</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nNumWnds</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="n">HWND</span><span class="p">)</span><span class="n">lParam</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_ACTIVATE</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This prevents every popup window from briefly deactivating, then activating again. There is still a problem, albeit a minor one. The problem is, the single window that is being deactivated will still flicker briefly before being activated again. This is because it will already have received it’s <code class="highlighter-rouge">WM_NCACTIVATE</code> message, which caused the window to deactivate. The window gets it’s activated look eventually, but this brief flicker is still visible.</p>
+
+<h2 id="generic-wm_ncactivate-handler">Generic WM_NCACTIVATE handler</h2>
+
+<p>We need to take a step back and approach the problem from a slightly different direction. Instead of handling <code class="highlighter-rouge">WM_ACTIVATE</code>, which is called after a window’s titlebar is redrawn, we will go straight to the heart of the problem. We will write a handler for the <code class="highlighter-rouge">WM_NCACTIVATE</code> message which will ensure that no unnecessary activation or deactivation will take place.</p>
+
+<p>The function presented below can be called from any window that wants to be kept active alongside all the popup toolbars. The only requirement on your part is to provide a suitable <code class="highlighter-rouge">GetPopupList</code> which includes all these windows.</p>
+
+<p>The handler will perform several tasks, listed below.</p>
+
+<ol>
+  <li>Retrieve a list of current popup windows.</li>
+  <li>Search the list for the other window being activated/deactivated in our place (the window specified by <code class="highlighter-rouge">lParam</code>). If this other window is a toolwindow, then we need to remain active.</li>
+  <li>Synchronize all current popup windows to our (possibly new) state.</li>
+  <li>Activate/deactivate ourselves, depending on our new state.</li>
+</ol>
+
+<p>The code looks like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">HANDLE_NCACTIVATE</span><span class="p">(</span><span class="n">hwndMain</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="n">HWND</span> <span class="n">hwndList</span><span class="p">[</span><span class="n">MAX_DOCK_WNDS</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">nNumWnds</span><span class="p">;</span>
+
+    <span class="n">HWND</span> <span class="n">hParam</span> <span class="o">=</span> <span class="p">(</span><span class="n">HWND</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="n">fKeepActive</span> <span class="o">=</span> <span class="n">wParam</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="n">fSyncOthers</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+
+    <span class="n">nNumWnds</span> <span class="o">=</span> <span class="n">GetPopupList</span><span class="p">(</span><span class="n">hwndMain</span><span class="p">,</span> <span class="n">hwndList</span><span class="p">,</span> <span class="n">MAX_DOCK_WNDS</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+
+    <span class="c1">// UNDOCUMENTED FEATURE:
+</span>    <span class="c1">// If the other window being activated/deactivated
+</span>    <span class="c1">// (i.e. NOT this one) is one of our popups, then go (or stay) active.
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nNumWnds</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">hParam</span> <span class="o">==</span> <span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">fKeepActive</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+            <span class="n">fSyncOthers</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// If this message was sent by the synchronise-loop (below)// then exit normally. If we don't do this, there will be an infinite loop!
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">hParam</span> <span class="o">==</span> <span class="p">(</span><span class="n">HWND</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_NCACTIVATE</span><span class="p">,</span> <span class="n">fKeepActive</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// This window is about to change (inactive/active).// Sync all other popups to the same state 
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">fSyncOthers</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nNumWnds</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// DO NOT send this message to ourselves!!!!
+</span>            <span class="k">if</span><span class="p">(</span><span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">hwnd</span> <span class="o">&amp;&amp;</span> <span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">hParam</span><span class="p">)</span>
+                <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">WM_NCACTIVATE</span><span class="p">,</span> <span class="n">fKeepActive</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_NCACTIVATE</span><span class="p">,</span> <span class="n">fKeepActive</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The code above uses an undocumented feature of the <code class="highlighter-rouge">WM_NCACTIVATE</code> message which I observed whilst experimenting with these activation messages. The MSDN documentation states that <code class="highlighter-rouge">lParam</code> is unused (presumably zero), but this is not the case under Windows 95,98,ME, and NT,2000,XP.</p>
+
+<p>Instead, <code class="highlighter-rouge">lParam</code> is a handle to the other window being activated/deactivated in our place. (i.e. if we are being deactivated, <code class="highlighter-rouge">lParam</code> will be the handle to the window being activated). This is not always the case, specifically when the other window being activated/deactivated belongs to another process. In this case, <code class="highlighter-rouge">lParam</code> will be zero.</p>
+
+<p><strong>Updated 31-8-2006:</strong> It has been brought to my attention that <code class="highlighter-rouge">lParam</code> will be NULL when the other window being activated/deactivate belongs to another <em>thread</em> - not just a different process. Therefore care should be taken when using this technique - all toolbars / windows involved in this activation scheme must belong to the same <em>thread</em>.</p>
+
+<h2 id="generic-wm_enable-handler">Generic WM_ENABLE handler</h2>
+
+<p>This task is optional, but will make your application slicker if you do include this functionality. This message handler is required for the following situation. Whenever a modal dialog box or message box is displayed, the main application window (and all it’s children) become disabled. This feature prevents the user from clicking on and activating the main window whilst the modal dialog is displayed.</p>
+
+<p>However, popups, modeless dialogs, or any floating window will not be disabled. This means that the user can quite easily activate these windows whilst a modal dialog is displayed. In my opinion, this is not a good idea because the whole idea of a modal dialog is to present the user with a single, uninterruptable task. The solution is to write a simple <code class="highlighter-rouge">WM_ENABLE</code> handler which we can call from the main window procedure. Whenever a <code class="highlighter-rouge">WM_ENABLE</code> is received (either to enable or disable), the handler simply enables/disables all the current floating toolwindows to the same state.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">HANDLE_ENABLE</span><span class="p">(</span><span class="n">hwndMain</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="n">HWND</span> <span class="n">hwndList</span><span class="p">[</span><span class="n">MAX_DOCK_WNDS</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">nNumWnds</span><span class="p">;</span>
+
+    <span class="n">HWND</span> <span class="n">hParam</span> <span class="o">=</span> <span class="p">(</span><span class="n">HWND</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+    
+    <span class="n">nNumWnds</span> <span class="o">=</span> <span class="n">GetPopupList</span><span class="p">(</span><span class="n">hwndMain</span><span class="p">,</span> <span class="n">hwndList</span><span class="p">,</span> <span class="n">MAX_DOCK_WNDS</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+
+    <span class="c1">// Synchronise all toolwindows to the same state.
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nNumWnds</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">hwnd</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">EnableWindow</span><span class="p">(</span><span class="n">hwndList</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">wParam</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">//just do the default
+</span>    <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_ENABLE</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="using-the-handler-in-your-application">Using the handler in your application</h2>
+
+<p>In order to use the <code class="highlighter-rouge">WM_NCACTIVATE</code> message handler in your own application, you need to do two things. Firstly, you need to call the handler from ANY window that you want to keep active along side another. This includes the main window, and any popup windows that you to keep synchronised. The second requirement is to ensure that the <code class="highlighter-rouge">GetPopupList</code> function returns the correct list of popups for your particular application.</p>
+
+<p>Special care needs to be taken when calling <code class="highlighter-rouge">HANDLE_NCACTIVATE</code>. As well as passing the window handle for which the message was received (the second parameter), the top-level owner window also needs to be specified, as the first parameter. For the top-level window in your application, the same window handle must be used for the first and second parameter:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_NCACTIVATE</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">HANDLE_NCACTIVATE</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>On the other hand, a popup window would call the handler slightly differently. The main top-level window still needs to be specified as the first parameter, so this window needs to be retrieved for any popup window whilst processing this message:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_NCACTIVATE</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">HANDLE_NCACTIVATE</span><span class="p">(</span><span class="n">GetOwner</span><span class="p">(</span><span class="n">hwnd</span><span class="p">),</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The sample application in the source-download shows you exactly how to use the handler in your own applications, so you shouldn’t have any problems figuring it all out.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully you have learnt how to create “proper” floating tool windows. This technique has been around since the days of Windows 3.0 (and probably earlier), but clear information on the subject always seems to be difficult to find.</p>
+
+<p>This article went on a bit longer than I originally wanted it to. However, I felt it was important to cover all the angles, to give the reader a better understanding of how windows really works.</p>
+
+<p>The next article in this two-part series will show you how to make these floating tool windows into dockable windows, so stay tuned!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dock1.zip">dock1.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-11-20T00:00:00+00:00">November 20, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="custom-controls.html" class="pagination--pager" title="Custom Controls
+">Previous</a>
+    
+    
+      <a href="flicker-free-drawing.html" class="pagination--pager" title="Flicker-free Drawing
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/docking-toolbars-part-1 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

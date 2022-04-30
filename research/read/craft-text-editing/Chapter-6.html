@@ -1,0 +1,1734 @@
+<html>
+<title>The Craft of Text Editing: Chapter 6</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-6.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 6: The Internal Sub-Editor</h1>
+
+<blockquote>
+Came whiffling through the tulgey wood,<br>
+&nbsp;&nbsp;And burbled as it came!<br>
+</blockquote>
+
+<p>There are many ways to decompose the implementation of a text
+editor into smaller pieces.  This book analyzes one particular
+decomposition: that into a sub-editor to manage the text being edited,
+redisplay, and the user-oriented commands.  (There are no other
+pieces: when these have been assembled, the editor is complete.)  This
+particular decomposition was chosen for two reasons.  First, it is a
+natural one with relatively simple interfaces between the parts.
+Second, it has been chosen for many different implementations: it is
+thus known to be a decomposition that works well.  This chapter covers
+the internal sub-editor.  The following chapters describe the other
+parts.</p>
+
+<p>The purpose of the internal sub-editor is to hide all of the
+details of how the text is stored from the redisplay and the
+user-oriented commands.  This chapter will begin by presenting some
+basic concepts and definitions.  It will then list internal data needs
+and describe a procedural interface.  Finally, it will present a
+number of ways to implement the actual sub-editor and discuss the
+trade-offs between them.</p>
+
+<h2>Basic Concepts and Definitions</h2>
+
+<p>A <i>buffer</i> is the basic unit of text being edited.  It can be
+any size, from zero characters to the largest item that can be
+manipulated on the computer system.  This limit on size is usually set
+by such factors as address space, amount of real and/or virtual
+memory, and mass storage capacity.  A buffer can exist by itself, or
+it can be associated with at most one file.  When associated with a
+file, the buffer is a copy of the contents of the file at a specific
+time.  A file, on the other hand, can be associated with any number of
+buffers, each one being a copy of that file's contents at the same or
+at different times.</p>
+
+<p>A <i>write</i> operation replaces the contents of a file with the
+contents of a buffer.  Thus, the two have identical contents for at
+least one moment.  A <i>read</i> operation replaces the buffer with
+the contents of a file.  Again, the two have identical contents for at
+least one moment.  An <i>insert</i> operation adds the contents of the
+file to the buffer: the two will not have identical contents unless
+the buffer was empty just before the insertion.</p>
+
+<p>The buffer interface presented here follows the
+&quot;one-dimensional array of characters&quot; model as described in
+Chapter 5.  As will be seen, however, the implementation need not
+follow that model.  When stored as text in the buffer, line breaks
+will be represented by a single character, called <i>newline</i>.</p>
+
+<p>At any one time there is one and only one special position within
+the buffer.  This position is called the <i>point</i>.  All operations
+that change the contents of the buffer occur at this position.  There
+are also operations whose sole purpose is to move the point.  The
+point can exist only <i>between</i> two characters: it is never on a
+character.  On those displays that can only position a cursor on a
+character, the convention is to place the point at the left edge of
+the cursor.</p>
+
+<p>The start of the buffer (which corresponds to the first location in
+the file) is considered <i>before</i> or <i>backward from</i> the
+point.  The end of the buffer is considered to be <i>after</i> or
+<i>forward from</i> the point.</p>
+
+<p>From time to time, it is useful to be able to remember positions
+within a buffer.  A <i>mark</i> is an object that can remember a
+position.  There can be any number of marks within a buffer, and more
+than one mark can remember the same position.  As with the point, a
+mark is always located between two characters.</p>
+
+<p>When there is exactly one mark, the range of characters between the
+point and the mark is called the <i>region</i>.  It does not matter
+which order the point and mark are in.</p>
+
+<p>Here are two examples of how marks are used:</p>
+
+<ul>
+<li>A mark may remember a specific location for future reference.  For
+example, a command might paginate a file.  In this case, a mark would
+remember where the point was when the command was invoked.  Thus, the
+point could be moved during the re-pagination and returned to its
+initial starting place.
+
+<li>A mark can serve as bounds for iteration.  For example, the
+&quot;fill paragraph&quot; command might place a mark at its starting
+place, move to the end of the paragraph and place a mark there, then
+move to the beginning of the paragraph.  It then performs a &quot;fill
+region&quot; operation, filling from the point to the location of the
+second mark.
+</ul>
+
+<p>There are two types of marks.  They differ only in how they behave
+in the case that an insertion is made at the location of the mark.
+<i>Normal marks</i> move with the insertion.  Thus, the newly inserted
+character will be just before the mark.  <i>Fixed marks</i> remain in
+place: the newly inserted character will be just after the mark.  An
+example of the difference is in the case where a command is to
+identify the characters that are inserted.  The command merely needs
+to create both a fixed and a normal mark at the same place.  After the
+insertion, the two marks will bracket the new characters.</p>
+
+<p>A <i>mode</i> is a set of alterations to the user-oriented command
+set.  For example, &quot;C mode&quot; might alter the definitions of
+the word-, sentence-, and paragraph-oriented commands to apply to
+tokens, language statements, and block structure.  Modes are described
+in more detail in Chapter 8.</p>
+
+<p>Finally, the term <i>character</i> denotes the basic unit of change
+within a buffer.  While characters can be any size, they are most
+often eight bits long.  In such a case, the term <i>byte</i> may be
+used interchangeably with <i>character</i>.</p>
+
+<h2>Internal Data Structures</h2>
+
+<p>This section discusses the sub-editor's data structures.  All of
+the sub-editor's state information is defined in this chapter. Thus,
+if your implementation retains this information across invocations,
+you can offer the user the ability to resume editing where he or she
+left off, thus reducing the amount of work required to edit a
+file.</p>
+
+<p>The other place where state information is kept is in the screen
+manager which is described in the following chapter.  The screen
+manager is that part of the software which knows what was displayed on
+the user's screen.  If that knowledge is not retained across
+invocations, the information displayed on the user's screen may change
+when the user exits and re-enters the editor.  If that knowledge is
+retained, the information can be recreated exactly.</p>
+
+<p>All of the specifics of the data structures listed here are
+examples only.  You will undoubtedly wish to change some or all of
+them.</p>
+
+<p>The <i>world</i> contains all of the buffers in use by the editor.
+It is a circular list of buffer descriptors and a variable that
+indicates which is the current buffer.  In C syntax:</p>
+
+<pre>
+	struct {
+		struct buffer *buffer_chain;
+		struct buffer *current_buffer;
+		} world;
+</pre>
+
+<p>Each buffer descriptor has this internal information:</p>
+
+<pre>
+	struct buffer {
+		struct buffer *next_chain_entry;
+		char buffer_name[BUFFERNAMEMAX];
+
+		location point;
+		int cur_line;
+		int num_chars;
+		int num_lines;
+
+		struct mark *mark_list;
+
+		struct storage *contents;
+
+		char file_name[FILENAMEMAX];
+		time file_time;
+		FLAG is_modified;
+
+		struct mode *mode_list;
+		};
+</pre>
+
+<p><b>Next_chain_entry</b> is the mechanism used for implementing the
+circular list of buffers.  The list is circular because there is no
+preferred (or &quot;origin&quot;) buffer and it should be possible to
+get to any buffer with equal ease.</p>
+
+<p><b>Buffer_name</b> is a character string that allows the user to be
+able to refer to the buffer.</p>
+
+<p><b>Point</b> is the current location where editing operations are
+taking place.  It is defined in terms of a private data type, since
+different implementations will use different representations.  As it
+turns out, there is never a need for any code outside of the
+sub-editor to ever be aware of the representation of this data
+type.</p>
+
+<p><b>Cur_line</b> is optional.  If implemented, it provides a
+high-speed way to track the current line number.</p>
+
+<p><b>Num_chars</b> is optional.  If implemented, it provides a
+high-speed way to track the total number of characters in the buffer
+(its length).</p>
+
+<p><b>Num_lines</b> is optional.  If implemented, it provides a
+high-speed way to track the total number of lines in the buffer.</p>
+
+<p><b>Mark_list</b> is the list of marks defined for this buffer.  The
+mark structure is defined later.</p>
+
+<p><b>Contents</b> indicates the actual buffer contents.  As with the
+location data type, its specifics will vary with the
+implementation.</p>
+
+<p><b>File_name</b> is the name of the file associated with the
+buffer, or the empty string if there is no associated file.</p>
+
+<p><b>File_time</b> is the last time at which the contents of the file
+and buffer were identical (<i>i.e.</i>, the time of the last read or
+write).  On multi-process systems, this value can be used to determine
+whether the contents of the file have been changed by another process,
+and thus whether the copy being edited is in synchronization with the
+actual file.</p>
+
+<p><b>Is_modified</b> indicates whether the buffer has been modified
+since it was last written out or read in.</p>
+
+<p><b>Mode_list</b> is the list of modes in effect for the buffer. The
+mode structure is defined next.</p>
+
+<pre>
+	struct mark {
+		struct mark *next_mark;
+		mark_name name;
+		location where_it_is;
+		FLAG is_fixed;
+		};
+</pre>
+
+<p>This structure is a linked list and is repeated for every mark. The
+chain is not circular.  It probably is a good idea to keep the list
+sorted in the order that the marks appear in the buffer.</p>
+
+<p><b>Next_mark</b> is a pointer to the next mark in the chain.  A
+NULL pointer indicates the end of the chain.</p>
+
+<p><b>Name</b> is the name of the mark.  This name is returned by the
+mark creation routine and provides a way for the user to refer to
+specific marks.  If your implementation permits, you can just return a
+pointer to the mark structure instead of making up names.</p>
+
+<p><b>Where_it_is</b> is the mark's location.</p>
+
+<p><b>Is_fixed</b> indicates whether the mark is a fixed mark.</p>
+
+<pre>
+	struct mode {
+		struct mode *next_mode;
+		char *mode_name;
+		status (*add_proc)();
+		};
+</pre>
+
+<p>This structure is a linked list and is repeated for every mode that
+is in effect for the current buffer. The chain is not circular.  While
+modes should be defined in such a way that it does not matter what
+order they are invoked in, it is probably not possible to meet this
+requirement in actual practice.  Thus, this list must be kept sorted
+in invocation order.  Modes are discussed in more detail in Chapter
+8.</p>
+
+<p><b>Next_mode</b> is a pointer to the next mode in the chain.  A
+NULL pointer indicates the end of the chain.</p>
+
+<p><b>Mode_name</b>, if non-NULL, is the name added to the list of
+names of modes in effect.  This list is ordinarily displayed somewhere
+on the screen.  Note that there should be a mechanism for defining
+modes that do not have displayed names.</p>
+
+<p><b>Add_proc</b> is a pointer to a procedure to execute whenever the
+command set for this buffer needs to be created or re-created.  The
+procedure should make all required modifications to the global command
+tables and return a success/fail status.</p>
+
+<h2>Procedure Interface Definitions</h2>
+
+<p>This section defines the interface provided by the sub-editor.  The
+procedures will be described in terms of their logical function only,
+leaving out specific implementation details.  An example of such a
+detail is a method of determining whether the operation succeeded.
+(The undefined type &quot;status&quot; will be used to indicate places
+where status information is especially desirable.)  All data types
+mentioned (<i>e.g.</i>, string) are intended to be generic, and no
+specific implementations are assumed.</p>
+
+<p>One question that is important to your implementation but not
+addressed in this definition is whether the caller or callee allocates
+the data structures.  This chapter will assume that the callee
+allocates all data.</p>
+
+<p>The names are selected for their mnemonic value.  Actual
+implementations may be forced to change them to conform to local
+limits.  In addition, you may wish to add a unique prefix (such as
+&quot;Buf&quot; or &quot;SE&quot;) to them all to prevent name
+conflicts.</p>
+
+<pre>
+	status World_Init(void);
+	status World_Fini(void);
+	status World_Save(char *file_name);
+	status World_Load(char *file_name);
+</pre>
+
+<p><b>World_Init</b> is the basic set-up-housekeeping call.  It is
+called once, upon editor invocation.  It should perform all required
+one-time initialization operations.  No other sub-editor procedure
+except for <b>World_Fini</b> can be legally called unless
+<b>World_Init</b> returns a successful status.  After this call, one
+empty buffer exists (perhaps called &quot;scratch&quot; or something
+similar).</p>
+
+<p><b>World_Fini</b> terminates all sub-editor state information.
+Once called, <b>World_Init</b> must be called again before other
+sub-editor calls can be legally made.</p>
+
+<p><b>World_Save</b> saves all editor state information in the
+specified file.</p>
+
+<p><b>World_Load</b> loads all editor state information from the
+specified file.  These two routines implement state-saving across
+editor invocations.  The possibility of retaining multiple saved
+environments is interesting but, while it has been implemented, is not
+a feature that receives much use.  It is perhaps too difficult for
+users to keep track of multiple editing environments or users may
+prefer to be able to switch among tasks without having to perform a
+save and load.</p>
+
+<p>If you are creating a &quot;stripped down&quot; editor, the
+<b>World_Save</b> and <b>World_Load</b> routines would not do
+anything.  They can be put in as stubs if there is a reasonable
+possibility that the editor will be embellished later.</p>
+
+<pre>
+	status Buffer_Create(char *buffer_name);
+	status Buffer_Clear(char *buffer_name);
+	status Buffer_Delete(char *buffer_name);
+	status Buffer_Set_Current(char *buffer_name)
+	char *Buffer_Set_Next(void);
+	status Buffer_Set_Name(char *buffer_name);
+	char *Buffer_Get_Name(void);
+</pre>
+
+<p>These routines all manipulate buffer objects.  Their definitions
+assume that character string names are used to specify buffer objects.
+As with marks, pointers to buffer structures can also be used if your
+implementation permits.</p>
+
+<p>As with many other questions, it is an implementation choice as to
+whether the sub-editor retains a &quot;current buffer&quot; or whether
+a buffer is explicitly provided to all remaining sub-editor calls.
+This definition chooses the former; as buffer changes are performed
+only (comparatively) rarely, and hence it is probably helpful to the
+sub-editor to be able to cache the information relating to the current
+buffer.</p>
+
+<p>Note that most of these calls are not useful for single buffer
+implementations as might be found in very resource-limited
+environments (<i>e.g.</i>, a toaster).  Such implementations should
+only include the calls if there is a reasonable chance of expanding to
+a multiple buffer editor in the future.</p>
+
+<p><b>Buffer_Create</b> takes a name and creates an empty buffer with
+that name.  Note that no two buffers may have the same name.</p>
+
+<p><b>Buffer_Clear</b> removes all characters and marks from the
+specified buffer.</p>
+
+<p><b>Buffer_Delete</b> deletes the specified buffer.  If the
+specified buffer is the current one, the next buffer in the chain
+becomes the current one.  If no buffers are left, the initial
+&quot;scratch&quot; buffer is automatically re-created.</p>
+
+<p><b>Buffer_Set_Current</b> sets the current buffer to the one
+specified.</p>
+
+<p><b>Buffer_Set_Next</b> sets the current buffer to the next one in
+the chain, and it returns the name of the new buffer.  This mechanism
+allows for iterating through all buffers looking for one which meets
+an arbitrary test.</p>
+
+<p><b>Buffer_Set_Name</b> changes the name of the current buffer to
+that specified.</p>
+
+<p><b>Buffer_Get_Name</b> returns the name of the current buffer.</p>
+
+<pre>
+	status Point_Set(location loc);
+	status Point_Move(int count);
+	location Point_Get(void);
+	int Point_Get_Line(void);
+	location Buffer_Start(void);
+	location Buffer_End(void);
+</pre>
+
+<p><b>Point_Set</b> sets the point to the specified location.</p>
+
+<p><b>Point_Move</b> moves the point forward (if <i>count</i> is
+positive) or backward (if negative) by <i>abs(count)</i>
+characters.</p>
+
+<p><b>Point_Get</b> returns the current location.</p>
+
+<p><b>Point_Get_Line</b> returns the number of the line that the point
+is on.  Note that while characters are numbered starting from zero,
+lines are numbered starting from one.</p>
+
+<p><b>Buffer_Start</b> returns the location of the start of the
+buffer.</p>
+
+<p><b>Buffer_End</b> returns the location of the end of the
+buffer.</p>
+
+<pre>
+	int Compare_Locations(location loc1, location loc2);
+	int Location_To_Count(location loc);
+	location Count_To_Location(int count);
+</pre>
+
+<p>These are miscellaneous utility routines.</p>
+
+<p><b>Compare_Location</b> returns 1 if location <i>loc1</i> is after
+<i>loc2</i>, 0 if they are the same location, or -1 if <i>loc1</i> is
+before <i>loc2</i>.</p>
+
+<p><b>Location_To_Count</b> accepts a location and returns the number
+of characters between the location and the beginning of the buffer.
+The point's percentage position can be computed by:</p>
+
+<pre>
+	((float)Location_To_Count(Point_Get()) * 100.) / ((float)Get_Num_Chars())
+</pre>
+
+<p><b>Count_To_Location</b> accepts a non-negative count and converts
+it to the corresponding location.  You can set the point to a position
+specified by an absolute character count by:</p>
+
+<pre>
+	Point_Set(Count_To_Location(count));
+</pre>
+
+<pre>
+	status Mark_Create(mark_name *name, FLAG is_fixed);
+	void Mark_Delete(mark_name name);
+	status Mark_To_Point(mark_name name);
+	status Point_To_Mark(mark_name name);
+	location Mark_Get(mark_name name);
+	status Mark_Set(mark_name name, location loc);
+	FLAG Is_Point_At_Mark(mark_name name);
+	FLAG Is_Point_Before_Mark(mark_name name);
+	FLAG Is_Point_After_Mark(mark_name name);
+	status Swap_Point_And_Mark(mark_name name);
+</pre>
+
+<p>These routines manage marks.  They allow for creating both normal
+and fixed marks, deleting marks, and otherwise manipulating them.
+Except when creating them, there is no difference in usage with these
+routines between normal marks and fixed marks (although their behavior
+will differ).</p>
+
+<p><b>Mark_Create</b> creates a new mark of the specified type and
+returns its name.  The new mark is positioned at the point.</p>
+
+<p><b>Mark_Delete</b> deletes the specified mark.</p>
+
+<p><b>Mark_To_Point</b> sets the location of the specified mark to the
+point.</p>
+
+<p><b>Point_To_Mark</b> sets the point to the location of the
+specified mark.</p>
+
+<p><b>Mark_Get</b> returns the location for the mark.  This is not
+actually used all that much, as the location value can change whenever
+any sub-editor call is made.</p>
+
+<p><b>Mark_Set</b> moves the specified mark to the specified
+location.</p>
+
+<p><b>Is_Point_At_Mark</b> returns True if the point is at the
+specified mark.</p>
+
+<p><b>Is_Point_Before_Mark</b> returns True if the point is before the
+specified mark.</p>
+
+<p><b>Is_Point_After_Mark</b> returns True if the point is after the
+specified mark.</p>
+
+<p><b>Swap_Point_And_Mark</b> swaps the locations of the point and the
+specified mark.</p>
+
+<p>With these definitions, the basic way of doing something over a
+region would be like this:</p>
+
+<pre>
+	status Do_Something_Over_Region(mark_name name)
+		{
+		FLAG was_before = Is_Point_Before_Mark(name);
+		mark_name saved;
+		status stat = OK;
+
+			/* ensure that the point is before the mark */
+		if (!was_before) Swap_Point_And_Mark(name);
+
+			/* remember where we started */
+		if (Mark_Create(&amp;saved) != OK) {
+			if (!was_before) Swap_Point_And_Mark(name);
+			return(NOT_OK);
+			}
+
+			/* loop until you get to the mark */
+		for ( ; !Is_Point_At_Mark(name); Point_Move(1)) {
+			if (&lt;do something&gt; != OK) {
+				stat = NOT_OK;
+				break;
+				}
+			}
+
+			/* all done, put the point back */
+		Point_To_Mark(saved);
+		Mark_Delete(saved);
+			/* put the point and mark back where they started */
+		if (!was_before) Swap_Point_And_Mark(name);
+		return(stat);
+		}
+</pre>
+
+<p>The way that this procedure records the initial positions of the
+point and mark (a flag and a saved mark) is a little confusing.
+Unfortunately, it is less confusing than the alternative of creating
+two saved marks.</p>
+
+<pre>
+	char Get_Char(void);
+	void Get_String(char *string, int count);
+	int Get_Num_Chars(void);
+	int Get_Num_Lines(void);
+</pre>
+
+<p>These routines return buffer-related information.</p>
+
+<p><b>Get_Char</b> returns the character after the point.  Its results
+are undefined if the point is at the end of the buffer.</p>
+
+<p><b>Get_String</b> returns up to <i>count</i> characters starting
+from the point.  It will return fewer than <i>count</i> characters if
+the end of the buffer is encountered.</p>
+
+<p><b>Get_Num_Chars</b> returns the number of characters in the buffer
+(<i>i.e.</i>, the length of the buffer).</p>
+
+<p><b>Get_Num_Lines</b> returns the number of lines in the buffer. It
+is undefined whether or not one counts an incomplete last line.</p>
+
+<pre>
+	void Get_File_Name(char *file_name, int size);
+	status Set_File_Name(char *file_name);
+	status Buffer_Write(void);
+	status Buffer_Read(void);
+	status Buffer_Insert(char *file_name);
+	FLAG Is_File_Changed(void);
+	void Set_Modified(FLAG is_modified);
+	FLAG Get_Modified(void);
+</pre>
+
+<p>These routines provide file-related operations.</p>
+
+<p><b>Get_File_Name</b> returns the file name that is currently
+associated with the current buffer.  <i>Size</i> is the size of the
+buffer allocated for the returned file name.</p>
+
+<p><b>Set_File_Name</b> sets the file name for the current buffer.</p>
+
+<p><b>Buffer_Write</b> writes the buffer to the currently named file,
+making any required conversions between the internal and external
+representations.  The modified flag is cleared and the file time is
+updated to the current time.</p>
+
+<p><b>Buffer_Read</b> clears the buffer and reads the currently named
+file into the buffer, making any required conversions between the
+external and internal representations.  The modified flag is cleared
+and the file time is updated to the current time.</p>
+
+<p><b>Buffer_Insert</b> inserts the contents of the specified file
+into the buffer at the point, making any required conversions between
+the external and internal representations.  The modified flag is set
+if the file was not empty.</p>
+
+<p><b>Is_File_Changed</b> returns True if the file has been changed
+since it was last read or written.</p>
+
+<p><b>Set_Modified</b> sets the state of the modified flag to the
+supplied value.  It is most often used manually to clear the
+modification flag in the case where the user is sure that any changes
+should be discarded.  This flag is set by any insertion, deletion, or
+other change to the buffer.</p>
+
+<p><b>Get_Modified</b> returns the modification flag.</p>
+
+<pre>
+	status Mode_Append(char *mode_name, status (*add_proc)(), FLAG is_front);
+	status Mode_Delete(char *mode_name);
+	status Mode_Invoke(void);
+</pre>
+
+<p>These routines manage the multiple mode capability.</p>
+
+<p><b>Mode_Append</b> appends a mode with the supplied name and add
+procedure to the mode list.  If <i>is_front</i> is True, the new mode
+is added to the front of the mode list.  Otherwise, it is added at the
+end.</p>
+
+<p><b>Mode_Delete</b> removes the named mode from the mode list.</p>
+
+<p><b>Mode_Invoke</b> invokes the &quot;add&quot; procedures on the
+mode list to create a command set.</p>
+
+<pre>
+	void Insert_Char(char c);
+	void Insert_String(char *string);
+	void Replace_Char(char c);
+	void Replace_String(char *string);
+	status Delete(int count);
+	status Delete_Region(mark_name name);
+	status Copy_Region(char *buffer_name, mark_name name);
+</pre>
+
+<p>These routines manipulate the buffer.  All of them set the
+modification flag.</p>
+
+<p><b>Insert_Char</b> inserts one character at the point.  The point
+is placed after the inserted character.</p>
+
+<p><b>Insert_String</b> inserts a string of characters at the point.
+The point is placed after the string.</p>
+
+<p><b>Replace_Char</b> replaces one character with another.  This
+routine is logically equivalent to:</p>
+
+<pre>
+	Insert_Char(c);
+	Delete(1);
+</pre>
+
+<p>but is potentially more efficient.  If the point is at the end of
+the buffer, the routine simply does an insert.</p>
+
+<p><b>Replace_String</b> replaces a string as if <b>Replace_Char</b>
+is called on each of its characters.</p>
+
+<p><b>Delete</b> removes the specified number of characters from the
+buffer.  The specified number of characters are removed after the
+point if <i>count</i> is positive or before the point if <i>count</i>
+negative.  If the specified count extends beyond the start or end of
+the buffer, the excess is ignored.</p>
+
+<p><b>Delete_Region</b> removes all characters between the point and
+the mark.</p>
+
+<p><b>Copy_Region</b> copies all characters between the point and the
+mark to the specified buffer, inserting them at the point.  The basic
+Emacs Wipe Region command is actually implemented as:</p>
+
+<pre>
+	Copy_Region(kill_buffer, mark);
+	Delete_Region(mark);
+</pre>
+
+<p>This example also shows that even though an implementation presents
+only a single buffer to the user, a multiple buffer implementation may
+actually be required.</p>
+
+<pre>
+	status Search_Forward(char *string);
+	status Search_Backward(char *string);
+	FLAG Is_A_Match(char *string);
+	status Find_First_In_Forward(char *string);
+	status Find_First_In_Backward(char *string);
+	status Find_First_Not_In_Forward(char *string);
+	status Find_First_Not_In_Backward(char *string);
+</pre>
+
+<p>These routines handle searching and matching strings.  While it is
+possible to implement these routines in terms of routines that have
+already been defined, because of their repetitive nature, it helps
+performance if they are built into the sub-editor.  (Actually, the
+same can be said of several of the other routines that have been
+defined such as <b>Insert_String</b>.)</p>
+
+<p><b>Search_Forward</b> searches forward for the first occurance of
+<i>string</i> after the point and, if found, leaves the point at the
+end of the found string.  Successive searches will thus locate
+successive instances of the string.  If not found, the point is not
+moved.  Types of searches are discussed in Chapter 9.</p>
+
+<p><b>Search_Backward</b> works like <b>Search_Forward</b>, except
+that the search proceeds backward and the point is placed at the start
+of the found string (<i>i.e.</i>, the end closest to the start of the
+buffer).</p>
+
+<p><b>Is_A_Match</b> returns True if the string matches the contents
+of the buffer starting at the point.  In other words, it returns True
+if <b>Search_Forward</b> would move the point <i>strlen(string)</i>
+characters forward.</p>
+
+<p><b>Find_First_In_Forward</b> searches the buffer starting from the
+point for the first occurence of any character in the supplied string.
+Thus, <i>Find_First_In_Forward(&quot;0123456789&quot;)</i> would leave
+the point before the first digit found after the point.  Unlike the
+<b>Search_*</b> routines, this routine leaves the point at the end of
+the buffer if no characters in the string are found.  A typical use of
+the <b>Find_*</b> routines is this sequence, which skips over the
+first number after the point:</p>
+
+<pre>
+	Find_First_In_Forward(&quot;0123456789&quot;);
+	Find_First_Not_In_Forward(&quot;0123456789&quot;);
+</pre>
+
+<p><b>Find_First_In_Backward</b> works in the obvious way.</p>
+
+<p><b>Find_First_Not_In_Forward</b> searches for the first occurence
+of any character <i>not</i> in the supplied string.  Thus,</p>
+
+<p><i>Find_First_Not_In_Forward(&quot;0123456789&quot;)</i> would
+leave the point before the first non-digit found after the point.
+Unlike the <b>Search_*</b> routines, this routine leaves the point at
+the end of the buffer if no characters in the string are found.</p>
+
+<p><b>Find_First_Not_In_Backward</b> works in the obvious way.</p>
+
+<p>Here are some examples of using the <b>Find_*</b> routines:</p>
+
+<p>To move to the start of the next line:</p>
+
+<pre>
+	Find_First_In_Forward(NEWLINE);
+</pre>
+
+<p>To move to the start of the next word:</p>
+
+<pre>
+	Find_First_In_Forward(word_chars);
+	Find_First_Not_In_Forward(word_chars);
+</pre>
+
+<pre>
+	int Get_Column(void);
+	void Set_Column(int column, FLAG round);
+</pre>
+
+<p><b>Get_Column</b> returns the zero-origin column that the point is
+in, after taking into account tab stops, variable-width characters,
+and other special cases, but <i>not</i> taking into account the screen
+width.  (After all, the width of the display that the user happens to
+be using should not affect the actions of an editing command.)</p>
+
+<p><b>Set_Column</b> moves the point to the desired column, stopping
+at the end of a line if the line is not long enough.  If the specified
+column cannot be reached exactly (due to tab stops or other special
+cases), it uses the <i>round</i> flag.  If the flag is set, the point
+is &quot;rounded&quot; to the nearest available column position.  If
+the flag is clear, the point is moved to the next highest available
+column position.</p>
+
+<h2>Characteristics of Implementation Methods</h2>
+
+<p>This section describes how implementation methods may be
+characterized, and then describes three of those methods in detail.
+All of those methods are assumed to store the buffers in the
+equivalent of main memory.  Depending upon the physical
+characteristics of the computer, &quot;main memory&quot; can be actual
+memory, in virtual memory, or readily mappable into virtual memory.  A
+later section describes methods for dealing with files that do not fit
+into main memory.</p>
+
+<p>The implementation methods discussed here use two-level
+&quot;divide and conquer&quot; strategies.  The first level divides
+the buffer into pieces.  The size ranges for each piece are:</p>
+
+<ul>
+<li>one character
+<li>a small number of characters (<i>e.g.</i>, 16 to 64)
+<li>a line
+<li>a large number of characters (<i>e.g.</i>, 512 to 4,096)
+<li>the entire buffer
+</ul>
+
+<p>The pieces can be kept in an array, a linked list, or some other
+structure. The second level describes how the pieces are managed:</p>
+
+<ul>
+<li>no management
+<li>extra space at the end
+<li>buffer gap
+</ul>
+
+<p>Each of these second-level techniques will be described in
+detail.</p>
+
+<h3>No Management</h3>
+
+<p>In this technique, the piece is allocated exactly enough memory to
+hold it.  The length of the piece is the only &quot;overhead&quot;
+information.  A deletion is done by allocating a new piece of the
+desired (smaller) size, then copying the non-deleted portions from the
+old piece to the new one.  An insertion is done by allocating a new
+piece of the desired (larger) size, then copying the old piece to the
+new one, inserting the new characters on the way.  In code:</p>
+
+<pre>
+	struct piece {
+		int length;
+		char data[1];	/* length characters */
+		}
+
+		/* delete LEN characters starting from START */
+	struct piece *Delete_From_Piece(struct piece *pptr, int start, int len)
+		{
+		struct piece *newptr;
+		int newlen = pptr-&gt;length - len;
+
+			/* allocate new piece */
+		newptr = (struct piece *)malloc(sizeof(struct piece) +
+			newlen - 1);
+		if (newptr == NULL) return(NULL);
+
+			/* copy non-deleted parts */
+		memmove(&amp;newptr-&gt;data[0], &amp;pptr-&gt;data[0], start);
+
+		memmove(&amp;newptr-&gt;data[start],
+			&amp;pptr-&gt;data[start + len],
+			pptr-&gt;length - (start + len));
+
+		newptr-&gt;length = newlen;
+
+		free(pptr);
+		return(newptr);
+		}
+
+		/* insert LEN characters starting at START */
+	struct piece *Insert_Into_Piece(struct piece *pptr, int start,
+			int len, char *chrs)
+		{
+		struct piece *newptr;
+		int newlen = pptr-&gt;length + len;
+
+			/* allocate new piece */
+		newptr = (struct piece *)malloc(sizeof(struct piece) +
+			newlen - 1);
+		if (newptr == NULL) return(NULL);
+
+			/* copy existing parts */
+		memmove(&amp;newptr-&gt;data[0], &amp;pptr-&gt;data[0], start);
+		memmove(&amp;newptr-&gt;data[start + len], &amp;pptr-&gt;data[start],
+			pptr-&gt;length - start);
+		newptr-&gt;length = newlen;
+
+			/* copy new part */
+		memmove(&amp;newptr-&gt;data[start], chrs, len);
+
+		free(pptr);
+		return(newptr);
+		}
+</pre>
+
+<h3>Extra Space at the End</h3>
+
+<p>In this technique, the piece is allocated enough memory to contain
+it, and possibly additional memory as well.  The length of the piece
+and the amount of the piece currently in use are kept as overhead
+information. A deletion never requires a re-allocation.  An insertion
+will require a re-allocation only when the free space is used up.  As
+the bulk of insertions are one character at a time (<i>i.e.</i>, as
+the user types), insertions will only require a re-allocation at
+relatively infrequent intervals.  In code:</p>
+
+<pre>
+	struct piece {
+		int length;
+		int used;
+		char data[1];	/* length characters */
+		}
+
+		/* delete LEN characters starting from START */
+	struct piece *Delete_From_Piece(struct piece *pptr, int start, int len)
+		{
+		memmove(&amp;pptr-&gt;data[start], &amp;pptr-&gt;data[start + len],
+			pptr-&gt;used - (start + len));
+		pptr-&gt;used -= len;
+		return(pptr);
+		}
+
+		/* insert LEN characters starting at START */
+	struct piece *Insert_Into_Piece(struct piece *pptr, int start,
+			int len, char *chrs)
+		{
+		struct piece *newptr;
+		int newlen;
+		int amt = min(pptr-&gt;length - pptr-&gt;used, len);
+
+			/* do as much as will fit */
+		memmove(&amp;pptr-&gt;data[start + amt], &amp;pptr-&gt;data[start],
+			pptr-&gt;used - (start + amt));
+		memmove(&amp;pptr-&gt;data[start], chrs, amt);
+		pptr-&gt;used += amt;
+		len -= amt;
+		if (len &lt;= 0) return(pptr);	/* done */
+
+		start += amt
+		chrs += amt;
+		newlen = Round_Up_To_Block_Size(pptr-&gt;length + len);
+
+			/* allocate new piece */
+		newptr = (struct piece *)malloc(sizeof(struct piece) +
+			newlen - 1);
+		if (newptr == NULL) return(NULL);
+
+			/* construct new contents */
+		memmove(&amp;newptr-&gt;data[0], pptr-&gt;data[0], start);
+		memmove(&amp;newptr-&gt;data[start], chrs, len);
+		memmove(&amp;newptr-&gt;data[start + len],
+			pptr-&gt;data[start],
+			pptr-&gt;length - start);
+
+		newptr-&gt;length = newlen;
+		newptr-&gt;used = pptr-&gt;used + len;
+
+		free(pptr);
+		return(newptr);
+		}
+</pre>
+
+<p>When this version of the delete routine is compared to the &quot;no
+management&quot; version, it is simpler and will run faster.  The
+insert routine is more complex, but most of the complexity will be
+executed only rarely.  The path most often followed is again simpler
+and faster than before.</p>
+
+<p>This technique has an additional benefit.  In the &quot;no
+management&quot; version, memory is allocated in character-size units
+ranging from one character to the entire piece.  In the &quot;extra
+space&quot; technique, memory is allocated in (typically) sixteen byte
+chunks.  Typical allocation units will range from eight bytes to the
+piece-size limit (if any), in steps of sixteen bytes.  (Actually, you
+probably never want to allocate a piece that is not a multiple of
+sixteen bytes).  In any event, the dynamic range of the size of
+allocated units will be much smaller than in the &quot;no
+management&quot; technique.  Thus, memory management will consume less
+overhead, and less memory will be lost to allocation
+fragmentation.</p>
+
+<h3>Buffer Gap</h3>
+
+<p>The buffer gap technique system stores the text as two contiguous
+sequences of characters with a (possibly null) gap between them.
+Changes are made to the buffer by first moving the gap to the location
+to be changed and then inserting or deleting characters by changing
+pointers.  It thus uses memory efficiently, as the gap can be kept
+small and so a very high percentage of memory can be devoted to
+actually storing text.  The overhead information includes the length
+of the piece, the location of the start of the gap, and the location
+of the end of the gap.</p>
+
+<p>Here is an example buffer which contains the word
+&quot;Minneapolis&quot;.</p>
+
+<pre>
+0   1   2   3   4   5   6   7   8                       9  10  11
+| M | i | n | n | e | a | p | o |   |   |   |   |   | l | i | s |
+-----------------------------------------------------------------
+0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+ 30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45
+                P              GS                  GE
+</pre>
+
+<p>In this example, the buffer is 11 characters long and it contains
+no spaces.  The blanks between the &quot;o&quot; and the &quot;l&quot;
+show where the gap is and do not indicate that the memory has spaces
+stored in it.  The point is between the &quot;n&quot; and the
+&quot;e&quot; at location 4 and is labeled with a &quot;P&quot; in the
+bottom line (legal values for the point are the numbers from zero to
+the length of the buffer, 11 in this case). There are also three
+different sets of numbers (coordinate systems) for referring to the
+contents of the buffer.</p>
+
+<p>First is the user coordinate system.  It is displayed above the
+buffer.  The values for it run from 0 to the length of the buffer
+(11).  As you will note, the gap is &quot;invisible&quot; in this
+system. The coordinates label the positions between the characters and
+not the characters themselves.  Thought of in this way, the arithmetic
+is easy.  Thought of as labeling the characters, the arithmetic
+becomes fraught with special cases and ripe for fencepost errors.</p>
+
+<p>Second is the gap coordinate system.  It is displayed immediately
+under the line.  The values for it run from 0 to the amount of storage
+that is available and it, too, labels the positions between the
+characters.  The internal arithmetic of the buffer manager is done in
+this coordinate system.  The start of the gap (labeled &quot;GS&quot;
+in the bottom line) is at position 8 and the end of the gap (labeled
+&quot;GE&quot;) is at position 13.</p>
+
+<p>Conversion from the user coordinate system to the gap coordinate
+system is quite easy.  If a location (in the user coordinate system)
+is before the start of the gap, the values are the same. If a location
+is after the start of the gap (<i>not</i> the end of the gap!), its
+corresponding location in the gap coordinate system is (GapEnd -
+GapStart) + the location in the user coordinate system.  It is a good
+idea to isolate this calculation either in a macro or a subroutine in
+order to enhance readability.  Most routines (<i>e.g.</i>, the search
+routines) will then use the user coordinate system even though those
+routines are essentially internal.</p>
+
+<p>The third coordinate system is the storage coordinate system.  It
+is the bottom row of numbers in the diagram.  It is the means whereby
+the underlying memory locations are referenced.  It is labeled from X
+to X + the amount of memory that is available. The origin (the value
+of X) was chosen here to be 30 to help distinguish between the various
+coordinate systems.  Its absolute value makes no difference.  Note
+that it labels the memory locations themselves and so caution must be
+taken to avoid fencepost errors.</p>
+
+<p>This technique has a very low overhead for examining the buffer.
+The user coordinate location is first converted to the gap coordinate
+system.  The memory location is then looked up and its contents
+returned. Essentially, one comparison and a few additions are
+required.  The purpose of the conversion is to make the gap invisible.
+Note that the contents of the buffer are not moved.</p>
+
+<p>However, there is further overhead associated with inserting or
+deleting, since the gap may have to be moved so that it is at the
+point.  There are three cases:</p>
+
+<ul>
+<li>The gap is at the point already.  No motion is necessary.
+
+<li>The gap is before the point.  The gap must be moved to the
+point. The characters after the gap but before the point must be moved
+before the insertion or deletion can take place. The quantity
+ConvertUserToGap(point) - GapEnd characters must be moved. This
+quantity is numerically point - GapStart.
+
+<li>The gap is after the point.  The gap must be moved to the
+point. The characters after the point but before the gap must be moved
+before the insertion or deletion can take place.  The quantity
+GapStart - ConvertUserToGap(point) characters must be moved.  This
+quantity is numerically GapStart - point.
+</ul>
+
+<p>After the gap has been moved to the point, insertions or deletions
+are performed by moving the GapStart pointer (or the GapEnd pointer --
+it makes no difference).  A deletion is a decrementing of the GapStart
+pointer.  An insertion is an incrementing of the GapStart pointer
+followed by placing the inserted character in the memory location that
+was just incremented over.</p>
+
+<p>Note that after the first insertion or deletion the gap is already
+in the correct place.  Thus, the insertions or deletions that follow
+can take place without moving the gap .  Further, the point can be
+moved away and back again with no motion of the gap taking
+place. Thus, the gap is only moved when an insertion or deletion is
+about to take place and the last modification was at a different
+location.</p>
+
+<p>This scheme has a penalty associated with it.  The gap does not
+move very often, but potentially very large amounts of text may have
+to be shuffled.  If a modification is made at the end of a buffer and
+then one is made at the beginning, the entire contents of the buffer
+must be moved.  (Note, on the other hand, that if a modification is
+made at the end of a buffer, the beginning is examined, and another
+modification is made at the end, then no motion takes place.)  The key
+question that must be asked when considering this scheme is, when a
+modification is about to be made, how far has the point moved since
+the last modification?</p>
+
+<p>How far can the point be moved before the shuffling delay becomes
+noticeable?  Assume that an interval of 1/10 second is noticeable and
+that the editor is running on a dedicated system.  Assume 250
+nanosecond, 16-bit wide memory.  Assume also that ten memory cycles
+are required for every two bytes moved (load, store, and eight
+overhead cycles for instructions).  Then, 80,000 bytes can be moved
+with a just noticeable delay.</p>
+
+<p>Because of the locality principle and because most files that are
+edited are less than 80,000 bytes in size, it seems reasonable to
+conclude that the average distance moved will be less than 80,000
+bytes and so the shuffling delay will not be noticeable. Note that the
+size of the gap does not affect how long the shuffling will take and
+so the gap should be as large as possible.  </p>
+
+<h4>Multiple Gaps and Why They Don't Work</h4>
+
+<p>Assume that we were still uncomfortable with the shuffling delay
+and a possible fix was put forth.  This fix would have, say, ten
+different gaps spread throughout the buffer.  What would the effects
+be?  The idea behind this discussion is to help one understand the
+buffer gap system by seeing how it changes to the scheme fail.</p>
+
+<p>First, the conversion from the user to the gap coordinate system
+would be more complex and take longer.  Thus, some ground would be
+lost.  However, this is a small loss on every memory reference in
+order to smooth out some large bumps, so it might still be a
+reasonable thing to do.</p>
+
+<p>Second, the average amount of shuffling will go down, but not by
+anywhere near a factor of ten.  Because of the locality principle,
+most shuffling occurs over short distances and so cutting out the
+&quot;long shots&quot; will not have a large effect.</p>
+
+<p>Third, unless the writer is very careful, the gaps will tend to
+lump together into a smaller number of &quot;larger&quot; gaps.  In
+other words, two or more gaps will meet with the GapEnd pointer for
+one gap the same as the GapStart pointer for the next gap.  There is
+just as much overhead in referencing them, but the average amount of
+shuffling will increase (or, more precisely, not be decreased).</p>
+
+<p>On the whole, the extra complexity does not seem to return
+proportional benefits and so this scheme is not used.</p>
+
+<h4>The Hidden Second Gap</h4>
+
+<p>On some computers, for example the two-dimensional memory system
+used by Multics, a second gap at the end of the buffer is provided
+with almost no extra overhead.  The key to this gain is that the
+buffer is not stored in a fixed-size place.  Rather, the size of the
+memory (or address space, to be more precise) that is holding the
+buffer can also increase.</p>
+
+<p>The extra overhead is a check to see whether a modification is
+taking place at the end of the buffer.  If so, the modification can be
+made directly with no motion of the gap.</p>
+
+<p>The second gap has a greater effect than one might think because a
+disproportionately high percentage of modifications take place at the
+end of the buffer.  This distortion is due to the fact that most
+documents, programs, etc., are written from beginning to end and so
+the new text is inserted (or changed) at the end of the buffer.</p>
+
+<p>The increased overhead due to the second gap method is low because
+the check for the end of the buffer is already there (in the system
+hardware).  There is no problem of the gaps coalescing because one of
+them is pegged into place.  The gains are not all that great, but
+neither are the costs and so it should be used where supported by the
+operating system.</p>
+
+<h2>Implementation Method Overview</h2>
+
+<p>We started by not internally managing the pieces at all.  We then
+added some slack space at the end of each piece.  We moved to the
+buffer gap technique, which allowed that slack space (now called a
+gap) to move within the piece.  Finally, we reviewed an optimization
+of the buffer gap technique that in some cases added the slack space
+at the end again.</p>
+
+<p>This table presents a summary of the implementation methods.  A
+&quot;-&quot; means that the combination makes no sense.  An
+&quot;=&quot; means that the combination tends to be very inefficient
+to implement.  A &quot;*&quot; indicates those combinations that are
+plausible.</p>
+
+<pre>
+	size of separately	no			extra space
+	managed piece		management	at the end	buffer gap
+
+	character		*		-		-
+
+	16-64 chars		*		*		*
+
+	line			=		*[2]		*
+
+	1/2-4K chars		=		=		*[3]
+
+	buffer			=		=		*[1]
+</pre>
+
+<p>Combination [1] is the standard buffer gap management method.
+Combination [2] is the &quot;linked line&quot; management method.
+Combination [3] is the &quot;paged buffer gap&quot; management method.
+The following sections will describe each of these methods.  Later
+sections will compare and contrast them.</p>
+
+<h2>Buffer Gap</h2>
+
+<p>This method was first used by TECO.  This method treats the entire
+buffer as a single object.  The buffer gap technique is used to handle
+insertions and deletions.  It is simple and straightforward, easy to
+implement and easy to debug.  As the text is contiguous, the buffer
+can be transferred to or from a file with just one or two system
+calls.  It also translates easily to the modern world of workstations
+with large virtual address spaces.</p>
+
+<h2>Linked Line</h2>
+
+<p>This method came into common use for Emacs-type editors when they
+began to be implemented on top of Lisp environments.  In this method,
+the buffer is stored as a doubly linked list of lines.  The following
+information might be stored for each line:</p>
+
+<pre>
+	struct line {
+		struct line *next;
+		struct line *previous;
+		struct piece *theline;
+		int version;			/* optional */
+		struct marks *mark_lists;	/* optional */
+		};
+</pre>
+
+<p>The <b>next</b> and <b>previous</b> fields implement the
+doubly-linked list.  They point to the following and preceding lines,
+respectively.</p>
+
+<p>The <b>line</b> field is managed using one of the management
+techniques described in the earlier characteristics of implementations
+section.  Typically, the &quot;leave space at the end&quot; technique
+is used.</p>
+
+<p>The <b>version</b> field is optional.  If implemented, it is for
+use by the redisplay code and will be discussed in Chapter 7.</p>
+
+<p>The <b>mark_lists</b> fies is optional.  If implemented, it records
+which marks are located on this line.</p>
+
+<p>A buffer <i>location</i> in this method is typically represented as
+a (line pointer, offset) pair.  It follows from this representation
+that marks are always associated with a line (think about it).  Marks
+can thus be efficiently implemented by a per-line mark list.  By doing
+so, less time is required to update the marks after insertions or
+deletions because only those that are on the affected line can
+possibly be changed.</p>
+
+<p>The operation of this method is straightforward. New lines, when
+created, are simply spliced into the list at the appropriate place.
+Note that no characters are stored to indicate line breaks.  If the
+new line is inserted into the middle of an existing line, some
+movement of the text on the end of the old line to the newly allocated
+line is all that is required.</p>
+
+<p>The line itself is typically stored by the &quot;extra space at
+end&quot; technique.  However the buffer gap technique could also be
+used. Regardless of the technique used, it is important to ensure that
+no limits are placed on the length of a line.</p>
+
+<p>If your implementation includes automatic word wrap, do <i>not</i>
+split lines on &quot;soft&quot; newlines, because the overhead of
+shuffling the line allocations while the user types will be large.
+Instead, use a buffer gap technique within a line and only split lines
+on hard newlines (<i>i.e.</i>, paragraphs).</p>
+
+<h2>Paged Buffer Gap</h2>
+
+<p>In this method, the buffer is divided into &quot;pages&quot; of one
+to two Kilobytes each while the file is read in.  Each page is then
+managed with the buffer gap technique.  The pages are organized into
+an array or linked list.  This method has two points in its favor:</p>
+
+<ul>
+<li>Since each page is small, the gap need never be moved very far.
+<li>Since all pages are the same size, memory management is kept simple.
+</ul>
+
+<p>These points are very important in resource-limited environments.
+For example, this method was used in the Mince text editor that
+initially ran on CP/M systems with 48 Kilobytes of memory and small
+floppy disks.  That editor implemented a complete paged, virtual
+memory environment for its buffers.  (The implementation included all
+of the then-current optimizations found in virtual memory operating
+systems.)  The size of the buffer was limited only to the amount of
+available disk space.</p>
+
+<p>Since main memory was so limited (in some systems, only three or
+four pages could be kept in memory at once), the excess pages were
+swapped to disk.  A descendant of the Mince editor called The
+FinalWord used the disk storage to even greater advantage: the control
+information was written to disk as well, thus allowing the complete
+editing state to be saved between invocations as well as being
+recoverable in the event of a system crash.</p>
+
+<h2>Other Methods</h2>
+
+<p>The other methods involve tracking small chunks of characters or
+even individual characters.  While they are in principle do-able,
+their small object size serves to increase the amount of memory and
+CPU overhead, unfortunately without offering any compensating
+advantages.  Thus, they remain largely unused.</p>
+
+<h2>Method Comparisons</h2>
+
+<p>This section compares the three main methods in a variety of
+ways.</p>
+
+<h3>Storage</h3>
+
+<p>These comparisons are on a per-buffer basis.  They also assume
+eight-bit characters.  Our sample buffer will consist of 150,
+60-character lines.</p>
+
+<p>A buffer gap implementation requires a fixed-size header (say,
+eight bytes) plus one byte per character of text.  Total size is 9,008
+bytes.</p>
+
+<p>A linked line implementation requires a fixed-size header (say,
+eight bytes), plus a fixed-size header per line (say, twelve bytes)
+plus one byte per character of text, plus on the average eight bytes
+of fragmentation per line.  Total size is 8 + 150 * 12 + 9,000 - 150
+(don't store newline characters) + 8 * 150 = 11,858 bytes.</p>
+
+<p>A paged buffer gap implementation requires a fixed-size header
+(say, eight bytes), plus a fixed-size header per page (say, twelve
+bytes), plus the pages (say, two Kilobytes each).  Total size is 8 +
+12 * 5 + 2,048 * 5 = 10,308 bytes.</p>
+
+<p>The linked line method pays a large storage price because of its
+relatively high per-line overhead.  In this example, the per-line
+overhead was about 33 percent.</p>
+
+<p>The paged buffer gap method pays a large price in this example
+because of the mismatch between the page size and the buffer.  If
+memory is tight, a smaller page size can be selected.  However, the
+extra overhead is paid only once per buffer, since it occurs only at
+the end.</p>
+
+<h3>Crash Recovery</h3>
+
+<p>These comparisons assume that a recovery program is examining the
+core image of an edit session that was interrupted.</p>
+
+<p>In the buffer gap method, crash recovery is relatively easy and
+fail safe.  In general, the start and end of the buffer can be found
+if a marker is left around the buffer (say, a string of sixteen
+strange (value 255) bytes) and the buffer is everything between
+them. The gap can be recovered and manually deleted by the user or, if
+it too is filled with a special marker, can be automatically
+deleted.</p>
+
+<p>In the linked line method, crash recovery is harder.  Recovery is
+greatly aided by erasing freed memory.  Basically, you perform the
+recovery by picking a block at random and examining it.  If it can be
+parsed into a line header (<i>i.e.</i>, the pointer values, etc., are
+reasonable), continue (a careful selection of header formats will
+help).  Otherwise, pick a different block.  You can then follow the
+next and previous pointers and parse them.  If this works three or
+four times in a row, you can be confident that you have a handle on
+the contents. If a header doesn't parse, it is because it is either a
+part of a line (either pick again at random or go back one chunk and
+try again) or a header that was being modified (in which case you are
+blocked from continuing down that end of the chain).  In the latter
+case, go in the other direction as far as possible.  You now have one
+half of the buffer.  Repeat the random guess, but don't pick from
+memory that you have already identified as part of the buffer.  You
+should get the other half of the buffer.  Leave it to the user to put
+the two halves together again.  If the freed blocks are not erased,
+the chance of finding a valid-looking header that points to erroneous
+data is very high.</p>
+
+<p>In the paged buffer gap method, crash recovery is easier than with
+linked line, but harder than with buffer gap.  As with buffer gap,
+marker bytes can help you locate the buffer pages, and the gap can be
+recovered either manually or automatically.  The pages are strung
+together just like lines were: it is just that there are fewer pages
+to work with.</p>
+
+<h3>Efficiency of Editing</h3>
+
+<p>These comparisons examine the typical types of effort required to
+insert a character or line.</p>
+
+<pre>
+		insert			insert			maximum
+		character		line			motion
+
+buffer gap	move gap		same as insert		buffer
+		pointer update		character
+
+linked line	move/scroll line	allocate header	line
+		pointer update		splice into line
+
+paged buffer gap  if full, split page	same as insert		page
+		move gap		character
+		pointer update
+</pre>
+
+<p>As might be expected, the buffer gap scheme is the most efficient,
+although you will occasionally encounter a comparatively long pause.
+The linked line scheme adds lots of overhead to the simple operations
+and cuts out the occasional comparatively long pauses.  But you will
+often be hit badly if, for example, you insert in the middle of a
+4,000-character line.  The paged buffer gap method removes the pauses
+at the price of a moderate increase in complexity.</p>
+
+<h3>Efficiency of Buffer/File I/O</h3>
+
+<p>This section compares the way that the methods handle buffer/file
+I/O.</p>
+
+<p>The buffer gap method is extremely efficient.  Reading a file into
+a buffer consists of these operations:</p>
+
+<ul>
+<li>Determine the file's length.
+<li>Allocate enough memory to hold the file, plus some extra for growth.
+<li>Read the file in.
+</ul>
+
+<p>On some systems, even this can actually be improved.  For example,
+on many systems you can just map the file into the address space of
+your process.  No actual data motion takes place until you modify one
+of the pages.  At that time, the page is copied and the modifications
+are written to the new copy (this is sometimes called
+&quot;copy-on-write&quot;).  Writing the file out can take two calls
+(one to cover the text in front of the gap and the other to cover the
+text after the gap).</p>
+
+<p>The linked line method has a very obvious but poor algorithm to
+read the file in.  This code fragment illustrates the algorithm:</p>
+
+<pre>
+	if (fd = fopen(FILE, &quot;r&quot;)) == NULL) {
+		...error...
+		}
+	while (fgets(buf, sizeof(buf), fd) != NULL) {
+		if (!Allocate_Line(strlen(buf)) {
+			...error...
+			}
+		Build_Line(buf);
+		}
+	fclose(fd);
+</pre>
+
+<p>This algorithm has a system call (in the <i>fgets</i>) and
+allocation for every line in the buffer.  An improved algorithm would
+read the whole file into memory (or at least read in large chunks),
+then allocate lines out of that memory.  This improvement at least
+reduces switching between the system and program contexts.  (A
+sufficiently good <i>fgets</i> implementation would effectively do
+this.  Unfortunately, the libraries that come with many C compilers
+are not sufficiently good...)</p>
+
+<p>The paged buffer gap method could be just as efficient at reading
+as the buffer gap method.  It would operate by reading the entire file
+in as a block, then dividing that block up without moving any data.
+The first insert on each page will cause a page split, though.
+Writing would have a worst case number of system calls equal to twice
+the number of pages in use.</p>
+
+<h3>Efficiency of Searching</h3>
+
+<p>This section compares the way that the three methods handle
+searching.</p>
+
+<p>If your implementation is such that the search time dominates the
+setup time, all three methods are equivalent.  In the case where the
+setup time dominates the search time, the methods do perform
+differently, and that is the case that will be examined.</p>
+
+<p>This comparison assumes that the search routines are &quot;built
+in&quot; to the buffer management code for performance reasons.  While
+they could call <b>Get_Char</b> for every character, doing so would
+probably not be very efficient.  Given equivalent implementations of
+the actual search code, the main difference among the methods is the
+number of times that the inner search loop is called.  In other words,
+it is the number of distinct pieces that must be searched.</p>
+
+<p>The buffer gap method calls the inner loop twice: once for the text
+in front of the gap and once for the text after the gap.  While an
+implementation could move the gap so that the search routine only
+needs to be called once, doing so goes against the reason for having
+the gap in the first place.  Keep in mind that searching happens a
+lot.  For example, two searches are done whenever the &quot;forward
+word&quot; command is given.  The whole point of the buffer gap method
+is to avoid moving the gap until it is necessary.  An even worse way
+to go astray is to move the gap as you search.  This replaces one
+large, efficient gap move with many smaller ones.  We have already
+observed that even fairly large gap moves are not very noticeable, so
+&quot;optimizing&quot; them out is not a wise move.  In conclusion,
+invoking the search loop twice is quite efficient.</p>
+
+<p>The linked line method invokes the inner search loop once for every
+line in the buffer.  In our earlier example, this means that it would
+be invoked 150 times.  What's worse, the linked line method does not
+store newline characters.  Rather, they are implied by the line
+structure.  Hence, whenever a newline character is in the search
+string, that character must be handled in a special manner.  While
+some optimizations can (and should) be made (for example, searching
+for &quot;x&lt;newline&gt;&quot; means that you only have to look at
+the last character of each line), the code complexity required to make
+these optimizations adds its own performance penalty.</p>
+
+<p>The paged buffer gap method lies somewhere between the other two.
+In the earlier example, the search routine would have to be invoked
+ten times.  This is not enough to incur a significant performance
+penalty, but it is one more reason not to use this method if buffer
+gap will work.</p>
+
+<h3>Multiple Buffers</h3>
+
+<p>This section compares the way that the methods handle multiple
+buffers.</p>
+
+<p>The buffer gap method offers no choice: the buffers must follow one
+another in memory (where else could they be?).  This arrangement
+becomes bad when the total size of all buffers becomes large enough
+that an objectionable pause occurs when switching buffers.  The
+arrangement can be improved by leaving extra &quot;gaps&quot; between
+buffers.</p>
+
+<p>The linked line method has two choices.  First, all lines can be
+allocated out of a common pool.  Thus, over time, the buffers tend to
+&quot;intertwine&quot; (<i>i.e.</i>, the lines of one buffer are mixed
+in with the lines from other buffers in physical memory).  This choice
+tends to maximize the density of text and thus makes the most
+efficient use of memory. (See also the discussion in the next section
+about paged environments.)  The other choice is to allocate memory
+among buffers, then allocate all lines for a buffer from within each
+buffer's allocation.  There must, of course, be some way to change the
+buffer allocations.</p>
+
+<p>The paged buffer gap method has the same two choices as linked
+line.</p>
+
+<h3>Paged Virtual Memory</h3>
+
+<p>This section compares the way that the methods perform in paged,
+virtual memory environments.  It concentrates on the effects that
+occur when main memory is full and paging is going on (&quot;tight
+memory&quot;).</p>
+
+<p>Some operations, such as searching the entire buffer, require that
+the buffer be accessed sequentially.  In situations where the entire
+buffer does not fit into memory, no management method can avoid some
+page swapping.  That type of situation is not analyzed here.</p>
+
+<p>The buffer gap method generally works well in this environment.
+Its highly compact format allows for accessing large portions of the
+buffer with only a few pages in memory.  Its sequential organization
+also implies that it has a very good locality of reference and so the
+nearby pages are heavily referenced and likely to be around.</p>
+
+<p>Its major problem is, as usual, the worst case situation of a large
+gap movement.  In tight memory situations, moving the whole buffer
+implies that all of the buffer's pages must be swapped in and -- most
+likely -- swapped out again.  Overall, the buffer gap method does as
+well as can be expected.  The nearby portions of the buffer will tend
+to be in memory because of locality of reference, but distant portions
+may in general have to be paged in.</p>
+
+<p>The linked line method has many disadvantages and no real
+advantages in tight memory situations.  First, if an intertwining
+multiple buffer scheme is used, over time the effective page size is
+reduced by a factor that tends to increase over time to equal the
+number of buffers.  This reduction is due to the random nature of the
+buffer memory allocations, the fact that many lines tend to fit into
+one virtual memory page, and the consequence that over time a virtual
+memory page tends to hold lines from as many buffers as possible.
+However, when a given buffer is in use, the storage used by the other
+buffers is consuming memory.</p>
+
+<p>Even separating the buffer memory does not resolve this problem.
+When buffers get large, different parts of the same buffer may act in
+the same fashion as the separate buffers to decrease the effective
+page size.  In extreme cases, a desired &quot;target&quot; line may be
+in memory, but in the process of following the linked list, the target
+line may be swapped out!</p>
+
+<p>Notwithstanding the above, this method does not pack data as
+tightly as the others.  An earlier example showed that the overhead
+for the linked line method is about 33 percent.  Thus, the page size
+is effectively reduced by 25 percent.</p>
+
+<p>When all factors are combined, a typical linked line system is
+probably reducing its effective page size by about 50 percent.  The
+result is that, for example, if a computer has one Megabyte of memory
+in 512, two Kilobyte pages, the linked line method would effectively
+treat this as 512 Kilobytes of memory (512, one Kilobyte pages).</p>
+
+<p>The paged buffer gap method is essentially the buffer gap method,
+modified to improve performance in tight memory situations.  It
+removes the lengthy gap moves and consequently lowers the probability
+of thrashing.  When designing such a system, the buffer page size
+should be set the same or as a multiple of the virtual memory page
+size.  Thus, in even the tightest memory situations an insert or
+delete of one character will only affect at most two pages of buffer
+memory.</p>
+
+<h3>Conclusions</h3>
+
+<p>Use the buffer gap method if at all possible.</p>
+
+<p>Only use the linked line method if you are implementing in an
+environment that likes to manipulate lists of small objects; for
+example, Lisp environments.</p>
+
+<p>Only use the paged buffer gap method if resources are tight.</p>
+
+<h2>Editing Extremely Large Files</h2>
+
+<p>This section examines techniques for editing extremely large files.
+The first type of extremely large file is those files that are so
+large that reasonable assumptions based on current workstation and
+mainframe architectures are no longer valid.  Given the current
+generation of computing hardware, this starts happening around 512
+Megabytes (ten years ago, I had set this number at 64 Megabytes).  At
+that size, even simple operations such as a string search can take
+several minutes to run on a fast processor with the whole file in
+memory.</p>
+
+<p>Although there are one or two interesting hacks you can do to stay
+alive, life is simply not bearable when trying to edit such a large
+unstructured file.  The alternative which large data base implementors
+have known about for years, is to structure the file.  This
+alternative is palatable because an unstructured editor can still be
+used to edit the pieces of a structured file.  The other reason why
+this limitation is not bothersome is that there aren't all that many
+such files to edit.  (For example, the largest file on a computer
+system that I often use is only about 33 Megabytes.)  The vast
+majority of files are much smaller.  Gigantic files call for special
+tools.</p>
+
+<p>The other type of &quot;extremely large&quot; file is encountered
+on resource-limited systems.  In these cases, files that would
+otherwise be handled easily can now cause the system to bog down. For
+example, in the first generation of microprocessor systems, an
+extremely large file might have been 100 Kilobytes. There are several
+ways of dealing with such files.</p>
+
+<p>One way is to divide the file into chunks, each of which fits into
+memory.  You read in the first chunk, edit it, write it out, read in
+the second chunk, and continue until you are done.  While arbitrary
+editing can be done within a chunk, in general you cannot back up to a
+previous chunk without finishing the file and starting over.  This
+method was used by the original TECO editor.</p>
+
+<p>Another way is to use a three-file system.  As the user moves down
+in the file, the &quot;from&quot; file is read and a &quot;to&quot;
+file is written.  When the user wants to back up, the &quot;to&quot;
+file is read and a &quot;holding&quot; file is written (the chunks
+will appear in reverse order in this file).  When the user moves
+forward again, the &quot;hold&quot; file is read (backwards) until
+exhausted, then the &quot;from&quot; file is read from again.</p>
+
+<p>The best method to use if main memory is tight is paged buffer gap.
+If disk storage is also tight, serial chunking is best.</p>
+
+<h2>Difference Files</h2>
+
+<p>There is another type of buffer management that has been used to
+good advantage in several cases.  It is called the <i>difference
+file</i> method.  It works best when recording relatively few changes,
+and those changes are small when compared to the size of the buffer.
+In this method, the buffer is not kept in memory at all.  Instead,
+only a list of differences between the buffer and the
+&quot;original&quot; file is kept. When information is being retrieved
+from the buffer, it is read from the file as needed and the
+differences applied.</p>
+
+<p>This method has much promise.  For example, in many cases, a file
+will be read into a buffer, looked at by the user, and the buffer
+deleted.  In this example, the difference file method essentially acts
+as a file viewer.  This is particularly encouraging when you realize
+that the larger a file is, the less likely it is to be dramatically
+changed.</p>
+
+<p>On the other hand, this method does not scale well.  For example, I
+have been editing this chapter continuously for several hours.  As it
+turns out, the current version bears little resemblance to the
+original.  The <i>best</i> description of the changes is &quot;throw
+out everything and insert X,&quot; where &quot;X&quot; is the entire
+chapter.  I would expect most &quot;reasonable&quot; descriptions of
+this chapter to wind up being several times as large as the chapter
+itself.  Hence, you now have to address the question of how to edit
+the description of the differences.  Let's see, we can use buffer gap,
+linked line, or paged buffer gap...</p>
+
+<p>In addition, this method does not work well in tight memory
+situations.  As I write this chapter, it occupies about 60 Kilobyes of
+the roughly 100 Kilobytes of free RAM disk space on my lap-top
+computer.  I simply don't have the room to store what amounts to both
+the &quot;old&quot; and &quot;new&quot; versions at once.</p>
+
+<p>But, one might argue, you don't have to store the &quot;old&quot;
+version as it appears on disk.  Well, that's true, but the disk is
+sitting on the table by my side, not in the floppy drive.  So how can
+it be read?</p>
+
+<p>In conclusion, this method works well when one is essentially
+viewing files.  However, it breaks down badly as changes to the file
+accumulate.  It can easily end up taking several times as much memory
+to track all the changes as to simply store the modified version.
+Finally, the changes can easily become so large that either a
+&quot;real&quot; buffer management method must be implemented to
+simply track the changes or &quot;snapshot&quot; files must be created
+so that changes can be tracked from a new base.  Hence, why bother
+with the extra overhead?</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Rectangular regions include only those characters between the point
+and mark that are also in columns between those of the point and the
+mark. Define a set of interface procedures to handle rectangular
+regions.  (Easy)</p>
+
+<p>Come up with a situation where it would be a good idea to implement
+the buffer as a linked list of characters.  (Medium)</p>
+
+<p>The first buffer gap editor was TECO, which was also among the
+first text editors ever written.  It was written in the early 1960s.
+Explain why many people spent the next fifteen years reinventing
+hard-to-use, limited-functionality line editors.  (Medium, but if you
+succeed I would like to hear your explanation)</p>
+
+<p>Devise a buffer management scheme better than buffer gap.  (Hard,
+but if you succeed, you can probably get a Ph.D. thesis out of it)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-6.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

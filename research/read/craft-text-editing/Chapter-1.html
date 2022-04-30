@@ -1,0 +1,545 @@
+<html>
+<title>The Craft of Text Editing: Chapter 1</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 1: Users</h1>
+
+<blockquote>
+&quot;Beware the Jabberwock, my son!<br>
+&nbsp;&nbsp;The jaws that bite, the claws that catch!<br>
+</blockquote>
+
+<p>The saying goes: &quot;Business would be great if it weren't for
+customers.&quot; Well, programming would be easy if it weren't for
+users.  In the simple case, there would be exactly one user for your
+program, - yourself - and you would use it only once.  Most programs,
+however, are used many times by many people.  You must take those
+users into account when designing your program.</p>
+
+<p>This chapter will only review those aspects of users that are most
+relevant to text editing: full discussions of users and design can and
+do fill many books in themselves, some of which are listed in the
+Bibliography.  This chapter (and this book) does not address the
+question of non-people users.</p>
+
+<h2>User Categories</h2>
+
+<p>Each user can be placed in a category.  Each category is described
+in terms of the <i>amount</i> and the <i>type</i> of experience.  It
+is important to understand users: each user creates a model of how a
+new program works based on his or her experience with other programs
+combined with the &quot;hints&quot; that your program's user interface
+gives to him or her.  It is up to you to either match your program's
+behavior to your users' model(s) or to give them enough information so
+that they generate a model that is well-matched to your program.</p>
+
+<h3>Amount of Experience</h3>
+
+<p>The amount of experience that a user has is a point on a continuous
+scale.  All users start with no experience and accumulate experience
+as they learn.  Although the scale is continuous, I have divided it
+into five regions in order to simplify discussion.  Also, this list is
+not intended as a self-rating scale: most of you who are reading this
+book will be programmers.</p>
+
+<p><b>Neophyte</b> users barely know what a computer is.  They lack
+understanding of such &quot;basic&quot; terms as &quot;file&quot; and
+&quot;file name&quot; (the concepts behind these terms are actually
+quite sophisticated).  This lack of understanding does <i>not</i> mean
+that they are unintelligent people, only that they have never had a
+reason to learn these concepts.  If you are designing a program for
+this type of user, you may feel both blessed and cursed.  Cursed
+because it can be so difficult, and blessed because this area of
+program design has such a pressing need for good designs.</p>
+
+<p>Experience from the field of artificial intelligence can shed more
+light on this issue.  AI researchers found it (comparatively) easy to
+write programs that can handle advanced mathematics such as freshman
+calculus.  However, as the researchers pushed on to handle such easy
+(to most people) areas as filling in coloring books, the programming
+problems got harder and harder.  Some of this difficulty is due to the
+fact that the task of teaching college-level courses is well
+understood--especially by college professors--but teaching coloring is
+not.  For example, how many textbooks have you seen on &quot;how to
+color&quot;?  More to the point, computers have been designed to
+process information in a certain way, one that is mathematically
+elegant, but not necessarily related to how people's minds work.  As
+people write programs for more and more &quot;basic&quot; tasks, this
+difference becomes increasingly apparent.</p>
+
+<p>Many programs have been (mis-)designed for neophyte users.  They
+often offer a few simple commands, yet leave intact such difficult
+concepts such as that of a &quot;file.&quot; They solve the wrong
+problem, sort of like travelling to a place where a foreign language
+is spoken, and trying to communicate by speaking your native language
+slowly and distinctly.  As a program designer, you must understand the
+thought structure of your users, and design programs that match that
+structure.  The blessing comes from designing programs that are very
+different from &quot;conventional&quot; programs and which are
+well-matched to their users.</p>
+
+<p><b>Novice</b> users have used a computer before, perhaps for text
+editing, word processing, spread sheet, or database applications.  In
+any event, novice users have some familiarity with the idea of typing
+things into a box and seeing a response that somehow reflects their
+typing.  They understand how a shift key works, that a lowercase
+letter 'l' is not the same as a digit '1', and so forth.  They even
+have some understanding of the idea of &quot;context:&quot; that keys
+do different things at different times.  Users with this amount of
+experience are able to operate almost any program that has a good
+design and a decent manual.</p>
+
+<p><b>Basic</b> users are like novice users, only more so.  They
+understand such programming concepts as thread of control, variables,
+and statements like &quot;A = A + 1&quot; (in fact, many people call
+such users &quot;programmers&quot;).  These users can operate any
+program, even one with a poor design.  Given source code to the
+program they are able to customize and extend it, albeit in what might
+be an awkward fashion.</p>
+
+<p><b>Power</b> users know one or more application programs
+thoroughly.  They understand not only how to use those programs fully,
+but can often go beyond the bounds of what the original designers
+intended.  They may write large programs often in the form of
+application macros, but do not <i>design</i> these programs.  These
+users understand the fine points of the programs that they use.</p>
+
+<p><b>Programmer-level</b> users understand the theory of programming.
+When writing a large program, they design the program before
+implementing it.  They generalize, applying their experience and their
+knowledge of one program to guess how another program will
+operate.</p>
+
+<h3>Type of Experience</h3>
+
+<p>The amount-of-experience scale is one-dimensional: people start at
+the beginning and proceed along the scale as they gain experience.
+This type of experience scale is more like a collection of baseball
+cards.  A user can collect the experience types (cards) in any order,
+and two people with the same number of experience types (cards) may
+have no experience types (cards) in common.</p>
+
+<p>The experience types do not necessarily carry over: experience
+gained on one type of system may or may not prove useful on another.
+Actually, experience gained on one system may make it more difficult
+to learn another.  And, if users grow to like one type of system, they
+may then dislike another one, thus making any experience transfer
+problematic.</p>
+
+<p>These experience types can have a major effect on the design of
+your programs, as it is usually important for new programs to appear
+and operate in a manner similar to existing programs.  Thus, the
+(possibly bad) designs of those existing programs may have to be
+carried into the design of your program.</p>
+
+<h2>&quot;Religion&quot;</h2>
+
+<p>This section might also be titled &quot;religious preference.&quot;
+In the computer field, &quot;religion&quot; is a technical term that
+refers to the usually irrational and extreme preference of one
+program, style, or method to another.  Although you cannot really do
+anything about this phenomenon, you can keep it in mind when analyzing
+comments on your design.</p>
+
+<p>It has been observed that people often &quot;get religion&quot;
+over the first application (for example, a word processor) that they
+use.  I can't recall the number of people who have tried to convince
+me that the program that they just discovered (<i>i.e.</i>, the first
+one they used) is the best one in the world.  This form of
+&quot;religion&quot; is normal and derives from the facts that (1) the
+move from manual to automated methods (<i>e.g.</i>, from typewriters
+to word processors) involves a major increase in capabilities: even
+the simplest word processor provides vastly more capabilities than
+does a typewriter, and (2) new users do not have the experience to
+realize that all programs (<i>e.g.</i>, word processors) are not
+equal.  This form of religion usually fades away over time as new
+users gain experience.</p>
+
+<p>In a hauntingly close parallel to the &quot;second system
+effect&quot; (Brooks 1982), the &quot;second program users&quot; are
+the ones to watch out for.  These people started using one program,
+then gave that program up in favor of a second one.  The problem is
+that they think that since the second program is better than the first
+one (which it usually is), it must therefore be better than all the
+rest.</p>
+
+<p>There is nothing in particular that you can do about users that
+feel religious about a program: rational arguments are in general
+ignored.  You can, however, be aware that such users exist, and
+recognize when you are dealing with one.</p>
+
+<h2>User Goals</h2>
+
+<p>Knowing your user's experience is essential, but a program design
+must incorporate knowledge of what task or tasks the user is trying to
+accomplish.  For text editors, he or she might want to create:</p>
+
+<ul>
+<li>some jottings, format not important;
+<li>some jottings, format important;
+<li>some jottings within a structure (<i>e.g.</i>, outliners);
+<li>something with a specialized format (<i>e.g.</i>, a business
+letter or a poem);
+<li>a short narrative document (<i>e.g.</i>, a school paper or short story);
+<li>a longer document (<i>e.g.</i>, a long paper or book);
+<li>a long document with complex formatting (<i>e.g.</i>, a
+mathematics textbook);
+<li>a computer program;
+<li>data for a program; or
+<li>something else.
+</ul>
+
+<p>The frequency of doing these tasks can range from occasionally to
+continuously.  Different tasks can be performed by the same user with
+different frequencies.</p>
+
+<p>The style of doing these tasks can also vary.  One person may do
+all of one task, then start on the next.  Another person may be
+frequently switching among two or more tasks.</p>
+
+<h2>Physiological Constraints</h2>
+
+<p>Users are people.  There are limits to what people can do.  These
+limits must be considered when designing a program.</p>
+
+<p><b>Hands</b> have a limited reach.  The very act of reaching for
+one key draws a hand away from other keys.  Thus, commands that you
+expect to follow one another should be assigned with that constraint
+in mind.  Function keys are often difficult to find and awkward to
+press.  While there are almost always two shift keys, most keyboards
+only have one control (or equivalent) key and may only have one of
+other types of shift keys.  Thus, it is difficult to press some
+shifted keys (such as control-P) with just one hand.</p>
+
+<p>Non-keyboard devices such as mice draw a hand far away from the
+keyboard -- and you don't in general know whether it is the left or
+right hand that is drawn away.  A sequence such as control-mouse
+button may be very difficult for some (<i>i.e.</i>, left-handed) users
+to type.</p>
+
+<p><b>Eyes</b> can focus on a limited area of high resolution
+surrounded by a large area of lower resolution.  However, areas of
+strong contrast such as reverse video are still visible in
+low-resolution areas.  Blinking items are not only visible, but will
+draw the eye to them.  &quot;Status&quot; displays should therefore
+change as quietly as possible so as not to draw the eye away from the
+text under edit.  For example, it may make sense to place such status
+areas on the top part of the display if insert/delete line operations
+cause visible motion of the bottom part.</p>
+
+<p><b>The mind</b> (or brain), however, places the greatest
+constraints on editor design.  It is only capable of processing a few
+thoughts (&quot;instructions&quot;) per second.  In order for users to
+be productive, it is important that these thoughts be directed as much
+as possible to useful editing operations.  There are several things to
+consider regarding these thoughts.</p>
+
+<p>First, mental effort (thought) is required to translate between the
+display representation of the text being edited and the user's
+internal representation.  The WYSIWYG (&quot;what you see is what you
+get&quot;) principle reduces this effort by reducing the amount of
+thought required.  Note that in general WYSIWYG does <i>not</i> mean
+&quot;fancy output on a graphics display.&quot; Rather, it means
+&quot;it is what it appears to be, no more and no less.&quot;</p>
+
+<p>Second, the mind has expectations: it sees (and in general senses)
+what it <i>expects</i> to see.  In extreme cases, if something totally
+unexpected happens, it can take many seconds for the mind to even
+recognize that there is an unexpected image, in addition to the time
+required to process the image and make a decision.  Thus, it is
+important for the program to anticipate what the mind will expect to
+see and to arrange the display accordingly.</p>
+
+<p>Third, it takes mental effort to handle special cases.  For
+example, if the delete operation deletes everything except for
+newlines, it takes effort to remember that difference and to monitor
+each command that is being given to ensure that it conforms to the
+restriction.  Fourth, it takes mental effort to plan ahead.  The
+design of the editor should make it easy for the user to change his or
+her mind.</p>
+
+<p>Last, it takes mental effort to track modes.  (Chapter 9 goes into
+modes in detail.) Each time a new mode is introduced, it takes mental
+effort to track the state of the mode and adds effort to the process
+of switching modes.</p>
+
+<p>The mind's short-memory can hold from five to seven
+&quot;chunks&quot; of information (Norman 1990). These chunks are
+organized in a cache-like form.  When the chunk cache fills up, chunks
+must be stored in &quot;main memory,&quot; a process that takes time.
+Considering that some of these chunks are used to remember what is
+being edited, why the editing is being done, and other such context,
+it becomes clear that the editor should be designed to use as few of
+these &quot;chunks&quot; as possible.</p>
+
+<p>The mind is poor at thinking numerically.  It is much easier to
+think in terms of &quot;put that there&quot; than &quot;put object
+12856 at location 83456.&quot; These last two points mean that the
+computer should do as much remembering as possible for the user.</p>
+
+<h2>Applying These Physiological Constraints</h2>
+
+<p>Let us examine how these principles apply to a particular user: me.
+I select myself as the example for the simple reason that I understand
+how my mind works better than I understand anyone else's.</p>
+
+<p>First, I almost always work with plain ASCII files.  Hence, I can
+take advantage of WYSIWYG on even a simple ASCII terminal.</p>
+
+<p>Second, the program/computer combination that I use can (mostly)
+keep up with my typing in real time.</p>
+
+<p>Third, the Emacs command set that I use is very regular, so my mind
+need only keep track of a few special cases.</p>
+
+<p>Fourth, the basic paradigm behind the Emacs command set is
+&quot;move to desired position, make desired change.&quot; This
+paradigm applies <i>even in the case where I made a mistake</i>, as I
+simply add the mistake to the list of changes to be made and continue
+to apply the pardigm.  I never have to change mental gears.  The
+penalty for making a mistake is thus minimized.</p>
+
+<p>Fifth, the program minimizes what I need to remember: the text
+being edited is there to be seen, exactly as is, and there are very
+few state variables to track.  In addition, the Emacs command set is
+defined mainly in terms of objects (character, word, sentence, etc.)
+and has a convenient way of saying &quot;some,&quot; &quot;a
+lot,&quot; &quot;a whole lot,&quot; and &quot;a huge amount.&quot;
+(Various aspects fo Emacs command set are discussed in later
+chapters.)</p>
+
+<p>Going beyond these principles, I have used the Emacs command set so
+long (thirteen years) that I quip that most of my editing is performed
+by my spinal cord and not my brain.  Although this quip is not true
+since the spinal cord can only handle purely reflex actions, we will
+look closely at how my mind functions when editing text.  The mind of
+any other experienced user should operate in a similar fashion.</p>
+
+<p>As I write this text, part of my mind is articulating the point
+that I am trying to make, while another part is expanding those words
+into their component characters.  Call these parts the &quot;source
+process.&quot; Another part of my mind is translating those characters
+into finger motions.  Call this part the &quot;keystroke
+process.&quot; Other parts of my mind are reading the text as it
+appears on the screen, turning it back into words, and matching these
+words against the original word stream.  Call this the &quot;feedback
+process.&quot;</p>
+
+<p>These three processes work in any sort of writing: using a
+computer, typewriter, or pen.  All people who write use them.
+However, if the resulting text is to have few errors, one of two
+things must have happened: either the user made very few mistakes
+(thus minimizing the number of errors to be corrected) or the user
+must have written slowly, giving the feedback loop enough time to
+recognize an error before too much time has elapsed and the error
+becomes difficult to correct (such as an omitted character on the
+previous line or page).</p>
+
+<p>With the advent of computers, and their ability to make seamless
+corrections, a third option appeared: a new, fast feedback loop.  This
+loop operates by giving the keystroke process the ability to recognize
+that it made a mistake.  This extra ability is not useful without
+seamless editing, as it takes a long time to use the eraser or
+correction tape.  However, with (a lot of) practice, a fourth process
+can be &quot;running:&quot; the &quot;editing process.&quot;</p>
+
+<p>The editing process takes the feedback from the keystroke process
+and inserts editing commands into the character stream created by the
+source process.  Here is an example of how this editing might operate
+to correct an error when writing the text &quot;the quick red
+fox.&quot;</p>
+
+<ul>
+<li>The source process generates the appropriate character string.
+
+<li>An error occurs.  What is actually typed on the keyboard is the
+string &quot;teh&quot;.
+
+<li>The keystroke process recognizes the error just after the
+&quot;h&quot; was typed.
+
+<li>The editing process takes time to run.  In this time, let us
+suppose that the characters &quot; quick&quot; (that is a space,
+followed by &quot;quick&quot;) were placed in the &quot;output
+queue.&quot; It is reasonable to suppose that all of the characters
+for each word will be placed on the queue in one operation.
+
+<li>The editing process then places its own string of characters on
+the output queue.  This string will correct the error.  For the Emacs
+command set, the sequence might be &quot;^[b^B^T^E&quot;.  This
+sequence means &quot;move back a word (&quot;^[b&quot;), move back one
+more character (&quot;^B&quot;), interchange the two switched
+characters (&quot;^T&quot;: swaps &quot;eh&quot; to &quot;he&quot;),
+return to the end of the line (&quot;^E&quot;).
+
+<li>The rest of the line is then processed as usual, with the
+characters &quot; red fox&quot; placed on the queue in two chunks and
+eventually typed correctly. At some later time, the feedback process
+confirms that the phrase was typed correctly.
+</ul>
+
+<p>(Other users may have variations on this process.  For example,
+they may always delete all of any word with an error and retype the
+word.)  With the extra fast feedback loop, the fingers were kept
+typing at full speed all the time.  Granted, an extra five characters
+were typed, but consider what would happen without the extra loop.  It
+could well be that the entire phrase would have been typed before the
+error was noticed.  The source process would have already started on
+the next phrase.  When the feedback process notices the error, the
+smooth typing of characters would stop as the user's mind determines
+exactly which corrections are required and how to perform them.  It
+must then start the pipeline going again.  The stopping, correcting,
+and starting again takes several seconds.  A fifty word-per-minute
+typist is typing about five characters per second.  The Emacs
+correction string would take one second to type.  There is thus a
+direct saving of some seconds and an indirect saving due to not having
+interrupted the smooth flow of thinking.</p>
+
+<p>Note that the design of the command set played an important part in
+making this loop usable.  For example, if no &quot;go backward
+word&quot; operation were available, the editing process would have to
+compute how many characters were in the &quot;output buffer,&quot; an
+operation that is quite time-consuming (quick: how many letters in
+&quot;brown&quot;?) as well as not well matched to how the mind
+works.</p>
+
+<p>Some recent industry trends illustrate how some &quot;user
+friendly&quot; designs clash with this editing process.  Consider a
+typical, modern window system.  In some ways, it acts to frustrate an
+experienced user.  For example, when a user closes a modified file,
+the computer may put up a dialog box that says &quot;Discard changes?
+Yes, No, Cancel&quot; (or words to the same effect).  This prompt will
+be displayed in a beautiful dialog box, neatly centered on the screen.
+Each response will have its own button.  Unfortunately, even if the
+user is expecting the dialog box, he or she may have wait for the
+system to catch up for these reasons:</p>
+
+<ul>
+<li>The operating system does not know about the dialog box until the
+program has informed it of the box.  Hence, if the mouse button is
+pressed too early, the button-press event will be sent to the main
+window and not the dialog box.
+
+<li>While the user knows that the dialog box will appear in the center
+of the screen, it is in general too difficult to predict precisely
+where the (dialog box) button will show up to be able to &quot;mouse
+ahead.&quot; Hence, the mouse button cannot be pressed until the box
+is drawn.
+</ul>
+
+<p>For these reasons, an experienced user's editing process may be
+interrupted.  These interrupts no doubt contribute to the feeling of
+sluggishness that many experienced users still feel when using such
+systems.  The challenge is to design your program so that experienced
+users can productively use your program.  The steps that you can take
+to faciliate this use include:</p>
+
+<ul>
+<li>keep dialog box choices consistent
+<li>provide keyboard responses for all choices
+<li>provide for typeahead
+<li>be prepared to handle mis-direcdted events
+</ul>
+
+<p>In general, the goal is for an experienced user to be able to
+accurately predict which responses will be required, and to reliably
+supply those reponses in advance of the prompts.  In this way,
+experienced users can continue to do their work, without being slowed
+down by the system.</p>
+
+<h2>Users Who Have Handicaps</h2>
+
+<p>When someone has a significantly reduced ability to do something,
+that person is considered to be handicapped in that area.  The reduced
+ability might be physical, such as reduced hand motion or poor
+eyesight, or it might be mental, such as a reduced ability to remember
+things.</p>
+
+<p>While the number of people who have severe handicaps in many areas
+is small, a large number of users have at least limited handicaps in a
+few areas.  As it is important for programs to accommodate as wide a
+range of users as possible, programs must accommodate users with
+handicaps.</p>
+
+<p>It is also important to keep in mind that those users that have
+severe and/or multiple handicaps can benefit greatly from the use of
+computers. </p>
+
+<p>Sometimes, even users without a handicap benefit from designs
+intended to aid users with handicaps.  For example, adding a
+wheelchair ramp to an old building also allows other people to roll
+heavy objects up the ramp instead of having to use stairs.</p>
+
+<p>The main design principles to follow to take into account users
+with handicaps are:</p>
+
+<ul>
+<li>Reduce mental complexity: have the user deal with only one object
+or concept at a time.
+
+<li>Reduce visual complexity: keep displays clean and to the point and
+avoid clutter.
+
+<li>Reduce manual complexity: allow the user to do everything with
+just one finger (this does <i>not</i> mean to <i>force</i> the user to
+do everything with one finger).  Keep commands simple.  Allow
+shortcuts and shorthand where applicable.
+
+<li>Provide for customization. If you are lucky, the operating system
+will do this for you.
+</ul>
+
+<p>It is not surprising that these are also good design rules for
+users without handicaps.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>(Some of these questions refer to marketing decisions. A designer
+must also take into account those people who are not yet users.
+Remember that purchasers are &quot;users&quot; too.)</p>
+
+<p>Consider the case where the higher you go in an organization, the
+less computer experience people have.  Assume that product purchase
+decisions are made at a higher level than the product user.  How does
+this inversion affect product design?  Product marketing?
+(Medium)</p>
+
+<p>Many product reviews include &quot;feature checklists&quot; or
+&quot;scoreboards.&quot; These checklists in general include all
+features found in all related products.  What are the pros and cons of
+these checklists for manufacturers?  For users?  (Medium)</p>
+
+<p>I have observed that, all other things being equal, people will buy
+the <i>more</i> expensive of two application programs.  Why?
+(Easy)</p>
+
+<p>Productivity falls off as computer response time increases.
+However, the fall-off is not linear, but happens in a series of
+thresholds, where slight increases in response time cause large drops
+in productivity.  Why do these thresholds exist?  What information do
+you need about human physiology in order to calculate where the
+thresholds are?  (Hard)</p>
+
+<p>How would you design a <i>program</i> to best be used by someone
+with dyslexia?  What about the entire computer system?  It is okay to
+be extreme and to make it less usable by other people.  (Medium)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

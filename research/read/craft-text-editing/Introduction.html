@@ -1,0 +1,542 @@
+<html>
+<title>The Craft of Text Editing: Introduction</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Introduction.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Introduction: What Is Text Editing All About?</h1>
+
+<blockquote>
+'Twas brillig, and the slithy toves<br>
+&nbsp;&nbsp;Did gyre and gimble in the wabe:<br>
+All mimsy were the borogoves,<br>
+&nbsp;&nbsp;And the mome raths outgrabe.<br>
+</blockquote>
+
+<p>In its most general form, text editing is the process of taking
+some input, changing it, and producing some output.  Ideally, the
+desired changes would be made immediately and with no effort required
+beyond the mere thought of the change.  Unfortunately, the ideal case
+is not yet achievable.  We are thus consigned to using tools such as
+computers to effect our desired changes.</p>
+
+<p>Computers have physical limitations.  These limitations include the
+nature of user-interface devices; CPU performance; memory constraints,
+both physical and virtual; and disk capacity and transfer speed.
+Computer programs that perform text editing must operate within these
+limitations.  This book examines those limitations, explores tradeoffs
+among them and the algorithms that implement specific tradeoffs, and
+provides general guidance to anyone who wants to understand how to
+implement a text editor or how to perform editing in general.</p>
+
+<p>I do not present the complete source code to an editor, nor is the
+source code available on disk (at least from me: see Appendix B).  For
+that matter, you won't even see a completely worked out algorithm.
+Rather, this book teaches the craft of text editing so that you can
+understand how to construct your own editor.</p>
+
+<p>The first chapters discuss external constraints: human mental
+processes, file formats, and interface devices.  Later chapters
+describe memory management, redisplay algorithms, and command set
+structure in detail.  The last chapter explores the Emacs-type of
+editor.  The Emacs-type of editor will also be used whenever a
+reference to a specific editor is required.</p>
+
+<p>This range of topics is quite broad, and it is easy to lose sight
+of the forest with all of those trees.  The remainder of this
+introduction will sketch the outlines of the forest by examining an
+editor-in-miniature: a get-line-of-input routine.  We will start with
+a basic version of the routine, then make it more elaborate in a
+series of steps. By the end, you will see where the complexity of a
+text editor arises from.</p>
+
+<p>The program examples are written in the ANSI version of the C
+language.  Appendix A provides a brief introduction to the C language
+and explains all of the features used in examples.</p>
+
+<h2>The Basic Get_Line</h2>
+
+<p>The <b>Get_Line</b> routine accepts these inputs:</p>
+
+<ul>
+<li>a prompt string
+<li>a buffer to accept the input; this buffer must be at least two
+characters long
+<li>an indication of the buffer length
+</ul>
+
+<p>and produces these outputs:</p>
+
+<ul>
+<li>a success/fail status
+<li>if the status is &quot;success,&quot; the input is stored in the
+supplied buffer; the end of the input is marked with the NUL (^@, 0
+decimal) character
+<li>if the status is &quot;fail,&quot; the buffer may have been
+modified but will not contain valid input
+</ul>
+
+<p>The editing performed by this routine is on the input buffer.  This
+first version assumes that you are creating a new item from scratch
+each time.</p>
+
+<h3>Version One</h3>
+
+<pre>
+FLAG Get_Line(char *prompt, char *buffer, int len)
+	{
+	char *cptr = buffer;
+	int key;
+
+	if (len &lt; 2) return(FALSE);		/* safety check */
+	printf(&quot;%s: &quot;, prompt);
+	for (;;) {
+		key = KeyGet();
+		if (isprint(key)) {
+			if (cptr - buffer &gt;= len - 1) Beep();
+			else	{
+				*cptr++ = key;
+				printf(&quot;%c&quot;, key);
+				}
+			}
+		else if (key == KEYENTER) {
+			*cptr = NUL;
+			printf(&quot;\n&quot;);
+			return(TRUE);
+			}
+		else	Beep();
+		}
+	}
+</pre>
+
+<p>Version One accepts input until the user presses the Enter key.  If
+a user's input will overflow the input buffer, the input is discarded
+and the program will sound an error beep.  Once the Enter key has been
+pressed, the program appends a NUL character to terminate the string
+and returns True.  Non-printing characters other than Enter also cause
+the program to sound an error beep.  Simple, straightforward, and
+useless, as there is no way for the user to correct any typing
+mistakes.</p>
+
+<h3>Version Two</h3>
+
+<p>Here is version Two.  It adds editing:</p>
+
+<pre>
+FLAG Get_Line(char *prompt, char *buffer, int len)
+	{
+	char *cptr = buffer;
+	int key;
+
+	if (len &lt; 2) return(FALSE);		/* safety check */
+	printf(&quot;%s: &quot;, prompt);
+	for (;;) {
+		key = KeyGet();
+		if (isprint(key)) {
+			if (cptr - buffer &gt;= len - 1) Beep();
+			else	{
+				*cptr++ = key;
+				printf(&quot;%c&quot;, key);
+				}
+			}
+		else	{
+			switch (key) {
+
+			case KEYBACK:
+				if (cptr &gt; buffer) {
+					cptr--;
+					printf(&quot;\b \b&quot;);
+					}
+				break;
+
+			case KEYENTER:
+				*cptr = NUL;
+				printf(&quot;\n&quot;);
+				return(TRUE);
+				/*break;*/
+
+			default:
+				Beep();
+				break;
+				}
+			}
+		}
+	}
+</pre>
+
+<p>Version Two starts developing problems that can no longer be swept
+under the rug.</p>
+
+<p>Version One glossed over exactly what is meant by the Enter key.
+That's sort of okay.  Most keyboards have only one key labelled
+&quot;Enter&quot; or &quot;Return&quot; or something similar.  It
+almost always sends a Carriage Return character.  The program can
+compare against just that character and almost always operate
+&quot;correctly,&quot; <i>i.e.</i>, as the user expects.  However,
+most keyboards have at least <i>two</i> keys for erasing: Back Space
+and Delete. Some people and computer systems use one of these.  Other
+people and computer systems user the other.  (We will ignore any extra
+&quot;erase&quot; or &quot;delete character&quot; keys that you might
+find.  For now.)  The program can handle this problem in several
+ways:</p>
+
+<ul>
+<li>accept only one or the other
+<li>accept both
+<li>if the operating system supports some sort of &quot;terminal
+parameter configuration,&quot; ask the operating system what character
+to use provide a configuration option in your program to let the user
+set his or her preferred character; the option will most likely
+default to the operating system configuration setting if one is
+available
+</ul>
+
+<p>If you picked the first option, just over half of your users will
+be upset with you.  The second option is much better: almost all users
+will like you, and this part of your program need not be operating
+system specific at all.  (I often select this option when writing
+small programs that should have a minimum of operating
+system-dependant code.)  The third option is a fine solution.  Most
+users will like you, and you are building on other work (<i>i.e.</i>,
+the operating system) instead of reinventing the wheel.</p>
+
+<p>If you picked the fourth option, you have already learned what an
+Emacs-type editor is about.  Implicit in this option is recognizing
+that users should be able to control their environment as much as
+possible. Yes, it is more work to write such programs and, yes, it
+sometimes overlaps the existing operating system, but it can be well
+worth the effort.</p>
+
+<p>Another problem appears in the statement:</p>
+
+<pre>
+					printf(&quot;\b \b&quot;);
+</pre>
+
+<p>This statement is a crude attempt at erasing a character.  As it
+turns out, there are pretty powerful conventions regarding how
+printing characters and newlines are handled by operating systems and
+output devices.  These characters all move the cursor to the right or
+to the start of the next line.  However, when you want the cursor to
+back up in any way or you wish to control it in any other way, you are
+on your own: there are no industry-wide conventions for specifying
+these operations.  And, with no conventions to rely upon, your program
+has to implement a method of coping with the range of output
+devices.</p>
+
+<h3>Version Three</h3>
+
+<p>Version Three assumes that the input buffer contains some text.
+This text is used for the response if the user just presses Enter
+(<i>i.e.</i>, the text is the default value):</p>
+
+<pre>
+FLAG Get_Line(char *prompt, char *buffer, int len)
+	{
+	char *cptr = buffer;
+	FLAG waskey = FALSE;
+	int key;
+
+	if (len &lt; 2) return(FALSE);		/* safety check */
+
+	for (;;) {
+		ToStartOfLine();
+		ClearLine();
+		printf(&quot;%s: %s&quot;, prompt, buffer);
+		key = KeyGet();
+		if (isprint(key)) {
+			if (!waskey) {
+				*buffer = NUL;
+				waskey = TRUE;
+				}
+			if (cptr - buffer &gt;= len - 1) Beep();
+			else	{
+				*cptr++ = key;
+				*cptr = NUL;
+				}
+			}
+		else	{
+			switch (key) {
+
+			case KEYBACK:
+				if (!waskey) {
+					*buffer = NUL;
+					waskey = TRUE;
+					}
+				if (cptr &gt; buffer) {
+					--cptr;
+					*cptr = NUL;
+					printf(&quot;\b \b&quot;);
+					}
+				break;
+
+			case KEYENTER:
+				printf(&quot;\n&quot;);
+				return(TRUE);
+				/*break;*/
+
+			default:
+				Beep();
+				break;
+				}
+			}
+		}
+	}
+</pre>
+
+<p>Version Three returns the supplied response if the user just
+presses the Enter key.  Otherwise, the supplied response is erased
+completely the first time a printing key or Back Space is pressed.
+The only other changes worth noting are that the prompt has been moved
+to the inside of the loop and a few terminal interface routines have
+been added.  The first one moves the &quot;cursor&quot; to the
+beginning of the line.  The next clears the line.</p>
+
+<h3>Version Four</h3>
+
+<p>This version adds a number of features:</p>
+
+<ul>
+<li>commands to move the cursor left and right
+<li>insert/replace editing
+<li>a command to delete the character to the right of the cursor
+<li>commands to move to the beginning and end of the response
+<li>a command to clear the response
+<li>a command to clear the changes and restore the default
+<li>a way to insert arbitrary characters, including command
+characters, into the response
+<li>a cancel key
+<li>a redisplay key
+</ul>
+
+<p>This version of the routine also has a slight change to the
+interface: the addition of a separate default value parameter.</p>
+
+<pre>
+FLAG Get_Line(char *prompt, char *buffer, int len, char *default)
+	{
+	char *cptr = buffer;
+	FLAG isinsert = TRUE;
+	FLAG waskey = TRUE;
+	int key;
+
+	if (len &lt; 2) return(FALSE);		/* safety check */
+
+	strcpy(buffer, default);
+	for (;;) {
+		ToStartOfLine();
+		ClearLine();
+		printf(&quot;%s: %s&quot;, prompt, buffer);
+		PositionCursor(strlen(prompt) + 2 + (cptr - buffer));
+
+		key = KeyGet();
+		if (isprint(key)) {
+			if (!waskey) {
+				cptr = buffer;
+				*cptr = NUL;
+				waskey = TRUE;
+				}
+			if (isinsert) {
+				if (buffer + strlen(buffer) &gt;= len - 1) Beep();
+				else	{	/* move rest of line and insert */
+					memmove(cptr + 1, cptr, strlen(cptr) + 1);
+					*cptr++ = key;
+					*cptr = NUL;
+					}
+				}
+			else	{
+				if (*cptr == NUL) {
+						/* end of input, so append to buffer */
+					if (buffer + strlen(buffer) &gt;= len - 1)
+						Beep();
+					else	{
+						*cptr++ = key;
+						*cptr = NUL;
+						}
+					}
+				else *cptr++ = key;	/* replace */
+				}
+			}
+		else	{
+			switch (key) {
+
+			case KEYBACK:
+				if (!waskey) {
+					cptr = buffer;
+					*cptr = NUL;
+					waskey = TRUE;
+					}
+				if (cptr &gt; buffer) {
+					xstrcpy(cptr - 1, cptr);
+					cptr--;
+					*cptr = NUL;
+					}
+				break;
+
+			case KEYDEL:		/* delete the following char */
+				if (cptr &lt; buffer + strlen(buffer))
+					xstrcpy(cptr, cptr + 1);
+				else	Beep();
+				break;
+
+			case KEYENTER:
+				printf(&quot;\n&quot;);
+				return(TRUE);
+				/*break;*/
+
+			case KEYLEFT:
+				if (cptr &gt; buffer) cptr--;
+				waskey = TRUE;
+				break;
+
+			case KEYRIGHT:
+				if (cptr &lt; buffer + strlen(buffer)) cptr++;
+				waskey = TRUE;
+				break;
+
+			case KEYSTART:		/* move to start of response */
+				cptr = buffer;
+				waskey = TRUE;
+				break;
+
+			case KEYEND:		/* move to end of response */
+				cptr = buffer + strlen(buffer);
+				waskey = TRUE;
+				break;
+
+			case KEYQUOTE:		/* insert the next character,
+							even if it is a control char */
+				if (!waskey) {
+					cptr = buffer;
+					*cptr = NUL;
+					waskey = TRUE;
+					}
+				key = KeyGet();
+				if (isinsert) {
+					if (buffer + strlen(buffer) &gt;= len - 1)
+						Beep();
+					else	{	/* move rest of line and insert */
+						memmove(cptr + 1, cptr,
+							strlen(cptr) + 1);	
+						*cptr++ = key;
+						*cptr = NUL;
+						}
+					}
+				else	{
+					if (*cptr == NUL) {
+							/* end of input, so append */	
+						if (buffer + strlen(buffer) &gt;= len - 1)
+							Beep();
+						else	{
+							*cptr++ = key;
+							*cptr = NUL;
+							}
+						}
+					else *cptr++ = key;	/* replace */
+					}
+				break;
+
+			case KEYCLEAR:		/* erase response */
+				cptr = buffer;
+				*cptr = NUL;
+				waskey = TRUE;
+				break;
+
+			case KEYDEFAULT:	/* restore default response */
+				strcpy(buffer, default);
+				cptr = buffer;
+				waskey = FALSE;
+				break;
+
+			case KEYCANCEL:	/* abort out of editing */
+				return(FALSE);
+				/*break;*/
+
+			case KEYREDISPLAY:	/* redisplay the prompt and resp */
+				break;
+
+			case KEYINSERT:	/* set insert mode */
+				isinsert = TRUE;
+				break;
+
+			case KEYREPLACE:	/* set replace mode */
+				isinsert = FALSE;
+				break;
+				
+			default:
+				Beep();
+				break;
+				}
+			}
+		}
+	}
+</pre>
+
+<p>Version Four does all that was claimed for it, but not as well as
+one would like.  In particular:</p>
+
+<ul>
+<li>it did not check to ensure that the default response fits within the buffer
+<li>there was no way for the user to determine whether the program is
+in insert or replace mode except by typing a character and finding out
+what happens
+<li>it assumes that all characters are the same width when displayed
+<li>it did not address the question of what the commands are nor how
+the user supposed to remember them all
+</ul>
+
+<h2>The Forest</h2>
+
+<p>The examples presented in this chapter bumped into these
+problems:</p>
+
+<ul>
+<li>What characteristics of the display and keyboard affect text editing?
+<li>How should the program cope with presenting output on different displays?
+<li>What view of the text should be presented to the user?
+<li>How should the text be managed so that large amounts of text could
+be edited efficiently?
+<li>How should display updating occur so that editing changes are
+efficiently presented to the user?
+<li>How should the command set be designed? What should the meanings
+of the various commands be?
+<li>How should the program be designed so that the user can change how
+it operates?
+</ul>
+
+<p>These and other questions will be addressed in the remainder of
+this book.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Modify the latest version of <b>Get_Line</b> to accept only numeric
+responses.  What sort of error messages should be given?  (Easy)</p>
+
+<p>Modify the latest version of <b>Get_Line</b> to accept only
+responses from a list that is passed in as a parameter.  What sort of
+error messages should be given? (Easy)</p>
+
+<p>What are two good formats for such a list (Easy for those familiar
+with C, Medium otherwise)</p>
+
+<p>What is the appropriate degree of control (key definitions, enable
+/ disable features, etc.) that the calling program should have over
+the input editing?  (Medium)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Introduction.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

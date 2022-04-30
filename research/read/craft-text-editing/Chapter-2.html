@@ -1,0 +1,868 @@
+<html>
+<title>The Craft of Text Editing: Chapter 2</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 2: User Interface Hardware</h1>
+
+<blockquote>
+Beware the Jubjub bird, and shun<br>
+&nbsp;&nbsp;The frumious Bandersnatch!&quot;<br>
+</blockquote>
+
+<p>User interface hardware is the collection of devices you use when
+interacting with the computer.  The currently available user interface
+hardware usually consists of a display screen for output and a
+keyboard and perhaps a mouse or other graphical input device for
+input.  This chapter will first discuss the output side: the
+screen. It will then discuss the input side: the keyboard.  Finally,
+it will discuss the communications paths that tie the two parts
+together.</p>
+
+<h2>Display Types</h2>
+
+<p>In the old days (<i>i.e.</i>, the early 1980s), almost all displays
+were part of character-based terminals.  Differences in capabilities
+among the terminals were often crucial.  These differences play an
+important part in the types of redisplay schemes that are workable
+(redisplay is discussed in Chapter 7).  Thus, it is worth reviewing
+the old display types.</p>
+
+<h3>TTY and Glass TTY</h3>
+
+<p>A TTY is the canonical printing terminal.  Printing terminals have
+the property that what is once written can never be unwritten.  A
+glass TTY is the same as a TTY except that it uses a screen instead of
+paper. It has no random cursor positioning, no way of backing up, and
+no way of changing what was displayed.  They are quieter than printing
+terminals, though.</p>
+
+<p>When a text editor is used on one of these displays, it usually
+maintains a <i>very</i> small window (<i>e.g.</i>, one line) and
+either echos only newly typed text or else constantly redisplays
+(<i>i.e.</i>, reprints) that small window.  Once a user is familiar
+with a display editor, however, it is possible -- in a crunch -- to
+edit from a terminal of this type, but this is not generally a
+pleasant way to work.</p>
+
+<p>Although one would hope that this type of display was gone for
+good, it does crop up from time to time in poorly implemented window
+schemes.  Some window schemes offer window interfaces that resemble
+printing terminals -- all too well.</p>
+
+<p>You may encounter one other type of &quot;write only&quot; scheme:
+a Unix-style output stream.  As an editor writer, you may want to
+check for this and either:</p>
+
+<ul>
+<li>alter your output accordingly, or
+<li><i>don't</i> alter your output
+</ul>
+
+<p>You may want to alter your output if you feel that the user wants
+to create some sort of &quot;audit trail&quot; type file.  On the
+other hand, you would not want to alter your output if the user is
+attempting to diagnose problems by recording the data that is sent to
+the display.</p>
+
+<h3>Basic Displays</h3>
+
+<p>A basic display has, as a bare minimum, some sort of cursor
+positioning.  It will generally also have &quot;clear to end of
+line&quot; operation (put blanks on the screen from the current cursor
+position to the end of the line that the cursor is on) and &quot;clear
+to end of screen&quot; (ditto, but to the end of the screen)
+functions.  These functions can be simulated, if necessary, by sending
+spaces and newlines.  A typical basic terminal is (was) the DEC
+VT52.</p>
+
+<p>Such displays are quite usable at higher speeds (for example, over
+a 9600 bps connection) but usability deteriorates rapidly as the speed
+decreases.  It requires patience to use basic displays over a 1200 bps
+connection, and a dedication bordering on insanity to use them at 300
+bps.</p>
+
+<h3>Advanced Displays</h3>
+
+<p>Advanced displays have all of the features of the basic displays,
+along with editing features such as &quot;insert&quot; and
+&quot;delete line and/or character.&quot; These features can
+significantly reduce the amount of data sent to the display for common
+operations.  A typical advanced (<i>circa</i> 1980) terminal is the
+DEC VT100.  Most terminals currently manufactured are at least as
+powerful as this one.</p>
+
+<p>There is a subtle difference among some of the advanced terminals.
+An &quot;insert line&quot; operation adds one or more blank lines at
+the cursor: the lines that &quot;drop off&quot; the bottom of the
+screen are lost.  A &quot;delete line&quot; operation deletes one or
+more lines at the cursor: blank lines are inserted at the bottom.  A
+&quot;scroll window&quot; operation (move lines <i>x</i> through
+<i>y</i> up/down <i>n</i> lines) affects only the specified lines: the
+other ones remain stationary.</p>
+
+<p>The &quot;scroll window&quot; operation is more pleasing than the
+others to see when there is some stationary text being displayed at
+the bottom of the screen.  With &quot;insert/delete line,&quot; the
+appropriate number of lines must be deleted and then inserted; the
+text at the bottom thus moves within the display's memory.  Such jumps
+are often visible to the user.  With &quot;scroll window,&quot; the
+whole thing is performed as one operation and the lines at the bottom
+do not jump.</p>
+
+<h3>&quot;Memory Mapped&quot; Displays</h3>
+
+<p>This designation covers a wide range of displays.  Their common
+characteristic is that display memory can be read or written at
+near-bus speeds.  The display is usually built into the computer that
+is running the text editor.  Many personal computers and workstations
+follow this design.  But be warned: some computers have very fast
+display <i>hardware</i>, but the <i>software</i> that is used to
+interact with the display is very slow.  It is probably better for a
+redisplay scheme to consider such displays to be &quot;advanced&quot;
+or even &quot;basic.&quot; Examples of such displays are the ROM BIOS
+calls on the IBM PC and Sun workstations.  In both cases, third-party
+drivers operate many times faster than the manufacturer-supplied
+ones. </p>
+
+<p>The use of such fast displays has several implications for the
+redisplay process.  First, many of the advanced features are typically
+not available.  However, it may be possible to emulate the missing
+features quickly enough that the lack of advanced features is almost
+always not significant.  Second, it may be possible to use the display
+memory as the only copy of the data on the screen.  (This optimization
+is discussed in Chapter 7.)  Third, if reading from the screen does
+not cause flicker but writing does, the screen can be read and the
+incremental redisplay process will run and compare the buffer against
+it, changing it only when necessary.  Finally, if you can write to the
+screen without flicker, the redisplay process merely boils down to
+copying the buffer onto the screen, as copying is generally faster
+than comparing.</p>
+
+<h3>Graphics Displays</h3>
+
+<p>Most personal computer and workstation displays are actually
+bitmap-oriented graphics displays.  Software is used to make them
+appear to display characters.  With a graphics display -- and the
+appropriate software -- a program can not only display text, but
+display text using proportional spacing (where different letters take
+up different amounts of space), take advantage of different sizes,
+styles, and display fonts, and even incorporate graphical
+elements.</p>
+
+<h2>Keyboards</h2>
+
+<p>This section presents a review of salient keyboard features.
+Although most of us won't ever get the chance to design a keyboard, we
+all purchase keyboards, and more importantly we design programs with
+existing keyboards in mind.</p>
+
+<p>The keyboard is the main way of telling the computer what to do.
+In some cases, it is the only way of doing so.  Many thousands of
+characters will be entered in the course of a normal working session.
+Someone who types for a living (such as a typist, writer, or computer
+programmer) can easily type <i>ten million</i> characters each
+year.</p>
+
+<p>The keyboard should thus be tailored for the ease of typing
+characters.  While this statement might seem trite, there are a large
+number of keyboards on the market (<i>i.e.</i>, most) which are pretty
+poor for entering characters.  Below is a discussion of the various
+keyboard features and why they are or are not desirable.</p>
+
+<p><i>N</i><b>-KEY ROLL-OVER</b> is a highly desirable feature.
+Having it means that you don't have to let go of one key before
+striking the next.  The codes for the keys that you did strike will be
+sent out only once and in the proper order.  (The <i>n</i> means that
+this roll-over operation will occur even though every key on the
+keyboard has been pressed before the first one is released.)  The
+basic premise behind <i>n</i>-key roll-over is that you will not hit
+the same key twice in a row.  Instead, you will hit a different key
+first and the reach for that key will naturally pull your finger off
+the initial one.  <i>N</i>-key roll-over loosens the timing
+requirements regarding exactly when your finger has to come off the
+first key.  Thus, typing errors are reduced.  Note that <i>n</i>-key
+roll-over is of no help in typing double letters.  Note also that
+shift keys are handled specially and are not subject to roll-over.</p>
+
+<p>Some keyboards implement &quot;2-key roll-over/<i>n</i>-key
+lockout.&quot; This means that only the first two keys of a continuous
+sequence will be sent and the rest ignored (until all keys are
+released).  This &quot;feature&quot; is actually a way of turning the
+statement &quot;we don't offer <i>n</i>-key roll-over&quot; into a
+positive-sounding statement &quot;we offer 2-key ...&quot;</p>
+
+<p><b>AUTO-REPEAT</b> means that if a key is pressed and held down,
+the code for that key is sent repeatedly.  It is a very desirable
+feature.  It can cause problems (say, if you put something down on the
+keyboard), but such problems are worth living with.  Older terminals
+sometimes followed typewriter design in that only certain keys would
+repeat (such as space, 'x', and dash).  Repeating just these few keys
+is not useful.  Other terminals repeat the printing characters but not
+the control characters.  This is also not useful.  As we will see
+later, it is the control characters that we are most likely to want to
+repeat.</p>
+
+<p>There are three parameters associated with auto-repeat: the initial
+delay to the first repeat, the rate at which a key will repeat, and
+the acceleration of the repeat.  Ideally, the user should be able to
+set these parameters.  If they cannot be set, the values selected by
+the manufacturer become an additional consideration.</p>
+
+<p>&quot;<b>TYPEABILITY</b>&quot; (I trust that the English language
+has not sunk to the point where this is considered to be a valid word)
+is the single most critical feature.  It is simply the ability to type
+the useful characters without moving your fingers from the standard
+touch-typing position (the &quot;asdf&quot; and &quot;jkl;&quot;
+keys).  As more and more people who use (computer) keyboards are touch
+typists and can thus type reasonably fast, they should not be slowed
+down by having to move their hands out of the basic position.  It can
+take one or two <i>seconds</i> to locate and type an out-of-the-way
+key.  The row above the digits is out of the way, as are numeric key
+pads and cursor control keys. One second is from three to ten
+characters of time (at 30 - 100 words per minute).  Thus, it takes
+less time in general to type a four- or five-character command from
+the basic keyboard than to type one &quot;special&quot; key.</p>
+
+<p>Because of the desire for typeability, it is worth at least
+considering doing away with such keys as Shift Lock or Caps Lock.
+They are rarely, if ever, used, and the keyboard space that they
+occupy is in high demand.  (Yes, I realize that my anti-uppercase bias
+is showing here.)</p>
+
+<p>Keyboard manufacturers have done other things that reduce
+typeability. Two examples are illustrative.  First, the timing on the
+shift keys can be blown.  The result of doing so is that when
+&quot;Foo&quot; is desired, &quot;FOo,&quot; &quot;fOo,&quot; and
+&quot;foo&quot; are as likely to result.  The other example is having
+a small &quot;sweet spot&quot; on each key. Missing this &quot;sweet
+spot&quot; will cause both the desired and the adjoining key to fire
+or not.  Thus, striking &quot;i&quot; could cause either
+&quot;io&quot; or nothing to be sent.</p>
+
+<p><b>PACKAGING</b> or physical keyboard design is also very
+important. Sharp edges near the keyboard or too tightly packed keys
+can cause errors and fatigue.  Can the keyboard be positioned so as to
+be comfortable?  Is there a palm ledge (this may be either good or
+bad)?  Does the keyboard meet &quot;ergonometric&quot; standards?  (In
+my experience, &quot;ergonomic&quot; standards equate to &quot;hard to
+use.&quot;)</p>
+
+<h3>Special Function Keys</h3>
+
+<p>Keyboard manufacturers seem to have decided that a plethora of
+special keys is more useful than adding shift keys.  Thus, you can get
+keyboards with Insert Line or &quot;cursor up&quot; or -- gasp -- PF1
+(if not LF1, F1, <i>and</i> RF1).  These keys, when pressed, will
+either do the function that they name, do something totally random, or
+send a (usually pre-defined and unchangeable) sequence of characters
+to the program.</p>
+
+<p>With the advent of windowing systems, manufacturers have realized
+that the keyboard/display combination simply does not have the
+information required to properly perform the function locally.  They
+have also decided that random operations don't sell devices well.
+This is actually a change from the terminals made a few years ago.</p>
+
+<p>That leaves us with character sequences.  Ideally, the sequences
+would be programmable.  Thus, the editor could save the current set of
+programmed sequences (if any), load a set that would not interfere
+with any editing commands, then restore the user's settings upon
+exit. However, this is the real world and it is often the case that
+the sequences are not programmable.</p>
+
+<p>Given this, the keys may or may not be useful.  For example, the
+&quot;cursor up&quot; key might send Escape 'E'.  You may wish this
+particular sequence to perform a &quot;move to end of sentence&quot;
+operation (I do).  Thus, pressing the &quot;cursor up&quot; key will
+move you to the end of the sentence!</p>
+
+<p>Okay, you say, I won't use Escape 'E' to move to the end of the
+sentence.  You then look up all of the sequences that may be sent by
+function keys and design your command set around them.  All is well
+and good until you try to use a different keyboard.  Your new keyboard
+will in general use different sequences than the old one.  The
+sequences may even conflict: for example, the &quot;cursor down&quot;
+key on the new terminal might send Escape 'E'.</p>
+
+<p>We got into this situation for two reasons: a major one and a minor
+one.  The minor one is easy to deal with.  All that we have to do is
+tell the editor which keyboard we are using and have the editor
+perform any required adjustments.  On UNIX systems, for example, the
+required information can be found in the <i>/etc/termcap</i> or
+<i>terminfo</i> facilities.</p>
+
+<p>The major reason why we are in this situation is that the program
+cannot tell when we are pressing a function key and when we are typing
+the same sequence of characters explicitly.  After all, there are only
+128 or 256 possible characters, and they must be shared by regular
+keys and function keys.</p>
+
+<p>Some systems that support directly attached terminals use timing
+information to make this determination.  If a string of characters
+comes in with no delays between them, they assume (usually correctly)
+that it is a single function-key press.  This timing approach does not
+work if the terminal (or other computer) is coming in via a
+network.</p>
+
+<p>The problem could best be solved by standardizing the character
+sequences sent by function keys so as to (1) have a single, obscure
+prefix (say, Escape, control-_) and (2) have a consistent syntax so
+that all devices can easily determine when the sequence is over.
+Command set designers would just have to live with the hole in the
+command set, but that would be a small price to pay.</p>
+
+<p>Aside from the problems of compatibility with whatever software is
+being run, the placement of the function keys is also a problem.  As
+was mentioned before, keys that are off to one side take a long time
+to hit.  Thus, typing is slowed down considerably.  The keys are best
+used for infrequently used functions or functions where the extra time
+is not a significant factor (<i>e.g.</i>, Help).</p>
+
+<p>There is yet one more problem.  Additional keys are not free and so
+the number of them that you'll want to pay for is limited. However, it
+is desirable to have the ability to specify a large number of
+functions (<i>i.e.</i>, have a large number of codes that can be
+specified by the user).  The number of function keys required grows
+linearly with the number of codes.</p>
+
+<h3>Extra Shift Keys</h3>
+
+<p>The other way to increase the number of codes available to the user
+is to provide extra shift keys.  Shift keys are keys that modify the
+actions of the other keys.  Shift and Control are the two most common
+examples of such keys.  The IBM PC has an Alt key, the Apple Macintosh
+has its &quot;cloverleaf&quot; key, and some terminals have a Meta key
+option.</p>
+
+<p>As an example, a Meta key would set the top (value 128 decimal) bit
+of the character that is typed.  Thus, while typing shift-A would send
+the code for uppercase A (65 decimal), meta-shift-A (often abbreviated
+as simply meta-A or ~A) would send the code 128 + 65 or 193 decimal. A
+user can thus specify 256 codes instead of the usual 128 from a full
+ASCII keyboard.</p>
+
+<p>The number of possible codes grows exponentially with the number of
+extra shift keys.  Thus, 512, 1024, and even 2048 code keyboards (with
+2, 3, or 4 extra shift keys) are conceivable.  You will have to use
+system-dependent techniques to take advantage of this extra
+information.</p>
+
+<p>Finding room on the basic keyboard for these extra shift keys is
+not easy.  That is one reason why the removal of the Shift Lock key
+was suggested earlier.  These keys must be on the basic keyboard in
+order to preserve touch-typeability.</p>
+
+<h3>Key Placement</h3>
+
+<p>A computer is not a typewriter.  There are things that you do with
+a computer that simply do not apply to typewriters.  Hence, a computer
+keyboard should have more keys than a typewriter, and yet these keys
+must be conveniently placed.</p>
+
+<p>Several computer manufacturers have achieved good keyboard designs.
+Unfortunately, most of them have retired their good designs in favor
+of poor ones.  (See the next section for examples.)  Here are some of
+my criteria for good key placement:</p>
+
+<ul>
+<li>Basic QWERTY keyboard (Dvorak keyboards are discussed later)
+
+<li>top row has: Escape, 1/!, 2/@, 3/#, 4/$, 5/%, 6/^, 7/&amp;, 8/*,
+9/(, 0/), -/_, =/+
+
+<li>second row has: Tab, QWERTYUIOP, [/{, ]/}
+
+<li>third row has: Control, ASDFGHJKL, ;/:, '/&quot;
+
+<li>fourth row has: Shift, ZXCVBNM, ,/&lt;, ./&gt;, //?, Shift
+
+<li>extra shift keys (Alt, Meta, etc.) should be immediately below the
+shift keys
+
+<li>the Back Space and/or Delete keys should be on the upper right, as
+close in as possible
+
+<li>the keys `/~ and \/| should fit into the right somewhere
+
+<li>the Return (Enter, etc.) key should be on the right, as close in
+as possible, in the third or second and third rows
+
+<li>the Break key should be on the far upper right
+</ul>
+
+<p>These are the positions that have come to be accepted as standard
+for computer keyboards.  However, some manufacturers have gotten
+scared that their computers might actually resemble computers.  Thus,
+necessary keys such as Escape and Control get moved out to the far
+reaches of the keyboard, and &quot;&lt;&quot; and &quot;&gt;&quot;
+characters get moved from their convenient, traditional positions
+above &quot;,&quot; and &quot;.&quot; to who knows where.</p>
+
+<p>Dvorak keyboards are an underground fad.  Their proponents swear by
+them and claim significant performance improvements (<i>i.e.</i>, you
+can type faster on them).  As the story goes, the standard QWERTY
+layout was designed to slow typing on the early typewriters in order
+to keep the mechanism from jamming.  And, since jamming is no longer a
+consideration, one can (and Dvorak did) design a layout that is
+&quot;better.&quot; Regardless of the truth of the story (and I
+believe it to be true), all keyboard layouts can take advantage of the
+improvements in technology.  For example, modern keyboards are
+actually a grid of switches.  These switches are scanned
+electronically.  Their travel, feel, and other characteristics can be
+adjusted as desired.  They have been adjusted so that both key travel
+and effort are much reduced from old, manual typewriters.  Hence, hand
+and finger motions are reduced overall and the benefits to be gained
+from switching layouts are thereby reduced.</p>
+
+<p>Considering that there are hundreds of millions of existing
+keyboards that use the QWERTY layout, and that there are billions of
+people trained to use it, it becomes clear that only an enormous gain
+in productivity (<i>e.g.</i>, greater than 100%) would be able to
+justify a switch to another layout.  And while there are a number of
+isolated success stories, not even the proponents of Dvorak layouts
+offer any controlled studies that show the requisite gains (Norman
+1990).  Hence, these keyboards are not being adopted on a large
+scale.</p>
+
+<h3>Example Keyboards</h3>
+
+<p>This section will briefly review a number of widely available
+keyboards.  The keyboards reviewed are the ones actually named: the
+review does not transfer to &quot;clones.&quot; The comments are, of
+course, my personal opinions.</p>
+
+<p><b>DEC VT100</b> terminal: The keyboard layout is excellent.  The
+feel is klunky.  The control keys don't repeat.</p>
+
+<p><b>DEC VT200</b> terminal: The keyboard layout is poor (badly
+placed Escape key and &quot;&lt;&quot; and &quot;&gt;&quot; keys).
+The feel is pretty good.</p>
+
+<p><b>IBM PC 83-key</b> keyboard: This is the one sold with the
+original IBM PC.  Its layout is almost excellent (the
+&quot;\&quot;/&quot;|&quot; key placement is a little weird).  It
+makes a clacking sound which I happen to like although many people do
+not.  The feel is excellent.  If only they didn't try to
+&quot;improve&quot; it with...</p>
+
+<p><b>IBM PC 101-key</b> keyboard: This is the only one that you can
+get from IBM now, and it is enough in itself to keep me from buying a
+new IBM PC.  The Escape and control keys are very poorly placed.  The
+feel is excellent.</p>
+
+<p><b>Apple Macintosh original &quot;slab&quot;</b> keyboard: The
+layout isn't too bad you consider that Apple intended this machine to
+be its own universe, and not try to incorporate outside software.  On
+the whole, however, it suffers from not having quite enough keys
+(especially Escape), so that terminal emulator programs are awkward to
+use.  The feel is fair. </p>
+
+<p><b>Apple Macintosh &quot;Standard&quot;</b> keyboard: Perfect
+layout, enough keys, great feel.</p>
+
+<p><b>Apple Macintosh &quot;Enhanced&quot;</b> keyboard: This keyboard
+is for people who like the IBM PC 101-key keyboard.  Enough said.</p>
+
+<p><b>Sun Microsystems SPARCstation</b> keyboard: Excellent layout,
+poor feel, too many function keys.</p>
+
+<h2>Graphical Input</h2>
+
+<p>Another way of interacting with a computer is by means of a
+graphical input device.  The advantage of a graphical input device is
+that it can reduce the number of commands needed.  Such a device is
+used for pointing at sections of the screen.  It is possible to
+specify items (<i>i.e.</i>, &quot;operate on that&quot;) without
+having to specify the numerical address of the location or a command
+string to move there.</p>
+
+<p>When a graphical input device is used, the screen is treated as one
+menu with the device pointing to one entry.  A cursor is used to
+provide feedback to the user about which menu &quot;item&quot; is
+currently selected.  There are usually one or more flags that can be
+specified conveniently from the device.  These flags provide control
+information and are analogous to shift keys.</p>
+
+<p>The basic way to use these devices is to track the position implied
+by the graphical input device with the cursor.  When a signal is
+given, the action implied by the current position is performed. The
+screen is logically broken up into two or more sections.  One section
+has the text that is being edited.  Moving the cursor here provides a
+convenient way to move the point around; typing a character could
+cause it to be inserted wherever the cursor is. Other portions of the
+screen can specify menus of possible actions to select from.
+Graphical input is thus a very sophisticated way of specifying a
+position as an argument to a function.</p>
+
+<p>The following sections discuss the advantages and disadvantages of
+a variety of graphical input devices.  Bear in mind that the comments
+are generalizations: there are exceptions to each of the advantages
+and disadvantages mentioned.</p>
+
+<h3>Touch Sensitive Display</h3>
+
+<p>A Touch Sensitive Display (TSD) is just what it sounds like.  The
+screen is covered with a special transparent material (or a grid of
+LEDs and receptors or other devices) that you touch with your finger:
+the absolute (<i>x</i>,<i>y</i>) coordinates of where you touched are
+then reported.  The only available flag is the &quot;touch/no
+touch&quot; flag.  (Actually, experimental pressure-sensitive displays
+exist that report all three positions and three pressure axes.)  The
+well-engineered touch-sensitive displays are quite pleasant to use for
+low-usage applications.  For high-usage purposes such as text editing,
+it is tiresome to keep raising your hand to the screen, and your
+finger tends to cover the most interesting part of the display
+(<i>i.e.</i>, the part that you are about to edit).</p>
+
+<h3>Tablet</h3>
+
+<p>A tablet is a special surface that reports the position of the
+input device as an (<i>x</i>,<i>y</i>) coordinate.  The input device
+can be a &quot;puck&quot; (a small box) or a special pen.  At least
+one flag (&quot;touch/no touch&quot;) is always available: some pucks
+have four, sixteen or even more extra flags.  Tablets are very handy
+for converting paper documents such as maps into computer form.  They
+are less useful for text editing, as they tend to be large and
+therefore require a long reach and a lot of uncluttered desk
+space.</p>
+
+<h3>Mouse</h3>
+
+<p>A mouse is a small box on wheels (or, in some cases, on felt pads
+over a special pad).  As you move it around on the floor, desk, books,
+a leg, or most anything else, it reports the relative movement of the
+mouse (<i>i.e.</i>, &quot;I was just moved <i>n</i> units up and
+<i>m</i> units left&quot;).  It can have several flags (buttons),
+although the correct number is one, as having extra buttons means that
+program designers will try to put extra functions on them.  And, while
+the functions themselves are not a problem (I do advocate extra shift
+keys, after all), the presence of these functions usually implies a
+poor program design.  Fortunately, if the mouse has extra buttons, the
+software can easily correct this &quot;defect&quot; just by making
+them all do the same thing.</p>
+
+<h3>Trackball</h3>
+
+<p>A trackball is an upside-down (&quot;dead&quot;) mouse.  Instead of
+moving the wheels by moving the box, you spin the slightly larger
+wheel directly.</p>
+
+<h3>Joystick</h3>
+
+<p>A joystick is a small stick mounted on a couple of potentiometers.
+They typically can report either absolute position, first derivative
+(relative movement) or second derivative (acceleration).  As the stick
+is moved only over a small distance, it is difficult to construct one
+with good resolution and that avoids &quot;stickiness&quot; and
+&quot;jumpiness.&quot; It is generally not as nice to use as a mouse
+or trackball.  Flags are simulated by regular keyboard keys.</p>
+
+<h3>A Different Mouse</h3>
+
+<p>Finally, an imaginary but useful device should be considered. That
+device is a foot-operated mouse (perhaps called a &quot;rat?&quot;).
+Using your feet rather than your hand to operate the mouse solves one
+of the most nagging problems of any of these devices, which is that
+your hands must leave the keyboard with the usual, aforementioned
+results.  Of course, this device makes it harder to edit with your
+feet up on your desk...</p>
+
+<h3>Other Devices</h3>
+
+<p>New types of input devices appear all the time.  Thus, no listing
+of such devices can ever remain complete.  An example of a recent such
+device is &quot;pen&quot; input.  The points to remember are that each
+device should be judged on its own strengths and weaknesses and that
+the devices should be judged on how they help your users: not whether
+the devices are &quot;neat&quot; or &quot;new.&quot;</p>
+
+<h3>Conclusion</h3>
+
+<p>These devices all assume a reasonably high bandwidth connection to
+the computer (say, 2400 bps or faster).  If you have a slow-speed
+connection, the cursor tracking must be performed in the local display
+device, which must somehow be programmed with the knowledge of when to
+report events and what to do with the cursor (sometimes the cursor
+changes shape as it crosses from one part of the screen to another).
+In this way, it is possible to supply the necessary immediate
+feedback.  A slow-speed connection would be quite satisfactory for
+communicating the significant events, but probably not satisfactory
+for the screen refresh that would follow, say, the selection of a
+menu.</p>
+
+<h2>Communications Path Issues</h2>
+
+<p>This section covers a number of miscellaneous issues concerning the
+communications path between the computer and the display/keyboard
+device.</p>
+
+<h3>Speed and Character Format</h3>
+
+<p>It almost goes without saying that the faster the communications
+path, the better.  Consider it said.</p>
+
+<p>It also almost goes without saying that a full-duplex
+communications path is necessary.  Fortunately, we are long past the
+days when users were forced to wait until the computer let them type.
+Except on automated teller machines.</p>
+
+<p>If the communications are over an asynchronous serial path,
+character format is an issue.  The considerations are:</p>
+
+<ul>
+<li>Seven or eight data bits?  Pick eight if possible.  In this way,
+you at least have the potential to use extra key codes.  The choice of
+eight data bits also lets you use international character sets.
+
+<li>Even, odd, or no parity?  Pick one to go with the data bits, as
+this field has no effect on the data that the editor sees. The
+combinations that you will tend to find all over the place are seven
+data bits and even parity (older systems) and eight data bits and no
+parity (newer systems).
+
+<li>Number of stop bits?  One, unless your system wants a different
+number.
+</ul>
+
+<p>Operating system designers make the quite valid and reasonable
+assumption that they should be doing some processing of the input
+characters.  Fortunately, they usually also offer the ability to turn
+such processing off.  A text editor should follow these steps:</p>
+
+<p>On entry to the editor:</p>
+
+<ul>
+<li>Record the current processing parameters.
+<li>Turn off all character processing.
+</ul>
+
+<p>On exit:</p>
+
+<ul>
+<li>Restore the saved processing parameters.
+</ul>
+
+<p>In this way, the text editor has complete control over what happens
+with the input characters.  This places an extra burden on you as the
+writer of the editor, as you must replace the operating system
+handlers with versions of your own that mimic the existing functions.
+On the other hand, your versions will probably differ from the
+operating system versions in a number of crucial ways.  For example,
+if the operating system lets you suspend your process (for example,
+under a Unix that supports job control), you need to restore the
+terminal and input processing parameters before you turn control back
+to the operating system.  When resumed, you need to return the
+settings back to those used by the editor (noting any changes such as
+a new window size) and probably refresh the display.  If you hadn't
+replaced the normal handlers, the user would find yours to be a very
+unfriendly program to use.</p>
+
+<h3>Flow Control</h3>
+
+<p>The faster the communications path, the less time the display has
+to process each character.  As the speed of the communications path is
+increased, a point will be reached when the display can no longer keep
+up in real time.  This is the point at which flow control is required.
+There are three methods currently in use to implement flow
+control.</p>
+
+<p>The first is in-band control.  Two characters are reserved for flow
+control purposes, typically the control-S and the control-Q
+characters.  The first is used to mean &quot;hold on, I can't keep up
+and my buffer is almost full.&quot; The second means &quot;okay, I've
+caught up and you can proceed.&quot; This method works for the most
+part, but has the annoying property of using up two valuable control
+characters.  Using any control characters causes problems for some
+programs.  For example, there exist some communications protocols that
+use all 256 characters and allow no characters to be reserved.</p>
+
+<p>The second method is out-of-band control.  This method uses a
+variety of mechanisms, none of which interfere with sending data.
+Examples of such methods are hardware &quot;handshake&quot; lines and
+network protocol mechansims.  This method is clearly superior to
+in-band.</p>
+
+<p>The final method is flow control avoidance.  This method takes
+advantage of the facts that displays take different amounts of time to
+process different characters and that some characters (called padding
+characters) take very little time to process.  The program send the
+data as a mix of useful characters and padding characters.  The
+specific mix is computed so that the average time required to process
+each character is less than the time taken to send a character over
+the communications path and that the terminal's input buffer does not
+overflow.</p>
+
+<p>For example, let's say that we have these (fairly typical)
+figures:</p>
+
+<ul>
+<li>communications path speed is one character per msec
+
+<li>time to process a printing character is .6 msec
+
+<li>time to process a line feed character is 17 msec
+
+<li>time to process a pad character is .1 msec
+</ul>
+
+<p>If we were just sending full lines of text to the display, we would
+send 81 characters in 81 msec.  These 81 characters would take 80 * .6
+msec + 17 msec = 65 msec to process.  Hence, no padding would be
+required.</p>
+
+<p>On the other hand, if we were just sending single-character lines
+of text to the display, we would send 2 characters in 2 msec.  These 2
+characters would take 1 * .6 msec + 17 msec = 17.6 msec to process.
+Padding would be required as the 17.6 msec processing time is greater
+than the 2 msec transmission time.  As it turns out, 18 padding
+characters will be sufficient (1 * .6 msec + 17 msec + 18 * .1 msec =
+19.4 msec, which is less than the 20 msec of transmission time).  It
+is not difficult to calculate the correct number of padding characters
+required, given the character mix and the communications path
+speed.</p>
+
+<p>This third method is the preferred method for text editors, as it
+works on any communications path (<i>i.e.</i>, even those with no
+out-of-band flow control) and it allows full use of all input
+characters.  If used over a network, it has the disadvantage of
+creating a modest additional amount of network traffic.</p>
+
+<p>The ideal method would be for the editor to determine whether
+out-of-band flow control is used along the entire communications path.
+If such control is in use, no padding characters need to be sent.
+Unfortunately, it is usually not possible to reliably determine the
+type of flow control in use.</p>
+
+<h3>Echo Negotiation</h3>
+
+<p>Echo negotiation was devised for the Multics computer system.  It
+is a protocol for use by computer networks which can cut down on
+response time by reducing communications overhead.  It is potentially
+useful in an environment where the user's terminal is at one node and
+the computer which is running the text editor is at another.  In such
+an environment, it can take a long time to send a character back and
+forth, and yet it takes little more time to send many characters.</p>
+
+<p>Echo negotiation requires that it be easy to describe exactly what
+is to be done with each character to a communications
+processor/terminal combination and that the combination be capable of
+doing enough of the editing to make it worthwhile.</p>
+
+<p>Typically, echo negotiation can only be used when the editing point
+(&quot;cursor&quot;) is at the end of a line.  The text editor sends a
+list of approved characters to the terminal or other nearby
+processor. As long as the user types only those characters and does
+not reach the end of a screen line (thus necessitating a wrap), the
+terminal can safely echo the input characters to the display and hold
+onto the input text.  When any non-approved character is typed (or the
+line fills up), the terminal reports all of the held input characters
+and the reason why the input was sent on (<i>i.e.</i>, non-approved
+character or line wrap) to the text editor.  The editor then processes
+the input data and the cycle repeats.</p>
+
+<p>The Xylogics Annex terminal server incorporates an advanced version
+of echo negotiation called the LEAP Protocol.  It incorporates all of
+the above design.</p>
+
+<p>Both standard echo negotiation and the LEAP protocol suffer from
+the same problem.  This problem is severe enough to call into question
+the desirability of using them at all: Echo negotiation is only
+potentially useful when the terminal is separate from the computer
+that is running the text editor <i>and</i> when the computer is
+overloaded.  The principle behind echo negotiation is that waking up
+the text editor process for each character is inefficient.  In extreme
+cases, the wake-up may take so long that input echoing is
+significantly delayed.  The fix that echo negotiation offers is to
+perform the updates in batches, thus waking up the text editor process
+fewer times and thereby reducing overhead.</p>
+
+<p>The problem with the fix is inherent in its own success.  With no
+echo negotiation, input is echoed slowly but evenly (user typing is in
+general much slower than process-switching times) and the text-editing
+process tends to stay in memory. With echo negotiation, input is
+echoed quickly until the non-approved character is typed, then a
+(comparatively) long pause is encountered while the text-editing
+process must be woken up and possibly even swapped in (we are talking
+about a situation where resources are tight, after all).  Even though
+the <i>average</i> per-character processing time might be lower, the
+<i>variance</i> in per-character times is much larger with echo
+negotiation.  It is usually the case that the variance is so high that
+the system as a whole becomes unpleasant if not impossible to use.  In
+one extreme test that I performed, I found the variance of times to be
+so great that editing was all but impossible: until you stopped typing
+for many seconds, you could never tell whether the computer had
+processed all of your input and hence couldn't safely continue typing
+(editing commands -- not new text to be inserted). In conclusion, echo
+negotiation is not a good feature to include.</p>
+
+<h3>Fancy Modems</h3>
+
+<p>High-speed modems (9600 bps and higher) are starting to become
+quite common.  The main problem with them is that the advertising for
+them is focused around file-transfer protocols and dumping large
+quantities of text through them.  The manufacturers add a variety of
+compression techniques to improve their modems' throughput in these
+areas.</p>
+
+<p>However, text editing is interactive.  Low response time is more
+important than high throughput.  This is where the compression schemes
+implemented by the modems can cause problems.  The simple solution is
+to turn off all such compression.  Do not forget to turn off control-S
+/ control-Q flow control while you're at it.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Devise at least three different ways of encoding cursor positioning
+coordinates.  Which is the most extensible?  (Easy)</p>
+
+<p>Why can character-oriented displays handle blinking text more
+easily than graphics displays?  Does it matter?  (Easy)</p>
+
+<p>If you could change one physical attribute of the display
+(<i>e.g.</i>, size, phosphor) that you use most, what would it be?
+(Easy)</p>
+
+<p>Give an example of an application that can make effective use of
+function keys.  (Easy)</p>
+
+<p>Devise an efficient, extensible encoding scheme for function keys.
+(Easy)</p>
+
+<p>Some keyboards (such as that used by the IBM PC and compatible
+computers) assign a priority to shift keys and only pay attention to
+the highest priority key pressed.  For example, pressing both Control
+and Shift gives the same code as does just pressing Control.  Is this
+better or worse than giving a different code to the combination key
+presses?  Why?  (Easy)</p>
+
+<p>How does the amount of buffering affect the need for padding?  Does
+it matter where in the system additional buffering is placed?
+(Medium)</p>
+
+<p>A fourth way to handle flow control used to be common practice but
+is no longer.  It is called &quot;ETX / ACK&quot; after the codes for
+the characters that were used to implement it.  In this method, the
+sender sends a block of text followed by an ETX character.  It then
+waited for the receiver to return an ACK character.  Why has this
+scheme dropped from favor?  How does it interact with terminals on
+computer networks?  (Medium)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

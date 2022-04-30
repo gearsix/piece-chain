@@ -1,0 +1,422 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/masked-edit-input by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Masked Edit Input - Catch22</title>
+<meta name="description" content="This article will describe one method of implementing masked edit controls. There are loads of different ways to perform the masking operation, depending on how you want to restrict the user’s input, but they all revolve around the same basic principles. The method presented here will allow an edit control to mask any ANSI character, thereby restricting the input to a subset of the ANSI character set.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Masked Edit Input">
+<meta property="og:url" content="masked-edit-input.html">
+
+
+  <meta property="og:description" content="This article will describe one method of implementing masked edit controls. There are loads of different ways to perform the masking operation, depending on how you want to restrict the user’s input, but they all revolve around the same basic principles. The method presented here will allow an edit control to mask any ANSI character, thereby restricting the input to a subset of the ANSI character set.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-05-21T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="masked-edit-input.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Masked Edit Input</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/MaskedEdit.c">MaskedEdit.c</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Masked Edit Input">
+    <meta itemprop="description" content="This article will describe one method of implementing masked edit controls. There are loads of different ways to perform the masking operation, depending on how you want to restrict the user’s input, but they all revolve around the same basic principles. The method presented here will allow an edit control to mask any ANSI character, thereby restricting the input to a subset of the ANSI character set.">
+    <meta itemprop="datePublished" content="May 21, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Masked Edit Input
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Masked Edit Input</h1-->
+<!--h3>How to filter specific keys-strokes from a standard edit control</h3-->
+
+<p>This article will describe one method of implementing masked edit controls. There are loads of different ways to perform the masking operation, depending on how you want to restrict the user’s input, but they all revolve around the same basic principles. The method presented here will allow an edit control to mask any ANSI character, thereby restricting the input to a subset of the ANSI character set.</p>
+
+<p>Masking the input to an edit control requires that we somehow intercept keystroke messages that are sent to the control whenever a key is pressed. The best way to do this is to subclass the edit control. We can let all messages go un-modified to the original window procedure, but we can handle the <code class="highlighter-rouge">WM_CHAR</code> message to suit our needs.</p>
+
+<h2 id="the-masking-function">The Masking Function</h2>
+
+<p>Firstly, we will define a function which will apply a mask to an edit control.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">MaskEditControl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndEdit</span><span class="p">,</span> <span class="kt">char</span> <span class="n">szMask</span><span class="p">[],</span> <span class="n">DWORD</span> <span class="n">nOptions</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This function takes three parameters.</p>
+
+<p><code class="highlighter-rouge">hwndEdit</code> is the handle to an edit control created by the current process. <code class="highlighter-rouge">szMask</code> is a text string containing the characters to mask. <code class="highlighter-rouge">nOptions</code> will specify additional masking options for the edit control. A value of <code class="highlighter-rouge">TRUE</code> means that the specified text string contains valid characters, which the edit control will accept when typed in. A value of <code class="highlighter-rouge">FALSE</code> means that the specified text string contains characters which will be rejected when input to the control.</p>
+
+<p>This provides a fairly flexible way to define a mask for an edit control. For example, the following snippet will mask the specified edit control, which will subsequently only accept numeric characters, the space character and back-slashes. Including the back-slash will enable the user to delete characters from the control.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MaskEditControl</span><span class="p">(</span><span class="n">hwndEdit</span><span class="p">,</span> <span class="s">"0123456789 </span><span class="se">\b</span><span class="s">"</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="masking-function-details">Masking Function Details</h2>
+
+<p>The function itself is pretty straight-forward. The basic steps that we will take are listed here:</p>
+
+<ul>
+  <li>Retrieve the pointer to current window procedure using <code class="highlighter-rouge">GetWindowLong(hwnd, GWL_WNDPROC)</code></li>
+  <li>Allocate a block of memory big enough to store this function pointer, and a 256 element <code class="highlighter-rouge">BOOL</code> array.</li>
+  <li>Build a lookup table in this array, with each array element corresponding to one ANSI character.</li>
+  <li>Replace the edit control’s window procedure with our custom masking one.</li>
+  <li>Associate our block of memory with the edit control using <code class="highlighter-rouge">SetWindowLong(hwnd, GWL_USERDATA, (LONG)data)</code></li>
+</ul>
+
+<p>This is basically what the function looks like:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">MaskEditControl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndEdit</span><span class="p">,</span> <span class="kt">char</span> <span class="n">szMask</span><span class="p">[],</span> <span class="n">DWORD</span> <span class="n">nOptions</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">BOOL</span> <span class="o">*</span><span class="n">mask</span><span class="p">;</span>
+    <span class="n">WNDPROC</span> <span class="n">oldproc</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="c1">// don't make a new mask if there is already one available
+</span>    <span class="n">oldproc</span> <span class="o">=</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwndEdit</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">oldproc</span> <span class="o">!=</span> <span class="n">MaskedEditProc</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">BOOL</span> <span class="o">*</span><span class="p">)</span><span class="n">HeapAlloc</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span> <span class="o">+</span> <span class="mi">256</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">BOOL</span><span class="p">));</span>
+    <span class="k">else</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">BOOL</span> <span class="o">*</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwndEdit</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">);</span>
+
+    <span class="c1">// build the mask lookup table. The method varies depending
+</span>    <span class="c1">// on whether we want to allow or disallow the specified szMask characters
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">nOptions</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">mask</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">szMask</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">mask</span><span class="p">[</span><span class="n">szMask</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">mask</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">szMask</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">mask</span><span class="p">[</span><span class="n">szMask</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//don't update the user data if it is already in place
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">oldproc</span> <span class="o">!=</span> <span class="n">MaskedEditProc</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">mask</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwndEdit</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">);</span>
+
+        <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndEdit</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">MaskedEditProc</span><span class="p">);</span>
+        <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndEdit</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">mask</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now that we have defined a suitable interface to the masked edit control, we can go on to write a replacement window procedure.</p>
+
+<h2 id="the-masked-edit-window-procedure">The Masked Edit Window Procedure</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="nf">MaskedEditProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uMsg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">WNDPROC</span> <span class="n">oldwndproc</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="o">*</span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">BOOL</span> <span class="o">*</span> <span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">);</span>
+    <span class="n">oldwndproc</span> <span class="o">=</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">mask</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">uMsg</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="c1">// WM_NCDESTROY is the LAST message that a window will receive - 
+</span>    <span class="c1">// therefore we must finally remove the old wndproc here
+</span>    <span class="k">case</span> <span class="n">WM_NCDESTROY</span><span class="p">:</span>
+        <span class="n">HeapFree</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mask</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">case</span> <span class="n">WM_CHAR</span><span class="p">:</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">wParam</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">]</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">oldwndproc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">uMsg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That’s it in a nutshell. There are lots of other ways of performing the masking operation itself. In this case I use a simple boolean lookup table, with one element corresponding to one character. The idea is the same no matter what method you choose to do the mask - subclass the edit control and associate some kind of mask with it.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/MaskedEdit.c">MaskedEdit.c</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-05-21T00:00:00+00:00">May 21, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="2001-05-20-insert-buttons-into-an-edit-control/index.html" class="pagination--pager" title="Insert buttons into an edit control
+">Previous</a>
+    
+    
+      <a href="fixed-width-font-enumeration.html" class="pagination--pager" title="Fixed-width Font Enumeration
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/masked-edit-input by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

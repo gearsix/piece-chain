@@ -1,0 +1,1482 @@
+<html>
+<title>The Craft of Text Editing: Chapter 7</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-7.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 7: Redisplay</h1>
+
+<blockquote>
+One, two!  One, two!  And through and through<br>
+&nbsp;&nbsp;The vorpal blade went snicker-snack!<br>
+</blockquote>
+
+<p>The previous chapter described a way of dividing the implementation
+into parts and covered one of those parts, the internal sub-editor.
+This chapter describes the redisplay part.</p>
+
+<p>This chapter will start by discussing the general constraints that
+affect redisplay.  It will then describe the external interface and
+some of the internal interfaces used by redisplay (the &quot;procedure
+interface&quot; definitions).  It goes on to discuss many of the
+considerations that affect implementations of the algorithms.
+Finally, it describes the redisplay algorithms.</p>
+
+<h2>Constraints</h2>
+
+<p>Redisplay, or incremental redisplay, to give it its full name, is
+that part of the implementation that is responsible for ensuring that
+all changes to the buffer are promptly reflected on the user's
+display. As is evident from the definition, there are two parts to
+redisplay's job.</p>
+
+<p>The first part is to ensure that all changes are indeed tracked.
+In the absence of the second part, this part would be quite easy.</p>
+
+<p>The second part of the job is to ensure that the changes are made
+&quot;promptly.&quot; In this context, &quot;promptly&quot; means that
+the amount of clock time required to make the updates visible is
+minimized.  Clock time is the combination of transmission time, CPU
+time, and disk access time that is perceived by the user as the delay
+from when a command has been entered to when the display has been
+updated.</p>
+
+<p>In general, the buffer's contents will change only a small amount
+during any one command.  The screen will thus only have to be changed
+by a small amount in order to reflect the changed buffer contents.
+Hence, the algorithms concentrate on incrementally redisplaying the
+buffer; the entire process is thus referred to as incremental
+redisplay.  Fortunately, it turns out that in cases where the buffer
+is changed drastically, the increment-oriented approach to redisplay
+works quite well and so there is no need for multiple algorithms.</p>
+
+<p>This discussion of incremental redisplay assumes a model of the
+system where the editing is done on a main processor which
+communicates with a display.  If the main processor is the same as the
+display, the bandwidth of the CPU to display communications channel
+can be very high.  However, the considerations remain unchanged: only
+the relative weights change.  Incremental redisplay is an optimization
+between CPU time, display-processing time, and communications-channel
+time, with a few memory considerations thrown in.</p>
+
+<p>The first major constraint is the speed of the communications
+channel.  Typical speeds that are available are 300, 1200, 2400, and
+9600 bps.  Memory-mapped and other built-in displays run at bus
+speeds: communications speed is essentially infinite.</p>
+
+<p>A typical video display has a 24 x 80 character screen.  At 300
+bps, it takes three seconds to reprint a line and over a minute to
+refresh the whole screen.  At 1200 bps, less than one second is
+required to reprint a line and about sixteen seconds to refresh the
+screen.  At 9600 bps, it will take one to two seconds to refresh the
+screen.  The speed of the communication thus greatly affects the
+amount of optimization that is desired.  At 300 bps, the user may
+notice even one extra transmitted character, while at 9600 bps,
+reprinting entire lines does not take an appreciable amount of time.
+One dimension of the optimization is thus clear: the importance of
+optimizing the number of characters sent increases in proportion to
+the slowness of the communication line.</p>
+
+<p>The second major constraint is the speed of the display device.  It
+takes time for the display to handle each command, and this time can
+affect the choice of commands sent to the display.  For example, if a
+line ending in:</p>
+
+<pre>
+	whale
+</pre>
+
+<p>was changed to:</p>
+
+<pre>
+	narwhale
+</pre>
+
+<p>the redisplay code could elect to position the cursor just before
+the &quot;w&quot;, insert three characters, then send &quot;nar&quot;.
+Alternatively, it could position to the same place and just send
+&quot;narwhale&quot;.  The latter would be more efficient unless the
+display could accept and perform the &quot;insert three
+characters&quot; command in less than five character times (possible).
+As has been mentioned before, some memory-mapped displays actually
+process commands very slowly.  As the effective display speed is so
+low, it is important to use good redisplay algorithms on those
+displays.</p>
+
+<p>User interface considerations also affect which command sequences
+should be sent.  For example, while it might be acceptable from a pure
+clock-time point of view to reprint an entire line, users do not like
+to see text which has not changed in the buffer &quot;change&quot; by
+being reprinted.  The flickering that is generated by the reprinting
+process attracts the user's attention to that text, which is
+undesirable as the text has not, after all, changed.  Thus, avoiding
+extraneous flickering and movement of text is good.  The amount of
+perceived flicker will vary from display to display, being highly
+dependent upon such factors as display command set, display speed,
+internal display data-structures, timing, and phosphor.</p>
+
+<p>The third major constraint is the CPU speed.  On some computers,
+computing an optimal redisplay sequence takes longer than is saved by
+the optimizations (&quot;optimal&quot; considering only the
+communications channel and display).  On those machines, the correct
+optimization is to send the &quot;less-than-optimal&quot;
+sequence.</p>
+
+<p>CPU time must be spent in order to perform any optimizations. If
+the CPU time spent exceeds some small amount of clock time, the user
+will perceive response to be sluggish.  It is therefore desirable to
+minimize the CPU time spent on optimizing the redisplay.  However, the
+communications channel speed also makes a difference.  If the line is
+slow, extra CPU time can and should be spent (at 300 bps, it is
+worthwhile to spend up to 30 msec. of CPU time to eliminate one
+character from being transmitted (which takes about 30
+msec.)). However, at higher speeds it is generally not practical to
+heavily optimize the number of characters sent, as it can easily take
+longer to compute the optimizations than to transmit the extra data.
+This relaxation of the optimization is subject to the user interface
+constraint outlined above.</p>
+
+<p>The fourth constraint is the memory size. For example, one
+technique stores a copy of the entire screen, character by character.
+This technique works quite well in general.  However, where memory is
+tight this technique may not be feasible.</p>
+
+<h2>Procedure Interface Definitions</h2>
+
+<p>This section describes two interfaces.  The first one is the
+(external) interface that redisplay presents to the rest of the editor
+implementation (<i>i.e.</i>, the sub-editor and the user-oriented
+commands).  The second interface is the internal interface used by the
+redisplay to isolate the display-specific portions of its internal
+code.</p>
+
+<p>In this section, the term <i>display</i> refers to the hardware
+operated by the user.  A display has a keyboard, screen, and perhaps a
+graphical input device.  The <i>screen</i> is the part of the display
+that shows output.  A <i>window</i> is a logical screen.  One window
+can occupy the entire screen, or more than one window can share the
+screen, perhaps even overlapping.  A window can never be larger than
+the screen.</p>
+
+<h3>Editor Procedures</h3>
+
+<pre>
+	status Window_Init(char *display);
+	status Window_Fini(void);
+	status Window_Save(FILE *fptr);
+	status Window_Load(FILE *fptr);
+</pre>
+
+<p><b>Window_Init</b> is the basic set-up-housekeeping call.  It is
+called once, upon editor invocation.  It should perform all required
+one-time initialization, including keyboard and screen initialization.
+No other editor interface call except for <b>Window_Fini</b> can be
+legally called unless <b>Window_Init</b> returns a successful status.
+The parameter indicates the display type.  Presumably, if the
+parameter is null, the routine will determine a default display.</p>
+
+<p><b>Window_Fini</b> terminates all state information.  Once called,
+<b>Window_Init</b> must be called again before other editor interface
+calls can be legally made.</p>
+
+<p><b>Window_Save</b> saves the current redisplay state information in
+the file opened on the specified file descriptor.  Presumably,
+<b>World_Save</b> opened the file, then called this routine.</p>
+
+<p><b>Window_Load</b> loads all redisplay state information from the
+file opened on the specified file descriptor.</p>
+
+<p>If you are creating a &quot;stripped down&quot; editor, then these
+routines would not do anything.  They can be put in as stubs if there
+is a reasonable possibility that the editor will be embellished
+later.</p>
+
+<pre>
+	void Redisplay(void);
+	void Recenter(void);
+	void Refresh_Screen(void);
+</pre>
+
+<p><b>Redisplay</b> performs one incremental redisplay.  If it runs to
+completion, the screen will accurately reflect the buffer.  However,
+this routine also checks for type ahead.  If the user does type (or
+use the graphical input device) before the redisplay has finished,
+this routine will notice that event and abort the redisplay in a safe
+manner.  Presumably, the user will quit typing ahead at some point and
+redisplay can then complete.</p>
+
+<p><b>Recenter</b> operates as does <b>Redisplay</b>, except that it
+moves the point to the center of the window (technically, the
+preferred percentage).  This procedure is needed because there is
+typically a user-level command to perform this operation.</p>
+
+<p><b>Refresh_Screen</b> operates as does <b>Recenter</b>, except that
+it assumes that the screen has been corrupted.  Thus, this routine
+ensures that the screen is correct no matter what else may have
+happened.</p>
+
+<pre>
+	void Set_Pref_Pct(int percent);
+	int Get_Point_Row(void);
+	int Get_Point_Col(void);
+</pre>
+
+<p><b>Set_Pref_Pct</b> sets the preferred percentage.  After a
+<b>Recenter</b> or other similar operation, the point will be on a
+line approximately this percentage of the way through the window.  A
+good default value is about forty percent.  With this default on a
+22-line window, the point will be on line 9.</p>
+
+<p><b>Get_Point_Row</b> returns the number of the row within the
+window that the point is at.</p>
+
+<p><b>Get_Point_Col</b> returns the number of the column within the
+window that the point is at.  This may not be the same as the column
+returned by <b>Get_Column</b>, as that routine does not take into
+account line wrap.</p>
+
+<pre>
+	window_data Window_Create(window_data wind);
+	status Window_Destroy(window_data wind);
+	status Window_Grow(window_data wind, int amt);
+	int Get_Window_Top_Line(window_data wind);
+	int Get_Window_Bot_Line(window_data wind);
+	location Get_Window_Top(window_data wind);
+	location Get_Window_Bot(window_data wind);
+</pre>
+
+<p>These routines are used to manipulate multiple windows, if you
+choose to offer that feature.  The definitions provided here only
+allow for horizontal windows (<i>i.e.</i>, all windows occupy the full
+width of the display).  Vertical windows and overlapping windows are
+not covered, although they are often implemented.</p>
+
+<p><b>Window_Create</b> creates a new window.  It operates by
+splitting the supplied window in two.  Both windows initially show the
+same data.  It returns a window descriptor for the second window.</p>
+
+<p><b>Window_Destroy</b> destroys the supplied window.  The window
+above this one expands to occupy the vacant screen space.  Note that
+<i>Window_Destroy(Window_Create(wind))</i> results in no change.</p>
+
+<p><b>Window_Grow</b> grows the specified window by the specified
+number of lines.  The window is grown by moving the top line up.</p>
+
+<p><b>Get_Window_Top_Line</b> returns the screen line that contains
+the top line of the specified window.</p>
+
+<p><b>Get_Window_Bot_Line</b> returns the screen line one after the
+bottom of the specified window.  This is the same value as
+<b>Get_Window_Top_Line</b> of the next lower window.</p>
+
+<p><b>Get_Window_Top</b> returns the location in the buffer just
+before the character that is at the top left part in the window.
+Several of the user commands use this information.</p>
+
+<p><b>Get_Window_Bot</b> returns the location in the buffer just after
+the character that is at the bottom right part of the window (or as
+close as you can get to it).  This is the same location that would be
+returned by <b>Get_Window_Top</b> if the window were exactly one
+window below its current position.  Several of the user commands use
+this information.</p>
+
+<h3>Display Independent Procedures</h3>
+
+<p>This section describes the display functions used by redisplay.
+The routines that implement these functions are not part of redisplay
+itself.  A full discussion of this topic is beyond the scope of this
+book (but is covered in Linhart 1980). In essence, the problem is that
+every display manufacturer has decided on a different set of features
+and offers different ways of accessing those features.  To solve the
+problem, a set of routines is needed which can isolate these
+differences, as well as a way of selecting among different sets of
+such routines as the display changes.</p>
+
+<p>Although not recommended, it <i>is</i> possible to cover a lot of
+displays by assuming that the display accepts the ANSI escape
+sequences (<i>i.e.</i>, the display is a DEC VT100).  Most modern
+displays accept these sequences.  However, many older displays do not.
+In addition, not all displays take the same amount of time to process
+a given command.  Thus, there is still per-display information to
+consider.</p>
+
+<p>There is one piece of existing technology to mention, and that is
+exemplified by the <i>curses</i> package available on many UNIX
+systems (similar packages are available under other names for other
+systems).  It not only provides display independent functions, albeit
+with a somewhat different interface, it also performs the redisplay
+for you! However, as the purpose of this chapter is to explain how
+redisplay works, that package will receive no further mention.</p>
+
+<p>The following set of procedures will allow display-independent
+operations for most displays.  The procedure interfaces isolate the
+operations that are used by redisplay.</p>
+
+<pre>
+	status Key_Init(char *display);
+	status Key_Fini(void);
+	char Key_Get(void);
+	FLAG Key_IsInput(void);
+	private Key_FunctionKeys(void);
+</pre>
+
+<p><b>Key_Init</b> and <b>Key_Fini</b> operate in the by now familiar
+fashion.  They will be called by the <b>Window_Init</b> and
+<b>Window_Fini</b> routines.  In particular, though, these routines
+make sure that all processing of input characters is turned off
+(<i>i.e.</i>, set it for &quot;raw&quot; input) and all configuration
+information is loaded.</p>
+
+<p><b>Key_Get</b> waits for a key to be pressed and returns it.  Keys
+that send multiple characters (<i>e.g.</i>, function keys) are
+returned one character at a time.</p>
+
+<p><b>Key_IsInput</b> returns True if input is available or False if
+it is not.  It is used, for example, by <b>Redisplay</b> to determine
+whether to abort.</p>
+
+<p><b>Key_FunctionKeys</b> returns information about the function keys
+available on this keyboard.  This information includes key placement,
+key labelling, and the codes returned by the keys.  The information is
+returned in an implementation-defined manner (<i>i.e.</i>, you get to
+invent your own representation).</p>
+
+<pre>
+	status Screen_Init(char *screen);
+	status Screen_Fini(void);
+	int Screen_Rows(void);
+	int Screen_Columns(void);
+	private Screen_Atrributes(void);
+</pre>
+
+<p><b>Screen_Init</b> and <b>Screen_Fini</b> operate in the by now
+familiar fashion.  They, too will be called by the <b>Window_Init</b>
+and <b>Window_Fini</b> routines.  In particular, though, these
+routines make sure that all processing of output characters is turned
+off (<i>i.e.</i>, set it for &quot;raw&quot; output) and all
+configuration information is loaded.</p>
+
+<p><b>Screen_Rows</b> returns the number of rows in the screen.  In
+this case, a row is the granularity of screen output.  On a graphics
+screen, a row would be one pixel.</p>
+
+<p><b>Screen_Columns</b> returns the number of columns in the screen.
+In this case, a column is the granularity of screen output.  On a
+graphics screen, a column would be one pixel.</p>
+
+<p><b>Screen_Attributes</b> returns information about the attributes
+(<i>e.g.</i>, boldface, reverse video, blinking, etc.) that the screen
+supports.  The information is returned in an implementation-defined
+manner (<i>i.e.</i>, you get to invent your own representation
+again).</p>
+
+<pre>
+	void Set_Cursor(int row, int column);
+	void Set_Row(int row);
+	void Set_Column(int column);
+	void Set_Attr(private attributes);
+	int Get_Row(void);
+	int Get_Column(void);
+	private Get_Attr(void);
+	void Put_Char(char c);
+	void Put_String(char *str);
+	void Beep(void);
+</pre>
+
+<p><b>Set_Cursor</b> sets the cursor to the specified row and column.
+It is assumed that the optimal (<i>i.e.</i>, least cost) command
+sequence will be selected.</p>
+
+<p><b>Set_Row</b> sets the cursor to the specified row, without
+affecting the column.  Instead of a separate routine, this could be
+multiplexed onto <b>Set_Cursor</b>, say by one of the following:</p>
+
+<pre>
+	Set_Cursor(row, -1);
+	Set_Cursor(row, Get_Column());
+</pre>
+
+<p><b>Set_Column</b> sets the cursor to the specified column without
+affecting the row.  The functionality provided by this routine could
+also be multiplexed onto <b>Set_Cursor</b>.</p>
+
+<p><b>Set_Attr</b> sets the current attributes to those specified.</p>
+
+<p><b>Get_Row</b> returns the row that the cursor is on.</p>
+
+<p><b>Get_Column</b> returns the column that the cursor is on.</p>
+
+<p><b>Get_Attr</b> returns the current attributes.</p>
+
+<p><b>Put_Char</b> outputs the supplied character to the screen,
+updating the cursor position.  The character is always displayed: it
+is never part or all of a command sequence.</p>
+
+<p><b>Put_String</b> outputs the supplied string and leaves the cursor
+after the string.  It otherwise works as per <b>Put_Char</b>.  These
+strings are always displayed, even if they appear to contain screen
+commands.  Commands may be sent to the screen only by means of the
+supplied procedures.</p>
+
+<p><b>Beep</b> rings the screen's bell or flashes the screen.</p>
+
+<pre>
+	CLEOL(void);
+	Clear_Line(void);
+	CLEOS(void);
+	Clear_Screen(void);
+</pre>
+
+<p><b>CLEOL</b> sends the command sequence that optimally clears from
+the current cursor position to the end of the current line.  The
+cursor does not move.</p>
+
+<p><b>Clear_Line</b> sends the command sequence that optimally clears
+the entire current line, and leaves the cursor in column 0 (you are
+assuming a zero-origin on all of these numbers, aren't you?).</p>
+
+<p><b>CLEOS</b> sends the command sequence that optimally clears from
+the current cursor position to the end of the screen.  Lines after the
+current one are completely cleared.  The cursor does not move.</p>
+
+<p><b>Clear_Screen</b> sends the command sequence that optimally
+clears the entire screen, and leaves the cursor at the upper-left
+corner (row 0, column 0).</p>
+
+<pre>
+	void Insert_String(char *str);
+	void Delete_Chars(int count);
+	void Insert_Lines(int count);
+	void Delete_Lines(int count);
+	void Scroll_Lines(int from, int to, int count);
+</pre>
+
+<p>These commands are available on advanced displays only (by the
+definition of an advanced display from Chapter 2), and each is assumed
+to send the optimal command sequences to effect its purpose.</p>
+
+<p><b>Insert_String</b> takes a string, determines the optimal command
+sequence required to insert it, and inserts it starting at the current
+cursor location.  Line wrap is not performed: excess characters are
+dropped off the right edge of the screen.  This routine could have
+been defined to accept a count instead of a string and to insert
+blanks.  However, it is easier to optimize command sequences by having
+the string to be inserted available.</p>
+
+<p><b>Delete_Chars</b> accepts a count and deletes that many columns.
+Line wrap is not performed.  Blank columns are inserted from the right
+edge of the screen.</p>
+
+<p><b>Insert_Lines</b> accepts a count and inserts that number of
+blank lines, starting with the line that the cursor is on (thus, you
+can insert lines at the very top of the screen).</p>
+
+<p><b>Delete_Lines</b> accepts a count and deletes that number of
+lines, starting with the line that the cursor is on (thus, the line at
+the very top of the screen can be deleted).  Blank lines are scrolled
+in from the bottom.</p>
+
+<p><b>Scroll_Lines</b> accepts a <i>from</i> line, a <i>to</i> line,
+and a <i>count</i>.  The lines starting with the <i>from</i> line, and
+up to but not including the <i>to</i> line, are scrolled by
+<i>count</i> lines (positive scrolls the lines up and negative scrolls
+the lines down).</p>
+
+<pre>
+	private Screen_Timings(private goal);
+</pre>
+
+<p><b>Screen_Timings</b> accepts a description of a goal, and returns
+timing information on the various choices of screen routines that
+could be used to achieve that result.  The description takes into
+account the current screen status.  The information is to help the
+redisplay code select the best screen routine, not to help the screen
+routines optimize their own performance (such optimizations are
+assumed to be done anyway).  As with the other private data types, the
+information is returned in an implementation-defined manner
+(<i>i.e.</i>, you get to invent your own representation).  Note that
+the two private data types in this procedure's definition (that for
+<i>goal</i> and the procedure itself) refer to <i>different</i> data
+types with different representations.</p>
+
+<h2>Considerations</h2>
+
+<p>This section describes various considerations that go into the
+redisplay algorithm.  In other words, these are the ways in which the
+algorithm gets complicated.  While none of these ways are particularly
+difficult to implement in themselves, collectively they would clutter
+the redisplay algorithms presented later.  Hence, you should keep
+these topics in mind when reviewing the algorithms.</p>
+
+<p>The topics in this section are only vaguely related to each other
+and are in no particular order.</p>
+
+<h3>Status Line</h3>
+
+<p>In general, each buffer will have some lines of status information.
+In addition, there may be general editor status information.  Finally,
+there may be lines of separators between windows.  (One hopes that on
+&quot;small&quot; screens (<i>i.e.</i>, those with less than, say,
+fifty lines), the numbers for these are &quot;one,&quot;
+&quot;none,&quot; and &quot;none: use the buffer status line as a
+window separator&quot; in order to devote as many lines as possible to
+showing the text being edited.)</p>
+
+<p>In any event, this &quot;framework&quot; information must be
+retained and displayed.  The user-oriented command routines and
+redisplay must work together to provide this infrastructure.</p>
+
+<p>Here are some sample types of per-buffer status information:</p>
+
+<ul>
+
+<li>the file name
+<li>the buffer name (may be the same as the file name)
+<li>the buffer status: unmodified, modified, read-only
+<li>the current modes
+<li>the point position in characters and/or buffer length
+<li>the point position as a percentage
+<li>the location of the top of the window as a percentage (or
+&quot;top&quot;, &quot;bot&quot;, or &quot;all&quot; as appropriate)
+<li>the point column
+<li>the current attribute
+<li>the current line and number of lines
+</ul>
+
+<p>Of course, any one editor implementation will only show some of
+this information at a time.  This list is not definitive. </p>
+
+<p>Here are some sample types of editor status information:</p>
+
+<ul>
+<li>the name and version number of the editor
+<li>copyright information
+<li>the current date and time
+<li>the current system &quot;load average,&quot; or other system
+information
+</ul>
+
+<p>Again, any one implementation may only show some of this
+information, and this list is not definitive.</p>
+
+<h3>End of the Buffer</h3>
+
+<p>There are two cases that must be handled.</p>
+
+<p>First, if the entire buffer fits in the window, you will run out of
+buffer before you run out of window.  The caveat here is to ensure
+that this case is properly detected and that the entire buffer is
+shown, with the start of the buffer at the upper-left corner.</p>
+
+<p>Second, if the entire buffer does not fit in the window but the end
+of the buffer appears, the end should be close to but not at the
+bottom of the window.</p>
+
+<p>Those portions of the window that follow the end of the buffer can
+be left blank or marked in some fashion.  As a rule, Emacs-type
+editors leave that part of the window blank.</p>
+
+<h3>Horizontal Scrolling</h3>
+
+<p>A window has a finite width.  Some lines will not fit within that
+width.  There are two popular ways of handling such a situation:
+horizontal scrolling and line wrap.  Ideally, your editor should offer
+the user a choice between them.  This section will describe the
+first.</p>
+
+<p>When performing horizontal scrolling, a line longer than the window
+width will spill off the edge: the part of the line that does not fit
+thus will not be visible to the user.  As the user types, the text
+being displayed will adjust so that the text around the point is
+always visible.  In addition, the user should be provided with
+commands to move the window left or right (with a few characters of
+overlap).  In addition, the status line should contain indicators that
+show whether text is currently lost off of either the left or the
+right sides (use separate indicators).</p>
+
+<h3>Line Wrap</h3>
+
+<p>When performing line wrap, the window never moves left or right at
+all.  Instead, the text that would have been clipped off of the right
+edge of the window is wrapped to the next line.  If the line is
+sufficiently long, it may wrap two or more times.</p>
+
+<p>In this type of display, no window motion commands are required.
+In addition, the status indicators are also not required, although you
+may wish to mark the wrapped lines.</p>
+
+<p>Line wrap introduces a new problem that must be handled properly:
+that of single lines that, when wrapped, occupy the entire window.
+Although rare, such lines do show up from time to time in non-text
+files.</p>
+
+<p>When horizontal scrolling and line wrap are compared, neither comes
+out a clear winner and both offer valuable features, hence the
+assertion that your implementation should support both line wrap and
+horizontal scrolling.</p>
+
+<p>The advantages to horizontal scrolling are that it is easy to
+implement, and can be processed quickly.</p>
+
+<p>One of the disadvantages is that it requires a fast display.
+Consider the case when the user has a 160-column line displayed in an
+80-column window.  On the average, the window will have to be shifted
+twice per line of typing.  Another disadvantage is that clipped text
+appears to have been deleted.  It can be rather disconcerting to the
+user to have this text vanish and reappear.</p>
+
+<p>One of the advantages of line wrap is that all of the text is
+always visible.  In addition, when editing a very long line, the
+entire window shows the immediate context.  In contrast, when editing
+the end of a long line when using horizontal scrolling, most or all of
+the remainder of the window will be blank, having been scrolled off
+the left edge.</p>
+
+<p>The main disadvantages to line wrap are the additional complexity
+in the redisplay required to handle the line wrap, the very poor
+presentation when lines are only slightly wider than the window, and
+the disconcerting multi-line &quot;shifting&quot; that occurs when a
+user is inserting or deleting near the start of a wrapped line.</p>
+
+<h3>Word Wrap</h3>
+
+<p>Once you have line wrap, the next logical step is to break the line
+on a word boundary instead of a character boundary.  You then offer
+&quot;word wrap,&quot; a feature found in almost every word processor
+available today.  Typically, a word processor will store each
+paragraph of text as a single line and simply perform word wrap upon
+it.  Ruler lines are used to adjust the margins and change the type of
+justification.</p>
+
+<p>This is a very nice feature to offer.  It does have some pitfalls
+for the unwary implementor, however:</p>
+
+<ul>
+<li>Your redisplay now has to handle look-ahead.
+
+<li>You are going to have to decide where to break the lines (white
+space only, include dashes, include other punctuation?).
+
+<li>Your users are going to want ruler lines, and so you must provide
+all of that infrastructure.
+
+<li>You will have to track where the word wrap actually occurs because
+the user thinks (and hence the line-manipulating commands operate) in
+terms of the lines as displayed.
+</ul>
+
+<p>If you do implement word wrap, you may as well go the whole way and
+support flushing right, centering, and justification of text during
+display.</p>
+
+<h3>Tabs</h3>
+
+<p>Tab characters can be handled in two ways.  The first way is to not
+handle them at all.  Instead, convert them to spaces upon entry.  In
+this case, the redisplay code never sees those characters and hence
+doesn't need to deal with them.</p>
+
+<p>The second - and by far the most common method - is to treat the
+tab as a &quot;cursor control command&quot; that in effect says
+&quot;think of me as <i>n</i> blanks, where <i>n</i> is the number of
+units to the next tab stop.&quot; Thus, when the redisplay code
+encounters a tab, it computes <i>n</i>, then pretends that it is
+displaying <i>n</i> consecutive blanks (or a single blank of width
+<i>n</i>).  <i>N</i> can be computed in one of three ways.</p>
+
+<p>First, tab stops can be set every <i>c</i> columns (or
+characters). In a zero-origin numbering system, tabs set every
+<i>c</i> columns are set at columns 0, C, 2*C, 3*C, ...  For example,
+when <i>c</i> is 8, tabs are in columns 0, 8, 16, 24, ...  The
+<i>C</i> language expression to compute <i>n</i> is:</p>
+
+<pre>
+	n = c - x % c;
+</pre>
+
+<p>where <i>x</i> is the current column.</p>
+
+<p>The second way to set tab stops is to allow them to be set at
+arbitrary column positions.  This way is often used in ruler lines in
+simple word processors.  In this case, you must decide on a
+representation such as a bit array or an array of the columns where
+tabs are set.</p>
+
+<p>The third way to set tab stops is to allow them to be set at
+arbitrary positions, where the positions are measured in units such as
+inches, millimeters, etc.  This way is most useful on graphics
+screens.</p>
+
+<p>So far, only &quot;traditional&quot; tabs have been described.
+These might be termed &quot;left&quot; tabs because the left edge of
+the text is placed at the tab stop.  Other types of tabs have become
+popular (again) with the advent of word processors:</p>
+
+<ul>
+<li><b>Right tabs</b> adjust the position of the text to the left of
+the tab stop so that its right edge is at the tab stop.  Typically,
+all text back to the previous tab stop or the start of line is
+adjusted.
+<li><b>Decimal tabs</b> search for a decimal point (comma in Europe)
+and place that character at the tab stop.  Again, typically, all text
+back to the previous tab stop or the start of line is adjusted.  These
+tabs act as right tabs if the text does not contain a decimal point.
+<li><b>Centering tabs</b> center the preceding text between the
+current and previous tab stop.
+</ul>
+
+<p>Again, other variations are possible.  Note that only the
+(traditional) left tabs can be implemented without some sort of look
+ahead.</p>
+
+<h3>Control Characters</h3>
+
+<p>Control characters are those that are not printing characters, a
+space, a newline, or a tab.  (&quot;Printing characters&quot; means
+just that: if your system supported &quot;extended&quot; or
+&quot;enhanced&quot; character sets, then those characters may not
+count as control characters.)  In addition, a word processor may store
+some information &quot;in band.&quot; That information would be either
+interpreted or skipped on redisplay.</p>
+
+<p>However, even in a word processor or on a system with an extended
+character set, there should be a way to view (and edit) a
+&quot;pure&quot; binary file.  In order to view such a file, there
+must be a standard representation for non-printing characters.</p>
+
+<p>One representation is to show such characters in octal
+(&quot;\###&quot;) or hexadecimal (&quot;\x##&quot;).</p>
+
+<p>However, the most common representation -- and possibly the most
+useful one -- is to show such characters in caret notation (for a
+complete list of the caret notation, see Appendix E).  The easiest way
+to define this notation is with a code excerpt:</p>
+
+<pre>
+	void Caret(char c)
+		{
+		if (c == NL) {
+			...handle newlines...
+			return;
+			}
+		if (c == TAB) {
+			...handle tabs...
+			return;
+			}
+		if (c &amp; 0x80) {
+			Put_Char('~');
+			c &amp;= 0x7f;
+			}
+		if (c &lt; SP || c &gt; '~') {
+			Put_Char('^');
+			c ^= '@'
+			}
+		Put_Char(c);
+		}
+</pre>
+
+<p>When handling these multiple-character characters, your
+implementation must be consistent.  For example, be sure that your
+cursor-positioning code takes the extra characters into account. Your
+implementation must also properly handle the case where such a
+character spans a line boundary.  It doesn't matter which choice is
+made here (<i>i.e.</i>, the choice is between splitting the character
+at the boundary and moving the whole character to the next line), only
+that your implementation handle it consistently and correctly.</p>
+
+<h3>Proportionally Spaced Text</h3>
+
+<p>Once you have tabs and control characters down, displaying text in
+a proportionally spaced font is not too difficult.  The main variation
+is that you no longer assume that all printing characters are the same
+width.  Instead, you look up the width of each one as you display it.
+Actually, you can even support <i>kerning</i> by looking up each
+consecutive pair of characters to decide how to handle them.</p>
+
+<p>The main &quot;gotcha&quot; in supporting proportionally spaced
+text is that one character no longer always exactly overwrites another
+on the screen.  Thus, if you change an &quot;m&quot; to an
+&quot;i&quot;, you have to figure out what to do with the extra width.
+Fortunately most displays that handle proportionally spaced text
+(mainly graphics displays) offer a high-performance primitive to
+scroll a region of the screen.</p>
+
+<h3>Attributes, Fonts, and Scripts</h3>
+
+<p>The next level of generality is the support of attributes, fonts,
+and scripts.  Attributes include such modifiers as boldface, italics,
+underscoring, and superscripting.  Fonts include the different
+typefaces such as Times Roman and Helvetica.  Scripts include language
+families such as European and Japanese.</p>
+
+<p>With these, your support can be as complex as you wish.  Especially
+when it comes to scripts, your time and energy are going to give out
+long before you can provide support for all languages.</p>
+
+<p>However, each one is fairly simple to handle.  The first step is to
+store the attribute, font, and script information somewhere (see
+Chapter 5).  The second step is to interpret that information.</p>
+
+<h3>Breaking Out Between Lines</h3>
+
+<p>As was mentioned in the procedure interface definitions, the
+redisplay process does not have to run to completion before editing
+resumes.  Instead, it can get to a convenient spot and check for any
+user input.  If input has arrived, the redisplay can be aborted
+(&quot;broken out of&quot;) and the input processed.  It is important
+to keep in mind that the purpose of redisplay is to provide feedback
+to the user.  If the user has already typed something, there is no
+immediate need for the feedback.  Hence, redisplay can be broken out
+of and then restarted after the user's input has been processed.</p>
+
+<p>In order to keep the amount of state information to a minimum, it
+may make sense to not abort instantly, but instead to finish a current
+chunk of redisplay (say, a line) before checking for input.  At the
+minimum, you must keep track of how far along you had proceeded, so
+that you don't wind up redisplaying your redisplayed text.</p>
+
+<p>The presence of between-line breakout can affect how your redisplay
+is done.  For example, if resources are tight, it may make sense to
+start by redisplaying the line that the point is on, then to go on to
+the other lines as you have time.  In that way, the information that
+is most important to the user is the first to get updated.</p>
+
+<p>Lest there be any doubt: between-line breakout is a very important
+feature and should only be left out of the very simplest
+implementations or those implementations that can complete even the
+most complex redisplay in under 100 msec.</p>
+
+<h3>Multiple Windows</h3>
+
+<p>Supporting multiple windows implies that the screen is divided into
+sections, with each section showing a possibly different buffer or
+part of the buffer. There are several ways that multiple windows can
+be supported:</p>
+
+<ul>
+<li>Don't support them.  Instead, rely on the (presumed) operating
+system ability to run multiple instances of the editor.  This is not
+desirable because the different instances may not be able to
+communicate quickly with each other.  For example, you may not be able
+to &quot;cut&quot; from one window and &quot;paste&quot; into another.
+
+<li>Support horizontal windows only.  Horizontal windows occupy the
+entire width of the screen.  This is a good and popular choice.  It is
+not too difficult to implement, yet it provides a large chunk of the
+required functionality.
+
+<li>Support both vertical and horizontal windows (tiled).  (Better)
+
+<li>Support arbitrary overlapped windows.  (Best, and supported by
+many windowing packages)
+</ul>
+
+<p>The main thing to keep in mind when implementing multiple windows
+is that, when two or more windows contain the same text, changes made
+to one should be immediately reflected in the other.</p>
+
+<p>If you do support multiple windows, you can implement status and
+prompt lines as buffers in themselves and simply fit them in as
+additional windows to be displayed.  In this way, you no longer have
+to consider them as special cases.</p>
+
+<h2>Redisplay Itself</h2>
+
+<p>The basic role of redisplay is to ensure that all changes to the
+sub-editor are promptly reflected on the screen.  Two major approaches
+are used by implementors to performing redisplay.</p>
+
+<pre>
+				   -----------------
+				   | user commands |
+				   -----------------
+				     /		 \
+				    /		  \
+				   v		   v
+			--------------		-------------
+			| sub-editor |		| redisplay |
+			--------------		-------------
+
+				     First Approach
+</pre>
+
+<p>The first approach is for the routines which are invoked by the
+user to tell the redisplay code exactly what they did (<i>e.g.</i>,
+&quot;I deleted 5 characters from here&quot;).  This approach is not a
+very clean one and it is prone to error, as the same information must
+be given twice (once to the sub-editor and once to redisplay), and
+hence an implementation must handle the situation where the two sets
+of instructions are not consistent (<i>e.g.</i> the application tells
+the sub-editor to delete a line but tells redisplay to insert a line).
+This is an especially important consideration because we would like to
+encourage novice users to write their own commands.  The extra effort
+of getting the redisplay correct might discourage such efforts.</p>
+
+<pre>
+				   -----------------
+				   | user commands |
+				   -----------------
+				     /
+				    /
+				   v
+			--------------		-------------
+			| sub-editor |&lt;----&gt;| redisplay |
+			--------------		-------------
+
+				     Second Approach
+</pre>
+
+<p>The second -- and preferred -- approach is to have the redisplay
+code communicate with the sub-editor to track the changes.  This
+approach also has two methods of operation.</p>
+
+<p>The first method (which might be called
+&quot;sub-editor-driven&quot;) is to have the sub-editor calls
+communicate directly with the redisplay.  For example,
+<b>Insert_Char</b> would make a call to display saying, &quot;I
+inserted this character at this place.&quot; The second method (which
+might be called &quot;redisplay-driven&quot;) is to have the redisplay
+operate on its own and ask the sub-editor for information.</p>
+
+<p>The sub-editor-driven method appears to be simple to implement, but
+upon closer examination turns out to be quite complex.  This
+complexity arises for several reasons.</p>
+
+<p>First, the desirable operations for a sub-editor to offer (as shown
+in the sub-editor procedure interface definitions) do not match well
+to the available operations on displays.  Hence, the redisplay code
+will have to perform this conversion.  An example would be deleting a
+line.  The code to perform the delete might be:</p>
+
+<pre>
+	void Delete_Line(void)
+		{
+		mark_name beg;
+
+		Find_First_In_Backward(NEWLINE);/* to start of line */
+		if (Mark_Create(&amp;beg) != OK) return;
+
+		Find_First_In_Forward(NEWLINE);	/* to end of line */
+		Point_Move(1);			/* skip over newline */
+
+		Copy_Region(kills, beg);	/* save in kill buffer */
+		Delete_Region(beg);		/* gone */
+
+		Mark_Delete(beg);
+		}
+</pre>
+
+<p>The sub-editor operation is &quot;delete a region&quot; and the
+region just happens to contain a line.  <i>Somebody</i> has to examine
+the region to determine that it contains a line and that a
+&quot;delete line&quot; call to the display <i>might</i> be the
+correct one to use.</p>
+
+<p>Second, the redisplay code will have to filter the sub-editor
+operations (and subsequent directives) that happen outside the
+window.</p>
+
+<p>Third, every change made in the buffer does not necessarily imply a
+change in the display.  For example, if the buffer contains the
+text:</p>
+
+<pre>
+	Here is a line.
+	Here is a line.
+	Here is a line.
+	Here is a line.
+</pre>
+
+<p>and the first line is deleted, the following lines do not in fact
+change.  That particular case may be rare, but the following happens
+fairly often:</p>
+
+<pre>
+	Here is line 1.
+	Here is line 2.
+	Here is line 3.
+	Here is line 4.
+</pre>
+
+<p>In this case, the &quot;Here is line &quot; strings should not be
+redisplayed.</p>
+
+<p>Fourth, the change might be no change at all.  For example, the
+&quot;lower case region&quot; command applied to the text:</p>
+
+<pre>
+	Most people believe the Unicorn to be a mythical animal.
+</pre>
+
+<p>might have in its inner loop:</p>
+
+<pre>
+	Replace_Char(tolower(Get_Char()));
+	Point_Move(1);
+</pre>
+
+<p>This would have the effect of telling redisplay 56 times that a
+character had changed, when in fact only two of those characters were
+changed.  One might argue that the <b>Replace_Char</b> routine could
+check to see whether the new character was in fact different before
+informing redisplay, however:</p>
+
+<ul>
+<li>You haven't gained anything, just changed who is doing the checking.
+<li>The inner loop could have been written:
+</ul>
+
+<pre>
+			c = Get_Char();
+			Delete(1);
+			Insert_Char(tolower(c));
+</pre>
+
+<p>The most telling reason for not using the sub-editor-driven method,
+however, is more fundamental.  The sub-editor's responsibility is to
+handle the buffer, not redisplay.  It is the redisplay's
+responsibility to handle the redisplay function.</p>
+
+<p>The algorithms presented in the remainder of this chapter
+illustrate the basic algorithms.  They do not handle all possible
+error cases, nor do they handle many of the options listed above, such
+as variable width characters, line wrap, between-line breakout, and
+others.</p>
+
+<h3>The Framer</h3>
+
+<p>The framer is that part of the redisplay code that decides what
+part of the buffer will appear in the window.  The redisplay code
+maintains two marks, one at the top of the window and the other at the
+bottom.  The algorithm is fairly simple.  Here it is:</p>
+
+<pre>
+	int num_lines_window;	/* the number of lines in the window */
+	int point_pct;		/* the preferred percentage */
+
+	void Framer(void)
+		{
+		mark_name saved;
+		location new_start_loc;
+		int cnt;
+
+			/* remember where we started */
+		if (Mark_Create(&amp;saved) != OK) {
+			Fatal(&quot;can't create mark for redisplay&quot;);
+			}
+
+		Find_First_In_Backward(NEWLINE);
+			/* count at most one window's worth of lines */
+		for (cnt = 0; cnt &lt; num_lines_window; cnt++) {
+
+				/* stop at the start of the window */
+			if (Is_Point_At_Mark(top_of_window)) break;
+
+				/* stop at the start of the buffer */
+			if (Compare_Locations(Buffer_Start, Point_Get) &gt;= 0)
+				break;
+
+				/* record where a fresh screen would start,
+				just in case we need it */
+			if (cnt == point_pct * num_lines_window)
+				new_start_loc = Point_Get();
+
+			Point_Move(-1);
+			Find_First_In_Backward(NEWLINE);
+			}
+
+			/* has the window moved? */
+		if (cnt &gt;= num_lines_window)
+			Mark_Set(top_of_screen, new_start_loc);
+
+		Point_To_Mark(saved);
+		Mark_Delete(saved);
+		}
+</pre>
+
+<p>In essence, the algorithm followed by this routine is: &quot;so
+long as the point would still wind up in the window, leave the start
+of window unchanged.  If the point would not wind up in the window,
+place it at the preferred percentage.&quot;</p>
+
+<p>This version of the algorithm assumes that a buffer line will
+always occupy exactly one window line and that all buffer lines are
+the same height.</p>
+
+<h3>The Basic Algorithm</h3>
+
+<p>The basic redisplay algorithm is as follows:</p>
+
+<pre>
+	int num_lines_window;	/* the number of lines in the window */
+	int num_chars_window;	/* the number of characters in the
+				window (its width) */
+	char window[MAX_ROWS][MAX_COLS];	/* window contents */	
+
+	void Redisplay(void)
+		{
+		mark_name saved;
+		int row;
+		int col;
+		int i;
+		int point_row;
+		int point_col;
+		char c;
+
+			/* remember where we started */
+		if (Mark_Create(&amp;saved) != OK) {
+			Fatal(&quot;can't create mark for redisplay&quot;);
+			}
+
+		Framer();
+		Point_To_Mark(top_of_window);
+
+			/* loop over the whole window */
+		for (row = 0; row &lt; num_lines_window; row++) {
+			for (col = 1; col &lt; num_chars_window; col++) {
+
+/* save the coordinates of the point so that we can put the cursor
+there later */
+
+				if (Is_Point_At_Mark(saved)) {
+					point_row = row;
+					point_col = col;
+					}
+
+				c = Get_Char();
+				if (c == NL) {	/* at a newline? */
+
+/* check whether the rest of the window line is blank.  if it is not, clear it */
+					for (i = col; i &lt; num_chars_window; i++) {
+						if (window[row][i] != SP) {
+							Set_Cursor(row, i);
+							CLEOL();
+							memset(&amp;window[row][i], SP,
+								num_chars_window - i);
+							}
+						}
+					}
+
+/* no newline, so has there been a change in the sub-editor? */
+
+			else if (window[row][col] != c) {
+				Set_Cursor(row, col);
+				Put_Char(c);
+				window[row][col] = c;
+				}
+			Point_Move(1);
+			}
+		}
+
+/* clean up */
+
+		Mark_To_Point(bottom_of_window);
+		Set_Cursor(pointrow, pointcol);
+
+		Point_To_Mark(saved);
+		Mark_Delete(saved);
+		}
+</pre>
+
+<p>The preceeding code shows your basic, garden variety redisplay
+algorithm.  It will work on any screen that supports cursor
+positioning (the <b>CLEOL</b> call can be simulated by sending Space
+characters).  It will work quite well on communications channels
+running at 4800 bps or over.  Its only memory requirements are an
+array large enough to hold the window (typically 1920 characters).
+There are no special redisplay &quot;hooks&quot; in the sub-editor
+management code.</p>
+
+<p>This algorithm is sufficient (and nearly optimal) in those cases
+where CPU and memory are plentiful and the screen does not perform
+insert/delete line or character operations.  If memory is tight, the
+algorithm can be modified to only retain a complete copy of the
+current line.  If you must be prepared to emulate the <b>CLEOL</b>
+operation, it may be worthwhile to record the last non-blank column in
+each screen line.  Doing so minimizes the number of Space characters
+that must be sent.</p>
+
+<h3>Sub-Editor Interaction</h3>
+
+<p>The basic algorithm can be sped up tremendously if some
+redisplay-specific hooks are placed into the sub-editor.  There are a
+number of different ways that the hooks can be introduced.  All of
+these methods track the changes made to the buffer in one way or
+another.</p>
+
+<p>The first way is to keep a separate modification flag that tells
+whether any changes were made to the buffer since the last redisplay.
+If no changes were made, then redisplay will consist of either a
+simple cursor motion or a complete screen regeneration.</p>
+
+<p>The seond way, and much more useful, is to keep the modification
+flag on a per-window-line basis.  A general interface to accomplish
+this that works with all sub-editor implementation schemes is to
+define a third type of mark, called a <i>window mark</i>.  This mark
+has a flag associated with it.  There is one window mark for each line
+in the window.  Just after a redisplay has been completed, all the
+flags for all window marks are clear.  Each time the sub-editor
+changes any of the buffers' contents, it sets the flag on the window
+mark that is located before and closest to the change.  The redisplay
+code can examine the flags.  Only window lines that have their
+corresponding window marks set need to be examined closely during
+redisplay.</p>
+
+<p>Note that window marks need not be located at the start of a buffer
+line.  If lines are being wrapped, one will be at each wrap point.  If
+horizontal scrolling is being performed, one may be at the start of
+the buffer line and another at the right edge of the window.  In this
+way, changes made to the right of the window won't cause the redisplay
+code to examine unchanged text.</p>
+
+<p>This interaction is easy to define and implement in the sub-editor.
+It is inexpensive to implement as the marks have to be examined for
+updating anyway.  It is also highly effective at reducing CPU
+overhead, as most commands change only a single line.  And, although
+redisplay has to examine the flags for every line, most of the time
+only one or two will show changes..</p>
+
+<p>A third way is to associate a unique identifier with each window
+mark instead of a flag.  This identifier would be changed by the
+sub-editor whenever the associated text changes (<i>i.e.</i>, instead
+of setting a flag it changes the unique identifier).  Typically, the
+identifier will be a 32-bit integer.  Whenever an identifier is
+required, the current value of the integer is used and the integer is
+incremented.</p>
+
+<p>The only problem that can arise with using unique identifiers is if
+a unique identifier is not in fact unique.  This problem can arise if
+all 2^32 unique identifiers are consumed before all lines in the
+window have changed.</p>
+
+<p>Some sub-editors that use the linked-line scheme use the addresses
+of line structures as the unique identifiers.  While doing so is space
+efficient, the sub-editor must ensure that if a line is freed, the
+address is not re-used until all windows have been completely
+redisplayed.</p>
+
+<p>Finaly, there is one more flag that can help redisplay a great
+deal.  This flag is only useful if the point is located at the end of
+a buffer line.  The flag would say whether any buffer modification
+other than &quot;insert one or more characters&quot; has been
+performed.  If the flag says not, all that redisplay needs to do is to
+output those characters.  As this situation is very common, it can
+save a significant amount of computation.</p>
+
+<h3>The Advanced Algorithm</h3>
+
+<p>The advanced-redisplay algorithm has two improvements over the
+basic algorithm.  First, it provides a way of efficiently taking
+advantage of the insert/delete line and character functions which are
+supplied with many screens. Second, it provides a low CPU overhead way
+of performing a redisplay on basic displays.</p>
+
+<p>The basic idea used by this algorithm is to assign a unique
+identifier to each window line.  (See the preceding section.)  When
+the redisplay encounters a modified line (the unique identifiers don't
+match), it performs a pattern match on the unique identifiers for the
+remainder of the window.  It then uses the information derived from
+that match to determine the best sequence of insert/delete line
+commands to issue to the screen.</p>
+
+<p>In more detail, this algorithm loops over the window lines,
+checking each saved unique identifier against the current identifier
+returned by the sub-editor.  If they match, no work needs to be done
+and the algorithm proceeds to the next line.  If they don't match, it
+can be for one of three reasons.</p>
+
+<p>The first reason could be that an additional line or lines were
+inserted between the two window lines.  This condition is detected by
+comparing the window-line unique identifier against the rest of the
+unique identifiers returned by the sub-editor and finding a
+match. (Remember that the window-line unique identifiers are the
+unique identifiers returned by the sub-editor one redisplay iteration
+ago.)  The insertion case is where we once had lines:</p>
+
+<pre>
+	AB
+</pre>
+
+<p>and now have:</p>
+
+<pre>
+	ACB
+</pre>
+
+<p>We determine how many lines are in &quot;C&quot; (because we know
+how far down we had to go to find a match) and tell the screen to
+insert that many lines.  (If there is information after this window on
+the screen, you will first have to delete that many lines from the end
+of the window.)</p>
+
+<p>The second reason could be that a line (or lines) was deleted.
+This condition is detected by comparing the unique identifier returned
+by the sub-editor for the next line against the unique identifiers of
+the rest of the window lines and finding a match.  The deletion case
+is where we once had lines:</p>
+
+<pre>
+	ABC
+</pre>
+
+<p>and now have:</p>
+
+<pre>
+	AC
+</pre>
+
+<p>We determine how many lines are in &quot;B&quot; (because we know
+how far down we had to go to find a match) and tell the screen to
+delete that many lines.  (If there is information after this window on
+the screen, you will eventually have to insert that many lines at the
+end of the window.)</p>
+
+<p>The third reason could be that the line was changed.  This
+condition is detected by comparing the unique identifiers of the
+following window lines against the unique identifiers returned by the
+sub-editor.  This case is either where we once had lines:</p>
+
+<pre>
+	ABC
+</pre>
+
+<p>and now have:</p>
+
+<pre>
+	ADC
+</pre>
+
+<p>or:</p>
+
+<pre>
+	ADE
+</pre>
+
+<p>In other words, neither the insertion condition nor deletion
+condition was met. Knowing now that a line has been changed, the next
+step is to determine exactly how the line has changed.</p>
+
+<p>The algorithm starts by comparing the buffer line against the
+window line and determining how many leading characters are in common.
+(If the whole line is common, no changes need to be made to the screen
+and the algorithm stops.)  For example, if the window line is:</p>
+
+<pre>
+	abcdef
+</pre>
+
+<p>and the buffer line is:</p>
+
+<pre>
+	abcxef
+</pre>
+
+<p>the two have three characters in common from the start.</p>
+
+<p>The next step is to repeat the comparison, but work backwards
+starting from the end.  The example strings have two characters in
+common from the end.</p>
+
+<p>The third step is to compare the line lengths.  If the two lines
+are the same length, only the changed part in the middle needs to be
+updated on the screen.  In the example strings, the lengths are the
+same (six6).  This optimization can be done even on a basic
+display.</p>
+
+<p>If the two lines are not the same length (for example, the buffer
+line is &quot;abcxyzef&quot;), the characters in the window line that
+are replaced by characters in the buffer line can be rewritten (in the
+example, the &quot;x&quot; replaces the &quot;d&quot;), then the
+requisite number of characters can either be inserted or deleted and
+the remainder of the changes written (insert two characters,
+&quot;yz&quot;).  If there is no common text at the end of the line
+and the buffer line is shorter than the window line, a <b>CLEOL</b>
+call can be used instead of deleting characters.</p>
+
+<p>Line wrap can pose a problem.  The window and buffer lines may have
+no end text in common, and yet an insert or delete character operation
+might be the appropriate one.  For example, consider the case where
+the window width is six characters, the window line is
+&quot;abcdef&quot;, and the buffer line is &quot;abcxdef&quot;.  Here,
+the buffer line will ultimately become two window lines,
+&quot;abcxde&quot; and &quot;f&quot;.  This case is detected by having
+no common portion at the end and noticing that the line wraps.  A more
+complicated matching process can detect the situation and appropriate
+action can be taken.</p>
+
+<p>This entire section considered only the (admittedly very common)
+case where line and character insertions and deletions were only made
+in one place.  It is very reasonable and appropriate to use more
+general pattern-matching techniques to properly optimize multiple
+insertions and deletions (Miller 1987).</p>
+
+<h3>Redisplay for Memory-Mapped Displays</h3>
+
+<p>Redisplay for memory-mapped displays boils down to one of three
+cases.  Each case is relatively simple.</p>
+
+<p>First is the case where both reading from and writing to the screen
+causes flicker.  The solution is to use the basic redisplay
+algorithm.</p>
+
+<p>Second is the case where reading does not cause flicker but writing
+does.  The solution is to use the basic redisplay scheme, but change
+it to use the actual window memory for storing the window array.</p>
+
+<p>In the third case, neither reading nor writing causes flicker.  On
+each redisplay cycle, merely copy the buffer text into window memory,
+not forgetting to process new lines, etc., as needed.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Define a set of editor procedures to handle vertical windows.
+(Easy) Extend that set to handle overlapping windows. (Medium)</p>
+
+<p>Implement the procedures that you just defined. (Hard)</p>
+
+<p>Define a representations for the private data types mentioned here
+(function keys, attributes, command times).  (one is Easy, all
+together are Medium)</p>
+
+<p>Identify the places where left-to-right, top-to-bottom biases are
+built into the interface definitions.  English and European languages
+have this bias. (Easy)</p>
+
+<p>Rework the interface definitions to remove this bias and to be able
+to handle all eight (yes, eight) combinations of
+directions. (Medium)</p>
+
+<p>Outlining is popular these days.  &quot;Outlining&quot; is the
+ability to selectively skip over parts of the text during redisplay.
+For example, one level might only display the chapter and section
+titles.  Another level might include all titles and the first sentence
+of each paragraph.  Identify how adding outlining would affect
+redisplay.  (Medium)</p>
+
+<p>Identify how the editor's redisplay algorithm changes when it makes
+use of the UNIX <i>curses</i> library. (Hard)</p>
+
+<p>How do the presence of ligatures and contextual forms used by
+non-Roman languages affect cursor motion? (Medium)</p>
+
+<p>What modifications to the redisplay algorithm are required to
+handle ligatures or contextual forms used by non-Roman languages?
+(Hard)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-7.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

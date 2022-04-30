@@ -1,0 +1,994 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/drawing-styled-text-uniscribe by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Drawing styled text with Uniscribe - Catch22</title>
+<meta name="description" content="The last tutorial saw the completion of the UspAnalyze function, one of the main APIs of the new UspLib text-rendering engine. We will now switch our attention to the implementation of the UspTextOut function. Our goal is to divide up the glyph-lists we ceated in the last tutorial, and apply colour information prior to display with ScriptTextOut. The method we will use to identify which colour belongs to each glyph is the central theme of this tutorial.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Drawing styled text with Uniscribe">
+<meta property="og:url" content="drawing-styled-text-uniscribe.html">
+
+
+  <meta property="og:description" content="The last tutorial saw the completion of the UspAnalyze function, one of the main APIs of the new UspLib text-rendering engine. We will now switch our attention to the implementation of the UspTextOut function. Our goal is to divide up the glyph-lists we ceated in the last tutorial, and apply colour information prior to display with ScriptTextOut. The method we will use to identify which colour belongs to each glyph is the central theme of this tutorial.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-03-06T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="drawing-styled-text-uniscribe.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Drawing styled text with Uniscribe</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/uspdemo.zip">uspdemo.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="active">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Drawing styled text with Uniscribe">
+    <meta itemprop="description" content="The last tutorial saw the completion of the UspAnalyze function, one of the main APIs of the new UspLib text-rendering engine. We will now switch our attention to the implementation of the UspTextOut function. Our goal is to divide up the glyph-lists we ceated in the last tutorial, and apply colour information prior to display with ScriptTextOut. The method we will use to identify which colour belongs to each glyph is the central theme of this tutorial.">
+    <meta itemprop="datePublished" content="March 06, 2006">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Drawing styled text with Uniscribe
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Drawing styled text with Uniscribe</h1-->
+<!--h3>Drawing styled text with ScriptTextOut</h3-->
+
+<p>The last tutorial saw the completion of the <code class="highlighter-rouge">UspAnalyze</code> function, one of the main APIs of the new UspLib text-rendering engine. We will now switch our attention to the implementation of the <code class="highlighter-rouge">UspTextOut</code> function. Our goal is to divide up the glyph-lists we ceated in the last tutorial, and apply colour information prior to display with <code class="highlighter-rouge">ScriptTextOut</code>. The method we will use to identify which colour belongs to each glyph is the central theme of this tutorial.</p>
+
+<p>Now, there is alot of very specific information in this tutorial related to Unscribe and you are only going to find it interesting if you have also been trying to understand how to draw styled text. So feel free to skip to the next tutorial if you want to see UspLib in action.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1403.gif" alt="&lt;&gt;" /></p>
+
+<p>The image above shows another small utility I wrote whilst working with Uniscribe. The purpose of this app is to demonstrate (and test) the UspLib library. You can download the demo, and also the UspLib sourcecode, at the top of this article.</p>
+
+<h2 id="6-drawing-styled-text">6. Drawing styled text</h2>
+
+<p>At this point we could quite simply call <code class="highlighter-rouge">ScriptTextOut</code> with a whole run of glyphs and be done with it. It would display correctly and we would have succeeded in our goal to display Unicode text. However the text would only be drawn in a single font and colour, and it would have been much simpler to use the <code class="highlighter-rouge">ScriptString</code> API instead! Remember, the entire reason we are looking at Uniscribe is because we need to apply font and colour information in a very fine-grained manner.</p>
+
+<p>Back in part#10 of this series I proposed a new method for rendering text in Neatpad, using three separate passes. I have implemented this rendering scheme with the <code class="highlighter-rouge">UspTextOut</code> function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">UspTextOut</span><span class="p">(</span> <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+                 <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>
+                 <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span>
+                 <span class="kt">int</span> <span class="n">ypos</span><span class="p">,</span>
+                 <span class="n">RECT</span> <span class="o">*</span> <span class="n">bounds</span>
+    <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//
+</span>    <span class="c1">// 1. Draw all background colours, including selection-highlights;
+</span>    <span class="c1">// selected areas are added to the HDC clipping region which prevents
+</span>    <span class="c1">// step#2 (below) from drawing over them
+</span>    <span class="c1">//     
+</span>    <span class="n">PaintBackground</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">ypos</span><span class="p">,</span> <span class="n">bounds</span><span class="p">);</span>
+
+    <span class="c1">//
+</span>    <span class="c1">// 2. Draw the text normally. Selected areas are left untouched
+</span>    <span class="c1">// because of the clipping-region created in step#1
+</span>    <span class="c1">//
+</span>    <span class="n">SetBkMode</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">TRANSPARENT</span><span class="p">);</span>
+    <span class="n">PaintForeground</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">ypos</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+
+    <span class="c1">//
+</span>    <span class="c1">// 3. Redraw the text using a single text-selection-colour (i.e. white)
+</span>    <span class="c1">// in the same position, directly over the top of the text drawn in step#2
+</span>    <span class="c1">// Before we do this, the HDC clipping-region is inverted,
+</span>    <span class="c1">// so only selection areas are modified this time
+</span>    <span class="c1">//
+</span>    <span class="n">PaintForegound</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">ypos</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspTextOut</code> is quite similar to <code class="highlighter-rouge">ScriptStringOut</code>, in that it requires a string to be analyzed prior to display. It takes as input the <code class="highlighter-rouge">USPDATA</code> object that contains the information generated by <code class="highlighter-rouge">UspAnalyze</code>. Although there are three passes involved, there are only two functions that need to be implemented - <code class="highlighter-rouge">DrawBackground</code>, and <code class="highlighter-rouge">DrawForeground</code> which will be used to draw both regular (styled) as well as ‘selected’ text. We will take a look at the implementation of these functions a little further down.</p>
+
+<h2 id="characters-vs-glyphs-vs-clusters">Characters vs Glyphs vs Clusters</h2>
+
+<p>The major problem with Uniscribe is understanding how to decipher the results of the <code class="highlighter-rouge">ScriptShape</code> and <code class="highlighter-rouge">ScriptPlace</code> calls. There is just so <em>much</em> information returned about each run of text that it takes a fair amount of time and effort to understand it all. Hopefully by the end of this tutorial you will have a little more insight into how all of the Uniscribe functions hang together.</p>
+
+<p>The key detail to understand about Uniscribe (and computer Typography in general) is the difference between characters and glyphs. Up until this point the main focus with Neatpad has been logical Unicode character sequences. However once Uniscribe has been involved the focus is very much on glyphs. The thing to understand here, is that there is no direct relationship between characters and glyphs.</p>
+
+<p>For simple scripts such as English a font usually contains one glyph per Unicode character. However for more complex scripts this relationship can change. Sometimes a single Unicode character can result in more than one glyph. The opposite is also true - there can also be multiple Unicode characters resulting in just a single glyph. This behaviour various depending on what font is being used. This separation between characters and glyphs presents a problem because our attribute style-runs are all character based, and we somehow need to translate this styling information onto specific glyphs.</p>
+
+<p>To make things even more complicated, the concept of <em>glyph clusters</em> must be understood. A cluster is basically a grouping of glyphs which must be treated as a single selectable unit. Whilst this is not a problem in itself, it does make rendering glyph sequences a little more complicated because cluster boundaries must be respected.</p>
+
+<h2 id="understanding-the-logical-cluster-list">Understanding the Logical Cluster List</h2>
+
+<p>The logical-cluster list is key to establishing a relationship between characters and glyphs. This list is returned by <code class="highlighter-rouge">ScriptShape</code> in the <code class="highlighter-rouge">pwLogClust[]</code> array. It provides the mapping between logical character-positions and glyph-cluster positions. UspLib stores each run’s logical-cluster information inside the <code class="highlighter-rouge">clusterList[]</code> field of the <code class="highlighter-rouge">USPDATA</code> object.</p>
+
+<p>To support this idea of character-to-glyph mapping, the logical-cluster list must represent two important concepts:</p>
+
+<ul>
+  <li>Firstly, it identifies the cluster boundaries in the original Unicode string - that is, the offsets in logical character units (WCHARs) of each cluster. Each entry in the <code class="highlighter-rouge">clusterList</code> corresponds exactly to a single character in the original string - so <code class="highlighter-rouge">clusterList</code> is always the same length as the Unicode string we are processing.</li>
+  <li>Secondly, this same array also identifies the offsets of each glyph-cluster, within the glyph-buffers generated by <code class="highlighter-rouge">ScriptShape</code> and <code class="highlighter-rouge">ScriptPlace</code>.</li>
+</ul>
+
+<p>In other words, the individual element values (the <em>content)</em> of the <code class="highlighter-rouge">clusterList</code> defines the glyph-clusters, whilst the <em>positions</em> of the array elements represents the clusters in logical character terms.</p>
+
+<p>As an example we will use the same Arabic string “يُساوِي” we were looking at previously. This string of seven Unicode characters results in the following logical cluster information being generated by <code class="highlighter-rouge">ScriptShape</code>. Note that the logical array-index positions are listed across the top of the table.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Array</td>
+      <td>[0]</td>
+      <td>[1]</td>
+      <td>[2]</td>
+      <td>[3]</td>
+      <td>[4]</td>
+      <td>[5]</td>
+      <td>[6]</td>
+    </tr>
+    <tr>
+      <td>WCHAR <strong>wszText</strong> []</td>
+      <td>U+064A</td>
+      <td>U+064F</td>
+      <td>U+0633</td>
+      <td>U+0627</td>
+      <td>U+0648</td>
+      <td>U+0650</td>
+      <td>U+064A</td>
+    </tr>
+    <tr>
+      <td>WORD <strong>clusterList</strong> []</td>
+      <td><strong>6</strong></td>
+      <td>6</td>
+      <td><strong>4</strong></td>
+      <td><strong>3</strong></td>
+      <td><strong>2</strong></td>
+      <td>2</td>
+      <td><strong>0</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Whole clusters are identified by grouping together any identical numbers in the logical-cluster list. As you can see from the cluster-list in the table above, there are two 6’s and two 2’s (in addition to the other singlular numbers), resulting in a total of five whole clusters all together. The image below illustrates this <em>grouping</em> concept.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1402.gif" alt="&lt;&gt;" /></p>
+
+<p>Notice that cluster-list is always stored in <em>logical order</em>, whilst the glyph-list is always in <em>visual order</em>. This means that for right-to-left scripts (such as the Arabic string above), the cluster-list elements will decrease when reading the array. As a result of this, the first glyph that must be drawn will be at the very end of the glyph-list. Bearing this in mind, the breakdown of the clusters is as follows:</p>
+
+<ul>
+  <li>1st cluster: two characters represented by two glyphs.</li>
+  <li>2nd cluster: one character represented by one glyph.</li>
+  <li>3rd cluster: one character represented by one glyph.</li>
+  <li>4th cluster: two characters represented by two glyphs.</li>
+  <li>5th cluster: one character represented by one glyph.</li>
+</ul>
+
+<p>Hopefully it should be fairly obvious how the <em>logical clusters</em> were identified - with the number of WCHARs in each cluster calculated by the number of characters in each grouping. Calculating the number of glyphs in each cluster is less obvious. The key here is looking at the <em>difference</em> between the cluster values. This is how the identification of each cluster occurred:</p>
+
+<ol>
+  <li>The first two 6’s identify cluster#1, comprising two WCHARs (in character-positions 0 and 1). This value of 6 points to the end of the <code class="highlighter-rouge">glyphList</code> which contains the glyphs for this cluster. We know that this cluster is represented by two glyphs (#5 and #6) because:</li>
+  <li>The next value in the cluster-list (4) tells us two things. Obviously this cluster starts at glyph #4 in the glyph-list. However this also means that there were 2 (two) glyphs in the last cluster (6-4 = 2).</li>
+  <li>The third cluster is comprised of the single glyph#3, and a single WCHAR.</li>
+  <li>The fourth cluster is comprised of two WCHARs again, which are represented by glyphs #1 and #2.</li>
+  <li>The fifth and final cluster is again a single WCHAR, represented by glyph#0 in the glyph-list.</li>
+</ol>
+
+<p>As you can see the key detail here is looking at the difference between glyph-indices in order to count the number of glyphs in each cluster. Special consideration must also be taken with right-to-left scripts because of the way that glyphs are stored in reverse order. The way I handled this was to advance the x-coordinate to the end of the run, call <code class="highlighter-rouge">SetTextAlign(TA_RIGHT)</code>, and then move the output-location to the left each time, resulting in the glyphs being output in logical (right-to-left) order.</p>
+
+<p>The important thing to understand is that we always follow the cluster-list in <em>logical</em> order, even for right-to-left scripts. We rely on the <em>ordering</em> of the element values to locate each glyph-cluster as it should be drawn.</p>
+
+<h2 id="another-example">Another example</h2>
+
+<p>The previous example was of couse a right-to-left script and highlighted the unique way in which these scripts are represented by Uniscribe. The example shown next is based on the example in MSDN under the <code class="highlighter-rouge">ScriptShape</code> documentation, and highlights how complex left-to-right text is represented by Uniscribe.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1407.gif" alt="&lt;&gt;" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>U+920, U+911, U+915, U+94D, U+937, U+91D, U+949
+</code></pre></div></div>
+
+<p>The string this time is from the Devanagari script. I have no idea what it means because I just strung a sequence of code-points together which happened to have the right “look”. If <em>anyone</em> can supply me with a Unicode phrase of 7 characters, which results in the glyph+cluster properties shown below, then please get in touch!</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Array</td>
+      <td>[0]</td>
+      <td>[1]</td>
+      <td>[2]</td>
+      <td>[3]</td>
+      <td>[4]</td>
+      <td>[5]</td>
+      <td>[6]</td>
+    </tr>
+    <tr>
+      <td>Unicode string</td>
+      <td>U+0920</td>
+      <td>U+0911</td>
+      <td>U+0915</td>
+      <td>U+094D</td>
+      <td>U+0937</td>
+      <td>U+091D</td>
+      <td>U+0949</td>
+    </tr>
+    <tr>
+      <td>clusterList[]</td>
+      <td><strong>0</strong></td>
+      <td><strong>1</strong></td>
+      <td><strong>4</strong></td>
+      <td><strong>4</strong></td>
+      <td><strong>4</strong></td>
+      <td><strong>5</strong></td>
+      <td><strong>5</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The key difference here is how the cluster-list elements <em>increase</em> when reading the array. For left-to-right runs, the glyphs are stored in the same order as the original Unicode characters. This is the ordering that many Western readers will find most natural.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1404.gif" alt="&lt;&gt;" /></p>
+
+<p>The diagram hopefully again illustrates the relationship between logical characters and glyph-clusters, this time for a left-to-right run of text. This example is purely fictitious as I couldn’t find any phrase, font &amp; script which satisfied the required glyph+cluster properties. Again, the number of glyphs per cluster is calculated by the difference between the cluster-list elements.</p>
+
+<ul>
+  <li>1st cluster: <strong>one</strong> character represented by <strong>one</strong> glyph (1-0=1)</li>
+  <li>2nd cluster: <strong>one</strong> character represented by <strong>three</strong> glyphs (4-1=3)</li>
+  <li>3rd cluster: <strong>three</strong> characters represented by <strong>one</strong> glyph (5-4=1)</li>
+  <li>4th cluster: <strong>two</strong> characters represented by <strong>three</strong> glyphs (8-5=3)</li>
+</ul>
+
+<p>The number of glyphs for the last cluster was calculated because we knew how many glyphs (8 in total) were generated for this run by <code class="highlighter-rouge">ScriptShape</code>.</p>
+
+<h2 id="interpolation-is-the-key">Interpolation is the key</h2>
+
+<p>The one thing to understand about Uniscribe is the separation between characters and glyphs. So looking now at another example, what happens when we have three characters comprising two glyphs? The problem we face is, how do we distribute the colour information for each character across the glyphs, and which glyph takes which colour?</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1405.gif" alt="&lt;&gt;" /></p>
+
+<p>U+0635 U+0651 U+0650</p>
+
+<p>For some scripts where the glyphs typically order horizontally you can almost infer the colour relationships. However when glyphs stack vertically on top of each other within a cluster, or when there is an unequal number of characters-to-glyphs, there is no easy way to associate a colour with a particular glyph.</p>
+
+<p>With UspLib I solved this problem in two ways - using one method for drawing the background, and another when drawing the actual glyphs themselves (the foreground). Drawing the foreground was easy: I decided simply to paint all glyphs in a cluster as a single colour. Should there be multiple colour-attributes for the cluster, only the first is chosen and the rest are ignored. This is by far the easiest method and in reality you wouldn’t expect individual glyphs to have their own colours when in a cluster.</p>
+
+<p>Painting the background is rather different, because the inversion-highlighting scheme must be taken into account. The strategy I have used here is to <em>interpolate</em> the colours across the <em>width</em> of each cluster, when drawing the background. This method is hinted at by Microsoft in the following quote from MSDN, in the section “notes on ScriptXtoCP and ScriptCPtoX”:</p>
+
+<blockquote>
+  <p><em>“Cluster information in the logical cluster array is used to share the width of a cluster of glyphs equally among the logical characters they represent.”</em></p>
+</blockquote>
+
+<p>It took me a while to make the logical leap that this strategy could also be used for text-rendering, however after implementing it I realised it is the exact same method used by the <em>ScriptString</em> API.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1406.gif" alt="&lt;&gt;" /></p>
+
+<p>The process is very simple. We know how many characters make up each cluster, and also how many glyphs make up each cluster. We therefore sum the width of these glyphs to calculate the total width of the cluster. We then divide the cluster-width by the number of characters in the cluster - this number tells us how wide each colour band should be.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">advanceWidth</span> <span class="o">=</span> <span class="n">clusterWidth</span> <span class="o">/</span> <span class="n">charCount</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>For some scripts, dividing the clusters this way makes alot of sense, especially for Arabic because the caret is conventially positioned at <em>character</em> boundaries rather than glyph-cluster boundaries. However for most scripts this would be viewed as incorrect. Rather than having a special-case just for Arabic, I have instead written <code class="highlighter-rouge">UspTextOut</code> so that it <em>always</em> interpolates over glyph-clusters, should any colour-attributes happen to be this fine-grained. We will rely on the fact that <code class="highlighter-rouge">ScriptCPtoX</code> will only allow the caret (and therefore selection-highlghts) to be placed in the middle of clusters <em>when appropriate</em>.</p>
+
+<p>Lastly, using integer math for the cluster-division will be result in potential rounding errors. Whilst this is not a massive problem, we need to have the exact same results that <code class="highlighter-rouge">ScriptCPtoX</code> produces when it does its own presumed division-operations (otherwise we could be out by a pixel occasionally). Presumably <code class="highlighter-rouge">ScriptCPtoX</code> uses <code class="highlighter-rouge">MulDiv</code> in its calculations because this appears to give the correct results, and is what I have used for UspLib.</p>
+
+<h2 id="drawing-the-background">Drawing the background</h2>
+
+<p>As mentioned above, drawing the background is a little different because of the use of <em>interpolation</em>. We will start by looking at the <code class="highlighter-rouge">PaintBackground</code> routine:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">PaintBackground</span><span class="p">(</span><span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span> <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ypos</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span> <span class="n">bounds</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">ITEM_RUN</span> <span class="o">*</span> <span class="n">itemRun</span><span class="p">;</span>
+
+    <span class="c1">// Process the item-runs in visual-order
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">itemRunCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">itemRun</span> <span class="o">=</span> <span class="n">GetItemRun</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+        <span class="c1">// paint the background of the specified item-run
+</span>        <span class="n">PaintItemRunBackground</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">itemRun</span><span class="p">,</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">bounds</span><span class="p">);</span>
+
+        <span class="n">xpos</span> <span class="o">+=</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As you can see this function is very simple. It merely processes the item-runs in visual-order and advances the x-coordinate by the item-width for each run. Each item-run background are rendered individually by the <code class="highlighter-rouge">PaintItemRunBackground</code> function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">PaintItemRunBackground</span><span class="p">(</span><span class="n">USPDATA</span> <span class="o">*</span><span class="n">uspData</span><span class="p">,</span> <span class="n">ITEM_RUN</span> <span class="o">*</span><span class="n">itemRun</span><span class="p">,</span> <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ypos</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">lasti</span><span class="p">;</span>
+
+    <span class="c1">// locate the item-run buffers
+</span>    <span class="n">WORD</span> <span class="o">*</span> <span class="n">clusterList</span> <span class="o">=</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">clusterList</span> <span class="o">+</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">charPos</span><span class="p">;</span>
+    <span class="n">ATTR</span> <span class="o">*</span> <span class="n">attrList</span> <span class="o">=</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">attrList</span> <span class="o">+</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">charPos</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="o">*</span> <span class="n">widthList</span> <span class="o">=</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">widthList</span> <span class="o">+</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">glyphPos</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">lasti</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// search for a logical cluster boundary (or end of run)
+</span>        <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">||</span> <span class="n">clusterList</span><span class="p">[</span><span class="n">lasti</span><span class="p">]</span> <span class="o">!=</span> <span class="n">clusterList</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="o">&lt;&lt;</span> <span class="n">process</span> <span class="n">cluster</span> <span class="o">&gt;&gt;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The primary task is to identify the logical-cluster positions. The two loop-indices (<code class="highlighter-rouge">lasti</code> and <code class="highlighter-rouge">i</code>) represent these cluster positions in the original text-string. The number of <code class="highlighter-rouge">WCHAR</code> s in each cluster is therefore (<code class="highlighter-rouge">i-lasti</code>). Because we always iterate in logical order, this is true for both LTR and RTL texts.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;&lt;</span> <span class="n">process</span> <span class="n">cluster</span> <span class="o">&gt;&gt;</span>
+        <span class="kt">int</span> <span class="n">glyphIdx1</span><span class="p">,</span> <span class="n">glyphIdx2</span><span class="p">;</span>
+
+        <span class="c1">// locate glyph-positions for the cluster
+</span>        <span class="n">GetGlyphClusterIndices</span><span class="p">(</span><span class="n">itemRun</span><span class="p">,</span> <span class="n">clusterList</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">lasti</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">glyphIdx1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">glyphIdx2</span><span class="p">);</span>
+
+        <span class="c1">// measure width of this group of glyphs
+</span>        <span class="k">for</span><span class="p">(</span><span class="n">runWidth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">glyphIdx1</span> <span class="o">&lt;=</span> <span class="n">glyphIdx2</span><span class="p">;</span> <span class="p">)</span>
+            <span class="n">runWidth</span> <span class="o">+=</span> <span class="n">widthList</span><span class="p">[</span><span class="n">glyphIdx1</span><span class="o">++</span><span class="p">];</span>
+
+        <span class="c1">// divide the cluster-width by the number of code-points that cover it
+</span>        <span class="n">advanceWidth</span> <span class="o">=</span> <span class="n">MulDiv</span><span class="p">(</span><span class="n">runWidth</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="n">lasti</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Once a cluster has been identified, <code class="highlighter-rouge">GetGlyphClusterIndices</code> is callled. This function inspects the <code class="highlighter-rouge">clusterList</code> and returns the corresponding glyph-index positions for <code class="highlighter-rouge">i</code> and <code class="highlighter-rouge">lasti</code>.</p>
+
+<p>The width of the glyph-cluster is computed next, by simply iterating between <code class="highlighter-rouge">glyphIdx1</code> and <code class="highlighter-rouge">glyphIdx2</code>, before dividing the cluster-width by the number of characters (WCHARs). We now know how far to advance each time we paint a bit of background.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="n">lasti</span><span class="p">;</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="n">a</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// look for change in attribute background
+</span>        <span class="k">if</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">||</span>
+           <span class="n">attr</span><span class="p">.</span><span class="n">bg</span> <span class="o">!=</span> <span class="n">attrList</span><span class="p">[</span><span class="n">a</span><span class="p">].</span><span class="n">bg</span> <span class="o">||</span> 
+           <span class="n">attr</span><span class="p">.</span><span class="n">sel</span> <span class="o">!=</span> <span class="n">attrList</span><span class="p">[</span><span class="n">a</span><span class="p">].</span><span class="n">sel</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">PaintRectBG</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">itemRun</span><span class="p">,</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+            <span class="n">rect</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">;</span>
+        <span class="p">}</span> 
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The final task is to interpolate the colour-attributes over the cluster. We only ever paint the background if we detect a change in colour, so most of the time an item-run background is painted with just one operation. Missing from the code listing above is the small detail of correcting for rounding errors in the (integer) division - however this is not necessary for understanding the code.</p>
+
+<p>I won’t bother including the code for the PaintRectBG function - suffice to say it is not really very interesting, other than the fact that it calls <code class="highlighter-rouge">ExcludeClipRect</code> after drawing any selection-highlight background area.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">GetGlyphClusterIndices</span><span class="p">(</span> <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span> 
+                             <span class="n">ITEM_RUN</span> <span class="o">*</span> <span class="n">itemRun</span><span class="p">,</span> 
+                             <span class="kt">int</span> <span class="n">clusterIdx1</span><span class="p">,</span> 
+                             <span class="kt">int</span> <span class="n">clusterIdx2</span><span class="p">,</span> 
+                             <span class="kt">int</span> <span class="o">*</span> <span class="n">glyphIdx1</span><span class="p">,</span> 
+                             <span class="kt">int</span> <span class="o">*</span> <span class="n">glyphIdx2</span>
+                           <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">WORD</span> <span class="o">*</span><span class="n">clusterList</span> <span class="o">=</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">clusterList</span> <span class="o">+</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">charPos</span><span class="p">;</span>
+
+    <span class="c1">// locate glyph-positions for the cluster
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">analysis</span><span class="p">.</span><span class="n">fRTL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// RTL scripts
+</span>        <span class="o">*</span><span class="n">glyphIdx1</span> <span class="o">=</span> <span class="n">clusterIdx1</span> <span class="o">&lt;</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">?</span> <span class="n">clusterList</span><span class="p">[</span><span class="n">clusterIdx1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="o">*</span><span class="n">glyphIdx2</span> <span class="o">=</span> <span class="n">clusterList</span><span class="p">[</span><span class="n">clusterIdx2</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// LTR scripts
+</span>        <span class="o">*</span><span class="n">glyphIdx1</span> <span class="o">=</span> <span class="n">clusterList</span><span class="p">[</span><span class="n">clusterIdx2</span><span class="p">];</span>
+        <span class="o">*</span><span class="n">glyphIdx2</span> <span class="o">=</span> <span class="n">clusterIdx1</span> <span class="o">&lt;</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">?</span> <span class="n">clusterList</span><span class="p">[</span><span class="n">clusterIdx1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">glyphCount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Above is the <code class="highlighter-rouge">GetGlyphClusterIndices</code> function. Note the two distinct cases for LTR and RTL scripts - this is required because the cluster-elements decrease when reading the cluster array (for RTL scripts), but increase for LTR scripts.</p>
+
+<h2 id="drawing-the-foreground">Drawing the Foreground</h2>
+
+<p>The process for drawing the text is so similar to that of the background that I won’t bother including too much code this time. We’ll jump straight in to the start of the <code class="highlighter-rouge">DrawForegroundItemRun</code> function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// right-left runs can be drawn backwards for simplicity
+</span><span class="k">if</span><span class="p">(</span><span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">analysis</span><span class="p">.</span><span class="n">fRTL</span><span class="p">)</span>
+<span class="p">{</span>     
+     <span class="n">oldMode</span> <span class="o">=</span> <span class="n">SetTextAlign</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">TA_RIGHT</span><span class="p">);</span>
+
+     <span class="n">xpos</span> <span class="o">+=</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span>
+     <span class="n">runDir</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The first thing we do is set the text-alignment to <code class="highlighter-rouge">TA_RIGHT</code> for any right-to-left string, and advance the x-coordinate to the end of the run. This will allow us to draw the text in logical order (as we walk the logical-cluster-list). This is important because apart from this one detail, it means we can maintain a single function for drawing both LTR and RTL texts.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// loop over all the logical character-positions
+</span> <span class="k">for</span><span class="p">(</span><span class="n">lasti</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="c1">// find a change in attribute
+</span>     <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">||</span> <span class="n">attrList</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fg</span> <span class="o">!=</span> <span class="n">attrList</span><span class="p">[</span><span class="n">lasti</span><span class="p">].</span><span class="n">fg</span> <span class="p">)</span>
+     <span class="p">{</span>
+         <span class="c1">// scan forward to locate end of cluster (we must always
+</span>         <span class="c1">// handle whole-clusters because the attr[] might fall in the middle)
+</span>         <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+             <span class="k">if</span><span class="p">(</span><span class="n">clusterList</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">clusterList</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                 <span class="k">break</span><span class="p">;</span>
+
+        <span class="c1">// locate glyph-positions for the cluster [i,lasti]
+</span>        <span class="n">GetGlyphClusterIndices</span><span class="p">(</span><span class="n">itemRun</span><span class="p">,</span> <span class="n">clusterList</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">lasti</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">glyphIdx1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">glyphIdx2</span><span class="p">);</span>
+
+        <span class="o">&lt;&lt;</span> <span class="n">display</span> <span class="n">text</span> <span class="o">&gt;&gt;</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The next difference between foreground and background rendering is how we identify cluster-boundaries. This time we look for changes in colour first of all. Once a new colour is found we scan forward to locate the end of the cluster. This means we can paint the whole cluster in one colour and not worry about interpolation.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;&lt;</span> <span class="n">display</span> <span class="n">text</span> <span class="o">&gt;&gt;</span>
+
+    <span class="c1">// measure the width (in pixels) of the run
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">runWidth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">glyphIdx1</span><span class="p">;</span> <span class="n">g</span> <span class="o">&lt;=</span> <span class="n">glyphIdx2</span><span class="p">;</span> <span class="n">g</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">runWidth</span> <span class="o">+=</span> <span class="n">widthList</span><span class="p">[</span><span class="n">g</span><span class="p">];</span>
+
+    <span class="c1">// only need the text colour as we are drawing transparently
+</span>    <span class="n">SetTextColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">forcesel</span> <span class="o">?</span> <span class="n">uspData</span><span class="o">-&gt;</span><span class="n">selFG</span> <span class="o">:</span> <span class="n">attrList</span><span class="p">[</span><span class="n">lasti</span><span class="p">].</span><span class="n">fg</span><span class="p">);</span>
+
+    <span class="c1">//
+</span>    <span class="c1">// Finally output the run of glyphs
+</span>    <span class="c1">//
+</span>    <span class="n">hr</span> <span class="o">=</span> <span class="n">ScriptTextOut</span><span class="p">(</span>
+        <span class="n">hdc</span><span class="p">,</span> 
+        <span class="o">&amp;</span><span class="n">uspFont</span><span class="o">-&gt;</span><span class="n">scriptCache</span><span class="p">,</span>
+        <span class="n">xpos</span><span class="p">,</span>
+        <span class="n">ypos</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="nb">NULL</span><span class="p">,</span>					
+        <span class="o">&amp;</span><span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">analysis</span><span class="p">,</span> 
+        <span class="nb">NULL</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">glyphList</span> <span class="o">+</span> <span class="n">glyphIdx1</span><span class="p">,</span>
+        <span class="n">glyphIdx2</span> <span class="o">-</span> <span class="n">glyphIdx1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">widthList</span> <span class="o">+</span> <span class="n">glyphIdx1</span><span class="p">,</span>
+        <span class="nb">NULL</span><span class="p">,</span>
+        <span class="n">offsetList</span> <span class="o">+</span> <span class="n">glyphIdx1</span>
+    <span class="p">);</span>
+
+    <span class="c1">// +ve/-ve depending on run direction
+</span>    <span class="n">xpos</span> <span class="o">+=</span> <span class="n">runWidth</span> <span class="o">*</span> <span class="n">runDir</span><span class="p">;</span>
+    <span class="n">lasti</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Once the text-colour has been set, <code class="highlighter-rouge">ScriptTextOut</code> is called with the range of <em>glyphs</em> which fall within the cluster. Once again, we only output any text should there be a change in colour so usually there would only be one call to <code class="highlighter-rouge">ScriptTextOut</code>.</p>
+
+<h2 id="7-scripttextout">7. ScriptTextOut</h2>
+
+<p>For the sake of completeness here’s the prototype for <code class="highlighter-rouge">ScriptTextOut</code> :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptTextOut</span><span class="p">(</span>
+
+   <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> 
+   <span class="n">SCRIPT_CACHE</span> <span class="o">*</span> <span class="n">psc</span><span class="p">,</span>
+   <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> 
+   <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> 
+   <span class="n">UINT</span> <span class="n">fuOptions</span><span class="p">,</span>
+
+   <span class="c1">// ExtTextOut options
+</span>   <span class="n">RECT</span> <span class="o">*</span> <span class="n">rect</span><span class="p">,</span>        
+   <span class="n">SCRIPT_ANALYSIS</span> <span class="o">*</span> <span class="n">analysis</span><span class="p">,</span> 
+   <span class="n">WCHAR</span> <span class="o">*</span> <span class="n">pwcReserved</span><span class="p">,</span> 
+   <span class="kt">int</span> <span class="n">iReserved</span><span class="p">,</span>
+   <span class="n">WORD</span> <span class="o">*</span> <span class="n">pwGlyphs</span><span class="p">,</span> <span class="c1">// in - results of ScriptShape
+</span>   <span class="kt">int</span> <span class="n">cGlyphs</span><span class="p">,</span> 
+   <span class="kt">int</span> <span class="o">*</span> <span class="n">piAdvance</span><span class="p">,</span> <span class="c1">// in - results of ScriptPlace
+</span>   <span class="kt">int</span> <span class="o">*</span> <span class="n">piJustify</span><span class="p">,</span>    
+   <span class="n">GOFFSET</span> <span class="o">*</span> <span class="n">pGoffset</span> <span class="c1">// in - results of ScriptPlace
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>That’s a pretty intimidating function by anyone’s standards! The parameters of note are:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">fuOptions</code> is can be one of <code class="highlighter-rouge">ETO_CLIPPED</code>, <code class="highlighter-rouge">ETO_OPAQUE</code>, or zero. These are the standard <code class="highlighter-rouge">ExtTextOut</code> flags. Because we have drawn the background ourselves there is no need to use these parameters. Note that if <em>opaque</em> was specified, whole clusters of glyphs must be passed to this function.</li>
+  <li><code class="highlighter-rouge">pwGlyphs</code> and <code class="highlighter-rouge">cGlyphs</code> identify the list of glyph values returned by <code class="highlighter-rouge">ScriptShape</code>.</li>
+  <li><code class="highlighter-rouge">piAdvance</code> and <code class="highlighter-rouge">pGoffset</code> point to the glyph-placement buffers returned by <code class="highlighter-rouge">ScriptPlace</code>.</li>
+  <li><code class="highlighter-rouge">piJustify</code> points to an <em>optional</em> array of justified advance values.</li>
+</ul>
+
+<p><code class="highlighter-rouge">ScriptTextOut</code> is basically a wrapper around <code class="highlighter-rouge">ExtTextOut</code> - however you will notice that there is no <code class="highlighter-rouge">WCHAR*</code> parameter to this function. This is because <code class="highlighter-rouge">ScriptTextOut</code> calls <code class="highlighter-rouge">ExtTextOut</code> with the <code class="highlighter-rouge">ETO_GLYPH_INDEX</code> option, and passes the buffer of glyphs we specifed.</p>
+
+<p><code class="highlighter-rouge">ScriptTextOut</code> may perform additional processing (such as glyph-reordering) before calling into GDI, so don’t be tempted to bypass <code class="highlighter-rouge">ScriptTextOut</code> by calling <code class="highlighter-rouge">ExtTextOut</code> directly.</p>
+
+<h2 id="uniscribe-limitations">Uniscribe Limitations</h2>
+
+<p>One of the drawbacks of Uniscribe is the very thing it does best - the breaking up of a string into individually shapable items. The problem is that some strings containing alot of whitespace or punctuation result in a large number of item-runs. Whilst this is not bad in itself, it does present a problem when it comes to rendering the line of text. The shear number of calls to <code class="highlighter-rouge">ScriptTextOut</code> has a performance penalty - in comparison to calling <code class="highlighter-rouge">ExtTextOut</code> with the same line of text.</p>
+
+<p>For complex-scripts there is no alternative but to break up the string using <code class="highlighter-rouge">ScriptItemize</code>. However it would be nice if for non-complex (i.e. English) scripts we could somehow re-combine the item-runs and reduce the potential number of calls to <code class="highlighter-rouge">ScriptTextOut</code>. I haven’t ventured too far down this path yet, but it is certainly possible to identify if an item-run is complex or not by inspecting the <code class="highlighter-rouge">SCRIPT_ANALYSIS::eScript</code> field.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">SCRIPT_ANALYSIS</span>
+<span class="p">{</span>
+    <span class="n">WORD</span> <span class="n">eScript</span> <span class="o">:</span> <span class="mi">10</span><span class="p">;</span> 
+    <span class="n">WORD</span> <span class="n">fRTL</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Now, the <code class="highlighter-rouge">eScript</code> field is ‘opaque’ which means we shouldn’t make any assumptions about its value. However it can be used as an index into the “global script table”, which contains information about the specific script-shaping engines installed in a system.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptGetProperties</span><span class="p">(</span><span class="n">SCRIPT_PROPERTIES</span> <span class="o">***</span><span class="n">ppSp</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">piNumScripts</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">ScriptGetProperties</code> function returns a pointer to this global-script-table, and each entry in the table is a pointer to a <code class="highlighter-rouge">SCRIPT_PROPERTIES</code> structure:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">SCRIPT_PROPERTIES</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">langid</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">fNumeric</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">fComplex</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>There are many information-fields in this structure, however the interesting one for us is the <code class="highlighter-rouge">fComplex</code> flag. Drawing all this together results in the following function, which returns a boolean indicating if an item-run is complex or not:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">IsRunComplex</span><span class="p">(</span><span class="n">ITEM_RUN</span> <span class="o">*</span><span class="n">itemRun</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SCRIPT_PROPERTIES</span> <span class="o">**</span> <span class="n">propList</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">propCount</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">scriptIndex</span><span class="p">;</span> 
+
+    <span class="c1">// get pointer to the global script table
+</span>    <span class="n">ScriptGetProperties</span><span class="p">(</span><span class="o">&amp;</span><span class="n">propList</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">propCount</span><span class="p">);</span>
+
+    <span class="c1">// the SCRIPT_ANALYSIS::eScript is an index to the global script table
+</span>    <span class="n">scriptIndex</span> <span class="o">=</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">analysis</span><span class="p">.</span><span class="n">eScript</span><span class="p">;</span>
+
+    <span class="c1">// locate the script from the script-index
+</span>    <span class="k">return</span> <span class="n">propList</span><span class="p">[</span><span class="n">scriptIndex</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">fComplex</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Any non-complex item-runs could theoretically be identified and then merged together into a single run, with the <code class="highlighter-rouge">SCRIPT_ANALYSIS::eScript</code> field set to <code class="highlighter-rouge">SCRIPT_UNDEFINED</code>. All this should happen <em>before</em> <code class="highlighter-rouge">ScriptShape</code> is called.</p>
+
+<h2 id="coming-up-in-part-15">Coming up in Part 15</h2>
+
+<p>Every time I post a new tutorial I promise that there’ll be another update to Neatpad, and of course it hasn’t happened (again!). Uniscribe is just so damn complicated it has taken me far more time to document than I first anticpated. For now you can download the UspLib demo at the top of this tutorial, and next time we really will be seeing a new-and-improved Neatpad.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/uspdemo.zip">uspdemo.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2006-03-06T00:00:00+00:00">March 06, 2006</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="more-uniscribe-mysteries.html" class="pagination--pager" title="More Uniscribe Mysteries
+">Previous</a>
+    
+    
+      <a href="integrating-usplib.html" class="pagination--pager" title="Integrating UspLib
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/drawing-styled-text-uniscribe by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

@@ -1,0 +1,506 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/splitter-windows by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Splitter Windows - Catch22</title>
+<meta name="description" content="Updated 5 Jan 2006">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Splitter Windows">
+<meta property="og:url" content="splitter-windows.html">
+
+
+  <meta property="og:description" content="Updated 5 Jan 2006">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-05-22T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="splitter-windows.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Splitter Windows</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/splitter.zip EasySplitter_20.zip">splitter.zip EasySplitter_20.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Splitter Windows">
+    <meta itemprop="description" content="Updated 5 Jan 2006">
+    <meta itemprop="datePublished" content="May 22, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Splitter Windows
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Splitter Windows</h1-->
+<!--h3>An example of a splitter-bar used to separate two windows</h3-->
+
+<h2 id="updated-5-jan-2006">Updated 5 Jan 2006</h2>
+
+<p>I’ve added a new sourcecode download from L.D. Blake who kindly sent me a great little splitter library called “Easy Split”. From the readme:</p>
+
+<p>“EasySplitter is a custom control, in library format, that can be used with Pelles C to implement a very simple splitter window. With EasySplitter you create a splitter bar as a windows control that you can size, move and stylize like any other windows control. All mouse capture and window drag operations are handled internally by the control itself.”</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>There is no such thing as a “splitter window”. Sorry to disappoint anyone who wants to implement one, but I can’t say it any simpler than that. Neither does there exist any method to split a window in half or quarters. What you are seeing when you see a so-called “splitter window” is a visual illusion.</p>
+
+<p>What people most likely mean when they say “splitter windows”, is the horizontal or vertical bar which separates two windows. This bar can be dragged back and forth using the mouse to resize the two windows which it separates.</p>
+
+<p><img src="http://www.catch22.net/assets/img/split02.gif" alt="Splitter screen-shot" class="align-center" /></p>
+
+<p>There is no trickery used to perform this behaviour. This resizing or splitter bar is just a standard window, but the windows it divides and the bar itself are arranged in such a way to give the required effect.</p>
+
+<p>There are two main ways of implementing a divider bar between two windows. They differ only in the organisation and relationship of the windows involved.</p>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">Window A</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Frame Window</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Window B</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">Window A</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Divider Bar</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Window B</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Method 1</code></td>
+      <td><code class="highlighter-rouge">Method 2</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>The first method is to host the windows you want to divide in a “frame” window. This frame window is just a standard window, but it handles all of the divider mouse messages. This frame window contains all the windows that need to be divided from each other. This frame window doesn’t have to be the main window of an application, although it could be.</li>
+  <li>The second method uses a separate window which is positioned and sized to act like a divider-bar in-between the two windows that you want to divide.</li>
+</ol>
+
+<p>Both cases take advantage of the way that standard windows are drawn. Because the two windows will be positioned close to each other, their 3d borders give the illusion that there is a 3d bar in-between the two windows. In reality, it is just a standard flat grey window with no fancy graphics.</p>
+
+<h2 id="mouse-cursor-display">Mouse cursor display</h2>
+
+<p>To make it obvious to the user that our splitter bar actually does something useful, then it is necessary to display some kind of sizing mouse cursor when the mouse moves over the “bar”.</p>
+
+<p><img src="http://www.catch22.net/assets/img/split01.gif" alt="" class="align-center" /></p>
+
+<p>A cursor similar to the two above is probably the right kind of thing to display. There are two ways to display a custom cursor in a window.</p>
+
+<ol>
+  <li>The first is to process the <code class="highlighter-rouge">WM_SETCURSOR</code> message. This is the best way if you want to support different types of cursor within the same window. By processing this message, you can use the SetCursor API call to set the cursor. This is the most flexible way to modify a window’s mouse cursor.</li>
+  <li>The second way, and the easiest, is to specify what the mouse cursor should be when you register the window class associated with the window you want to create. Because we are creating a new type of window to create the splitter effect, we can set the <code class="highlighter-rouge">hCursor</code> member of the <code class="highlighter-rouge">WNDCLASSEX</code> structure when we register the splitter class.</li>
+</ol>
+
+<p>This is the code that we use to register the splitter class.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WNDCLASSEX</span> <span class="n">wc</span><span class="p">;</span>
+ <span class="p">...</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">cbSize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">wndclass</span><span class="p">);</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">lpfnWndProc</span> <span class="o">=</span> <span class="n">SplitterProc</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">cbClsExtra</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">cbWndExtra</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">hInstance</span> <span class="o">=</span> <span class="n">hInstance</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">hIcon</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">hCursor</span> <span class="o">=</span> <span class="n">LoadCursor</span> <span class="p">(</span><span class="n">hInstance</span><span class="p">,</span> <span class="n">MAKEINTRESOURCE</span><span class="p">(</span><span class="n">IDC_HORZSPLITTER</span><span class="p">));</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">hbrBackground</span> <span class="o">=</span> <span class="p">(</span><span class="n">HBRUSH</span><span class="p">)(</span><span class="n">COLOR_3DFACE</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>   
+ <span class="n">wc</span><span class="p">.</span><span class="n">lpszMenuName</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">lpszClassName</span> <span class="o">=</span> <span class="s">"Splitter"</span><span class="p">;</span>
+ <span class="n">wc</span><span class="p">.</span><span class="n">hIconSm</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+ <span class="n">RegisterClassEx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wc</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="handling-mouse-messages">Handling Mouse Messages</h2>
+
+<p>To make a useable splitter bar, we need to handle the three standard mouse messages. Typical code that we would want to execute when the mouse button is pressed over our splitter window is below. Note that this is not executable code - it is presented to give an idea of the steps necessary to implement the dragging around of a splitter bar.</p>
+
+<h3 id="mouse-button-down-wm_lbuttondown">Mouse button down (WM_LBUTTONDOWN)</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">splitpos</span> <span class="o">=</span> <span class="n">GetCursorPos</span><span class="p">();</span>
+
+ <span class="n">fDragMode</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span> <span class="cm">/* set dragging to active */</span> 
+ <span class="n">SetCapture</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span> <span class="cm">/* capture the mouse so we receive all messages */</span> 
+
+ <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span> <span class="cm">/* Draw the checkered resizing bar */</span>
+ <span class="n">DrawXorBar</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">splitpos</span><span class="p">);</span>
+ <span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span> 
+
+ <span class="n">old_splitpos</span> <span class="o">=</span> <span class="n">splitpos</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="mouse-move-wm_mousemove">Mouse move (WM_MOUSEMOVE)</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">fDragMode</span> <span class="o">==</span> <span class="n">FALSE</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+ <span class="n">splitpos</span> <span class="o">=</span> <span class="n">GetCursorPos</span><span class="p">();</span>
+
+ <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+             
+ <span class="n">DrawXorBar</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">old_splitpos</span><span class="p">);</span> <span class="cm">/* Erase where the bar WAS */</span>
+ <span class="n">DrawXorBar</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">splitpos</span><span class="p">);</span> <span class="cm">/* Draw it where it IS now */</span>
+ 
+ <span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span> 
+
+ <span class="n">old_splitpos</span> <span class="o">=</span> <span class="n">splitpos</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="mouse-button-up-wm_lbuttonup">Mouse button up (WM_LBUTTONUP)</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">fDragMode</span> <span class="o">==</span> <span class="n">FALSE</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+ <span class="n">fDragMode</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span> <span class="cm">/* set dragging to unactive */</span> 
+ <span class="n">ReleaseCapture</span><span class="p">();</span> <span class="cm">/* release the mouse capture: we don't need it */</span>
+ <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span> <span class="cm">/* Draw the bar again to erase it */</span>
+
+ <span class="n">DrawXorBar</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">old_splitpos</span><span class="p">);</span>    
+ <span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Although the code above is just a sample of what needs to be achieved, in reality the code is not much more complex. Probably the most complicated thing to do is to draw some kind of checkered bar to provide feed-back when the splitter bar is dragged around.</p>
+
+<h2 id="drawing-the-feedback-bar">Drawing the feedback bar</h2>
+
+<p>The feedback bar is just a simple rectangle, but drawn using a checkered pattern. Because we draw the rectangle using the <code class="highlighter-rouge">PATINVERT</code> style, we can easly restore the background to its original state by simply drawing the same rectangle back to the original position. So, calling <code class="highlighter-rouge">DrawXorBar</code> twice in succession will draw the checkered bar, but then immediately erase it again, restoring the background.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">DrawXorBar</span><span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">static</span> <span class="n">WORD</span> <span class="n">_dotPatternBmp</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span><span class="p">,</span> <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span><span class="p">,</span> 
+                                    <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span><span class="p">,</span> <span class="mh">0x00aa</span><span class="p">,</span> <span class="mh">0x0055</span><span class="p">};</span>
+
+  <span class="n">HBITMAP</span> <span class="n">hbm</span><span class="p">;</span>
+  <span class="n">HBRUSH</span> <span class="n">hbr</span><span class="p">,</span> <span class="n">hbrushOld</span><span class="p">;</span>
+
+  <span class="cm">/* create a monochrome checkered pattern */</span>
+  <span class="n">hbm</span> <span class="o">=</span> <span class="n">CreateBitmap</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_dotPatternBmp</span><span class="p">);</span>
+  <span class="n">hbr</span> <span class="o">=</span> <span class="n">CreatePatternBrush</span><span class="p">(</span><span class="n">hbm</span><span class="p">);</span>
+
+  <span class="n">SetBrushOrgEx</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">hbrushOld</span> <span class="o">=</span> <span class="p">(</span><span class="n">HBRUSH</span><span class="p">)</span><span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hbr</span><span class="p">);</span>
+
+  <span class="cm">/* draw the checkered rectangle to the screen */</span>
+  <span class="n">PatBlt</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">PATINVERT</span><span class="p">);</span>
+  
+  <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hbrushOld</span><span class="p">);</span>
+  <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hbr</span><span class="p">);</span>
+  <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hbm</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I have presented the basic steps necessary to create a divider bar, or splitter window as it is more commonly refered to. What I haven’t described is how to create a generic frame-work which magically does all of this work for you. If you want a frame-work to do this, then go and use MFC in your projects. Otherwise, it is up to you, the programmer, to decide how to arrange and manage your windows.</p>
+
+<p>This sample project below implements a simple splitter bar to get you started.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/splitter.zip EasySplitter_20.zip">splitter.zip EasySplitter_20.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-05-22T00:00:00+00:00">May 22, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="introduction-to-printing.html" class="pagination--pager" title="Introduction to Printing
+">Previous</a>
+    
+    
+      <a href="using-cards-dll-api.html" class="pagination--pager" title="Using cards.dll API
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/splitter-windows by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

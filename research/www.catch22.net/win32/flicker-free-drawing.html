@@ -1,0 +1,448 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/flicker-free-drawing by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Flicker-free Drawing - Catch22</title>
+<meta name="description" content="Flicker is the sign of sloppy programming and a lack of attention to detail. There is no reason why any part of a Windows program should flicker. The aim of this article is to present the reader (that’s you) with the techniques used to prevent their windows applications from flickering.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Flicker-free Drawing">
+<meta property="og:url" content="flicker-free-drawing.html">
+
+
+  <meta property="og:description" content="Flicker is the sign of sloppy programming and a lack of attention to detail. There is no reason why any part of a Windows program should flicker. The aim of this article is to present the reader (that’s you) with the techniques used to prevent their windows applications from flickering.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-11-20T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="flicker-free-drawing.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Flicker-free Drawing</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Flicker-free Drawing">
+    <meta itemprop="description" content="Flicker is the sign of sloppy programming and a lack of attention to detail. There is no reason why any part of a Windows program should flicker. The aim of this article is to present the reader (that’s you) with the techniques used to prevent their windows applications from flickering.">
+    <meta itemprop="datePublished" content="November 20, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Flicker-free Drawing
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Flicker-free Drawing</h1-->
+<!--h3>Techniques to eliminate flicker from your applications</h3-->
+
+<p>Flicker is the sign of sloppy programming and a lack of attention to detail. There is no reason why any part of a Windows program should flicker. The aim of this article is to present the reader (that’s you) with the techniques used to prevent their windows applications from flickering.</p>
+
+<h2 id="what-is-flickering">What is flickering?</h2>
+
+<p>Flicker is simply this: the display of one image over the top of another in rapid succession. The result of this is screen flicker, where you can see one image briefly before another one is shown on top. Personally I find applications that “flicker” annoying to use, for this one reason: If the user-interface has been badly coded, then what does this say about the rest of the application, the part that you trust your data with? An application that has a smooth, fast user interface inspires confidence in it’s users - it’s as simple as that.</p>
+
+<p>An application can flicker in many ways. The most common cause is when a window is resized, causing the contents to flicker badly as it is redrawn.</p>
+
+<h2 id="only-draw-things-once">Only draw things once</h2>
+
+<p>This is the golden rule when doing any kind of painting on a computer, be it Windows or whatever OS you are using. You must never draw over the same pixel twice. A lazy programmer will often avoid putting any thought into the painting process, instead opting to take the easy route.</p>
+
+<p>With the case of flickering, it is your responsiblity to ensure that no “overdraw” occurs. Now, Windows and your computer are fundamentally stupid; they won’t do anything unless you instruct them explicitly. If any flickering is occuring, it is because some part of your program has deliberately overdrawn some area of the screen.</p>
+
+<p>This may be because of some explicit command, or something which you have neglected to do. In either case, if your Windows program has a flickering problem, you need to understand how best to remove the problem.</p>
+
+<h2 id="wm_erasebkgnd">WM_ERASEBKGND</h2>
+
+<p>The prime suspect is usually the <code class="highlighter-rouge">WM_ERASEBKGND</code> message. This message is sent to a window when it’s background needs to be erased. This happens because windows are usually painted using a 2-stage process:</p>
+
+<ul>
+  <li><strong>WM_ERASEBKGND</strong> : Clear the background</li>
+  <li><strong>WM_PAINT</strong> : Draw the contents on top</li>
+</ul>
+
+<p>This makes it easy to draw a window’s contents: Every time you receive a <code class="highlighter-rouge">WM_PAINT</code> message, you know that you have a nice fresh canvas to draw on. However, drawing a window twice (once with <code class="highlighter-rouge">WM_ERASEBKGND</code>, once again with <code class="highlighter-rouge">WM_PAINT</code>) will cause the window to badly flicker. Just take a look at the standard Edit control in Windows - open up Notepad.exe and resize the window, and see how the contents flicker as it is redrawn.</p>
+
+<p>Right then, how do we avoid erasing the background of a window? There are two methods.</p>
+
+<ul>
+  <li>Set the window’s background brush to <code class="highlighter-rouge">NULL</code>. (Set the <code class="highlighter-rouge">hbrBackground</code> member of the <code class="highlighter-rouge">WNDCLASS</code> structure to zero when you register the window class).</li>
+  <li>Return non-zero in the <code class="highlighter-rouge">WM_ERASEBKGND</code> message handler.</li>
+</ul>
+
+<p>Any one of these will steps will prevent the <code class="highlighter-rouge">WM_ERASEBKGND</code> message from clearing the window. The last option is usually easiest to implement:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_ERASEBKGND</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>It is also possible to prevent <code class="highlighter-rouge">WM_ERASEBKGND</code> when you invalidate and update a window. The <code class="highlighter-rouge">InvalidateRect</code> API call’s last parameter specifies whether or not a portion of a window is to have it’s background erased when it is next redrawn. Specifying FALSE for this paramter prevents <code class="highlighter-rouge">WM_ERASEBKGND</code> from being sent when the window is redrawn.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">InvalidateRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="dont-draw-things-when-you-dont-have-to">Don’t draw things when you don’t have to</h2>
+
+<p>It is quite common for a Windows application to redraw it’s entire window contents, even if only a small part of it changed. This is most usually the case when a window is resized - some (but not all) programs redraw the whole window. This is normally not necessary, because when a window is resized, more often than not the previous window contents is left unchanged, and the resize has just uncovered a small border which needs painting. It is not necessary to redraw the entire contents in this case. If a little thought and care is used, the painting algorithms can be written so that only the bare minimum is painted at any one time.</p>
+
+<p>Every window in the system keeps an update region. This region describes the area of a window that has become invalidated and needs repainting. If a windows only updates the required area, and no more, then the window will draw much quicker as a result.</p>
+
+<p>There are several ways to retrieve the update region for a window. The <code class="highlighter-rouge">GetUpdateRgn</code> API call retrieves the exact region, be it rectangular, or a more irregular shape. The <code class="highlighter-rouge">GetUpdateRect</code> API call retrieves the smallest bounding rectangle that encloses the update region. It is usually easier to just work with a rectangular area like this. The third method is to use the <code class="highlighter-rouge">PAINTSTRUCT</code> structure in conjunction with the <code class="highlighter-rouge">BeginPaint</code> / <code class="highlighter-rouge">EndPaint</code> API calls.</p>
+
+<p>A normal painting procedure looks like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PAINTSTRUCT</span> <span class="n">ps</span><span class="p">;</span>
+
+<span class="n">HDC</span> <span class="n">hdc</span><span class="p">;</span>
+
+<span class="k">case</span> <span class="n">WM_PAINT</span><span class="p">:</span>
+
+    <span class="n">hdc</span> <span class="o">=</span> <span class="n">BeginPaint</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+
+    <span class="c1">// do painting here
+</span>
+    <span class="n">EndPaint</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>BeginPaint initializes the <code class="highlighter-rouge">ps</code> (<code class="highlighter-rouge">PAINTSTRUCT</code>) structure. One member, <code class="highlighter-rouge">rcPaint</code> , is a <code class="highlighter-rouge">RECT</code> structure which describes the smallest bounding rectangle that encloses the update region (Just like the <code class="highlighter-rouge">GetWindowRect</code> API call). By only limiting drawing to just this rectangular region, painting can be dramatically sped up.</p>
+
+<p>Now, Windows automatically clips any drawing you perform outside the update region when you use <code class="highlighter-rouge">BeginPaint</code> / <code class="highlighter-rouge">EndPaint</code>. This means that there is no way you can draw outside the update region even if you tried. You might think that it is pointless to make sure your code doesn’t try to draw outside the update region, even when nothing will be drawn anyway. However, you are still avoiding unnecessary API calls and calculations, so I think it is always worth putting in a little more effort to get things working as fast as possible.</p>
+
+<h2 id="when-you-just-cant-help-it">When you just can’t help it</h2>
+
+<p>There are occasions when you spend alot of time and effort getting your super-duper drawing code working, only to find that your window is still getting redrawn in it’s entirety. This is usually the cause of two window class styles - <code class="highlighter-rouge">CS_VREDRAW</code> and <code class="highlighter-rouge">CS_HREDRAW</code>. When a window class has either of these two styles set, the window contents will be completely redrawn every time it is resized either vertically or horizontally (or both). So, you need to turn off these two class styles. The only way to do this is to make sure your window isn’t created with them in the first place, and to prevent this from happening, you have to make sure that <code class="highlighter-rouge">CS_HREDRAW</code> and <code class="highlighter-rouge">CS_VREDRAW</code> aren’t included when the window class is registered.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WNDCLASSEX</span> <span class="n">wc</span><span class="p">;</span>
+
+<span class="n">wc</span><span class="p">.</span><span class="n">cbSize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">wc</span><span class="p">);</span>
+
+<span class="n">wc</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* CS_VREDRAW | CS_HREDRAW; */</span>
+
+<span class="p">...</span>
+
+<span class="n">RegisterClassEx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wc</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The above example is just to help illustrate the point that these two styles must not be included when the window class is registered.</p>
+
+<p>Just a word of warning here: If the main window in an application has these two class styles set, then this will cause all child windows to be redrawn during a resize, even if those children don’t have the redraw flags set. This can be avoided by following the next step:</p>
+
+<h2 id="clipping-child-windows">Clipping child windows</h2>
+
+<p>Sometimes flickering occurs because a parent window doesn’t clip it’s children when it paints itself. This results in the entire parent window contents being shown, and the the child windows being displayed on top (causing flicker). This can be easily solved by setting the <code class="highlighter-rouge">WS_CLIPCHILDREN</code> style on the parent window.</p>
+
+<p>When a window has this style set, any areas that its child windows occupy are excluded from the update region. So, even if you try to draw over a child control, the clipping region that BeginPaint assigns will prevent you from doing so.</p>
+
+<h2 id="double-buffing-and-memory-dcs">Double-buffing and memory-DC’s</h2>
+
+<p>A common method to completely eliminate flickering windows is to use a technique called double-buffering. This basic idea is to draw a window’s contents into an off-screen buffer, and then transfer this buffer to the screen in one fell-swoop (using <code class="highlighter-rouge">BitBlt</code>). This is a pretty good way to reduce flicker, but is often overused, especially by programmers who don’t really understand how get efficient drawing working.</p>
+
+<p>The basic way double-buffering works is like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HDC</span>         <span class="n">hdcMem</span><span class="p">;</span>
+<span class="n">HBITMAP</span>     <span class="n">hbmMem</span><span class="p">;</span>
+<span class="n">HANDLE</span>      <span class="n">hOld</span><span class="p">;</span>
+<span class="n">PAINTSTRUCT</span> <span class="n">ps</span><span class="p">;</span>
+<span class="n">HDC</span>         <span class="n">hdc</span><span class="p">;</span>
+
+<span class="p">....</span>
+
+<span class="k">case</span> <span class="n">WM_PAINT</span><span class="p">:</span>
+
+    <span class="c1">// Get DC for window
+</span>    <span class="n">hdc</span> <span class="o">=</span> <span class="n">BeginPaint</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+
+    <span class="c1">// Create an off-screen DC for double-buffering
+</span>    <span class="n">hdcMem</span> <span class="o">=</span> <span class="n">CreateCompatibleDC</span><span class="p">(</span><span class="n">hdc</span><span class="p">);</span>
+    <span class="n">hbmMem</span> <span class="o">=</span> <span class="n">CreateCompatibleBitmap</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">win_width</span><span class="p">,</span> <span class="n">win_height</span><span class="p">);</span>
+
+    <span class="n">hOld</span> <span class="o">=</span> <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdcMem</span><span class="p">,</span> <span class="n">hbmMem</span><span class="p">);</span>
+
+    <span class="c1">// Draw into hdcMem here
+</span>
+    <span class="c1">// Transfer the off-screen DC to the screen
+</span>    <span class="n">BitBlt</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">win_width</span><span class="p">,</span> <span class="n">win_height</span><span class="p">,</span> <span class="n">hdcMem</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SRCCOPY</span><span class="p">);</span>
+
+    <span class="c1">// Free-up the off-screen DC
+</span>    <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdcMem</span><span class="p">,</span> <span class="n">hOld</span><span class="p">);</span>
+
+    <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hbmMem</span><span class="p">);</span>
+    <span class="n">DeleteDC</span> <span class="p">(</span><span class="n">hdcMem</span><span class="p">);</span>
+    <span class="n">EndPaint</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>This method is a little slow, because the offscreen memory-DC is created from scratch every time the window needs to be drawn. A more efficient method would be to create the memory DC only once, big enough so that the entire window can be painted at any time. When the application terminates, the memory DC would then be destroyed. Both these methods are potentially quite memory-intensive, especially if the memory DC needs to be the size of a screen (1024 * 768 * 32 bytes=2.5 Mb).</p>
+
+<p>Double-buffering will also be twice as slow as it needs to be. Because you are drawing once to the memory-DC, then again during the “blit”, you are using up clock cycles when you don’t need to. Granted, a fast graphics card will perform a BitBlt very quickly, but it’s still wasted CPU.</p>
+
+<p>If your application needs to display quite complicated information (say, like a web-page), then you would need to use the memory-DC method. Take Internet Explorer, for instance. There is no way it would be able to render a web-page with no flickering without using double-buffering.</p>
+
+<p>Double-buffering doesn’t have to be used to paint a whole window. Imagine that you had just a small portion of a window that contained a complex graphic object (maybe a semi-transparent bitmap or something). You could use an off-screen DC to draw just this one region, and <code class="highlighter-rouge">BitBlt</code> that to the screen, whilst drawing the rest of the window normally.</p>
+
+<p>Sometimes though, with a little careful thinking, it is often possible to avoid double-buffering and draw straight to the screen. As long as you don’t break the golden rule, “Never draw over the same pixel twice”, you will achieve flicker-free drawing.</p>
+
+<h2 id="avoiding-deliberate-overdraw">Avoiding deliberate overdraw</h2>
+
+<p>What I mean by this is the following type of situation. Say, you are custom-drawing the titlebar of a window. You draw the caption first, then draw some additional graphics over the top. Now, whenever the caption needs to be painted, it will flicker. This is because you haven’t followed the “golden rule”. In this case, the caption is being shown briefly before additional graphics are painted on top, which appear to flicker.</p>
+
+<p>There are two techniques you can use to prevent this type of flickering. The first is to use clipping, the second is to use your brain.</p>
+
+<p>In the case of clipping, you can use the <code class="highlighter-rouge">ExcludeClipRect</code> API call to mask out certain areas of a device context. When an area is masked, it is not affected when painted over. Once a background has been drawn, the clipping area can be removed with <code class="highlighter-rouge">SelectClipRgn</code> , and another graphic can be painted in the previously masked-out area. By using appropriate masking (or clipping), overdraw can be eliminated in alot of cases.</p>
+
+<p>The other option is to take a more intelligent approach. Imagine you had to draw a grid. A grid would normally be painted by first drawing a blank background, and then drawing a series of lines (horizontal and vertical) to create the grid effect. The problem with this type of approach is that the grid lines will appear to flicker, because the background is briefly appearing underneath each line before the lines are drawn. However, the same effect can be achieved with a different approach. Instead of drawing a single blank background, draw a series of blank squares, separated by a pixel-wide space on each side. When you come to draw the grid lines, they can be placed in the pixel-wide gaps which haven’t been painted over yet. The result is the same, but this time there is no flickering because no pixel has been painted over twice.</p>
+
+<p>Using your brain to think around a problem may take slightly longer than the direct “no-brainer” approach, but I think it is worth the extra effort, because the results can be so much better.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully you should never have to ask the question “Why does my window flicker?” ever again. I have presented the major causes of flickering in a windows program, and also the techniques you can use to remove this flickering. If you encounter flickering in a program you are developing, you should be able to identify the possible causes, and use the techniques described in this tutorial to completely eliminate flicker from your applications.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-11-20T00:00:00+00:00">November 20, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="docking-toolbars-part-1.html" class="pagination--pager" title="Docking Toolbars - Part 1
+">Previous</a>
+    
+    
+      <a href="cardlib-reference.html" class="pagination--pager" title="CardLib Reference
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/flicker-free-drawing by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

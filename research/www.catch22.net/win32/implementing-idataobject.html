@@ -1,0 +1,613 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/implementing-idataobject by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Implementing IDataObject - Catch22</title>
+<meta name="description" content="Updated 6 Dec 2006">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Implementing IDataObject">
+<meta property="og:url" content="implementing-idataobject.html">
+
+
+  <meta property="og:description" content="Updated 6 Dec 2006">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2004-06-15T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="implementing-idataobject.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Implementing IDataObject</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dataobj.zip dataobjview.zip">dataobj.zip dataobjview.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Implementing IDataObject">
+    <meta itemprop="description" content="Updated 6 Dec 2006">
+    <meta itemprop="datePublished" content="June 15, 2004">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Implementing IDataObject
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Implementing IDataObject</h1-->
+<!--h3>Standalone implementation of the IDataObject interface</h3-->
+
+<h2 id="updated-6-dec-2006">Updated 6 Dec 2006</h2>
+
+<p>Many thanks to Davide Chiodi from Italy who has very kindly converted the data-obect code into a Pure C implementation - the download link is available at the bottom of this article!</p>
+
+<p>In the last part of the tutorial we looked at how to access the Windows clipboard using OLE and the <code class="highlighter-rouge">IDataObject</code>. In this part we will be implementing the <code class="highlighter-rouge">IDataObject</code> interface, and using our completed data object to store the text “Hello World” into the Windows clipboard.</p>
+
+<h2 id="creating-a-com-interface---idataobject">Creating a COM interface - IDataObject</h2>
+
+<p>In order to create our own COM object, we need to define a C++ class which implements all of these functions, and in order for the COM virtual-function table to be automatically included for us, we will use C++ class inheritance:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CDataObject</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IDataObject</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+    <span class="c1">// IUnknown members
+</span>    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">QueryInterface</span> <span class="p">(</span><span class="n">REFIID</span> <span class="n">iid</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span> <span class="n">ppvObject</span><span class="p">);</span>
+    <span class="n">ULONG</span> <span class="kr">__stdcall</span> <span class="n">AddRef</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+    <span class="n">ULONG</span> <span class="kr">__stdcall</span> <span class="n">Release</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+    <span class="c1">// IDataObject members
+</span>    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">GetData</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">pmedium</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">GetDataHere</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">pmedium</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">QueryGetData</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">GetCanonicalFormatEtc</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEct</span><span class="p">,</span> <span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtcOut</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">SetData</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">pMedium</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fRelease</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">EnumFormatEtc</span> <span class="p">(</span><span class="n">DWORD</span> <span class="n">dwDirection</span><span class="p">,</span> <span class="n">IEnumFORMATETC</span> <span class="o">**</span><span class="n">ppEnumFormatEtc</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">DAdvise</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">advf</span><span class="p">,</span> <span class="n">IAdviseSink</span> <span class="o">*</span><span class="p">,</span> <span class="n">DWORD</span> <span class="o">*</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">DUnadvise</span> <span class="p">(</span><span class="n">DWORD</span> <span class="n">dwConnection</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">EnumDAdvise</span> <span class="p">(</span><span class="n">IEnumSTATDATA</span> <span class="o">**</span><span class="n">ppEnumAdvise</span><span class="p">);</span>
+
+    <span class="c1">// Constructor / Destructor
+</span>    <span class="n">CDataObject</span><span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">fmtetc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">stgmed</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">CDataObject</span><span class="p">();</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="c1">// any private members and functions
+</span>    <span class="n">LONG</span> <span class="n">m_lRefCount</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">LookupFormatEtc</span><span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Notice that all of the <code class="highlighter-rouge">IDataObject</code> members have been listed - even the IUnknown interface members. This is because we are now implementing an entire COM object, so every member function must be included in the correct order.</p>
+
+<p>With the IUnknown functions already visited in a previous tutorial, we can move onto the <code class="highlighter-rouge">IDataObject</code> functions. There is some good news and some bad news. The good news is, not all of the functions need to be implemented! Out of the nine functions, only three are required for OLE drag and drop, so this cuts down our work enormously.</p>
+
+<p>The bad news is once we’ve implemented the <code class="highlighter-rouge">IDataObject</code> methods, we need to implement an entirely separate COM interface - the <code class="highlighter-rouge">IEnumFORMATETC</code> interface. We’re a little way off this step yet, so let’s start with simply allocating a new instance of <code class="highlighter-rouge">IDataObject</code>.</p>
+
+<h2 id="constructing-idataobject">Constructing IDataObject</h2>
+
+<p>The <code class="highlighter-rouge">IDataObject</code>’s main task is to allow a “consumer” to query it for data. These queries will take the form of calls to either <code class="highlighter-rouge">QueryData</code> or <code class="highlighter-rouge">EnumFormatEtc</code>. Therefore the <code class="highlighter-rouge">IDataObject</code> needs to know what data formats it should store, and when a consumer asks for the data, it should be able to provide it.</p>
+
+<p>We therefore need to find some method to populate the <code class="highlighter-rouge">IDataObject</code> with real pieces of data and also tell it what the data is, in the form of <code class="highlighter-rouge">FORMATETC</code> structures.</p>
+
+<p>The <code class="highlighter-rouge">IDataObject</code> will be populated with data during the call to it’s C++ class constructor. For more flexibility it may make sense to use the <code class="highlighter-rouge">IDataObject::SetData</code> routine to perform this task, but for our simple implementation using the constructor makes sense for now.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CDataObject</span><span class="o">::</span><span class="n">CDataObject</span><span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">fmtetc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">stgmed</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// reference count must ALWAYS start at 1
+</span>    <span class="n">m_lRefCount</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">m_nNumFormats</span> <span class="o">=</span> <span class="n">count</span><span class="p">;</span>
+
+    <span class="n">m_pFormatEtc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FORMATETC</span><span class="p">[</span><span class="n">count</span><span class="p">];</span>
+    <span class="n">m_pStgMedium</span> <span class="o">=</span> <span class="k">new</span> <span class="n">STGMEDIUM</span><span class="p">[</span><span class="n">count</span><span class="p">];</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_pFormatEtc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fmtetc</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">m_pStgMedium</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">stgmed</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The constructor performs two important tasks. The first is to initialize the COM object’s reference count to 1. I see alot of incorrect COM code where reference counts begin at zero. The COM specifications clearly state that a COM object must begin life with a reference count of 1. If you think about it, a reference count of zero means that the COM object should be deleted, so it should never be initialized to this value.</p>
+
+<p>The second task is to make a private copy of the <code class="highlighter-rouge">FORMATETC</code> and <code class="highlighter-rouge">STGMEDIUM</code> structures specified in the class constructor. The data object won’t take ownership of the data inside each <code class="highlighter-rouge">STGMEDIUM</code> structure, it will merely reference it, and duplicate the data only when requested during a call to GetData.</p>
+
+<h2 id="creating-idataobject">Creating IDataObject</h2>
+
+<p>Now that we have a well-defined constructor for <code class="highlighter-rouge">IDataObject</code>, we can write a wrapper function which will hide the class details:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="nf">CreateDataObject</span><span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">fmtetc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">stgmeds</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">count</span><span class="p">,</span> <span class="n">IDataObject</span> <span class="o">**</span><span class="n">ppDataObject</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ppDataObject</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">E_INVALIDARG</span><span class="p">;</span>
+
+    <span class="o">*</span><span class="n">ppDataObject</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CDataObject</span><span class="p">(</span><span class="n">fmtetc</span><span class="p">,</span> <span class="n">stgmeds</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">ppDataObject</span><span class="p">)</span> <span class="o">?</span> <span class="n">S_OK</span> <span class="o">:</span> <span class="n">E_OUTOFMEMORY</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So creating an <code class="highlighter-rouge">IDataObject</code> is now very simple:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FORMATETC</span> <span class="n">fmtetc</span> <span class="o">=</span> <span class="p">{</span> <span class="n">CF_TEXT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DVASPECT_CONTENT</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">TYMED_HGLOBAL</span> <span class="p">};</span>
+<span class="n">STGMEDIUM</span> <span class="n">stgmed</span> <span class="o">=</span> <span class="p">{</span> <span class="n">TYMED_HGLOBAL</span><span class="p">,</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+
+<span class="n">stgmed</span><span class="p">.</span><span class="n">hGlobal</span> <span class="o">=</span> <span class="n">StringToHandle</span><span class="p">(</span><span class="s">"Hello, World!"</span><span class="p">);</span>
+
+<span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">;</span>
+
+<span class="n">CreateDataObject</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fmtetc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">stgmed</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pDataObject</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Alot of implementations of <code class="highlighter-rouge">IDataObject</code> include alot of application-specific code inside the interface which performs the memory allocations. The idea behind <em>this</em> implementation is to provide a generic <code class="highlighter-rouge">IDataObject</code> which can be used in a variety of different applications. OK, so a little bit of work needs to be done up-front to create the <code class="highlighter-rouge">FORMATETC</code> and <code class="highlighter-rouge">STGMEDIUM</code> structures before creating the data object, but this can be easily isolated and doesn’t pollute the interface code.</p>
+
+<h2 id="idataobjectquerygetdata">IDataObject::QueryGetData</h2>
+
+<p>This member function is called whenever an application wants to test our <code class="highlighter-rouge">IDataObject</code> to see if it contains a specific type of data. A pointer to a <code class="highlighter-rouge">FORMATETC</code> structure is passed as an argument, and it is the task of <code class="highlighter-rouge">IDataObject::QueryGetData</code> to inspect this structure and return a value to indicate if the requested data is available or not.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">QueryGetData</span><span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">LookupFormatEtc</span><span class="p">(</span><span class="n">pFormat</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">DV_E_FORMATETC</span> <span class="o">:</span> <span class="n">S_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The QueryGetData function is very simple in this case. We pass off all the work to a private helper function - <code class="highlighter-rouge">LookupFormatEtc</code>:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">LookupFormatEtc</span><span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// check each of our formats in turn to see if one matches
+</span>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m_nNumFormats</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">((</span><span class="n">m_pFormatEtc</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">tymed</span> <span class="o">&amp;</span> <span class="n">pFormatEtc</span><span class="o">-&gt;</span><span class="n">tymed</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+            <span class="n">m_pFormatEtc</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cfFormat</span> <span class="o">==</span> <span class="n">pFormatEtc</span><span class="o">-&gt;</span><span class="n">cfFormat</span> <span class="o">&amp;&amp;</span>
+            <span class="n">m_pFormatEtc</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">dwAspect</span> <span class="o">==</span> <span class="n">pFormatEtc</span><span class="o">-&gt;</span><span class="n">dwAspect</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// return index of stored format
+</span>            <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// error, format not found
+</span>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The helper function above tries to match the specified <code class="highlighter-rouge">FORMATETC</code> structure against one of the available structures belonging to our data object. If it finds one that matches, it simply returns an index to the appropriate entry in the <code class="highlighter-rouge">m_pFormatEtc</code> array. If no match is found, an error value of -1 is returned.</p>
+
+<p>Note the use of the bitwise-AND operator in the if-clause:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span> <span class="n">m_pFormatEtc</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">tymed</span> <span class="o">&amp;</span> <span class="n">pFormatEtc</span><span class="o">-&gt;</span><span class="n">tymed</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<p>The AND operator is used here because the <code class="highlighter-rouge">FORMATETC::tymed</code> member is actually a bit-flag which can contain more than one value. For example, the caller of <code class="highlighter-rouge">QueryGetData</code> could quite legitimetly specify a <code class="highlighter-rouge">FORMATETC::tymed</code> value of (<code class="highlighter-rouge">TYMED_HGLOBAL</code> | <code class="highlighter-rouge">TYMED_ISTREAM</code>), which basically means “Do you support HGLOBAL or IStream?”.</p>
+
+<h2 id="idataobjectgetdata">IDataObject::GetData</h2>
+
+<p>The GetData function is similar in many ways to <code class="highlighter-rouge">QueryGetData</code>, the exception being that if the requested data format is supported, it must be returned into the specified storage-medium structure.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">GetData</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">pStgMedium</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">idx</span><span class="p">;</span>
+
+    <span class="c1">// try to match the specified FORMATETC with one of our supported formats
+</span>    <span class="k">if</span><span class="p">((</span><span class="n">idx</span> <span class="o">=</span> <span class="n">LookupFormatEtc</span><span class="p">(</span><span class="n">pFormatEtc</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DV_E_FORMATETC</span><span class="p">;</span>
+
+    <span class="c1">// found a match - transfer data into supplied storage medium
+</span>    <span class="n">pMedium</span><span class="o">-&gt;</span><span class="n">tymed</span> <span class="o">=</span> <span class="n">m_pFormatEtc</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">tymed</span><span class="p">;</span>
+    <span class="n">pMedium</span><span class="o">-&gt;</span><span class="n">pUnkForRelease</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// copy the data into the caller's storage medium
+</span>    <span class="k">switch</span><span class="p">(</span><span class="n">m_pFormatEtc</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">tymed</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">TYMED_HGLOBAL</span><span class="p">:</span>
+        <span class="n">pMedium</span><span class="o">-&gt;</span><span class="n">hGlobal</span> <span class="o">=</span> <span class="n">DupGlobalMem</span><span class="p">(</span><span class="n">m_pStgMedium</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">hGlobal</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">default</span><span class="o">:</span>
+        <span class="k">return</span> <span class="n">DV_E_FORMATETC</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">S_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The same internal helper function <code class="highlighter-rouge">LookupFormatEtc</code> is used to check if the requested data format is supported. If it is, then the appropriate <code class="highlighter-rouge">STGMEDIUM</code> data is copied into the caller-supplied structure.</p>
+
+<p>Note that call to the <code class="highlighter-rouge">DupGlobalMem</code> routine. This is a helper function which returns a duplicate of the specified <code class="highlighter-rouge">HGLOBAL</code> memory handle, and is required because each call to GetData must result in a fresh copy of the data.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HGLOBAL</span> <span class="nf">DupGlobalMemMem</span><span class="p">(</span><span class="n">HGLOBAL</span> <span class="n">hMem</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">len</span> <span class="o">=</span> <span class="n">GlobalSize</span><span class="p">(</span><span class="n">hMem</span><span class="p">);</span>
+    <span class="n">PVOID</span> <span class="n">source</span> <span class="o">=</span> <span class="n">GlobalLock</span><span class="p">(</span><span class="n">hMem</span><span class="p">);</span>
+    <span class="n">PVOID</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">GlobalAlloc</span><span class="p">(</span><span class="n">GMEM_FIXED</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+    <span class="n">GlobalUnlock</span><span class="p">(</span><span class="n">hMem</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">dest</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We will need similar routines to support the other <code class="highlighter-rouge">TYMED_xxx</code> storage types. For now the only additional format I imagine being implemented is <code class="highlighter-rouge">IStream</code>.</p>
+
+<h2 id="idataobjectenumformatetc">IDataObject::EnumFormatEtc</h2>
+
+<p>This is the last member that requires any real programming effort. Its unfortunate that it whilst this member function is so simple to implement, it also requires us to start writing the <code class="highlighter-rouge">IEnumFORMATETC</code> object as well.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">EnumFormatEtc</span> <span class="p">(</span><span class="n">DWORD</span> <span class="n">dwDirection</span><span class="p">,</span> <span class="n">IEnumFORMATETC</span> <span class="o">**</span><span class="n">ppEnumFormatEtc</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// only the get direction is supported for OLE
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">dwDirection</span> <span class="o">==</span> <span class="n">DATADIR_GET</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// for Win2k+ you can use the SHCreateStdEnumFmtEtc API call, however
+</span>        <span class="c1">// to support all Windows platforms we need to implement IEnumFormatEtc ourselves.
+</span>        <span class="k">return</span> <span class="n">CreateEnumFormatEtc</span><span class="p">(</span><span class="n">m_NumFormats</span><span class="p">,</span> <span class="n">m_FormatEtc</span><span class="p">,</span> <span class="n">ppEnumFormatEtc</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// the direction specified is not supported for drag+drop
+</span>        <span class="k">return</span> <span class="n">E_NOTIMPL</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you look at the code comment above, you can see mention of the SHCreateStdEnumFmtEtc API call. What this does is create an <code class="highlighter-rouge">IEnumFORMATETC</code> interface on our behalf, requiring no work from ourselves. Unfortunately this API is only available on Windows 2000 and above, so we have to provide an alternative method to create an <code class="highlighter-rouge">IEnumFORMATETC</code> object.</p>
+
+<p>Therefore in the next tutorial we will provide a full implementation of <code class="highlighter-rouge">CreateEnumFormatEtc</code>, a replacement for the Shell API call.</p>
+
+<h2 id="unsupported-idataobject-functions">Unsupported IDataObject functions</h2>
+
+<p>There are still a number of <code class="highlighter-rouge">IDataObject</code> functions that need to be implemented. Whilst every function must be a valid routine, there is a simple method to indicate to OLE that we don’t support the functionality that these routines might offer outside the world of drag and drop.</p>
+
+<p>The <code class="highlighter-rouge">IDataObject::**DAdvise**</code> , <code class="highlighter-rouge">IDataObject::**EnumDAdvise**</code> and <code class="highlighter-rouge">IDataObject::**DUnadvise**</code> functions simply need to return the value <code class="highlighter-rouge">OLE_E_ADVISENOTSUPPORTED</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">DAdvise</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">advf</span><span class="p">,</span> <span class="n">IAdviseSink</span> <span class="o">*</span><span class="n">pAdvSink</span><span class="p">,</span> 
+                                                                 <span class="n">DWORD</span> <span class="o">*</span><span class="n">pdwConnection</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">OLE_E_ADVISENOTSUPPORTED</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">HRESULT</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">DUnadvise</span> <span class="p">(</span><span class="n">DWORD</span> <span class="n">dwConnection</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">OLE_E_ADVISENOTSUPPORTED</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">HRESULT</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">EnumDAdvise</span> <span class="p">(</span><span class="n">IEnumSTATDATA</span> <span class="o">**</span><span class="n">ppEnumAdvise</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">OLE_E_ADVISENOTSUPPORTED</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">IDataObject::GetDataHere</code> can only be implemented if the <code class="highlighter-rouge">IStream</code> and <code class="highlighter-rouge">IStorage</code> interfaces are supported by the data object. In our case we only support <code class="highlighter-rouge">HGLOBAL</code> data, so returning <code class="highlighter-rouge">DATA_E_FORMATETC</code> seems a sensible choice.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">GetDataHere</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">pMedium</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">DATA_E_FORMATETC</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">IDataObject::**SetData**</code> and <code class="highlighter-rouge">IDataObject::**GetCanonicalFormatEtc**</code> are also simple to implement - the value <code class="highlighter-rouge">E_NOTIMPL</code> can be returned in this case. One special note about <code class="highlighter-rouge">GetCanonicalFormatEtc</code> - even though we return an error value, the output <code class="highlighter-rouge">FORMATETC</code> structure’s “<code class="highlighter-rouge">ptd</code>” member (the pointer-to-<code class="highlighter-rouge">DVTARGETDEVICE</code>) must be set to zero:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">GetCanonicalFormatEtc</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEct</span><span class="p">,</span> <span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtcOut</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Apparently we have to set this field to NULL even though we don't do anything else
+</span>    <span class="n">pFormatEtcOut</span><span class="o">-&gt;</span><span class="n">ptd</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">E_NOTIMPL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">HRESULT</span> <span class="n">CDataObject</span><span class="o">::</span><span class="n">SetData</span> <span class="p">(</span><span class="n">FORMATETC</span> <span class="o">*</span><span class="n">pFormatEtc</span><span class="p">,</span> <span class="n">STGMEDIUM</span> <span class="o">*</span><span class="n">pMedium</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fRelease</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">E_NOTIMPL</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="adding-data-to-the-clipboard">Adding Data to the Clipboard</h2>
+
+<p>OK, so here’s a little program to add “Hello World” to the Windows clipboard using OLE and data objects.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">OleInitialize</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">;</span>
+    <span class="n">FORMATETC</span> <span class="n">fmtetc</span> <span class="o">=</span> <span class="p">{</span> <span class="n">CF_TEXT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DVASPECT_CONTENT</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">TYMED_HGLOBAL</span> <span class="p">};</span>
+    <span class="n">STGMEDIUM</span> <span class="n">stgmed</span> <span class="o">=</span> <span class="p">{</span> <span class="n">TYMED_HGLOBAL</span><span class="p">,</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">};</span>
+
+    <span class="n">stgmed</span><span class="p">.</span><span class="n">hGlobal</span> <span class="o">=</span> <span class="n">StringToHandle</span><span class="p">(</span><span class="s">"Hello, World!"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="c1">// create the data object
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">CreateDataObject</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fmtetc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">stgmed</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pDataObject</span><span class="p">)</span> <span class="o">==</span> <span class="n">S_OK</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// add data to the clipboardOleSetClipboard(pDataObject);
+</span>        <span class="n">OleFlushClipboard</span><span class="p">();</span>
+        <span class="n">pDataObject</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// cleanup
+</span>    <span class="n">ReleaseStgMedium</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stgmed</span><span class="p">);</span>
+    <span class="n">OleUninitialize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Unfortunately this program won’t work yet because we havn’t implemented <code class="highlighter-rouge">IEnumFORMATETC</code> and the <code class="highlighter-rouge">CreateEnumFormatEtc</code> function. If you hold on for a moment though…</p>
+
+<h2 id="coming-up-in-part-4---implementing-ienumformatetc">Coming up in Part 4 - Implementing IEnumFORMATETC</h2>
+
+<p>The next part of this tutorial series will be dedicated to writing a single function <code class="highlighter-rouge">CreateEnumFormatEtc</code> , which will be a drop-in replacement for the <code class="highlighter-rouge">SHCreateStdEnumFmtEtc</code> API call. Our implementation will have exactly the same semantics and will return a pointer to a genuine <code class="highlighter-rouge">IEnumFORMATETC</code> COM object which will be fully detailed.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dataobj.zip dataobjview.zip">dataobj.zip dataobjview.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2004-06-15T00:00:00+00:00">June 15, 2004</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="ole-drag-and-drop.html" class="pagination--pager" title="OLE Drag and Drop
+">Previous</a>
+    
+    
+      <a href="2004-06-15-ole-data-transfers/index.html" class="pagination--pager" title="OLE Data Transfers
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/implementing-idataobject by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

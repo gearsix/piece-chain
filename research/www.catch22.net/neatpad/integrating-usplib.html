@@ -1,0 +1,855 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/integrating-usplib by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Integrating UspLib - Catch22</title>
+<meta name="description" content="It’s finally here! - a new and improved Neatpad which demonstrates the rendering capabilities of UspLib. The purpose of this is tutorial to document the UspLib API, and secondly to mention a few details about how UspLib was integrated into Neatpad’s code. I very much hope that the design of UspLib is good enough that it will others to import it into their own editors and get instant styled-text support!">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Integrating UspLib">
+<meta property="og:url" content="integrating-usplib.html">
+
+
+  <meta property="og:description" content="It’s finally here! - a new and improved Neatpad which demonstrates the rendering capabilities of UspLib. The purpose of this is tutorial to document the UspLib API, and secondly to mention a few details about how UspLib was integrated into Neatpad’s code. I very much hope that the design of UspLib is good enough that it will others to import it into their own editors and get instant styled-text support!">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-03-06T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="integrating-usplib.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Integrating UspLib</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad15.zip">neatpad15.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="active">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Integrating UspLib">
+    <meta itemprop="description" content="It’s finally here! - a new and improved Neatpad which demonstrates the rendering capabilities of UspLib. The purpose of this is tutorial to document the UspLib API, and secondly to mention a few details about how UspLib was integrated into Neatpad’s code. I very much hope that the design of UspLib is good enough that it will others to import it into their own editors and get instant styled-text support!">
+    <meta itemprop="datePublished" content="March 06, 2006">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Integrating UspLib
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Integrating UspLib</h1-->
+<!--h3>Migrating Neatpad to the UspLib engine</h3-->
+
+<p>It’s finally here! - a new and improved Neatpad which demonstrates the rendering capabilities of UspLib. The purpose of this is tutorial to document the UspLib API, and secondly to mention a few details about how UspLib was integrated into Neatpad’s code. I very much hope that the design of UspLib is good enough that it will others to import it into their own editors and get instant styled-text support!</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1401.gif" alt="&lt;&gt;" /></p>
+
+<p>The image above shows Neatpad’s new Unicode text-rendering engine in action. Five different scripts are being displayed - Devanagari, Tamil, Thai, Arabic and of course Latin. Font-fallback is not currently supported in Neatpad, so to display all of these different scripts a suitable font must be selected. In the example above I used the “Arial Unicode MS” font which weighs in at a hefty 22Mb!</p>
+
+<p>Now, don’t get too exited about this latest version. On the surface it is no different than before - it is only until you load a Unicode file containing lots of complex scripts that you will see where all the work has gone into.</p>
+
+<p>The UspLib API has been documented below. Please let me know if you were successful in integrating this API into your own projects!</p>
+
+<hr />
+
+<p>To use UspLib, include the single header-file <code class="highlighter-rouge">usplib.h</code>, and link against <code class="highlighter-rouge">usplib.lib</code>. There are no dependencies on the library itself other than the Uniscribe Script Processor DLL (<code class="highlighter-rouge">usp10.dll</code>) which will be present on Windows2000 and above.</p>
+
+<h2 id="uspallocate">UspAllocate</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">USPDATA</span> <span class="o">*</span> <span class="n">UspAllocate</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspAllocate</code> initializes and returns a new <code class="highlighter-rouge">USPDATA</code> object, which must be used for all subsequent UspLib operations.</p>
+
+<h2 id="uspanalyze">UspAnalyze</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">UspAnalyze</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>
+  <span class="n">WCHAR</span> <span class="o">*</span> <span class="n">wstr</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">wlen</span><span class="p">,</span> 
+  <span class="n">ATTR</span> <span class="o">*</span> <span class="n">attrRunList</span><span class="p">,</span> <span class="c1">// optional
+</span>  <span class="n">UINT</span> <span class="n">flags</span><span class="p">,</span>
+  <span class="n">USPFONT</span> <span class="o">*</span> <span class="n">uspFont</span><span class="p">,</span> <span class="c1">// optional
+</span>  <span class="n">SCRIPT_CONTROL</span> <span class="o">*</span> <span class="n">scriptControl</span><span class="p">,</span>
+  <span class="n">SCRIPT_STATE</span> <span class="o">*</span> <span class="n">scriptState</span><span class="p">,</span>
+  <span class="n">SCRIPT_TABDEF</span> <span class="o">*</span> <span class="n">scriptTabdef</span><span class="p">,</span> <span class="c1">// optional
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspAnalyze</code> takes as input a single <code class="highlighter-rouge">USPDATA</code> object and analyses the the specified paragraph of UTF-16 text, saving the results back in <code class="highlighter-rouge">uspData</code>.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">uspData</code> points to a single <code class="highlighter-rouge">USPDATA</code> object which will hold the results of the analysis. This object can be reused from a previous call to <code class="highlighter-rouge">UspAnalyze</code>, which results in less memory allocation overheads.</li>
+  <li><code class="highlighter-rouge">hdc</code> is a handle to a device-context.</li>
+  <li><code class="highlighter-rouge">wstr</code> and <code class="highlighter-rouge">wlen</code> together identify the wide-character string to be analyzed.</li>
+  <li><code class="highlighter-rouge">attrRunList</code> points to an optional array of <code class="highlighter-rouge">ATTR</code> structures. The size of this array is not directly specified in the call to <code class="highlighter-rouge">UspAnalyze</code>. The range of text represented by the <code class="highlighter-rouge">ATTR::len</code> field of each array element is assumed to be <code class="highlighter-rouge">wlen</code> - the same length as the string being analyzed.</li>
+</ul>
+
+<p>If <code class="highlighter-rouge">attrRunList</code> is NULL, the string is intialized with a single default attribute spanning the entire range of text, using the default system colours and the font specified by <code class="highlighter-rouge">uspFont</code>.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">flags</code> is a single DWORD variable which should be set to zero.</li>
+  <li><code class="highlighter-rouge">uspFont</code> points to an optional array of <code class="highlighter-rouge">USPFONT</code> structures. Each array element must have been intialized using <code class="highlighter-rouge">UspInitFont</code> beforehand. If <code class="highlighter-rouge">uspFont</code> is NULL, the currently selected font in HDC is used instead. This same font must be re-selected into the target device-context when calling <code class="highlighter-rouge">UspTextOut</code>.</li>
+  <li><code class="highlighter-rouge">scriptControl</code> points to an optional <code class="highlighter-rouge">SCRIPT_CONTROL</code> structure. See MSDN for details.</li>
+  <li><code class="highlighter-rouge">scriptState</code> points to an optional <code class="highlighter-rouge">SCRIPT_STATE</code> structure. See MSDN for details.</li>
+  <li><code class="highlighter-rouge">scriptTabdef</code> points to an optional <code class="highlighter-rouge">SCRIPT_TABDEF</code> structure, which defines the tab-stop positions to be used when performing tab-expansion. See MSDN for details.</li>
+</ul>
+
+<p><code class="highlighter-rouge">UspAnalyze</code> must be used to analyze an entire paragraph of text. The resulting <code class="highlighter-rouge">USPDATA</code> object can be used in subsequent calls to <code class="highlighter-rouge">UspTextOut</code> and <code class="highlighter-rouge">UspSnapXtoOffset</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">ATTR</span>
+<span class="p">{</span>
+   <span class="n">COLORREF</span> <span class="n">fg</span><span class="p">;</span> <span class="c1">// foreground text colour
+</span>   <span class="n">COLORREF</span> <span class="n">bg</span><span class="p">;</span> <span class="c1">// background text colour
+</span>
+   <span class="kt">int</span> <span class="n">len</span> <span class="o">:</span> <span class="mi">16</span><span class="p">;</span> <span class="c1">// length of this run (in WCHARs)
+</span>   <span class="kt">int</span> <span class="n">font</span> <span class="o">:</span> <span class="mi">7</span><span class="p">;</span> <span class="c1">// font-index into the USPFONT table 
+</span>   <span class="kt">int</span> <span class="n">sel</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// selection flag (yes/no)
+</span>   <span class="kt">int</span> <span class="n">ctrl</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// show as an isolated control-character
+</span>   <span class="kt">int</span> <span class="n">eol</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// only valid for last character in line, prevents mouse selection
+</span>   <span class="kt">int</span> <span class="n">reserved</span> <span class="o">:</span> <span class="mi">6</span><span class="p">;</span> <span class="c1">// unused
+</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>All fields of the <code class="highlighter-rouge">ATTR</code> structure must be initialized before use. Any unrequired field should be set to zero. The <code class="highlighter-rouge">ATTR::font</code> field is used as an index into the <code class="highlighter-rouge">USPFONT</code> table. Any font in referenced by <code class="highlighter-rouge">ATTR::font</code> must have initialized using <code class="highlighter-rouge">UspInitFont</code>.</p>
+
+<h2 id="uspinitfont">UspInitFont</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">UspInitFont</span> <span class="p">(</span>
+  <span class="n">USPFONT</span> <span class="o">*</span> <span class="n">uspFont</span><span class="p">,</span>
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>            
+  <span class="n">HFONT</span> <span class="n">hFont</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspInitFont</code> must be called once for each font referenced by <code class="highlighter-rouge">UspAnalyze</code> in the <code class="highlighter-rouge">attrRunList</code> array. Several font-related resources are managed by the <code class="highlighter-rouge">USPFONT</code> object, including the Uniscribe <code class="highlighter-rouge">SCRIPT_CACHE</code> object, and the text-metrics for the font.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">uspFont</code> points to a single <code class="highlighter-rouge">USPFONT</code> structure.</li>
+  <li><code class="highlighter-rouge">hdc</code> is a handle to a device-context.</li>
+  <li><code class="highlighter-rouge">hFont</code> is a handle to the font resource.</li>
+</ul>
+
+<p>The <code class="highlighter-rouge">USPFONT</code> structure is defined below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">USPFONT</span>
+<span class="p">{</span>
+  <span class="n">HFONT</span> <span class="n">hFont</span><span class="p">;</span>        
+  <span class="n">SCRIPT_CACHE</span> <span class="n">scriptCache</span><span class="p">;</span>  
+  <span class="n">TEXTMETRIC</span> <span class="n">tm</span><span class="p">;</span>           
+  <span class="kt">int</span> <span class="n">yoffset</span><span class="p">;</span> <span class="c1">// height-adjustment when drawing font (set to zero)
+</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">yoffset</code> field is user-defined and specifies the vertical adjustment to be applied to all text using this font. <code class="highlighter-rouge">UspInitFont</code> initially sets this value to zero, however it can be modified after this call. All other structure members are managed by <code class="highlighter-rouge">UspInitFont</code> and should not be modified by the caller.</p>
+
+<h2 id="uspfreefont">UspFreeFont</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">UspFreeFont</span> <span class="p">(</span>
+  <span class="n">USPFONT</span> <span class="o">*</span> <span class="n">uspFont</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspFreeFont</code> must be called when the specified <code class="highlighter-rouge">USPFONT</code> resource is no longer required. The font-handle specified in the call to <code class="highlighter-rouge">UspInitFont</code> is released, as well as the <code class="highlighter-rouge">SCRIPT_CACHE</code> object held internally to the structure.</p>
+
+<h2 id="uspapplyattributes">UspApplyAttributes</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">UspApplyAttributes</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span> 
+  <span class="n">ATTR</span> <span class="o">*</span> <span class="n">attrRunList</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspApplyAttributes</code> can be called at any time to re-apply the style-run attributes for the specified <code class="highlighter-rouge">USPDATA</code> object. Only the colour and selection information is used - all other fields of the attribute-runs (including the font) are ignored.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">attrRunList</code> specifies a new list of style-runs for the text.</li>
+</ul>
+
+<p>The attribute-run list must reference a range of text the same length as the string that was previously analyzed by <code class="highlighter-rouge">UspAnalyze</code>.</p>
+
+<h2 id="uspapplyselection">UspApplySelection</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">UspApplySelection</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">selStart</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">selEnd</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspApplySelection</code> performs a similar task to <code class="highlighter-rouge">UspApplyAttributes</code>. However this time only the selection-flags are modified in the <code class="highlighter-rouge">USPDATA</code> object.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">selStart</code> is the starting position in the string where the selection-highlight should begin.</li>
+  <li><code class="highlighter-rouge">selEnd</code> is the ending position of the selection-highlight.</li>
+</ul>
+
+<h2 id="uspsetselcolor">UspSetSelColor</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">UspSetSelColor</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="n">COLORREF</span> <span class="n">fg</span><span class="p">,</span>
+  <span class="n">COLORREF</span> <span class="n">bg</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspSetSelColor</code> controls the selection-highlight colour to be used when calling <code class="highlighter-rouge">UspTextOut</code>. Any character marked with the <code class="highlighter-rouge">ATTR::sel</code> attribute, or any range of text identified by <code class="highlighter-rouge">UspApplySelection</code> will be drawn using this colour. Note that by default, the Windows selection-highlight colours will be used.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">fg</code> is the <code class="highlighter-rouge">COLORREF</code> value of the selection foreground (text) colour.</li>
+  <li><code class="highlighter-rouge">bg</code> is the <code class="highlighter-rouge">COLORREF</code> value of the selection background colour.</li>
+</ul>
+
+<h2 id="usptextout">UspTextOut</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">UspTextOut</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">ypos</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">lineHeight</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">lineOffsetY</span><span class="p">,</span>
+  <span class="n">RECT</span> <span class="o">*</span> <span class="n">rect</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspTextOut</code> is the counterpart to <code class="highlighter-rouge">ScriptStringOut</code>. It takes as input the <code class="highlighter-rouge">USPDATA</code> object which was previously analyzed, and draws the text to the specified location. Any fonts, colours and selection-highlights are applied to the text as it is drawn.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">hdc</code> is a handle to a device-context.</li>
+  <li><code class="highlighter-rouge">xpos</code> is the x-coordinate where text-output should begin.</li>
+  <li><code class="highlighter-rouge">ypos</code> is the y-coordinate where the text-output should begin.</li>
+  <li><code class="highlighter-rouge">lineHeight</code> specifies the total height, in pixels, that will be occupied by each line. The text background will be filled to this extent. Applications will usually set this value to be the same as (<code class="highlighter-rouge">rect.bottom - rect.top</code>)</li>
+  <li><code class="highlighter-rouge">lineOffsetY</code> specifies the vertical distance in pixels - relative to <code class="highlighter-rouge">ypos</code> - from which the text will be offset. This value is in addition to any y-adjustment specified by the <code class="highlighter-rouge">USPFONT</code> structures. Can be zero.</li>
+  <li><code class="highlighter-rouge">rect</code> is the bounding rectangle beyond which clipping will occur. This parameter must be specified and at a minimum should identify the client-area rectangle of the device-context.</li>
+</ul>
+
+<p>It is recommend to “double-buffer” the output of this function as the multi-pass rendering will result in flickering. The alignment-mode, background-mode and device-context colours of the device-context are unspecified on this function’s return.</p>
+
+<p><code class="highlighter-rouge">UspTextOut</code> will change in the future to support word-wrapping.</p>
+
+<h2 id="uspsnapxtooffset">UspSnapXToOffset</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">UspSnapXToOffset</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>	
+  <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="o">*</span> <span class="n">snappedX</span><span class="p">,</span> <span class="c1">// out, optional
+</span>  <span class="kt">int</span> <span class="o">*</span> <span class="n">charPos</span><span class="p">,</span> <span class="c1">// out
+</span>  <span class="n">BOOL</span> <span class="o">*</span> <span class="n">fRTL</span> <span class="c1">// out, optional
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspSnapXtoOffset</code> converts an x-coordinate to the nearest character-offset. In addition it returns the x-coordinate of the selected character.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">xpos</code> specifies the x coordinate.</li>
+  <li><code class="highlighter-rouge">snappedX</code> points to an integer that receives the adjusted x-coordinate.</li>
+  <li><code class="highlighter-rouge">charPos</code> points to an integer that receives the character position corresponding to <code class="highlighter-rouge">xpos</code>.</li>
+  <li><code class="highlighter-rouge">fRTL</code> points to a <code class="highlighter-rouge">BOOL</code> that receives the direction of the item-run corresponding to <code class="highlighter-rouge">xpos</code>. If <code class="highlighter-rouge">TRUE</code> it indicates a right-to-left run, if <code class="highlighter-rouge">FALSE</code> it indicates a left-to-right run.</li>
+</ul>
+
+<p>The <code class="highlighter-rouge">fRTL</code> parameter is useful for the case when the text-caret’s shape is modified to reflect the reading-direction of the run of text that corresponds to <code class="highlighter-rouge">xpos</code>.</p>
+
+<h2 id="uspxtooffset">UspXToOffset</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">UspXToOffset</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="o">*</span> <span class="n">charPos</span><span class="p">,</span> <span class="c1">// out
+</span>  <span class="n">BOOL</span> <span class="o">*</span> <span class="n">trailing</span><span class="p">,</span> <span class="c1">// out
+</span>  <span class="n">BOOL</span> <span class="o">*</span> <span class="n">fRTL</span> <span class="c1">// out, optional
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspXToOffset</code> converts an x-coordinate to a character position.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">xpos</code> specifies the x coordinate.</li>
+  <li><code class="highlighter-rouge">charPos</code> points to a variable that receives the character position corresponding to <code class="highlighter-rouge">xpos</code>.</li>
+  <li><code class="highlighter-rouge">trailing</code> points to a variable that receives an indicator whether the position is the leading or trailing edge of the character.</li>
+  <li><code class="highlighter-rouge">fRTL</code> points to a variable that receives the direction of the item-run corresponding to <code class="highlighter-rouge">xpos</code>. If <code class="highlighter-rouge">TRUE</code> it indicates a right-to-left run, if <code class="highlighter-rouge">FALSE</code> it indicates a left-to-right run.</li>
+</ul>
+
+<h2 id="uspoffsettox">UspOffsetToX</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">UspOffsetToX</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>	
+  <span class="kt">int</span> <span class="n">offset</span><span class="p">,</span>
+  <span class="n">BOOL</span> <span class="n">trailing</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="o">*</span> <span class="n">xpos</span> <span class="c1">// out
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspOffsetToX</code> returns the x-coordinate for the leading or trailing edge of a character position.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">offset</code> specifies the character position in the string.</li>
+  <li><code class="highlighter-rouge">trailing</code> indicates the edge of the character that corresponds to the x coordinate. If <code class="highlighter-rouge">TRUE</code> it indicates the trailing edge, if <code class="highlighter-rouge">FALSE</code> it indicates the leading edge.</li>
+  <li><code class="highlighter-rouge">xpos</code> points to a variable that receives the corresponding x coordinate for the character-offset.</li>
+</ul>
+
+<h2 id="uspfree">UspFree</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">UspFree</span><span class="p">(</span><span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">UspFree</code> should be called when the specified <code class="highlighter-rouge">USPDATA</code> object is no longer required.</p>
+
+<hr />
+
+<h2 id="changes-to-neatpad">Changes to Neatpad</h2>
+
+<p>It was very straight-forward to import UspLib into Neatpad’s existing codebase. However there were several changes made to key aspects of the TextView library which made this possible. These changes are briefly mentioned below.</p>
+
+<ul>
+  <li>Reference to <code class="highlighter-rouge">NeatTextOut</code> and <code class="highlighter-rouge">NeatTextWidth</code> have been removed, as have the functions themselves. This means that all previous tutorials that discussed drawing and painting (prior to UspLib) are effectively obsolete. Although the ideas they presented were good, the method in which styled text was drawn (successive calls to ExtTextOut) have been superseded by the UspLib library.</li>
+  <li>The existing mouse-handling code has been substantially reduced in complexity. The caret hit-testing ideas presented in previous tutorials have again been superseded by the functionality provided by UspLib.</li>
+  <li>Font-handling has been moved in part to UspLib.</li>
+  <li>Control-character rendering is fully handled by UspLib so all of the related code has been removed from the TextView.</li>
+</ul>
+
+<p>Whilst a large amount of code has removed from the TextView, in reality these areas of functionality have been transferred to UspLib which now handles all aspects of drawing, fonts and mouse hit-testing.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1201.gif" alt="&lt;&gt;" /></p>
+
+<p>UspLib was designed primarily for use with Neatpad. However this does not mean that it cannot be used for other text-editor projects, or in fact any application that requires the use of complex, styled text. Remember, UspLib is Freeware and can be used in any project!</p>
+
+<h2 id="problems-with-paragraphs">Problems with paragraphs</h2>
+
+<p>With Uniscribe (and therefore UspLib), the basic unit of text is the <em>paragraph</em>. For text-editors such as Neatpad, an entire line can be treated as a paragraph. This concept is important however, as it imposes a restriction on how UspLib should be used. Because whole lines must be analyzed, this effectively means that an entire line of text must be in memory at one time. The consequence of this means that we must impose a “line length” limit on text files that we load. In Neatpad, any line of text beyond a certain length will be truncanted.</p>
+
+<p>I’m quite please about this limitation actually as I wasn’t looking forward to handling arbitrarily long lines. These are just a few of the issues that long-lines present:</p>
+
+<ul>
+  <li>How to apply the Unicode bi-directional algorithm with <code class="highlighter-rouge">ScriptItemize</code> when the whole line must be in memory?</li>
+  <li>What would the maximum line-length be anyway? 2Gb. 4Gb?</li>
+  <li>How would we represent x-coordinates on a line this long? The x-coordinate would overflow the limits of a 32bit integer.</li>
+  <li>How would we count the characters on a line that contained tabs? Tab-expansion could potentially push the line-length beyond 4Gb.</li>
+</ul>
+
+<p>I don’t have any good answers to these questions so I’m happy for the moment to have a simple restriction of something like 65Kb per line. I’d like to hear any thoughts in this area though!</p>
+
+<h2 id="caching-with-getuspdata">Caching with GetUspData</h2>
+
+<p>The big issue with Uniscribe is all the memory that must be allocated in order to display just a single line of text. UspLib hides this complexity behind the <code class="highlighter-rouge">USPDATA</code> object. However the memory overhead that each <code class="highlighter-rouge">USPDATA</code> imposes is quite significant:</p>
+
+<p>16 bytes per glyph.14 bytes per wide-character.32 bytes for each item-run.</p>
+
+<p>For a typical string of UTF-16 text we are looking at an increase of many times that of the original string length. Obviously this is far too much to be creating <code class="highlighter-rouge">USPDATA</code> objects for every line of text in a file. To solve this problem a new TextView member function was written, which manages <code class="highlighter-rouge">USPDATA</code> objects from an internal cache.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">USP_CACHE</span>
+<span class="p">{</span>
+   <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">;</span> <span class="c1">// the UspLib data for this line
+</span>   <span class="n">ULONG</span> <span class="n">lineno</span><span class="p">;</span> <span class="c1">// which line this refers to
+</span>   <span class="n">ULONG</span> <span class="n">usage</span><span class="p">;</span> <span class="c1">// usage count for caching purposes
+</span><span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">TextView</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+   <span class="c1">// keep an internal cache of USPDATA objects
+</span>   <span class="n">USP_CACHE</span> <span class="n">m_uspCache</span><span class="p">[</span><span class="n">USP_CACHE_SIZE</span><span class="p">];</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Whenever a line of text is required by the TextView (for drawing or mouse hit-testing), the <code class="highlighter-rouge">GetUspData</code> function is called. The drawing and mouse-related routines no longer directly access the underlying TextDocument. All data-access is now through this single function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">USPDATA</span> <span class="o">*</span><span class="n">TextView</span><span class="o">::</span><span class="n">GetUspData</span><span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">TCHAR</span> <span class="n">buff</span><span class="p">[</span><span class="n">TEXTBUFSIZE</span><span class="p">];</span>
+    <span class="n">ATTR</span> <span class="n">attr</span><span class="p">[</span><span class="n">TEXTBUFSIZE</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+
+    <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span> <span class="o">=</span> <span class="o">&lt;&lt;</span> <span class="n">find</span> <span class="n">a</span> <span class="n">cached</span> <span class="n">object</span> <span class="o">&gt;&gt;</span>
+
+    <span class="c1">// if found a match (an already analyzed line) then return it here!!
+</span>    <span class="k">if</span><span class="p">(....)</span>
+        <span class="k">return</span> <span class="n">uspData</span><span class="p">;</span>
+
+    <span class="c1">// otherwise we need to style + analyze a new line
+</span>    <span class="n">len</span> <span class="o">=</span> <span class="n">m_pTextDoc</span><span class="o">-&gt;</span><span class="n">getline</span><span class="p">(</span><span class="n">nLineNo</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">TEXTBUFSIZE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">off_chars</span><span class="p">);</span>
+    <span class="n">len</span> <span class="o">=</span> <span class="n">ApplyTextAttributes</span><span class="p">(</span><span class="n">nLineNo</span><span class="p">,</span> <span class="n">off_chars</span><span class="p">,</span> <span class="n">colno</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">attr</span><span class="p">);</span>
+
+    <span class="c1">// setup the tabs
+</span>    <span class="kt">int</span> <span class="n">tablist</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">m_nTabWidthChars</span> <span class="p">};</span>
+    <span class="n">SCRIPT_TABDEF</span> <span class="n">tabdef</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tablist</span><span class="p">,</span> <span class="mi">0</span> <span class="p">};</span>
+    <span class="n">SCRIPT_CONTROL</span> <span class="n">scriptControl</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span> 
+
+    <span class="n">SCRIPT_STATE</span> <span class="n">scriptState</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+
+    <span class="c1">// generate glyphs etc
+</span>    <span class="n">UspAnalyze</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="n">hdcTemp</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">m_uspFontList</span><span class="p">,</span> 
+       <span class="o">&amp;</span><span class="n">scriptControl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">scriptState</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tabdef</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">uspData</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The sample-code above gives the general idea for how <code class="highlighter-rouge">GetUspData</code> works. The caching details are rather boring so I’ve omitted them here (just look in the real sources). The idea behind this method though, is that any time we want a <code class="highlighter-rouge">USPDATA</code> object, <code class="highlighter-rouge">GetUspData</code> will return one ready-analyzed. Most of the time this object will be from the cache, and only occasionally will a line need to be fetched from the TextDocument and analyzed with <code class="highlighter-rouge">UspAnalyze</code>.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>The move to Uniscribe defines a turning-point in Neatpad’s development. It has taken alot of effort to get here but the future now looks alot clearer. In many ways I wish I had started this project with Uniscribe right from the beginning - it would have saved alot of work. However Unicode is quite complicated and I think the beginning tutorials would have suffered from this extra complexity. Besides, I think it is good to see the evolution that has occurred since the start of this project, and also the mistakes that I have made along the way.</p>
+
+<p>Overall I’ve found working with Uniscribe to be a very rewarding experience. The API itself is rather complicated but it is very well designed. The main difficulty is coming to terms with the concept of glyph-based rendering. However I do feel that the MSDN documentation for Uniscribe to be rather inadequate in places. For someone who had no prior experience in displaying Unicode text I struggled for quite some time before finally completing this phase of the project.</p>
+
+<p>As a comparison, take a look at the Apple documentation for ATSUI (an equivalent API to Uniscribe but higher-level). The documentation is much clearer in my opinion - it doesn’t just document the ATSUI API but gives guidelines on how it should be used on the Apple system.</p>
+
+<h2 id="coming-up-in-part-16">Coming up in Part 16</h2>
+
+<p>There are still some minor “todo’s” with UspLib which I haven’t quite managed to finish. The issue of CRLF sequences at the end of a line of text needs addressing for bi-directional texts. Sometimes the CRLF will not be on the far-right of a line - for RTL texts it can be on the left-side, or even in the middle of the line! The other issue is properly displaying the file with full right-to-left alignment, with the scrollbar positioned on the left.</p>
+
+<p>The next tutorial will look at adding keyboard support to the TextView. We will focus only on caret-movement with the keyboard, as actual text-entry must wait until the TextDocument can actually edit text. The caret-movement code will be using Uniscribe’s <code class="highlighter-rouge">ScriptBreak</code> routine, which will probably result in a couple more UspLib functions being added.</p>
+
+<p>Beyond this I will probably tackle syntax highlighting, and once the GUI is completely finished I will finally move onto file-editing. The end is getting alot closer now I feel!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad15.zip">neatpad15.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2006-03-06T00:00:00+00:00">March 06, 2006</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="drawing-styled-text-uniscribe.html" class="pagination--pager" title="Drawing styled text with Uniscribe
+">Previous</a>
+    
+    
+      <a href="keyboard-navigation.html" class="pagination--pager" title="Keyboard Navigation
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/integrating-usplib by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

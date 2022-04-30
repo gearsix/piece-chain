@@ -1,0 +1,429 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-messagebox by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Custom MessageBox - Catch22</title>
+<meta name="description" content="This tutorial will show a simple technique for customizing a standard Windows message-box.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Custom MessageBox">
+<meta property="og:url" content="custom-messagebox.html">
+
+
+  <meta property="og:description" content="This tutorial will show a simple technique for customizing a standard Windows message-box.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2002-06-30T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="custom-messagebox.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Custom MessageBox</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/msgbox.zip">msgbox.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Custom MessageBox">
+    <meta itemprop="description" content="This tutorial will show a simple technique for customizing a standard Windows message-box.">
+    <meta itemprop="datePublished" content="June 30, 2002">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Custom MessageBox
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Custom MessageBox</h1-->
+<!--h3>How to customize the standard MessageBox dialog</h3-->
+
+<p>This tutorial will show a simple technique for customizing a standard Windows message-box.</p>
+
+<p>A standard message-box is not usually customizable, because you are never normally able to find it’s window handle. This is because the MessageBox API call only returns control to a program when the message-box has been destroyed. Also, your program will never see any of the message-box window messages, because the MessageBox API call contains its own internal message-loop (much like the DialogBox API call).</p>
+
+<p><img src="http://www.catch22.net/assets/img/msgbox01.gif" alt="{short description of image}" class="align-center" /></p>
+
+<p>The image above shows how this technique has been used to modify the text of the standard OK button.</p>
+
+<h2 id="window-hooks">Window Hooks</h2>
+
+<p>The best way to intercept messages for a “message-box” is to install a hook. This is achieved by using the <code class="highlighter-rouge">SetWindowsHookEx</code> API call, available on all 32bit versions of Windows (9x, ME, NT, 2000, XP etc).</p>
+
+<p>There are many different types of hook in Windows, each one designed for a different purpose. I don’t want to review hooks in this tutorial, because there is plenty of information on MSDN. Just do a search for <code class="highlighter-rouge">SetWindowsHookEx</code> and you will find plenty of resources.</p>
+
+<p>The only thing I will say about hooks is this: Windows hooks will inevitably slow your program down. It is therefore desirable to choose a hook that is called for as few events as possible, but which still gives us sufficient flexiblity to perform our customization. At the one end of the spectrum are the <code class="highlighter-rouge">WH_CALLWNDPROC</code> and <code class="highlighter-rouge">WH_GETMESSAGE</code> hooks. Hooks of this type will be called whenever a message is sent to a window. This will obviously add a significant overhead to any application, so unless you specifically need to trap all messages, hooks of this type are best avoided.</p>
+
+<p>At the other end of the spectrum is the <code class="highlighter-rouge">WM_CBT</code> hook (Computer Based Training hook). This hook is called for very few window messages - specifically, window activation ( <code class="highlighter-rouge">WM_ACTIVATE</code> ), window creation ( <code class="highlighter-rouge">WM_CREATE</code> / <code class="highlighter-rouge">WM_DESTROY</code> ), window sizing ( <code class="highlighter-rouge">WM_SIZE</code> / <code class="highlighter-rouge">WM_MOVE</code> ) plus a few others. This type of hook is ideal for our purposes, because it will add little overhead (it will only be called occasionally), and it also provides a method for customizing a window: namely, during window creation.</p>
+
+<p>Our strategy will be this:</p>
+
+<ol>
+  <li>Install a CBT hook.</li>
+  <li>Call <code class="highlighter-rouge">MessageBox</code> as normal.</li>
+  <li>Remove the hook.</li>
+</ol>
+
+<p>It’s that simple!</p>
+
+<h2 id="install-a-hook">Install a hook</h2>
+
+<p>Installing a Windows hook is really easy. The following code shows how.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HHOOK</span> <span class="n">hMsgBoxHook</span> <span class="o">=</span> <span class="n">SetWindowsHookEx</span><span class="p">(</span>
+        <span class="n">WH_CBT</span><span class="p">,</span> <span class="c1">// Type of hook 
+</span>        <span class="n">CBTProc</span><span class="p">,</span> <span class="c1">// Hook procedure (see below)
+</span>        <span class="nb">NULL</span><span class="p">,</span> <span class="c1">// Module handle. Must be NULL (see docs)
+</span>        <span class="n">GetCurrentThreadId</span><span class="p">()</span> <span class="c1">// Only install for THIS thread!!!
+</span>        <span class="p">);</span>
+</code></pre></div></div>
+
+<p>It is important to highlight the call to <code class="highlighter-rouge">GetCurrentThreadId</code>. It is possible to install a system-wide hook by specifying the module-handle of a DLL in which the hook procedure resides. Whenever an hooked event occurs in another process, Windows automatically loads this DLL into that process, which then enables the hook procedure to be executed in that process’s address space. This is obviously quite an overhead, and is a feature that we do not require. To avoid this happening, we can specify a NULL module handle, and just install the hook for the current thread.</p>
+
+<h2 id="removing-a-hook">Removing a hook</h2>
+
+<p>Removing a hook is even simpler than installing it. Just call <code class="highlighter-rouge">UnhookWindowsHookEx</code> and your done!</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hMsgBoxHook</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="the-hook-procedure">The hook procedure</h2>
+
+<p>The one thing I havn’t shown yet is the actual hook procedure, that is called by Windows each time a CBT event occurs (i.e. whenever a <code class="highlighter-rouge">WM_ACTIVATE</code> / <code class="highlighter-rouge">WM_CREATE</code> message is sent to your application).</p>
+
+<p>A CBT hook procedure needs to look something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="nf">CBTProc</span><span class="p">(</span><span class="kt">int</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">nCode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">hMsgBoxHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">nCode</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">HCBT_ACTIVATE</span><span class="p">:</span>
+        <span class="c1">// Get handle to the message box!
+</span>        <span class="n">hwnd</span> <span class="o">=</span> <span class="p">(</span><span class="n">HWND</span><span class="p">)</span><span class="n">wParam</span><span class="p">;</span>
+
+        <span class="c1">// Do customization!
+</span>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+   
+    <span class="c1">// Call the next hook, if there is one
+</span>    <span class="k">return</span> <span class="n">CallNextHookEx</span><span class="p">(</span><span class="n">hMsgBoxHook</span><span class="p">,</span> <span class="n">nCode</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="bringing-it-all-together">Bringing it all together</h2>
+
+<p>To tidy this all up, we can write a simple wrapper function around <code class="highlighter-rouge">MessageBox</code>, which hides the hook details. Whenever you want to display a custom <code class="highlighter-rouge">MessageBox</code>, just use this function instead.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">HHOOK</span> <span class="n">hMsgBoxHook</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="kt">int</span> <span class="n">MsgBoxEx</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szCaption</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uType</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">retval</span><span class="p">;</span>
+
+    <span class="c1">// Install a window hook, so we can intercept the message-box
+</span>    <span class="c1">// creation, and customize it
+</span>    <span class="n">hMsgBoxHook</span> <span class="o">=</span> <span class="n">SetWindowsHookEx</span><span class="p">(</span>
+        <span class="n">WH_CBT</span><span class="p">,</span> 
+        <span class="n">CBTProc</span><span class="p">,</span> 
+        <span class="nb">NULL</span><span class="p">,</span> 
+        <span class="n">GetCurrentThreadId</span><span class="p">()</span> <span class="c1">// Only install for THIS thread!!!
+</span>        <span class="p">);</span>
+
+    <span class="c1">// Display a standard message box
+</span>    <span class="n">retval</span> <span class="o">=</span> <span class="n">MessageBox</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">szCaption</span><span class="p">,</span> <span class="n">uType</span><span class="p">);</span>
+
+    <span class="c1">// remove the window hook
+</span>    <span class="n">UnhookWindowsHookEx</span><span class="p">(</span><span class="n">hMsgBoxHook</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Hopefully this tutorial has given you information for you to customize your own message-boxes. How you decide to do the customization is up to you - the technique described here takes you part of the way, but it is up to you to take it further.</p>
+
+<p>Here are a few ideas for how you might customize a <code class="highlighter-rouge">MessageBox</code>:</p>
+
+<ul>
+  <li>Use <code class="highlighter-rouge">CreateWindow</code>(…) to insert a check-box at the bottom of the MessageBox window.</li>
+  <li>Modify the button-text of one of the buttons.</li>
+  <li>Change the icon image.</li>
+</ul>
+
+<p>Have fun!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/msgbox.zip">msgbox.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2002-06-30T00:00:00+00:00">June 30, 2002</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="custom-scrollbars.html" class="pagination--pager" title="Custom Scrollbars
+">Previous</a>
+    
+    
+      <a href="docking-toolbars-part-2.html" class="pagination--pager" title="Docking Toolbars - Part 2
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-messagebox by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

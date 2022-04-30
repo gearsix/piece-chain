@@ -1,0 +1,832 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:04 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Tutorials - Catch22</title>
+<meta name="description" content="Tips and Tricks  Win32 Tips &amp; TricksMay 2001A page presenting many useful tips for Windows programming  Visual C++ Tips &amp; TricksMar 2005Lots of useful tips for using Visual C++  Win32 Tips &amp; Tricks - Part 2May 2006More useful tips for Win32 programming  C &amp; C++ TricksJan 2012Collection of unusual tips for C &amp; C++  Source ArchiveJan 2012Win32 sourcecode snippet archiveWin32 Tutorials  Insert buttons into an edit controlMay 2001How to insert a button into an edit control  Masked Edit InputMay 2001How to filter specific keys-strokes from a standard edit control  Introduction to PrintingMay 2001How to print from a Windows application  Fixed-width Font EnumerationMay 2001How to enumerate all fixed-width fonts in a system along with their sizes  Customize date-time controlsAug 2001Improve the apearance of the date-time control  Drive-list controlAug 2001A drop-down list displaying drive names and icons  Directory list controlAug 2001A directory-picker list box  URL ControlOct 2001A simple HTTP URL control  Custom TitlebarOct 2001How to insert buttons into a window&#39;s caption area  Flicker-free DrawingNov 2001Techniques to eliminate flicker from your applications  Custom ControlsNov 2001How to create a custom win32 control  Custom ScrollbarsJan 2002Introducing the Cool Scrollbar library, for customizing the appearance of scrollbars  Custom MessageBoxJun 2002How to customize the standard MessageBox dialog  System Image ListJul 2002How to access the System Image List (AKA the Shell Icon Cache)  Custom ComboboxJan 2004How to customize the appearance of a combobox  64bit ScrollbarsSep 2005How to create 64bit scroll ranges using standard Win32 scrollbarsCards Tutorials  Using cards.dll APIMay 2001How to access the cards.dll API  Cards.dll direct bitmap accessOct 2001Accessing the cards.dll bitmaps as resources  CardLibDec 2001Introducing CardLib, a card-game programming library  CardLib ReferenceDec 2001CardLib Programmer&#39;s Quick-ReferenceDocking Tutorials  Splitter WindowsMay 2001An example of a splitter-bar used to separate two windows  Docking Toolbars - Part 1Nov 2001How to implement floating toolbars  Docking Toolbars - Part 2Jun 2002How to implement docking toolbarsNeatpad Tutorials  Design &amp; Implementation of a Win32 Text EditorJan 2005Neatpad Text Editor  Neatpad OverviewJan 2005Introduction to the Win32 Text Editor series  Loading a text fileFeb 2005Loading and displaying a text file  Scrollbars &amp; ScrollingFeb 2005Adding scrollbars and scrolling to the TextView  Enhanced Drawing &amp; PaintingApr 2005Improving the text display of TextView  Mouse Selection &amp; HighlightingMay 2005Mouse input, window focus and selection highlighting  Scrolling with the MouseMay 2005Mouse selection and scrolling  Margins and Long LinesAug 2005Selection margin, line numbers and long-line highlighting  Introduction to UnicodeDec 2005An introduction to Unicode and character sets  Unicode Text ProcessingDec 2005Unicode file support in Neatpad  Transparent TextFeb 2006Overview of the issues involved in rendering text selections  Introduction to UniscribeFeb 2006Introducing Uniscribe  Uniscribe MysteriesMar 2006Looking at ScriptItemize and ScriptLayout  More Uniscribe MysteriesMar 2006Looking at ScriptShape and ScriptPlace  Integrating UspLibMar 2006Migrating Neatpad to the UspLib engine  Drawing styled text with UniscribeMar 2006Drawing styled text with ScriptTextOut  Keyboard NavigationMay 2006Keyboard navigation with Uniscribe  Piece ChainsSep 2006Editing text with Piece Chains  Unicode Text EditingNov 2006Editing complex scriptSystem Tutorials  Memory Techniques - Part 1Aug 2001Memory management techniques for large file editors  Memory Techniques - Part 2Aug 2001Memory management techniques for large file editors  Self-deleting ExecutablesOct 2001Techniques which allow an executable file to delete itself whilst running  Reducing Executable SizeOct 2001A tutorial covering a variety of techniques for creating tiny executables  Undocumented CreateProcessJan 2004Undocumented and hard-to-find information regarding the CreateProcess API callOLE Tutorials  OLE Drag and DropFeb 2004  Drag and Drop IntroductionFeb 2004Introducing the OLE and COM technologies  OLE Data TransfersJun 2004All about OLE data types, storage mediums and data format  Implementing IDataObjectJun 2004Standalone implementation of the IDataObject interface  Enumerating FORMATETCJun 2004Standalone implementation of the IEnumFormatEtc interface  Drop TargetJun 2004Implementing the IDropTarget interface  Drop SourceJun 2004Implementing the IDropSource interfaceKernel Tutorials  Introduction to Device DriversMar 2005Kernel 101 - writing a simple Windows NT device driver  Remote Debugging using VMWareMar 2005How to debug a device-driver using WinDbg and VMWare">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Tutorials">
+<meta property="og:url" content="index.html">
+
+
+  <meta property="og:description" content="Tips and Tricks  Win32 Tips &amp; TricksMay 2001A page presenting many useful tips for Windows programming  Visual C++ Tips &amp; TricksMar 2005Lots of useful tips for using Visual C++  Win32 Tips &amp; Tricks - Part 2May 2006More useful tips for Win32 programming  C &amp; C++ TricksJan 2012Collection of unusual tips for C &amp; C++  Source ArchiveJan 2012Win32 sourcecode snippet archiveWin32 Tutorials  Insert buttons into an edit controlMay 2001How to insert a button into an edit control  Masked Edit InputMay 2001How to filter specific keys-strokes from a standard edit control  Introduction to PrintingMay 2001How to print from a Windows application  Fixed-width Font EnumerationMay 2001How to enumerate all fixed-width fonts in a system along with their sizes  Customize date-time controlsAug 2001Improve the apearance of the date-time control  Drive-list controlAug 2001A drop-down list displaying drive names and icons  Directory list controlAug 2001A directory-picker list box  URL ControlOct 2001A simple HTTP URL control  Custom TitlebarOct 2001How to insert buttons into a window&#39;s caption area  Flicker-free DrawingNov 2001Techniques to eliminate flicker from your applications  Custom ControlsNov 2001How to create a custom win32 control  Custom ScrollbarsJan 2002Introducing the Cool Scrollbar library, for customizing the appearance of scrollbars  Custom MessageBoxJun 2002How to customize the standard MessageBox dialog  System Image ListJul 2002How to access the System Image List (AKA the Shell Icon Cache)  Custom ComboboxJan 2004How to customize the appearance of a combobox  64bit ScrollbarsSep 2005How to create 64bit scroll ranges using standard Win32 scrollbarsCards Tutorials  Using cards.dll APIMay 2001How to access the cards.dll API  Cards.dll direct bitmap accessOct 2001Accessing the cards.dll bitmaps as resources  CardLibDec 2001Introducing CardLib, a card-game programming library  CardLib ReferenceDec 2001CardLib Programmer&#39;s Quick-ReferenceDocking Tutorials  Splitter WindowsMay 2001An example of a splitter-bar used to separate two windows  Docking Toolbars - Part 1Nov 2001How to implement floating toolbars  Docking Toolbars - Part 2Jun 2002How to implement docking toolbarsNeatpad Tutorials  Design &amp; Implementation of a Win32 Text EditorJan 2005Neatpad Text Editor  Neatpad OverviewJan 2005Introduction to the Win32 Text Editor series  Loading a text fileFeb 2005Loading and displaying a text file  Scrollbars &amp; ScrollingFeb 2005Adding scrollbars and scrolling to the TextView  Enhanced Drawing &amp; PaintingApr 2005Improving the text display of TextView  Mouse Selection &amp; HighlightingMay 2005Mouse input, window focus and selection highlighting  Scrolling with the MouseMay 2005Mouse selection and scrolling  Margins and Long LinesAug 2005Selection margin, line numbers and long-line highlighting  Introduction to UnicodeDec 2005An introduction to Unicode and character sets  Unicode Text ProcessingDec 2005Unicode file support in Neatpad  Transparent TextFeb 2006Overview of the issues involved in rendering text selections  Introduction to UniscribeFeb 2006Introducing Uniscribe  Uniscribe MysteriesMar 2006Looking at ScriptItemize and ScriptLayout  More Uniscribe MysteriesMar 2006Looking at ScriptShape and ScriptPlace  Integrating UspLibMar 2006Migrating Neatpad to the UspLib engine  Drawing styled text with UniscribeMar 2006Drawing styled text with ScriptTextOut  Keyboard NavigationMay 2006Keyboard navigation with Uniscribe  Piece ChainsSep 2006Editing text with Piece Chains  Unicode Text EditingNov 2006Editing complex scriptSystem Tutorials  Memory Techniques - Part 1Aug 2001Memory management techniques for large file editors  Memory Techniques - Part 2Aug 2001Memory management techniques for large file editors  Self-deleting ExecutablesOct 2001Techniques which allow an executable file to delete itself whilst running  Reducing Executable SizeOct 2001A tutorial covering a variety of techniques for creating tiny executables  Undocumented CreateProcessJan 2004Undocumented and hard-to-find information regarding the CreateProcess API callOLE Tutorials  OLE Drag and DropFeb 2004  Drag and Drop IntroductionFeb 2004Introducing the OLE and COM technologies  OLE Data TransfersJun 2004All about OLE data types, storage mediums and data format  Implementing IDataObjectJun 2004Standalone implementation of the IDataObject interface  Enumerating FORMATETCJun 2004Standalone implementation of the IEnumFormatEtc interface  Drop TargetJun 2004Implementing the IDropTarget interface  Drop SourceJun 2004Implementing the IDropSource interfaceKernel Tutorials  Introduction to Device DriversMar 2005Kernel 101 - writing a simple Windows NT device driver  Remote Debugging using VMWareMar 2005How to debug a device-driver using WinDbg and VMWare">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="index.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--home">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Tutorials</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="https://www.catch22.net/assets/images/bio-photo.jpg" alt="James Brown" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">James Brown</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Security Engineer
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+        <li>
+          <a href="http://www.catch22.net/" itemprop="url">
+            <i class="fas fa-fw fa-link" aria-hidden="true"></i> Website
+          </a>
+        </li>
+      
+
+      
+        <li>
+          <a href="mailto:james@catch22.net">
+            <meta itemprop="email" content="james@catch22.net" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Tutorials</h1>
+    
+    
+<h2>Tips and Tricks</h2>
+
+<p>
+<a href="tips-and-tricks.html">
+  Win32 Tips &amp; Tricks
+</a><br />
+<span style="font-size:0.6em">May 2001</span><br />
+A page presenting many useful tips for Windows programming
+</p>
+
+<p>
+<a href="win32/visual-c-tips-and-tricks.html">
+  Visual C++ Tips &amp; Tricks
+</a><br />
+<span style="font-size:0.6em">Mar 2005</span><br />
+Lots of useful tips for using Visual C++
+</p>
+
+<p>
+<a href="win32/tips-and-tricks-part-2.html">
+  Win32 Tips &amp; Tricks - Part 2
+</a><br />
+<span style="font-size:0.6em">May 2006</span><br />
+More useful tips for Win32 programming
+</p>
+
+<p>
+<a href="win32/2012-01-22-c-and-c-tricks/index.html">
+  C &amp; C++ Tricks
+</a><br />
+<span style="font-size:0.6em">Jan 2012</span><br />
+Collection of unusual tips for C &amp; C++
+</p>
+
+<p>
+<a href="source/archive.html">
+  Source Archive
+</a><br />
+<span style="font-size:0.6em">Jan 2012</span><br />
+Win32 sourcecode snippet archive
+</p>
+
+<h2>Win32 Tutorials</h2>
+
+<p>
+<a href="win32/2001-05-20-insert-buttons-into-an-edit-control/index.html">
+  Insert buttons into an edit control
+</a><br />
+<span style="font-size:0.6em">May 2001</span><br />
+How to insert a button into an edit control
+</p>
+
+<p>
+<a href="win32/masked-edit-input.html">
+  Masked Edit Input
+</a><br />
+<span style="font-size:0.6em">May 2001</span><br />
+How to filter specific keys-strokes from a standard edit control
+</p>
+
+<p>
+<a href="win32/introduction-to-printing.html">
+  Introduction to Printing
+</a><br />
+<span style="font-size:0.6em">May 2001</span><br />
+How to print from a Windows application
+</p>
+
+<p>
+<a href="win32/fixed-width-font-enumeration.html">
+  Fixed-width Font Enumeration
+</a><br />
+<span style="font-size:0.6em">May 2001</span><br />
+How to enumerate all fixed-width fonts in a system along with their sizes
+</p>
+
+<p>
+<a href="win32/customize-date-time-controls.html">
+  Customize date-time controls
+</a><br />
+<span style="font-size:0.6em">Aug 2001</span><br />
+Improve the apearance of the date-time control
+</p>
+
+<p>
+<a href="win32/drive-list-control.html">
+  Drive-list control
+</a><br />
+<span style="font-size:0.6em">Aug 2001</span><br />
+A drop-down list displaying drive names and icons
+</p>
+
+<p>
+<a href="win32/directory-list-control.html">
+  Directory list control
+</a><br />
+<span style="font-size:0.6em">Aug 2001</span><br />
+A directory-picker list box
+</p>
+
+<p>
+<a href="win32/url-control.html">
+  URL Control
+</a><br />
+<span style="font-size:0.6em">Oct 2001</span><br />
+A simple HTTP URL control
+</p>
+
+<p>
+<a href="win32/custom-titlebar.html">
+  Custom Titlebar
+</a><br />
+<span style="font-size:0.6em">Oct 2001</span><br />
+How to insert buttons into a window's caption area
+</p>
+
+<p>
+<a href="win32/flicker-free-drawing.html">
+  Flicker-free Drawing
+</a><br />
+<span style="font-size:0.6em">Nov 2001</span><br />
+Techniques to eliminate flicker from your applications
+</p>
+
+<p>
+<a href="win32/custom-controls.html">
+  Custom Controls
+</a><br />
+<span style="font-size:0.6em">Nov 2001</span><br />
+How to create a custom win32 control
+</p>
+
+<p>
+<a href="win32/custom-scrollbars.html">
+  Custom Scrollbars
+</a><br />
+<span style="font-size:0.6em">Jan 2002</span><br />
+Introducing the Cool Scrollbar library, for customizing the appearance of scrollbars
+</p>
+
+<p>
+<a href="win32/custom-messagebox.html">
+  Custom MessageBox
+</a><br />
+<span style="font-size:0.6em">Jun 2002</span><br />
+How to customize the standard MessageBox dialog
+</p>
+
+<p>
+<a href="win32/system-image-list.html">
+  System Image List
+</a><br />
+<span style="font-size:0.6em">Jul 2002</span><br />
+How to access the System Image List (AKA the Shell Icon Cache)
+</p>
+
+<p>
+<a href="win32/custom-combobox.html">
+  Custom Combobox
+</a><br />
+<span style="font-size:0.6em">Jan 2004</span><br />
+How to customize the appearance of a combobox
+</p>
+
+<p>
+<a href="win32/64bit-scrollbars.html">
+  64bit Scrollbars
+</a><br />
+<span style="font-size:0.6em">Sep 2005</span><br />
+How to create 64bit scroll ranges using standard Win32 scrollbars
+</p>
+
+<h2>Cards Tutorials</h2>
+
+<p>
+<a href="win32/using-cards-dll-api.html">
+  Using cards.dll API
+</a><br />
+<span style="font-size:0.6em">May 2001</span><br />
+How to access the cards.dll API
+</p>
+
+<p>
+<a href="win32/cards-dll-direct-bitmap-access.html">
+  Cards.dll direct bitmap access
+</a><br />
+<span style="font-size:0.6em">Oct 2001</span><br />
+Accessing the cards.dll bitmaps as resources
+</p>
+
+<p>
+<a href="win32/cardlib.html">
+  CardLib
+</a><br />
+<span style="font-size:0.6em">Dec 2001</span><br />
+Introducing CardLib, a card-game programming library
+</p>
+
+<p>
+<a href="win32/cardlib-reference.html">
+  CardLib Reference
+</a><br />
+<span style="font-size:0.6em">Dec 2001</span><br />
+CardLib Programmer's Quick-Reference
+</p>
+
+<h2>Docking Tutorials</h2>
+
+<p>
+<a href="win32/splitter-windows.html">
+  Splitter Windows
+</a><br />
+<span style="font-size:0.6em">May 2001</span><br />
+An example of a splitter-bar used to separate two windows
+</p>
+
+<p>
+<a href="win32/docking-toolbars-part-1.html">
+  Docking Toolbars - Part 1
+</a><br />
+<span style="font-size:0.6em">Nov 2001</span><br />
+How to implement floating toolbars
+</p>
+
+<p>
+<a href="win32/docking-toolbars-part-2.html">
+  Docking Toolbars - Part 2
+</a><br />
+<span style="font-size:0.6em">Jun 2002</span><br />
+How to implement docking toolbars
+</p>
+
+<h2>Neatpad Tutorials</h2>
+
+<p>
+<a href="neatpad.html">
+  Design &amp; Implementation of a Win32 Text Editor
+</a><br />
+<span style="font-size:0.6em">Jan 2005</span><br />
+Neatpad Text Editor
+</p>
+
+<p>
+<a href="neatpad/neatpad-overview.html">
+  Neatpad Overview
+</a><br />
+<span style="font-size:0.6em">Jan 2005</span><br />
+Introduction to the Win32 Text Editor series
+</p>
+
+<p>
+<a href="neatpad/loading-text-file.html">
+  Loading a text file
+</a><br />
+<span style="font-size:0.6em">Feb 2005</span><br />
+Loading and displaying a text file
+</p>
+
+<p>
+<a href="neatpad/scrollbars-scrolling.html">
+  Scrollbars &amp; Scrolling
+</a><br />
+<span style="font-size:0.6em">Feb 2005</span><br />
+Adding scrollbars and scrolling to the TextView
+</p>
+
+<p>
+<a href="neatpad/enhanced-drawing-painting.html">
+  Enhanced Drawing &amp; Painting
+</a><br />
+<span style="font-size:0.6em">Apr 2005</span><br />
+Improving the text display of TextView
+</p>
+
+<p>
+<a href="neatpad/mouse-selection-highlighting.html">
+  Mouse Selection &amp; Highlighting
+</a><br />
+<span style="font-size:0.6em">May 2005</span><br />
+Mouse input, window focus and selection highlighting
+</p>
+
+<p>
+<a href="neatpad/scrolling-mouse.html">
+  Scrolling with the Mouse
+</a><br />
+<span style="font-size:0.6em">May 2005</span><br />
+Mouse selection and scrolling
+</p>
+
+<p>
+<a href="neatpad/margins-and-long-lines.html">
+  Margins and Long Lines
+</a><br />
+<span style="font-size:0.6em">Aug 2005</span><br />
+Selection margin, line numbers and long-line highlighting
+</p>
+
+<p>
+<a href="neatpad/introduction-unicode.html">
+  Introduction to Unicode
+</a><br />
+<span style="font-size:0.6em">Dec 2005</span><br />
+An introduction to Unicode and character sets
+</p>
+
+<p>
+<a href="neatpad/unicode-text-processing.html">
+  Unicode Text Processing
+</a><br />
+<span style="font-size:0.6em">Dec 2005</span><br />
+Unicode file support in Neatpad
+</p>
+
+<p>
+<a href="neatpad/transparent-text.html">
+  Transparent Text
+</a><br />
+<span style="font-size:0.6em">Feb 2006</span><br />
+Overview of the issues involved in rendering text selections
+</p>
+
+<p>
+<a href="neatpad/introduction-uniscribe.html">
+  Introduction to Uniscribe
+</a><br />
+<span style="font-size:0.6em">Feb 2006</span><br />
+Introducing Uniscribe
+</p>
+
+<p>
+<a href="neatpad/uniscribe-mysteries.html">
+  Uniscribe Mysteries
+</a><br />
+<span style="font-size:0.6em">Mar 2006</span><br />
+Looking at ScriptItemize and ScriptLayout
+</p>
+
+<p>
+<a href="neatpad/more-uniscribe-mysteries.html">
+  More Uniscribe Mysteries
+</a><br />
+<span style="font-size:0.6em">Mar 2006</span><br />
+Looking at ScriptShape and ScriptPlace
+</p>
+
+<p>
+<a href="neatpad/integrating-usplib.html">
+  Integrating UspLib
+</a><br />
+<span style="font-size:0.6em">Mar 2006</span><br />
+Migrating Neatpad to the UspLib engine
+</p>
+
+<p>
+<a href="neatpad/drawing-styled-text-uniscribe.html">
+  Drawing styled text with Uniscribe
+</a><br />
+<span style="font-size:0.6em">Mar 2006</span><br />
+Drawing styled text with ScriptTextOut
+</p>
+
+<p>
+<a href="neatpad/keyboard-navigation.html">
+  Keyboard Navigation
+</a><br />
+<span style="font-size:0.6em">May 2006</span><br />
+Keyboard navigation with Uniscribe
+</p>
+
+<p>
+<a href="neatpad/piece-chains.html">
+  Piece Chains
+</a><br />
+<span style="font-size:0.6em">Sep 2006</span><br />
+Editing text with Piece Chains
+</p>
+
+<p>
+<a href="neatpad/unicode-text-editing.html">
+  Unicode Text Editing
+</a><br />
+<span style="font-size:0.6em">Nov 2006</span><br />
+Editing complex script
+</p>
+
+<h2>System Tutorials</h2>
+
+<p>
+<a href="win32/memory-management-techniques-part-1.html">
+  Memory Techniques - Part 1
+</a><br />
+<span style="font-size:0.6em">Aug 2001</span><br />
+Memory management techniques for large file editors
+</p>
+
+<p>
+<a href="win32/memory-techniques-part-2.html">
+  Memory Techniques - Part 2
+</a><br />
+<span style="font-size:0.6em">Aug 2001</span><br />
+Memory management techniques for large file editors
+</p>
+
+<p>
+<a href="win32/self-deleting-executables.html">
+  Self-deleting Executables
+</a><br />
+<span style="font-size:0.6em">Oct 2001</span><br />
+Techniques which allow an executable file to delete itself whilst running
+</p>
+
+<p>
+<a href="win32/reducing-executable-size.html">
+  Reducing Executable Size
+</a><br />
+<span style="font-size:0.6em">Oct 2001</span><br />
+A tutorial covering a variety of techniques for creating tiny executables
+</p>
+
+<p>
+<a href="undocumented-createprocess.html">
+  Undocumented CreateProcess
+</a><br />
+<span style="font-size:0.6em">Jan 2004</span><br />
+Undocumented and hard-to-find information regarding the CreateProcess API call
+</p>
+
+<h2>OLE Tutorials</h2>
+
+<p>
+<a href="win32/ole-drag-and-drop.html">
+  OLE Drag and Drop
+</a><br />
+<span style="font-size:0.6em">Feb 2004</span><br />
+
+</p>
+
+<p>
+<a href="win32/drag-and-drop-introduction.html">
+  Drag and Drop Introduction
+</a><br />
+<span style="font-size:0.6em">Feb 2004</span><br />
+Introducing the OLE and COM technologies
+</p>
+
+<p>
+<a href="win32/2004-06-15-ole-data-transfers/index.html">
+  OLE Data Transfers
+</a><br />
+<span style="font-size:0.6em">Jun 2004</span><br />
+All about OLE data types, storage mediums and data format
+</p>
+
+<p>
+<a href="win32/implementing-idataobject.html">
+  Implementing IDataObject
+</a><br />
+<span style="font-size:0.6em">Jun 2004</span><br />
+Standalone implementation of the IDataObject interface
+</p>
+
+<p>
+<a href="win32/enumerating-formatetc.html">
+  Enumerating FORMATETC
+</a><br />
+<span style="font-size:0.6em">Jun 2004</span><br />
+Standalone implementation of the IEnumFormatEtc interface
+</p>
+
+<p>
+<a href="win32/drop-target.html">
+  Drop Target
+</a><br />
+<span style="font-size:0.6em">Jun 2004</span><br />
+Implementing the IDropTarget interface
+</p>
+
+<p>
+<a href="win32/drop-source.html">
+  Drop Source
+</a><br />
+<span style="font-size:0.6em">Jun 2004</span><br />
+Implementing the IDropSource interface
+</p>
+
+<h2>Kernel Tutorials</h2>
+
+<p>
+<a href="win32/introduction-to-device-drivers.html">
+  Introduction to Device Drivers
+</a><br />
+<span style="font-size:0.6em">Mar 2005</span><br />
+Kernel 101 - writing a simple Windows NT device driver
+</p>
+
+<p>
+<a href="win32/2005-03-28-remote-debugging-using-vmware/index.html">
+  Remote Debugging using VMWare
+</a><br />
+<span style="font-size:0.6em">Mar 2005</span><br />
+How to debug a device-driver using WinDbg and VMWare
+</p>
+
+
+
+<h3 class="archive__subtitle">Recent Posts</h3>
+
+
+
+
+
+
+  </div>
+</div>
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

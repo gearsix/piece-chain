@@ -1,0 +1,733 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/undocumented-createprocess by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Undocumented CreateProcess - Catch22</title>
+<meta name="description" content="This tutorial forms a part of a new series which will concentrate on some of the non-GUI related issues in Windows programming. The subject of this tutorial will be the CreateProcess win32 API call. The tutorial is split into several sections, each one describing a neat fact about CreateProcess which you can use to your advantage. What I will describe cannot be found in Microsoft documentation, but has been discovered by many people over the years through alot of experimentation. All of the information collected here was found in various sources - especially older publications such as “Windows Developer Journal” from the mid-90s and also old USENET postings.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Undocumented CreateProcess">
+<meta property="og:url" content="undocumented-createprocess.html">
+
+
+  <meta property="og:description" content="This tutorial forms a part of a new series which will concentrate on some of the non-GUI related issues in Windows programming. The subject of this tutorial will be the CreateProcess win32 API call. The tutorial is split into several sections, each one describing a neat fact about CreateProcess which you can use to your advantage. What I will describe cannot be found in Microsoft documentation, but has been discovered by many people over the years through alot of experimentation. All of the information collected here was found in various sources - especially older publications such as “Windows Developer Journal” from the mid-90s and also old USENET postings.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2004-01-06T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="undocumented-createprocess.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Undocumented CreateProcess</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/undoc01.zip">undoc01.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Undocumented CreateProcess">
+    <meta itemprop="description" content="This tutorial forms a part of a new series which will concentrate on some of the non-GUI related issues in Windows programming. The subject of this tutorial will be the CreateProcess win32 API call. The tutorial is split into several sections, each one describing a neat fact about CreateProcess which you can use to your advantage. What I will describe cannot be found in Microsoft documentation, but has been discovered by many people over the years through alot of experimentation. All of the information collected here was found in various sources - especially older publications such as “Windows Developer Journal” from the mid-90s and also old USENET postings.">
+    <meta itemprop="datePublished" content="January 06, 2004">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Undocumented CreateProcess
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Undocumented CreateProcess</h1-->
+<!--h3>Undocumented and hard-to-find information regarding the CreateProcess API call</h3-->
+
+<p>This tutorial forms a part of a new series which will concentrate on some of the non-GUI related issues in Windows programming. The subject of this tutorial will be the <code class="highlighter-rouge">CreateProcess</code> win32 API call. The tutorial is split into several sections, each one describing a neat fact about <code class="highlighter-rouge">CreateProcess</code> which you can use to your advantage. What I will describe cannot be found in Microsoft documentation, but has been discovered by many people over the years through alot of experimentation. All of the information collected here was found in various sources - especially older publications such as “Windows Developer Journal” from the mid-90s and also old USENET postings.</p>
+
+<p>Before I start properly let’s review what <code class="highlighter-rouge">CreateProcess</code> does, and how to use it in your code. If you are familiar with <code class="highlighter-rouge">CreateProcess</code> then please skip down to the first undocumented tip.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CreateProcess</span><span class="p">(</span>
+    <span class="n">LPCTSTR</span> <span class="n">lpApplicationName</span><span class="p">,</span> <span class="c1">// name of executable module
+</span>    <span class="n">LPTSTR</span> <span class="n">lpCommandLine</span><span class="p">,</span> <span class="c1">// command line string
+</span>    <span class="n">LPSECURITY_ATTRIBUTES</span> <span class="n">lpProcessAttributes</span><span class="p">,</span> <span class="c1">// SD
+</span>    <span class="n">LPSECURITY_ATTRIBUTES</span> <span class="n">lpThreadAttributes</span><span class="p">,</span> <span class="c1">// SD
+</span>    <span class="n">BOOL</span> <span class="n">fInheritHandles</span><span class="p">,</span> <span class="c1">// handle inheritance option
+</span>    <span class="n">DWORD</span> <span class="n">dwCreationFlags</span><span class="p">,</span> <span class="c1">// creation flags
+</span>    <span class="n">LPVOID</span> <span class="n">lpEnvironment</span><span class="p">,</span> <span class="c1">// new envirnment block
+</span>    <span class="n">LPCTSTR</span> <span class="n">lpCurrentDirectory</span><span class="p">,</span> <span class="c1">// current directory name
+</span>    <span class="n">LPSTARTUPINFO</span> <span class="n">lpStartupInfo</span><span class="p">,</span> <span class="c1">// startup information
+</span>    <span class="n">LPPROCESS_INFORMATION</span> <span class="n">lpProcessInformation</span> <span class="c1">// process information
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function definition (above) was taken directly out of MSDN. The function is a bit unweildy and difficult to understand at first but process creation is a complicated business. Fortunately most of the parameters in <code class="highlighter-rouge">CreateProcess</code> can be omitted and the standard way of creating a new process looks like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+<span class="n">PROCESS_INFORMATION</span> <span class="n">pi</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">szExe</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"cmd.exe"</span><span class="p">;</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">CreateProcess</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">szExe</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pi</span><span class="p">))</span>
+<span class="p">{</span>
+   <span class="c1">// optionally wait for process to finish
+</span>   <span class="n">WaitForSingleObject</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hProcess</span><span class="p">,</span> <span class="n">INFINITE</span><span class="p">);</span>  
+
+   <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hProcess</span><span class="p">);</span>
+   <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hThread</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The example above simply starts a new instance of cmd.exe and lets it run. However, there are alot of options available in the call to <code class="highlighter-rouge">CreateProcess</code> which allow you to control how the program is started. Some of these options are specified directly as parameters, but most of the options are specified inside the <code class="highlighter-rouge">STARTUPINFO</code> structure which is passed as the <strong>9th</strong> parameter:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span> 
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">cb</span><span class="p">;</span> 
+    <span class="n">LPTSTR</span> <span class="n">lpReserved</span><span class="p">;</span>
+    <span class="n">LPTSTR</span> <span class="n">lpDesktop</span><span class="p">;</span>
+    <span class="n">LPTSTR</span> <span class="n">lpTitle</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwX</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwY</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwXSize</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwYSize</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwXCountChars</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwYCountChar</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwFillAttribute</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">dwFlags</span><span class="p">;</span>
+    <span class="n">WORD</span> <span class="n">wShowWindow</span><span class="p">;</span>
+    <span class="n">WORD</span> <span class="n">cbReserved2</span><span class="p">;</span>
+    <span class="n">LPBYTE</span> <span class="n">lpReserved2</span><span class="p">;</span>
+    <span class="n">HANDLE</span> <span class="n">hStdInput</span><span class="p">;</span>
+    <span class="n">HANDLE</span> <span class="n">hStdOutput</span><span class="p">;</span>
+    <span class="n">HANDLE</span> <span class="n">hStdError</span><span class="p">;</span> 
+
+<span class="p">}</span> <span class="n">STARTUPINFO</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The STARTUPINFO structure is also documented in MSDN, but some interesting information has been omitted by Microsoft which we will start to explore right now. The whole thrust of this article will centre around this <code class="highlighter-rouge">STARTUPINFO</code> structure, and the three “reserved” members of the <code class="highlighter-rouge">STARTUPINFO</code> structure - that is, <code class="highlighter-rouge">lpReserved</code>, <code class="highlighter-rouge">lpReserved2</code>	and <code class="highlighter-rouge">cbReserved2</code>.</p>
+
+<p>Later on in this article I will explain what these three member variables are really used for, but first of all we will look at the <code class="highlighter-rouge">dwFlags</code> member variable and what it does. A quick reminder from MSDN is appropriate here:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Value</td>
+      <td>Meaning</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_USESHOWWINDOW</code></td>
+      <td>0x01</td>
+      <td>If this value is not specified, the <code class="highlighter-rouge">wShowWindow</code> member is ignored.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_USESIZE</code></td>
+      <td>0x02</td>
+      <td>If this value is not specified, the <code class="highlighter-rouge">dwXSize</code> and <code class="highlighter-rouge">dwYSize</code> members are ignored.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_USEPOSITION</code></td>
+      <td>0x04</td>
+      <td>If this value is not specified, the <code class="highlighter-rouge">dwX</code> and <code class="highlighter-rouge">dwY</code> members are ignored.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_USECOUNTCHARS</code></td>
+      <td>0x08</td>
+      <td>If this value is not specified, the <code class="highlighter-rouge">dwXCountChars</code> and <code class="highlighter-rouge">dwYCountChars</code> members are ignored.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_USEFILLATTRIBUTE</code></td>
+      <td>0x10</td>
+      <td>If this value is not specified, the <code class="highlighter-rouge">dwFillAttribute</code> member is ignored.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_RUNFULLSCREEN</code></td>
+      <td>0x20</td>
+      <td>Indicates that the process should be run in full-screen mode, rather than in windowed mode.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_FORCEONFEEDBACK</code></td>
+      <td>0x40</td>
+      <td>Indicates that the cursor is in feedback mode for two seconds after <code class="highlighter-rouge">CreateProcess</code> is called.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_FORCEOFFFEEDBACK</code></td>
+      <td>0x80</td>
+      <td>Indicates that the feedback cursor is forced off while the process is starting. The normal cursor is displayed.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_USESTDHANDLES</code></td>
+      <td>0x100</td>
+      <td>Sets the standard input, standard output, and standard error handles for the process to the handles specified in the <code class="highlighter-rouge">hStdInput</code>, <code class="highlighter-rouge">hStdOutput</code>, and <code class="highlighter-rouge">hStdError</code> members of the <code class="highlighter-rouge">STARTUPINFO</code> structure.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These nine values (or bit-flags) can be specified on their own or together by ORing them. The table above is pretty boring because apart from the <code class="highlighter-rouge">START_USESTDHANDLES</code> flag none of them are particularly useful. However, look at the range of values that the bit-flags use: the numbers go from 0x01 to 0x100 - this is only 9 bit-positions. There are 32bits in a single DWORD, so that leaves 23 possible bit-flags which havn’t been defined yet.</p>
+
+<p>That’s more than enough background to get us started, so let’s move onto more interesting things.</p>
+
+<h2 id="detect-if-an-executable-was-started-from-a-short-cut">Detect if an executable was started from a Short-Cut</h2>
+
+<p>OK, the first trick I’m going to show you is how any win32 application can detect if it was started from a shortcut (i.e. by double-clicking a shortcut link), or directly via Windows explorer or the Run dialog. This trick is so simple it’s amazing Microsoft hasn’t documentated it:</p>
+
+<p>There is an undocumented <code class="highlighter-rouge">STARTUPINFO</code> flag which I have called <code class="highlighter-rouge">STARTF_TITLESHORTCUT</code>. This bit-flag has the value 0x800. Windows sets this flag when an executable has been started via a short-cut. So it is possible for any program to check if it was started this way by examining it’s own <code class="highlighter-rouge">STARTUPINFO</code> structure to see if this flag was specified:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Returns TRUE if started through a shortcut, FALSE if not. 
+// Also returns the name of the shortcut file (if any)
+</span><span class="n">BOOL</span> <span class="nf">GetShortcutName</span><span class="p">(</span><span class="n">TCHAR</span> <span class="o">*</span><span class="n">szLinkName</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nLinkNameSize</span><span class="p">)</span>
+<span class="p">{</span>    
+    <span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+
+    <span class="n">GetStartupInfo</span><span class="p">(</span><span class="o">&amp;</span><span class="n">si</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">si</span><span class="p">.</span><span class="n">dwFlags</span> <span class="o">&amp;</span> <span class="n">STARTF_TITLESHORTCUT</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">lstrcpyn</span><span class="p">(</span><span class="n">szLinkName</span><span class="p">,</span> <span class="n">si</span><span class="p">.</span><span class="n">lpTitle</span><span class="p">,</span> <span class="n">nLinkNameSize</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It is a simple matter to check for this undocumented flag, but another important piece of information should be explained. When the <code class="highlighter-rouge">STARTF_TITLESHORTCUT</code> flag is set, the <code class="highlighter-rouge">lpTitle</code> member of <code class="highlighter-rouge">STARTUPINFO</code> points to a string which contains the full path to the shortcut file used to start the current executable. So imagine that there is a short-cut on your desktop which launches notepad.exe. When notepad.exe starts, it’s <code class="highlighter-rouge">STARTUPINFO::lpTitle</code> contains the following text:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">C:</span><span class="err">\</span><span class="n">Documents</span> <span class="n">and</span> <span class="n">Settings</span><span class="err">\</span><span class="n">James</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">Notepad</span><span class="p">.</span><span class="n">lnk</span>
+</code></pre></div></div>
+
+<p>Pretty cool huh? Well I hope I’ve whet the appetite because we can move onto the next undocumented nugget!</p>
+
+<h2 id="specify-which-monitor-a-process-should-start-on">Specify which monitor a process should start on</h2>
+
+<p>The next undocumented tip uses another unknown <code class="highlighter-rouge">STARTUPINFO</code> flag. This flag has the value 0x400, and I have given it the name <code class="highlighter-rouge">STARTF_MONITOR</code>.</p>
+
+<p>When this flag is specified in the dwFlags member, the <code class="highlighter-rouge">STARTUPINFO</code>’s <code class="highlighter-rouge">hStdOutput</code> member is used to specify a handle to a monitor, on which to start the new process. This monitor handle can be obtained by any of the multiple-monitor display functions (i.e. <code class="highlighter-rouge">EnumDisplayMonitors</code>, <code class="highlighter-rouge">MonitorFromPoint</code>, <code class="highlighter-rouge">MonitorFromWindow</code> etc).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CALLBACK</span> <span class="nf">EnumMonitorProc</span><span class="p">(</span><span class="n">HMONITOR</span> <span class="n">hMonitor</span><span class="p">,</span> <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="n">LPRECT</span> <span class="n">rect</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>    
+    <span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+    <span class="n">PROCESS_INFORMATION</span> <span class="n">pi</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">szExe</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"sol.exe"</span><span class="p">;</span>
+
+    <span class="c1">// specify which monitor to use
+</span>    <span class="n">si</span><span class="p">.</span><span class="n">dwFlags</span> <span class="o">=</span> <span class="n">STARTF_MONITOR</span><span class="p">;</span>
+    <span class="n">si</span><span class="p">.</span><span class="n">hStdOutput</span> <span class="o">=</span> <span class="n">hMonitor</span><span class="p">;</span>
+
+    <span class="c1">// start solitaire on specified monitor
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">CreateProcess</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">szExe</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pi</span><span class="p">))</span>
+    <span class="p">{</span>
+       <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hProcess</span><span class="p">);</span>
+       <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hThread</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// call EnumMonitorProc (above) for every installed monitor on the system
+</span><span class="kt">void</span> <span class="nf">Demo</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">EnumDisplayMonitors</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">EnumMonitorProc</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The example above uses the <code class="highlighter-rouge">EnumDisplayMonitors</code> API call as a method of obtaining a monitor handle (one for each monitor installed). The <code class="highlighter-rouge">EnumMonitorProc</code> function simply starts a new instance of Solitaire on each monitor in turn.</p>
+
+<p>There are certain restrictions which should be noted here. You may be asking yourself why the above example works, when you know full well that the hStdOutput member should be used for a standard-output pipe. The answer to this question is simple - when the undocumented <code class="highlighter-rouge">STARTF_MONITOR</code> flag is specified, the <code class="highlighter-rouge">STARTF_USESTDHANDLES</code> flag is ignored. This means that these two flags cannot be used together, and the <code class="highlighter-rouge">hStdInput</code>, <code class="highlighter-rouge">hStdOutput</code> and hStdError handles act differently to how they are described in the documentation.</p>
+
+<p>The next restriction is kind of obvious too: when you start a new process with <code class="highlighter-rouge">CreateProcess</code>, it has no concept of monitors, windows, or any other GUI related entities. A windows program actually has to physically create it’s windows in order to display it’s GUI. This is where the restriction for the <code class="highlighter-rouge">STARTF_MONITOR</code> flag comes into play. When a process calls <code class="highlighter-rouge">CreateWindow</code>, it can specify exactly where the window will appear by using the <code class="highlighter-rouge">x</code>, <code class="highlighter-rouge">y</code>, <code class="highlighter-rouge">width</code> and <code class="highlighter-rouge">height</code> parameters. This means that it is not possible for one program to specify where a second program’s windows should appear unless this second program creates it’s windows in a certain way.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hWnd</span> <span class="o">=</span> <span class="n">CreateWindow</span><span class="p">(</span><span class="s">"ClassName"</span><span class="p">,</span> 
+                    <span class="s">"Title Text"</span><span class="p">,</span> 
+                    <span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">,</span> 
+                    <span class="n">CW_USEDEFAULT</span><span class="p">,</span> <span class="c1">// X coordinate
+</span>                    <span class="n">CW_USEDEFAULT</span><span class="p">,</span> <span class="c1">// Y coordinate
+</span>                    <span class="n">width</span><span class="p">,</span> <span class="c1">// Width
+</span>                    <span class="n">height</span><span class="p">,</span> <span class="c1">// Height
+</span>                    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="n">ShowWindow</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span> <span class="n">SW_SHOWDEFAULT</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>It is only when a program creates a window using the <code class="highlighter-rouge">CW_USEDEFAULT</code> values for the coordinates, does the monitor specified by <code class="highlighter-rouge">CreateProcess</code> get used. The <code class="highlighter-rouge">CreateWindow</code> API call must obviously look inside the current process’s <code class="highlighter-rouge">STARTUPINFO</code> structure to see what monitor it should create the window on. The Solitaire card-game was used in the example because it creates it’s main window in this manner. I couldn’t use Notepad as a demonstration because it didn’t work - notepad seems to use actual coordinates to display it’s main window rather than the <code class="highlighter-rouge">CW_USEDEFAULT</code> values.</p>
+
+<p>Note that the <code class="highlighter-rouge">ShellExecuteEx</code> API call makes use of this <code class="highlighter-rouge">CreateProcess</code> feature in order to implement it’s own monitor settings.</p>
+
+<h2 id="starting-screen-savers">Starting screen-savers</h2>
+
+<p>In old versions of Microsoft’s platform SDK documentation there was a flag called <code class="highlighter-rouge">STARTF_SCREENSAVER</code> - with the hex value 0x80000000. This flag is not documented anymore. When this flag is specified in <code class="highlighter-rouge">CreateProcess</code>’ <code class="highlighter-rouge">STARTUPINFO</code> structure, the new process is started with <code class="highlighter-rouge">NORMAL_PRIORITY</code>. But, when this new process first calls <code class="highlighter-rouge">GetMessage</code>, it’s priority is automatically lowered to that of <code class="highlighter-rouge">IDLE_PRIORITY</code>. This functionality seems vaguely useful for a screen-saver, and completely useless for any other situation. Presumably it is intended to allow a screen-saver’s startup code to get up and running quickly, and then let the screensaver run “normally” without using too much CPU.</p>
+
+<p>It appears that only the WinLogon process (winlogon.exe) is allowed to use <code class="highlighter-rouge">STARTF_SCREENSAVER</code> when activating the current screensaver, and this flag is next to useless for any other scenario.</p>
+
+<h2 id="legacy-program-manager-functionality">Legacy Program Manager functionality</h2>
+
+<p>Do you remember Program Manager from the Windows 3.1 days? Program Manager still exists today even in Windows XP - just goto a command-prompt and type “progman” - the familiar program manager shell will pop up. Even in the days of Windows 3.1 (home and NT editions) the <code class="highlighter-rouge">CreateProcess</code> API contained undocumented functionality. I’m going to share this information with you now - even though this information is next to useless, it is still interesting to go over it.</p>
+
+<p>If you look back at the <code class="highlighter-rouge">STARTUPINFO</code> structure definition, you can see that it has a member called <code class="highlighter-rouge">lpReserved</code>. This member has actually been in use for a long time now, but only by the Program Manager when it started executables.</p>
+
+<p>The <code class="highlighter-rouge">STARTUPINFO::lpReserved</code> member is a pointer to a string buffer in the following format:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"dde.#,hotkey.#,ntvdm.#"</span>
+</code></pre></div></div>
+
+<p>Whenever a new process is started by Program Manager, it can call <code class="highlighter-rouge">GetStartupInfo</code> to see how it was started. The resulting <code class="highlighter-rouge">lpReserved</code> member points to a string which contains three comma-separated fields, with the hash-signs (#) representing hexadecimal numbers.</p>
+
+<ul>
+  <li>The “<code class="highlighter-rouge">dde.</code>” item specifies the DDE identifier which the child process can use to communicate with Program Manager. When the child process sends progman a <code class="highlighter-rouge">WM_DDE_REQUEST</code> message with this id, progman responds with a <code class="highlighter-rouge">WM_DDE_DATA</code> message. This message contains, amongst other things, the progman description, progman icon index and progman working directory for the child process.</li>
+</ul>
+
+<p>More information on this progman DDE interface can be found in the Microsoft Knowledge Base article 105446.</p>
+
+<ul>
+  <li>The “<code class="highlighter-rouge">hotkey.</code>” item specifies the Program Manager hotkey sequence which was used to activate the process. This is a 16bit hex number, with the low byte representing the ASCII code of the hotkey, and the high byte representing the <code class="highlighter-rouge">HOTKEYF_xxx</code> values used by the <code class="highlighter-rouge">WM_SETHOTKEY</code> message. I have no idea why it is useful for a child process to know this information.</li>
+  <li>The “<code class="highlighter-rouge">ntvdm.</code>” item is used to inform the NTVDM process about a program’s properties in Program Manager. This is a single hex field which is made up of a combination of bit-flags. The value 1 indicates that there is a current directory, a value of 2 indicates that the item has a hotkey, and a value of 4 indicates that a title has been assigned to the program.</li>
+</ul>
+
+<p>That just about covers the <code class="highlighter-rouge">lpReserved</code> member. It really isn’t a useful feature any more, and even though it is possible to use <code class="highlighter-rouge">lpReserved</code> in a call to <code class="highlighter-rouge">CreateProcess</code>, no child process is ever going to make use of the information. You can see for yourself how Program Manager uses <code class="highlighter-rouge">lpReserved</code> by debugging a child process which has been executed via progman.exe.</p>
+
+<p><em>Of course, if you have two applications and want to pass a text string from one app to the second (other than through the command-line) the <code class="highlighter-rouge">lpReserved</code> field could be useful</em>.</p>
+
+<h2 id="legacy-shellexecuteex-functionality">Legacy ShellExecuteEx functionality</h2>
+
+<p>The <code class="highlighter-rouge">ShellExecuteEx</code> API has been around since Windows NT 3.1 (but not “normal” 3.1). This API call takes a single parameter - a pointer to a <code class="highlighter-rouge">SHELLEXECUTEINFO</code> structure. You can look in MSDN to see what this structure looks like (it’s pretty boring). There are one or two interesting fields in this structure which are not at all well documented:</p>
+
+<p>The first is the <code class="highlighter-rouge">hMonitor</code> member. <code class="highlighter-rouge">ShellExecuteEx</code> uses this value to control which monitor a new process should appear on. This is possible because <code class="highlighter-rouge">ShellExecuteEx</code> calls <code class="highlighter-rouge">CreateProcess</code> internally, and uses the same undocumented feature we covered earlier on (the <code class="highlighter-rouge">STARTF_MONITOR</code> flag).</p>
+
+<p>The next field of interest is the <code class="highlighter-rouge">hIcon</code> member. MSDN documents this as being a handle to an icon for the new process, but I believe it might be an icon-index rather than an icon. I havn’t been able to make use of this feature, and as far as I can tell only console applications running under Windows NT 3.1/3.5 made use of this feature. However, <code class="highlighter-rouge">ShellExecuteEx</code> calls <code class="highlighter-rouge">CreateProcess</code> with another undocumented setting. Again this is a new <code class="highlighter-rouge">STARTUPINFO</code> flag (I call it <code class="highlighter-rouge">STARTF_ICON</code>). Strangely this flag has the same value as the <code class="highlighter-rouge">STARTF_MONITOR</code> flag (0x400), and like before the <code class="highlighter-rouge">STARTUPINFO::hStdOutput</code> member is used to store the icon handle/index/whatever it is. You can observe this quite simply by writing a small program that calls <code class="highlighter-rouge">ShellExecuteEx</code> which specifies an icon for the new process, and watch the call to <code class="highlighter-rouge">CreateProcess</code> in a debugger. (The new program always ignores the icon though).</p>
+
+<p>The last field of interest is the <code class="highlighter-rouge">dwHotKey</code> value. This is supposed to specify a hot-key for a child process, so that you can activate the application at any time by using the hotkey sequence at the keyboard - however, I have been unable to make this work. Again, <code class="highlighter-rouge">ShellExecuteEx</code> uses another undocumented <code class="highlighter-rouge">STARTUPINFO</code> flag. In this case the flag appears in winbase.h - it is called <code class="highlighter-rouge">STARTF_USEHOTKEY</code> and has the value 0x200. When this flag is specified in the <code class="highlighter-rouge">STARTUPINFO::dwFlags</code> member, the <code class="highlighter-rouge">hStdInput</code> member is supposed to be used as the hotkey value instead of the standard-input pipe. (See <code class="highlighter-rouge">WM_SETHOTKEY</code> for more information).</p>
+
+<p>Both the icon and hotkey features of <code class="highlighter-rouge">CreateProcess</code> are a little strange, firstly because the functionality appears to be duplicated by the <code class="highlighter-rouge">lpReserved</code> parameter, and secondly the functionality is not present in modern versions of Windows. If anyone knows any more details about this subject I’d be very glad to hear them!</p>
+
+<h2 id="pass-arbitrary-data-to-a-child-process">Pass arbitrary data to a child process!</h2>
+
+<p>The last undocumented trick is quite different to the previous ones so I thought I’d save it until last. The <code class="highlighter-rouge">STARTUPINFO</code> structure contains two members, <code class="highlighter-rouge">lpReserved2</code> and <code class="highlighter-rouge">cbReserved2</code> :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WORD</span> <span class="n">cbReserved2</span><span class="p">;</span> 
+<span class="n">LPBYTE</span> <span class="n">lpReserved2</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>These two members provide a mechanism for passing arbitrary amounts of data from one process to another, without having to call <code class="highlighter-rouge">VirtualAllocEx</code> / <code class="highlighter-rouge">WriteProcessMemory</code>. The <code class="highlighter-rouge">cbReserved2</code> member is a 16bit integer and specifies the size of the buffer pointed to by lpReserved2. This means that <code class="highlighter-rouge">lpReserved2</code> can be as big as 65535 bytes.</p>
+
+<p>The example below demonstrates how to pass a buffer from one process to another. When process-B is executed by process-A, it will display a message box saying “Hello from Process A!”:</p>
+
+<h3 id="process-a">Process A:</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+    <span class="n">PROCESS_INFORMATION</span> <span class="n">pi</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">4444</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Hello from Process A!"</span><span class="p">;</span>
+
+    <span class="c1">// setup the buffer to pass to child process
+</span>    <span class="n">si</span><span class="p">.</span><span class="n">lpReserved2</span> <span class="o">=</span> <span class="n">buf</span><span class="p">;</span>
+    <span class="n">si</span><span class="p">.</span><span class="n">cbReserved2</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+
+    <span class="c1">// create a new process with this data
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">CreateProcess</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">szExe</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pi</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hProcess</span><span class="p">);</span>
+        <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hThread</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="process-b">Process B:</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">mainCRTStartup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+
+    <span class="n">GetStartupInfo</span><span class="p">(</span><span class="o">&amp;</span><span class="n">si</span><span class="p">);</span>
+
+    <span class="c1">// display what process A sent us
+</span>    <span class="n">MessageBox</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">si</span><span class="p">.</span><span class="n">lpReserved2</span><span class="p">,</span> <span class="s">"Process B"</span><span class="p">,</span> <span class="n">MB_OK</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So far so good - we have a nice method for passing arbitrary binary data between applications, without having to use the command line. There is a problem though. In the example above process-B must be compiled with absolutely no C-runtime support. The reason is quite complicated but I will explain it now:</p>
+
+<p>The Microsoft C runtime (including Visual Studio.NET) uses the <code class="highlighter-rouge">lpReserved2</code> feature in it’s implementation of the C functions: <code class="highlighter-rouge">exec</code>, <code class="highlighter-rouge">system</code> and <code class="highlighter-rouge">spawn</code>. When a new process is executed using these routines, the C-runtime has to be able to give the child process copies of it’s open file handles (opened using <code class="highlighter-rouge">fopen</code> / <code class="highlighter-rouge">open</code> rather than <code class="highlighter-rouge">CreateFile</code>).</p>
+
+<p><code class="highlighter-rouge">lpReserved2</code> is used as a mechanism to pass this file-handles information between programs compiled using MSVC. Before the <code class="highlighter-rouge">exec</code> / <code class="highlighter-rouge">spawn</code> runtime functions inevitably call <code class="highlighter-rouge">CreateProcess</code>, the <code class="highlighter-rouge">lpReserved2</code> buffer is constructed using the following format:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DWORD</span> <span class="n">count</span><span class="p">;</span>
+<span class="n">BYTE</span> <span class="n">flags</span><span class="p">[</span><span class="n">count</span><span class="p">];</span>
+<span class="n">HANDLE</span> <span class="n">handles</span><span class="p">[</span><span class="n">count</span><span class="p">];</span>
+
+<span class="c1">// in memory these are layed out sequentially:
+</span><span class="p">[</span><span class="n">count</span><span class="p">][</span><span class="n">flags</span><span class="p">...][</span><span class="n">handles</span><span class="p">...]</span>
+</code></pre></div></div>
+
+<p>The first field in the <code class="highlighter-rouge">lpReserved2</code> buffer is a 32bit count of the number of file-handles being passed. Next comes a BYTE-array of flags, one for each file-handle. These flags represent the file attributes that were used when the file was opened using fopen/open - i.e. read-only, write-append, text-mode, binary-mode etc. Immediately following the flags array is the HANDLE-array containing each open file. This array contains the actual file handle identifiers, again there are handle_count items in the array.</p>
+
+<p>Any amount of data can follow this structure, up to a maximum of 65536 bytes. The <code class="highlighter-rouge">cbReserved2</code> member must be set to the length (in bytes) of this structure. The actual steps need to construct the <code class="highlighter-rouge">lpReserved2</code> are as follows:</p>
+
+<ol>
+  <li>Any currently open “runtime” file-handles are enumerated.</li>
+  <li>Each underlying win32 HANDLE is marked as inheritable.</li>
+  <li>The number of file-handles being passed between processes is stored as the first 32bit integer in lpReserved2.</li>
+  <li>The attributes of each open file-handle are stored sequentially in the flags <code class="highlighter-rouge">BYTE</code>-array.</li>
+  <li>The file-handle integers are stored sequentially in the handles 32bit int-array.</li>
+  <li>Finally <code class="highlighter-rouge">CreateProcess</code> is called, with the <code class="highlighter-rouge">bInheritHandles</code> parameter set to <code class="highlighter-rouge">TRUE</code>.</li>
+</ol>
+
+<p>It is at this stage that the C-runtime becomes important. When the child process executes, as part of it’s initialization before main() is called, the I/O runtime support needs to be initialized. During this initialization the C-runtime calls <code class="highlighter-rouge">GetStartupInfo</code> and checks to see if an <code class="highlighter-rouge">lpReserved2</code> buffer has been specified. If <code class="highlighter-rouge">lpReserved2</code> is not NULL (i.e. it points to valid memory) then the C-runtime parses the contents of the buffer and extracts the file-handles contained within - this is so the file-handles will be available to the new process.</p>
+
+<ol>
+  <li>Call <code class="highlighter-rouge">GetStartupInfo</code> and check if <code class="highlighter-rouge">lpReserved2</code> points to valid data.</li>
+  <li>Extract the first 32bit integer - this is the number of file-handles in the buffer.</li>
+  <li>Intialize the current process’s I/O state with this number of open files.</li>
+  <li>Loop over the <code class="highlighter-rouge">flags[]</code> array in <code class="highlighter-rouge">lpReserved2</code>.</li>
+  <li>Loop over the <code class="highlighter-rouge">handles[]</code> array, populating the open-file table.</li>
+</ol>
+
+<p>The problem might now be apparent to the more astute readers. Any program compiled using Microsoft’s C-runtime will check it’s <code class="highlighter-rouge">lpReserved2</code> when it first starts - it should come as no surprise that this probably represents 90% of the C/C++ Windows programs in existence. The <code class="highlighter-rouge">lpReserved2</code> member may also be used by other compiler vendors for the same purpose.</p>
+
+<p>Should you wish to use <code class="highlighter-rouge">lpReserved2</code> in your own programs (using <code class="highlighter-rouge">CreateProcess</code> instead of <code class="highlighter-rouge">spawn</code> / <code class="highlighter-rouge">exec</code>) you will need to be careful because the <code class="highlighter-rouge">lpReserved2</code> buffer must be properly constructed. Failure to do so will result in the child processes crashing, or at the very least becoming unstable - the reason being that the child process is expecting to find <code class="highlighter-rouge">lpReserved2</code> in a particular format.</p>
+
+<p>Getting around this problem is simple. Setting the first 4 bytes in <code class="highlighter-rouge">lpReserved</code> to zeros (nulls) indicates that the handle-arrays are empty, and any c-runtime startup code will simply skip this phase. Your arbitrary binary data can come immediately after this zero-marker. The code now looks like this:</p>
+
+<h3 id="process-a-1">Process A:</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+    <span class="n">PROCESS_INFORMATION</span> <span class="n">pi</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">4444</span><span class="p">];</span>
+
+    <span class="c1">// construct the lpReserved2 buffer
+</span>    <span class="o">*</span><span class="p">(</span><span class="n">DWORD</span> <span class="o">*</span><span class="p">)</span><span class="n">buf</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">lstrcpy</span><span class="p">(</span><span class="n">buf</span><span class="o">+</span><span class="k">sizeof</span><span class="p">(</span><span class="n">DWORD</span><span class="p">),</span> <span class="s">"Hello from Process A!"</span><span class="p">;</span>
+
+    <span class="c1">// setup the buffer to pass to child process
+</span>    <span class="n">si</span><span class="p">.</span><span class="n">lpReserved2</span> <span class="o">=</span> <span class="n">buf</span><span class="p">;</span>
+    <span class="n">si</span><span class="p">.</span><span class="n">cbReserved2</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+
+    <span class="c1">// create a new process with this data
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">CreateProcess</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">szExe</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">si</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pi</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hProcess</span><span class="p">);</span>
+        <span class="n">CloseHandle</span><span class="p">(</span><span class="n">pi</span><span class="p">.</span><span class="n">hThread</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="process-b-1">Process B:</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">STARTUPINFO</span> <span class="n">si</span> <span class="o">=</span> <span class="p">{</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">si</span><span class="p">)</span> <span class="p">};</span>
+    <span class="n">GetStartupInfo</span><span class="p">(</span><span class="o">&amp;</span><span class="n">si</span><span class="p">);</span>
+
+    <span class="c1">// display what process A sent us
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">si</span><span class="p">.</span><span class="n">lpReserved2</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">MessageBox</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">si</span><span class="p">.</span><span class="n">lpReserved2</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">DWORD</span><span class="p">),</span> <span class="s">"Process B"</span><span class="p">,</span> <span class="n">MB_OK</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The example above can now be compiled without having to worry about C-runtime considerations.</p>
+
+<p><strong>Note:</strong> Apparently this method does not work under 64bit Windows Vista.</p>
+
+<h2 id="createprocess-summary">CreateProcess Summary</h2>
+
+<p>This was more of a programming article than a tutorial. Hopefully you have either found something useful, or have discovered something about <code class="highlighter-rouge">CreateProcess</code> which you didn’t know before. Just to recap here is a summary of the undocumented <code class="highlighter-rouge">CreateProcess</code> features:</p>
+
+<p>Undocumented <strong>STARTUPINFO</strong> flags:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Value</td>
+      <td>Meaning</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_USEHOTKEY</code></td>
+      <td>0x200</td>
+      <td>Use the hot-key <code class="highlighter-rouge">DWORD</code> specified in the <code class="highlighter-rouge">hStdInput</code> member.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_MONITOR</code></td>
+      <td>0x400</td>
+      <td>Use the <code class="highlighter-rouge">HMONITOR</code> handle specified in the <code class="highlighter-rouge">hStdOutput</code> member.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_ICON</code></td>
+      <td>0x400</td>
+      <td>Use the <code class="highlighter-rouge">HICON</code> specified in the <code class="highlighter-rouge">hStdOutput</code> member (incompatible with <code class="highlighter-rouge">STARTF_MONITOR</code>).</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_TITLESHORTCUT</code></td>
+      <td>0x800</td>
+      <td>Program was started through a shortcut. The <code class="highlighter-rouge">lpTitle</code> contains the shortcut path.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">STARTF_SCREENSAVER</code></td>
+      <td>0x80000000</td>
+      <td>Start the program with <code class="highlighter-rouge">NORMAL_PRIORITY</code>, then drop to <code class="highlighter-rouge">IDLE_PRIORITY</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="highlighter-rouge">lpReserved</code> - pointer to a string containing the text “<code class="highlighter-rouge">dde.#,hotkey.#,ntvdm.#</code>”. This only occurs when a process is started through the legacy Program Manager shell. Use this member to pass your own string buffer to a child process.</p>
+
+<p><code class="highlighter-rouge">lpReserved2</code> and <code class="highlighter-rouge">cbReserved2</code> - pointer to a buffer containing arbitrary binary data to pass to the child process. To be safe ensure that the first four bytes of lpReserved2 are always zero. Has issues under 64bit Vista.</p>
+
+<p>I’d really like to hear any comments you have on this article, or any more information which I might have presented incorrectly or omitted entirely.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/undoc01.zip">undoc01.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2004-01-06T00:00:00+00:00">January 06, 2004</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="win32/custom-combobox.html" class="pagination--pager" title="Custom Combobox
+">Previous</a>
+    
+    
+      <a href="win32/drag-and-drop-introduction.html" class="pagination--pager" title="Drag and Drop Introduction
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/undocumented-createprocess by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

@@ -1,0 +1,875 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-controls by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Custom Controls - Catch22</title>
+<meta name="description" content="A custom control is any child window which displays information or allows the user to interact with it in some way. This article describes the steps required to create a custom user control from scratch, using pure Win32 techniques. This custom control will not be an ActiveX control, or possess any other magical properties. Rather, we will be creating a simple control, similar to the way edit controls, buttons or listboxes work.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Custom Controls">
+<meta property="og:url" content="custom-controls.html">
+
+
+  <meta property="og:description" content="A custom control is any child window which displays information or allows the user to interact with it in some way. This article describes the steps required to create a custom user control from scratch, using pure Win32 techniques. This custom control will not be an ActiveX control, or possess any other magical properties. Rather, we will be creating a simple control, similar to the way edit controls, buttons or listboxes work.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-11-20T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="custom-controls.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Custom Controls</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/custctrl.zip">custctrl.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Custom Controls">
+    <meta itemprop="description" content="A custom control is any child window which displays information or allows the user to interact with it in some way. This article describes the steps required to create a custom user control from scratch, using pure Win32 techniques. This custom control will not be an ActiveX control, or possess any other magical properties. Rather, we will be creating a simple control, similar to the way edit controls, buttons or listboxes work.">
+    <meta itemprop="datePublished" content="November 20, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Custom Controls
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Custom Controls</h1-->
+<!--h3>How to create a custom win32 control</h3-->
+
+<p>A custom control is any child window which displays information or allows the user to interact with it in some way. This article describes the steps required to create a custom user control from scratch, using pure Win32 techniques. This custom control will not be an ActiveX control, or possess any other magical properties. Rather, we will be creating a simple control, similar to the way edit controls, buttons or listboxes work.</p>
+
+<p>The example control we will build will be a simple text label, but will change colour whenever the user clicks on it. This simple example will be sufficient to help explain all the steps necessary to create any custom control.</p>
+
+<p><img src="http://www.catch22.net/assets/img/custctrl03.gif" alt="Custom Control demo" class="align-center" /></p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>A custom control is nothing special. It is just a standard window, but created with the <code class="highlighter-rouge">WS_CHILD</code> style set. The custom part comes in because we write a new window procedure to provide the necessary control display and interaction.</p>
+
+<p>So, first things first. We’re going to create a new source-file to put just the custom-control code in. Call this <code class="highlighter-rouge">CustCtrl.c</code> or something. If you take this modular approach from the start you will find it so much easier to develop and maintain your code. This source file just needs to contain the following two lines for now:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+#include &lt;tchar.h&gt;
+</span></code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">&lt;tchar.h&gt;</code> file enables us to write Unicode-compatible windows programs. In a few places in the code, you will see things like “<code class="highlighter-rouge">TCHAR</code>” and “<code class="highlighter-rouge">_T</code>”. These are macros defined in <code class="highlighter-rouge">&lt;tchar.h&gt;</code>, which help us to easily create Unicode applications, if we want. Our custom control won’t be Unicode, but it could be if we used the correct compiler settings.</p>
+
+<p>In order to create a new type of window, we need to register a new window class. This is achieved with the <code class="highlighter-rouge">RegisterClassEx</code> API call, shown below.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCHAR</span> <span class="n">szClassName</span><span class="p">[]</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="s">"CustCtrl345"</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">InitCustomControl</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">WNDCLASSEX</span> <span class="n">wc</span><span class="p">;</span>
+
+    <span class="n">wc</span><span class="p">.</span><span class="n">cbSize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">wc</span><span class="p">);</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">lpszClassName</span> <span class="o">=</span> <span class="n">szClassName</span><span class="p">;</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">hInstance</span> <span class="o">=</span> <span class="n">GetModuleHandle</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">lpfnWndProc</span> <span class="o">=</span> <span class="n">CustWndProc</span><span class="p">;</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">hCursor</span> <span class="o">=</span> <span class="n">LoadCursor</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">IDC_ARROW</span><span class="p">);</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">hIcon</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">lpszMenuName</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">hbrBackground</span> <span class="o">=</span> <span class="p">(</span><span class="n">HBRUSH</span><span class="p">)</span><span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_BTNFACE</span><span class="p">);</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">cbClsExtra</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">cbWndExtra</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">wc</span><span class="p">.</span><span class="n">hIconSm</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">RegisterClassEx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wc</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So far so good. The next step is to write a window procedure ( <code class="highlighter-rouge">CustWndProc</code> ) which the custom control uses to process it’s messages. This is just a standard window procedure, like the one shown below.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="nf">CustWndProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="nl">default:</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, it may look as if this window procedure doesn’t actually do anything, but this is not the case. The <code class="highlighter-rouge">DefWindowProc</code> API call performs alot of default processing (window focus, painting, activation etc) for a window. It is only when we need to provide additional functionality (like drawing the window focus) that we need to start filling in that <code class="highlighter-rouge">switch</code> statement to handle specific windows messages.</p>
+
+<h2 id="creating-the-control">Creating the control</h2>
+
+<p>Now we can create a custom control! There are two ways to do this. The first is to manually create the control at run-time (probably in the main window’s <code class="highlighter-rouge">WM_CREATE</code> message, or something similar). This is achieved with the <code class="highlighter-rouge">CreateWindowEx</code> API call, like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HWND</span> <span class="nf">CreateCustomControl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndParent</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwndCtrl</span><span class="p">;</span>
+
+    <span class="n">hwndCtrl</span> <span class="o">=</span> <span class="n">CreateWindowEx</span><span class="p">(</span>
+                 <span class="n">WS_EX_CLIENTEDGE</span><span class="p">,</span> <span class="c1">// give it a standard border
+</span>                 <span class="n">szClassName</span><span class="p">,</span>
+                 <span class="n">_T</span><span class="p">(</span><span class="s">"A custom control"</span><span class="p">),</span>
+                 <span class="n">WS_VISIBLE</span> <span class="o">|</span> <span class="n">WS_CHILD</span><span class="p">,</span>
+                 <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span>
+                 <span class="n">hwndParent</span><span class="p">,</span>
+                 <span class="nb">NULL</span><span class="p">,</span> <span class="n">GetModuleHandle</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nb">NULL</span>
+               <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hwndCtrl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The second way, assuming you are using some kind of resource editor (like in Visual C++), is to create a custom control in a dialog template, in the exact same way you might place edit controls or list boxes on a dialog box. The only difference is, you create a “Custom Control”, and manually define the name of the window class (in this case, “CustCtrl345”). When your dialog is created, Windows automatically creates the custom control for you, and gives it a control ID.</p>
+
+<p><img src="http://www.catch22.net/assets/img/custctrl02.gif" alt="Creating a custom control with visual studio" class="align-center" /></p>
+
+<h2 id="custom-control-state-information">Custom control state information</h2>
+
+<p>At some point in time, you will want to make the control do something. And, unless your control is going to be extremely simple, you will undoubtably want to define variables, text strings or arrays to represent the state of the control. For example, in a custom list control, you would at the very least need to keep track of the items in the list, using an array or linked list. You would also need a variable which keeps track of how many items there are in your list. In addition, if you want your control to be scrollable, you will need to keep track of the scrollbar position, and the minimum and maximum scroll ranges.</p>
+
+<p>You need to take my word that you will need to define a structure (or class, if you are using C++) which will encapsulate ALL of the control’s state information. If you take this approach (and avoid using global variables), you will be able to create multiple custom controls at the same time, and each one will look after itself.</p>
+
+<p>We need to decide what attributes our custom control will have. The list below describes these attributes.</p>
+
+<ul>
+  <li>Text colour (Foreground and Background)</li>
+  <li>Display text (what the control actually displays)</li>
+  <li>Font (what type-face the text will be drawn in)</li>
+</ul>
+
+<p>The following structure will hold some simple state information.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">COLORREF</span> <span class="n">crForeGnd</span><span class="p">;</span> <span class="c1">// Foreground text colour
+</span>    <span class="n">COLORREF</span> <span class="n">crBackGnd</span><span class="p">;</span> <span class="c1">// Background text colour
+</span>    <span class="n">HFONT</span> <span class="n">hFont</span><span class="p">;</span> <span class="c1">// The font
+</span>    <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">;</span> <span class="c1">// The control's window handle
+</span><span class="p">}</span> <span class="n">CustCtrl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The one element missing from this structure is the display text. For our simple example, this is not necessary, because every window has it’s own window text. Therefore we will just use this standard window text when we draw the control. For more complicated controls (lists, edit controls), you would need to store the text yourself.</p>
+
+<h2 id="associating-a-structure-with-the-custom-control">Associating a structure with the custom control</h2>
+
+<p>At this point you will hit a stumbling block. The problem is, your custom window procedure is a simple callback function, which processes all messages for all custom controls you create. Depending on which window is currently having it’s message processed, we will have to obtain the correct state structure for that window, and use that structure when processing the message.</p>
+
+<p>There are many ways to “attach” a structure to a window. Which one you use can depend on many things, but I will describe each method below. First though, we will define two simple functions, which will set and retrieve our custom structure for a window:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CustCtrl</span> <span class="o">*</span> <span class="nf">GetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// get pointer to structure, then return it
+</span>    <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span> <span class="o">=</span> <span class="o">???</span>
+    <span class="k">return</span> <span class="n">ccp</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">SetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// attach pointer to window
+</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="the-gwl_userdata-area">The GWL_USERDATA area.</h3>
+
+<p>Every window in the system has a 32bit integer which can be set to any value. This 4 byte storage area is enough to store a pointer to a structure. We set this integer using <code class="highlighter-rouge">SetWindowLong</code>, and retrieve the integer using <code class="highlighter-rouge">GetWindowLong</code>. Using this technique, our function will look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CustCtrl</span> <span class="o">*</span> <span class="nf">GetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">CustCtrl</span> <span class="o">*</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">SetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">ccp</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This method is usually used when subclassing a control rather than writing one from scratch, because there are better alternatives. The problem with this method is that any application or window can set this user-data-area, so you need to be careful it is never used by two conflicting components.</p>
+
+<h3 id="window-properties">Window Properties</h3>
+
+<p>Window properties allow a program to attach multiple 32bit integer values to a window, using a textual string as a way to map each property to the associated integer value. In actual fact, a window property is really a <code class="highlighter-rouge">HANDLE</code> value (i.e. a handle to a block of memory, or a GDI resource). However, a <code class="highlighter-rouge">HANDLE</code> is still a 32bit integer, so we will store a pointer to a custom structure as a <code class="highlighter-rouge">HANDLE</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCHAR</span> <span class="n">szPropName</span><span class="p">[]</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="s">"CustCtrlPtr"</span><span class="p">);</span>
+
+<span class="n">CustCtrl</span> <span class="o">*</span> <span class="nf">GetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">CustCtrl</span> <span class="o">*</span><span class="p">)</span><span class="n">GetProp</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">szPropName</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">SetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SetProp</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">szPropName</span><span class="p">,</span> <span class="p">(</span><span class="n">HANDLE</span><span class="p">)</span><span class="n">ccp</span><span class="p">);</span>    
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This method will be a little slower than the rest, simply because of the string comparisons that windows will have to do when it retrieves a window property for us. It’s not much slower though, and because we only need to do this once for every message we receive, it’s not much of an overhead at all.</p>
+
+<h3 id="extra-window-bytes">Extra window bytes</h3>
+
+<p>This is the best way to go if you are writing a control from scratch. When you initially register a control’s window class, you have the option of specifying how many extra bytes of user-storage each window of that class will contain. If we set this value to be the size of a pointer (to our state structure), then we can use this special-purpose space exclusively for our custom control. This then leaves the <code class="highlighter-rouge">GWL_USERDATA</code> area for other purposes.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Register the window class.
+</span><span class="n">wc</span><span class="p">.</span><span class="n">cbWndExtra</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">CustCtrl</span> <span class="o">*</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CustCtrl</span> <span class="o">*</span> <span class="nf">GetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">CustCtrl</span> <span class="o">*</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">SetCustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">ccp</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The extra window bytes are always accessed using a zero-based offset (when using <code class="highlighter-rouge">GetWindowLong</code>). Because we reserved space for one 32bit integer, this is accessed from the start of the extra bytes, therefore we use an index of zero.</p>
+
+<h3 id="indirect-lookup-tables">Indirect lookup tables</h3>
+
+<p>The last method (which MFC uses) is to use a separate lookup table, which maps window handles to structures. This is basically just an array or hash table, with entries like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">;</span>
+    <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">WndLookup</span><span class="p">;</span>
+
+<span class="n">WndLookup</span> <span class="n">big_lookup</span><span class="p">[</span><span class="n">MAX_CUST_WINDOWS</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>Whenever we need to retrieve the custom structure from a window, we need to search the array or hash table for the correct entry. This is fairly quick when we only have a couple of custom windows at any time, but when we start to create alot of windows, this method will add quite an overhead. It is also difficult to intergrate this technique into a multi-threaded application.</p>
+
+<h3 id="assembly-language-thunks">Assembly language thunks</h3>
+
+<p>This method is included for completeness, and is quite different to the others described above. The technique is used by the ATL and WTL C++ template libraries, and is a very quick method of retrieving an integer associated with a window. It’s pretty complicated though, so our basic method is still preferred.</p>
+
+<p>The basic idea is to replace the window procedure for a custom control with a small assembly language stub which modifies the first argument to the window procedure (the handle to the window), and replaces it with a pointer to the <code class="highlighter-rouge">CustCtrl</code> structure. The stub can look something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mov</span> <span class="p">[</span><span class="n">esp</span><span class="o">+</span><span class="mi">4</span><span class="p">],</span> <span class="n">CustCtrl</span> <span class="o">*</span>
+<span class="n">jmp</span> <span class="n">orig_proc</span>
+</code></pre></div></div>
+
+<p>You must understand the environment that this stub executes in, in order to understand how this trick works. When the window procedure needs to be called, the win32 sub-system executes a <code class="highlighter-rouge">CALL</code> instruction to pass control to the window procedure in question (which is not the window procedure at all, but the assembly-language stub. However, the very act of making a function call to a window procedure (real or not) results in the stack being set to the following state:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span> <span class="p">...</span>
+<span class="n">esp</span><span class="o">+</span><span class="mi">10</span> <span class="p">[</span><span class="n">lParam</span><span class="p">]</span>
+<span class="n">esp</span><span class="o">+</span><span class="mi">0</span><span class="n">C</span> <span class="p">[</span><span class="n">wParam</span><span class="p">]</span>
+<span class="n">esp</span><span class="o">+</span><span class="mi">08</span> <span class="p">[</span><span class="n">Message</span><span class="p">]</span>
+<span class="n">esp</span><span class="o">+</span><span class="mo">04</span> <span class="p">[</span><span class="n">HWND</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">CustCtrl</span> <span class="o">*</span><span class="p">]</span>
+<span class="n">esp</span><span class="o">+</span><span class="mo">00</span> <span class="p">[</span><span class="n">address</span> <span class="n">to</span> <span class="k">return</span> <span class="n">to</span> <span class="n">when</span> <span class="n">function</span> <span class="n">returns</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>The stub must perform two key actions when executed:</p>
+
+<ol>
+  <li>Replace the <code class="highlighter-rouge">HWND</code> parameter on the stack with a pointer to the class or structure that we want to associate with the window.</li>
+  <li>Pass control to the real window procedure, now with it’s first argument modified.</li>
+</ol>
+
+<p>The stub is generated at run-time, for each window and class/structure instance that is required. Note that the stub is different each time, because the structure and window procedure will be different. The actual op-codes for the <code class="highlighter-rouge">MOV</code> and <code class="highlighter-rouge">JMP</code> instructions must be generated for each specific case.</p>
+
+<p>As you can imagine, this technique is very fast. The drawback though is that the window procedure can’t make any reference to the HWND parameter - it has changed to be a pointer to the class / structure instead. This means that this structure MUST include the original HWND as a member, otherwise operations on the window would become impossible.</p>
+
+<p>The window procedure, which can be a class-member-function, will look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UINT</span> <span class="n">WINAPI</span> <span class="n">CustCtrl</span><span class="o">::</span><span class="n">WindowProc</span><span class="p">(</span><span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Note that there is always a hidden first parameter to every C++ member function - the <code class="highlighter-rouge">*this</code> pointer. This means that the class-window procedure has full access to the whole class instance.</p>
+
+<p>To understand more on this topic, read the following article by Fritz Onion:</p>
+
+<p><a href="http://staff.develop.com/onion/Articles/cpprep0399.htm">Thunking WndProcs in ATL</a></p>
+
+<h2 id="creating-the-control-take-2">Creating the control, Take 2</h2>
+
+<p>Now that we know how to attach a custom structure to a window, we can use this technique when we create a custom control. The actual <code class="highlighter-rouge">CreateWindowEx</code> call can remain the same, but our window procedure needs to change to incorporate the new CustCtrl structure. The differences are this:</p>
+
+<ul>
+  <li>Allocate a new structure when the window is first created.</li>
+  <li>Initialize the structure contents to default values.</li>
+  <li>Attach the structure to the window (using a pointer to the structure).</li>
+  <li>Free the structure memory when the window is destroyed.</li>
+</ul>
+
+<p>The custom control’s window procedure will now need to look this this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="nf">CustWndProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// retrieve the custom structure POINTER for THIS window
+</span>    <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span> <span class="o">=</span> <span class="n">GetCustCtrl</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">WM_NCCREATE</span><span class="p">:</span>
+
+        <span class="c1">// Allocate a new CustCtrl structure for this window.
+</span>        <span class="n">ccp</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">CustCtrl</span><span class="p">)</span> <span class="p">);</span>
+
+        <span class="c1">// Failed to allocate, stop window creation.
+</span>        <span class="k">if</span><span class="p">(</span><span class="n">ccp</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> 
+            <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+
+        <span class="c1">// Initialize the CustCtrl structure. 
+</span>        <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span> <span class="o">=</span> <span class="n">hwnd</span><span class="p">;</span>
+        <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">crForeGnd</span> <span class="o">=</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOWTEXT</span><span class="p">);</span>
+        <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">crBackGnd</span> <span class="o">=</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOW</span><span class="p">);</span>
+        <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hFont</span> <span class="o">=</span> <span class="n">GetStockObject</span><span class="p">(</span><span class="n">DEFAULT_GUI_FONT</span><span class="p">);</span>
+
+        <span class="c1">// Assign the window text specified in the call to CreateWindow.
+</span>        <span class="n">SetWindowText</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="p">((</span><span class="n">CREATESTRUCT</span> <span class="o">*</span><span class="p">)</span><span class="n">lParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">lpszName</span><span class="p">);</span>
+
+        <span class="c1">// Attach custom structure to this window.
+</span>        <span class="n">SetCustCtrl</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">ccp</span><span class="p">);</span>
+
+        <span class="c1">// Continue with window creation.
+</span>        <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+
+    <span class="c1">// Clean up when the window is destroyed.
+</span>    <span class="k">case</span> <span class="n">WM_NCDESTROY</span><span class="p">:</span>
+        <span class="n">free</span><span class="p">(</span><span class="n">ccp</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="nl">default:</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note the use of the <code class="highlighter-rouge">WM_NCCREATE</code> and <code class="highlighter-rouge">WM_NCDESTROY</code> messages here. These are the first and last messages to be received by a window, respectively. By using these messages to allocate and free our custom structure, we can be sure that this structure will be in existance for all other window messages we receive.</p>
+
+<h2 id="adding-control-functionality">Adding control functionality</h2>
+
+<p>At this point we can create as many custom controls as we desire. The windows won’t actually display or do anything, but you can manipulate them, size them etc, just like any other window you create. Let’s start to add the control’s functionality though.</p>
+
+<p>The first step is to start writing message handler functions for every message you want to handle. It is a very good idea to write a separate function for each message. This keeps the window procedure neat and simple, and keeps your code nice and modular. I can’t stress this point enough - get into the habit of writing separate functions right from the start, because it makes writing your code so much simpler in the long run.</p>
+
+<h3 id="painting-the-control">Painting the control</h3>
+
+<p>Whenever windows wants us to update the contents of our window (the client area), a <code class="highlighter-rouge">WM_PAINT</code> message will be sent. So, whenever the <code class="highlighter-rouge">WM_PAINT</code> message is received, we need to call our control’s painting routine.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_PAINT</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">CustCtrl_OnPaint</span><span class="p">(</span><span class="n">ccp</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Note how the pointer to the control structure is passed to the message handler function. This will be the same for any message we handle. Now, the actual paint handler will look something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">CustCtrl_OnPaint</span><span class="p">(</span><span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HDC</span> <span class="n">hdc</span><span class="p">;</span>
+    <span class="n">PAINTSTRUCT</span> <span class="n">ps</span><span class="p">;</span>
+    <span class="n">HANDLE</span> <span class="n">hOldFont</span><span class="p">;</span>
+    <span class="n">TCHAR</span> <span class="n">szText</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+
+    <span class="c1">// Get a device context for this window
+</span>    <span class="n">hdc</span> <span class="o">=</span> <span class="n">BeginPaint</span><span class="p">(</span><span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+
+    <span class="c1">// Set the font we are going to use
+</span>    <span class="n">hOldFont</span> <span class="o">=</span> <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hFont</span><span class="p">);</span>
+
+    <span class="c1">// Set the text colours
+</span>    <span class="n">SetTextColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">crForeGnd</span><span class="p">);</span>
+    <span class="n">SetBkColor</span> <span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">crBackGnd</span><span class="p">);</span>
+
+    <span class="c1">// Find the text to draw
+</span>    <span class="n">GetWindowText</span><span class="p">(</span><span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">szText</span><span class="p">));</span>
+
+    <span class="c1">// Work out where to draw
+</span>    <span class="n">GetClientRect</span><span class="p">(</span><span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">// Find out how big the text will be
+</span>    <span class="n">GetTextExtentPoint32</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">szText</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">sz</span><span class="p">);</span>
+
+    <span class="c1">// Center the text
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">sz</span><span class="p">.</span><span class="n">cx</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">sz</span><span class="p">.</span><span class="n">cy</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="c1">// Draw the text
+</span>    <span class="n">ExtTextOut</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ETO_OPAQUE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">szText</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">// Restore the old font when we have finished
+</span>    <span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hOldFont</span><span class="p">);</span>
+
+    <span class="c1">// Release the device context
+</span>    <span class="n">EndPaint</span><span class="p">(</span><span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="undocumented-painting-tips">Undocumented painting tips</h3>
+
+<p>I just want to mention an important feature of Windows here. The standard documention states that <code class="highlighter-rouge">wParam</code> and <code class="highlighter-rouge">lParam</code> will both be zero for the <code class="highlighter-rouge">WM_PAINT</code> message. This is fine, because we can do everything we want with the <code class="highlighter-rouge">BeginPaint</code> / <code class="highlighter-rouge">EndPaint</code> technique.</p>
+
+<p><strong>However</strong> , for alot of standard controls, Windows will sometimes send a <code class="highlighter-rouge">WM_PAINT</code> message with <code class="highlighter-rouge">wParam</code> set to a handle to a device context. In other words, Windows sometimes supplies a device-context for you, which will result in faster drawing. This means that it is not strictly necessary to use the <code class="highlighter-rouge">BeginPaint</code> / <code class="highlighter-rouge">EndPaint</code> pair all of the time. To take advantage of this scenario, you could check <code class="highlighter-rouge">wParam</code> to see if it is zero or not. If it isn’t, then instead of using <code class="highlighter-rouge">BeginPaint</code> to get a device context, just use <code class="highlighter-rouge">wParam</code> as your HDC. i.e.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">wParam</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">hdc</span> <span class="o">=</span> <span class="n">BeginPaint</span><span class="p">(</span><span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+<span class="k">else</span>
+    <span class="n">hdc</span> <span class="o">=</span> <span class="p">(</span><span class="n">HDC</span><span class="p">)</span><span class="n">wParam</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Don’t forget to do the same test when you come to call <code class="highlighter-rouge">EndPaint</code> - in fact, don’t do anything when you have a pre-supplied HDC from Windows.</p>
+
+<p>Now, you need to be careful using this technique, because the device context that windows supplies will not be initialized to it’s default state, so you need to make sure that you set the device context up in the correct mapping mode, set the correct colours etc. (i.e, don’t assume that the device context will be in a certain state). Also, you must restore ANY setting that you modify, be it font, mapping modes, colours etc.</p>
+
+<p>The custom control presented here does not use this alternative painting method, so you can safely ignore this information if you want.</p>
+
+<h3 id="preventing-flicker">Preventing flicker</h3>
+
+<p>Currently, the control will flicker slightly each time it is painted. This is because it is getting painted twice for every <code class="highlighter-rouge">WM_PAINT</code> it receives. The problem is the <code class="highlighter-rouge">WM_ERASEBKGND</code> message, which is sent every time we call <code class="highlighter-rouge">BeginPaint</code>. This isn’t a problem really - Windows is doing us a favour, because the default action for <code class="highlighter-rouge">WM_ERASEBKGND</code> is to draw a nice window background for us (using the window’s default background brush), which we can then paint on top of in the <code class="highlighter-rouge">WM_PAINT</code> handler.</p>
+
+<p>However, our <code class="highlighter-rouge">WM_PAINT</code> handler also draws the control’s background, so there is no point in this happening twice. Therefore, we need to prevent the default <code class="highlighter-rouge">WM_ERASEBKGND</code> behaviour from happending. As usual, there are a number of ways to do this.</p>
+
+<ul>
+  <li>Set the window’s background brush to NULL. (Set the <code class="highlighter-rouge">hbrBackground</code> member of the <code class="highlighter-rouge">WNDCLASS</code> structure to zero when you register the window class).</li>
+  <li>Return non-zero in the <code class="highlighter-rouge">WM_ERASEBKGND</code> message handler.</li>
+</ul>
+
+<p>Any one of these will steps will prevent the <code class="highlighter-rouge">WM_ERASEBKGND</code> message from clearing the window. We will therefore choose the last option, because it is the simplest to implement:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_ERASEBKGND</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="responding-to-user-interaction">Responding to user interaction</h3>
+
+<p>Our custom control will change colour whenever the user clicks the mouse on it. Therefore the next message handler will be for the <code class="highlighter-rouge">WM_LBUTTONDOWN</code> message.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_LBUTTONDOWN</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">CustCtrl_OnLButtonDown</span><span class="p">(</span><span class="n">ccp</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">CustCtrl_OnLButtonDown</span><span class="p">(</span><span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">COLORREF</span> <span class="n">col</span> <span class="o">=</span> <span class="n">RGB</span><span class="p">(</span> <span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="mi">256</span><span class="p">,</span> <span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="mi">256</span><span class="p">,</span> <span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="mi">256</span> <span class="p">);</span>
+
+    <span class="c1">// Change the foreground colour
+</span>    <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">crForeGnd</span> <span class="o">=</span> <span class="n">col</span><span class="p">;</span>
+
+    <span class="c1">// Use the inverse of the foreground colour
+</span>    <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">crBackGnd</span> <span class="o">=</span> <span class="p">((</span><span class="o">~</span><span class="n">col</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x00ffffff</span><span class="p">);</span>
+
+    <span class="c1">// Now redraw the control
+</span>    <span class="n">InvalidateRect</span><span class="p">(</span><span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+    <span class="n">UpdateWindow</span><span class="p">(</span><span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hwnd</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="receiving-input-focus">Receiving input focus</h3>
+
+<p>When a user clicks on a window or control it does <em>not</em> automatically receive the keyboard-input focus. Think about it for a while: controls like toolbars and static controls never cause the input-focus to change when you click on them so there must be something else we need to do when the mouse is clicked in our window.</p>
+
+<p>Rather than using the <code class="highlighter-rouge">WM_LBUTTONDOWN</code> message (which can be received many times by a window) we will uFor our control to receive input focus we must react to the <code class="highlighter-rouge">WM_MOUSEACTIVATE</code> message:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_MOUSEACTIVATE</span><span class="p">:</span>
+    <span class="n">SetFocus</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">MA_ACTIVATE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>By manually setting the input-focus to our control we</p>
+
+<h3 id="font-support">Font support</h3>
+
+<p>Currently, our custom control only supports the default system font, so we will handle the <code class="highlighter-rouge">WM_SETFONT</code> message. Handling this message will allow us to change the font whenever requested by windows.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_SETFONT</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">CustCtrl_OnSetFont</span><span class="p">(</span><span class="n">ccp</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">CustCtrl_OnSetFont</span><span class="p">(</span><span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Change the font
+</span>    <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">hFont</span> <span class="o">=</span> <span class="p">(</span><span class="n">HFONT</span><span class="p">)</span><span class="n">wParam</span><span class="p">;</span> 
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="mission-completed">Mission Completed</h2>
+
+<p>At this point in time we need go no further. What you have is a complete custom control. It is now up to you to experiment with the control, to add further features, or to start again using the steps described to create your very own control.</p>
+
+<p>There are still a few things I want to say about writing custom controls, so read on if you havn’t fallen asleep yet!</p>
+
+<h2 id="using-message-cracker-macros">Using message cracker macros</h2>
+
+<p>Message Crackers are pre-processor macros, define in WINDOWSX.H (available with the Platform SDK).</p>
+
+<h2 id="if-you-are-using-c">If you are using C++</h2>
+
+<p>It is quite possible to use C++ to write your custom control. In fact, it is alot easier than using plain C, because you can create a miniture object framework which makes writing the window procedure a dream. Instead of using a structure to define the control state, you can use a class. And the message handler functions can become member functions of that class.</p>
+
+<p>As a quick example, let’s redefine the structure we used for the custom control:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CustCtrl</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">CustCtrl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">h</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">CustCtrl</span><span class="p">();</span>
+
+    <span class="c1">// message handlers
+</span>    <span class="n">LRESULT</span> <span class="n">OnPaint</span> <span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+    <span class="n">LRESULT</span> <span class="n">OnLButtonDown</span> <span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+    <span class="n">LRESULT</span> <span class="n">OnSetFont</span> <span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+
+    <span class="c1">// window procedure
+</span>    <span class="k">static</span> <span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="n">WndProc</span><span class="p">(</span>
+       <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span>
+    <span class="p">);</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">COLORREF</span> <span class="n">crForeGnd</span><span class="p">;</span> <span class="c1">// Foreground text colour
+</span>    <span class="n">COLORREF</span> <span class="n">crBackGnd</span><span class="p">;</span> <span class="c1">// Background text colour
+</span>    <span class="n">HFONT</span> <span class="n">hFont</span><span class="p">;</span> <span class="c1">// The font
+</span>    <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">;</span> <span class="c1">// The control's window handle
+</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>The window procedure now looks like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="n">CustCtrl</span><span class="o">::</span><span class="n">WndProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// retrieve the custom structure POINTER for THIS window
+</span>    <span class="n">CustCtrl</span> <span class="o">*</span><span class="n">ccp</span> <span class="o">=</span> <span class="n">GetCustCtrl</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="c1">// Allocate a new CustCtrl class for this window.
+</span>    <span class="k">case</span> <span class="n">WM_NCCREATE</span><span class="p">:</span>
+        <span class="n">ccp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CustCtrl</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+        <span class="n">SetCustCtrl</span><span class="p">(</span><span class="n">ccp</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ccp</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="c1">// Clean up when the window is destroyed.
+</span>    <span class="k">case</span> <span class="n">WM_NCDESTROY</span><span class="p">:</span>
+        <span class="k">delete</span> <span class="n">ccp</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="c1">// Handle messages
+</span>    <span class="k">case</span> <span class="n">WM_PAINT</span><span class="p">:</span> <span class="k">return</span> <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">OnPaint</span><span class="p">(</span><span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+    <span class="k">case</span> <span class="n">WM_ERASEBKGND</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">WM_LBUTTONDOWN</span><span class="p">:</span> <span class="k">return</span> <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">OnLButtonDown</span><span class="p">(</span><span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+    <span class="k">case</span> <span class="n">WM_SETFONT</span><span class="p">:</span> <span class="k">return</span> <span class="n">ccp</span><span class="o">-&gt;</span><span class="n">OnSetFont</span><span class="p">(</span><span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+    <span class="k">default</span><span class="o">:</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Notice the difference in the way the C++ class is allocated. The class’s constructor can be used to initialize the object. Also, look at the way the message handler functions are called through a pointer to the class. There is no need to pass the pointer as the first parameter, because a C++ member function has access to the object’s class members. This means, in our message handler functions, there is no need to constantly write <code class="highlighter-rouge">ptr-&gt;_attribute_</code>, because C++ does this automatically for you with the implicit <code class="highlighter-rouge">this</code> pointer. Look at this small example:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CustCtrl</span><span class="o">::</span><span class="n">OnSetFont</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Change the font
+</span>    <span class="n">hFont</span> <span class="o">=</span> <span class="p">(</span><span class="n">HFONT</span><span class="p">)</span><span class="n">wParam</span><span class="p">;</span> 
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is the advantage of using C++. It makes writing this type of object-oriented program alot easier. Now, just one last thing, which is very important. In the C++ class, I defined the window procedure to be a <em>static</em> function. I will explain why this important detail is necessary.</p>
+
+<p>A standard C++ member function always has an implicit first argument, the <code class="highlighter-rouge">this</code> pointer. Whenever you call a member function, the C++ compiler automatically includes this hidden argument. This means that our window procedure, if it had been a normal class member, would really have looked like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="n">CustCtrl</span><span class="o">::</span><span class="n">WndProc</span><span class="p">(</span> <span class="n">CustCtrl</span> <span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="p">...);</span>
+</code></pre></div></div>
+
+<p>You never declare a member function like this, but this is how it works “behind the scenes”. Now, you are probably aware that this function prototype is incompatible with the standard window procedure prototype. In fact, it is impossible to use a member function as a window procedure. Therefore, we need to define the window procedure as a <em>static</em> member , so that the <code class="highlighter-rouge">this</code> pointer is omitted from the function prototype.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="n">CustCtrl</span><span class="o">::</span><span class="n">WndProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="p">...);</span>
+</code></pre></div></div>
+
+<p>Obviously this means that the window procedure cannot access any member variables. This is why we have to obtain a pointer to the correct class for each window, and call the member functions through that pointer. This is a small inconvenience though for the design benefits that C++ gives us.</p>
+
+<p><strong>Important:</strong> Although a custom control can be written using C++, this is as far as it goes. The “interface” to the control (i.e. how it is created, how to move it / size it) hasn’t changed at all. This makes it possible to use C++ to create a custom control, and then use it in a C project. This way you get the best of both worlds.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We have covered alot of ground in this tutorial, but it was necessary because custom controls, whilst not difficult, require careful coding and a reasonable understanding of Windows programming.</p>
+
+<p>Although the example control presented in this tutorial was very simple, the concepts are exactly the same as for a more complicated control. I have shown you the techniques required to build a custom control from scratch. It is now up to you to take these techniques and apply them to your own projects.</p>
+
+<p>Well, happy coding,</p>
+
+<p>James.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/custctrl.zip">custctrl.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-11-20T00:00:00+00:00">November 20, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="url-control.html" class="pagination--pager" title="URL Control
+">Previous</a>
+    
+    
+      <a href="docking-toolbars-part-1.html" class="pagination--pager" title="Docking Toolbars - Part 1
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-controls by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

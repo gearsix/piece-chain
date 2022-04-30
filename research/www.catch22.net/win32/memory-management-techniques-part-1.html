@@ -1,0 +1,576 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/memory-management-techniques-part-1 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Memory Techniques - Part 1 - Catch22</title>
+<meta name="description" content="This article came about due to interest in the way my HexEdit application manages large files, but also my desire to document what I consider to be the core technology behind HexEdit. I will be describing not only the memory management techniques for loading multi-gigabyte files, but also the techniques I developed to allow extremely fast insertion and deletion from these large files.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Memory Techniques - Part 1">
+<meta property="og:url" content="memory-management-techniques-part-1.html">
+
+
+  <meta property="og:description" content="This article came about due to interest in the way my HexEdit application manages large files, but also my desire to document what I consider to be the core technology behind HexEdit. I will be describing not only the memory management techniques for loading multi-gigabyte files, but also the techniques I developed to allow extremely fast insertion and deletion from these large files.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-08-20T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="memory-management-techniques-part-1.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Memory Techniques - Part 1</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/hexview01.zip">hexview01.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Memory Techniques - Part 1">
+    <meta itemprop="description" content="This article came about due to interest in the way my HexEdit application manages large files, but also my desire to document what I consider to be the core technology behind HexEdit. I will be describing not only the memory management techniques for loading multi-gigabyte files, but also the techniques I developed to allow extremely fast insertion and deletion from these large files.">
+    <meta itemprop="datePublished" content="August 20, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Memory Techniques - Part 1
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Memory Techniques - Part 1</h1-->
+<!--h3>Memory management techniques for large file editors</h3-->
+
+<p>This article came about due to interest in the way my HexEdit application manages large files, but also my desire to document what I consider to be the core technology behind HexEdit. I will be describing not only the memory management techniques for loading multi-gigabyte files, but also the techniques I developed to allow extremely fast insertion and deletion from these large files.</p>
+
+<h2 id="the-scenario">The Scenario</h2>
+
+<p>The problem we are trying to overcome is simply this: You want to develop some kind of file or text editor, and you want your program to be able to load, edit and save files of any size. In fact, you want your program to load and edit the largest sized file possible. Under 32bit Windows this is a 4Gb file. (Actually, Windows NT supports 18 exabyte files with its 64bit NTFS file system, but I will talk about this type of file later in the series.</p>
+
+<p>Your file editor needs be able to load a 4Gb file in a fraction of a second. In addition, insertions and deletions to and from the file must be as fast for a 4Gb file as they are for a 1Kb file.</p>
+
+<p>This series of articles (I haven’t decided exactly how many articles there will be yet) will take you through the design decisions and algorithms necessary to accomplish these goals. At the end of the series you will have enough information to develop your own file-handling functions, which will be as powerful and flexible as those used in my HexEdit application.</p>
+
+<h2 id="memory-management">Memory Management</h2>
+
+<p>Let’s forget about actually editing a large file for the moment, and concentrate just on loading a file into your application. So, your have a 4Gb file saved on your hard disk, and you want to load this file so you can preview any portion of it. Let’s assume that our first application will be a simple hex file viewer, with no editing capabilities.</p>
+
+<p>The first decision to take is what memory facilities we will use to gain access to the file’s contents. To make this decision, we need to know what memory facilities are available to our program, and base our decision on that. Because our file viewer will be a 32bit Windows program capable of running under Windows 9x and NT / 2000, we have the following facilities at our disposal.</p>
+
+<p>I will make a note here for you to go and read “Advanced Windows” by Jeffrey Richter. This book covers the entire memory architecture and memory management in Windows, and will be much more detailed than what I will be describing here.</p>
+
+<h2 id="virtual-memory">Virtual Memory</h2>
+
+<p>Every 32bit process in Windows has a 4Gb virtual address space, regardless of the amount of physical RAM you have installed. Of this total virtual space, only 2Gb is available for an application’s private use. Actually, the available space slightly less than this - 128Kb less in WinNT and 4Mb less in Win9x).</p>
+
+<p>There are a variety of methods to allocate memory from this 2Gb region of space. All depend on how much memory needs to be allocated, and what its intended use is.</p>
+
+<ol>
+  <li><strong><code class="highlighter-rouge">malloc</code> and <code class="highlighter-rouge">new[]</code></strong> The simplest is to use the standard C or C++ memory allocation routines (<code class="highlighter-rouge">malloc</code> and <code class="highlighter-rouge">new[]</code>, respectively). Both of these methods use the memory allocation facilities provided by the operating system. In Visual C++ 6.0, <code class="highlighter-rouge">malloc</code> and <code class="highlighter-rouge">new[]</code> use <code class="highlighter-rouge">VirtualAlloc</code> internally. Anyway, <code class="highlighter-rouge">malloc</code> and <code class="highlighter-rouge">new[]</code> are only really meant for allocating lots of small objects, not one gigantic memory region.</li>
+  <li><strong><code class="highlighter-rouge">HeapAlloc</code></strong> The seond method to allocate memory in Windows is to use the Heap function – HeapAlloc (or the older LocalAlloc and GlocalAlloc). These functions are also meant for allocating many small objects though - just like malloc and new[] - and are also implemented by calls to VirtualAlloc.</li>
+  <li><strong><code class="highlighter-rouge">VirtualAlloc</code></strong> The third way to allocate memory in Windows is to use <code class="highlighter-rouge">VirtualAlloc</code> directly. This method is much more flexible because it allows you to specify where you want the memory to be in your address space, and allows you to reserve a region of memory without actually allocating any space from it.</li>
+  <li><strong>Memory-Mapped-Files</strong> The forth way to allocate memory is by using Memory Mapped Files. Rather than allocating memory, a memory-mapped file is a reserved region of the 2Gb address space, which has mapped into it a region a file stored on disk. The great thing about memory-mapped-files is that they free the programmer from having to do any direct file reading or writing. Simply reading and writing to the memory-mapped view causes the file’s contents to be accessed. The operating system provides clever page caching to make memory-mapped files a very quick way to read/write to a file.</li>
+</ol>
+
+<p>The picture below should help to describe the relationship between the various memory-allocation facilities. The important thing to remember is that all four types of memory allocation provide access to an application’s virtual address space in one way or another.</p>
+
+<p><img src="http://www.catch22.net/assets/img/mem01.gif" alt="" class="align-center" /></p>
+
+<p>I won’t go into any more detail because there is a problem, which is this. With a maximum of 2Gb available, how are we going to allocate enough memory to access our 4Gb file? The answer is simple. It is impossible to allocate more than 2Gb. At this point, you might decide to lower your sights a little, and say that the biggest file we will load in our file viewer will be 2Gb in size. Whilst this is what many hex-editor programs do, this is not good enough for us, is it?</p>
+
+<p>The only solution will be to access the file in sections, as we need them. This has one big disadvantage, which is that, our algorithms to access / search a file become more complicated because we no longer have one contiguous memory region to operate with. There are three major advantages to balance this one disadvantage though.</p>
+
+<ol>
+  <li>Because we have decided to access a file in sections, we don’t need to allocate very much memory any more. If we access our file in blocks of 64kb for example, we only need one 64kb block of memory in use at any one time. This leaves a vast proportion of our 2Gb address space for other interesting things.</li>
+  <li>Reading and writing a file from disk becomes extremely fast. We now only read what we want, when we want it. If we had tried to load the whole file at one go, this could have taken a long time if the file was very large. Because the block size is so small in comparison, file load time becomes so fast that you will probably never notice it happening.</li>
+  <li>Because we are using such a small amount of memory to access the file, all of the memory facilities that we discarded as being inadequate can be revisited. In fact, any one of the four memory facilities is suitable for our purposes.</li>
+</ol>
+
+<h2 id="an-example-file-viewer">An example file viewer</h2>
+
+<p>Now it’s time to present an example. We will use memory-mapped-files as the technique to access the file’s contents, simply because they are so flexible. Because of this decision, we must also use API calls to open and close the file. I’ll take you through the steps to create the backbone of the file viewer.</p>
+
+<p>A file viewer will typically display a tiny portion of a file in its main window. Whenever the main window needs to redrawn, the file viewer needs to retrieve the portion of the file which is currently being viewed. Most of the memory reads will be to one local area in the file. As long as our memory-mapped view of the file is big enough, then we will very rarely need to re-map the view to another area of the file. 64Kb will certainly be big enough in our case.</p>
+
+<p>Only when the file-viewer scrolls up and down through the file will we potentially need to re-map our view of the file.</p>
+
+<p>The diagram below should help to explain how a 64kb window is used to access a large file’s contents. A user of the view (such as our hex-viewer application) is free to access any part of the file within the view. Any accesses outside the range of the view require the view to be re-mapped to that part of the file. Failure to do so would result in a fatal application error.</p>
+
+<p><img src="http://www.catch22.net/assets/img/mem02.gif" alt="" class="align-center" /></p>
+
+<p>The fact that the file is accessed through a small window should be irrelevant to the display portion of the hex file viewer. All the drawing code requires is a small amount of memory every time the visible window needs to be re-drawn. The diagram above clearly illustrates a division between the window that displays the file, and the memory-mapped window that exposes the file’s contents.</p>
+
+<p>This relationship is basically the same as the standard MFC Document / View design, and it is this design that we will use for our file viewer. This means that our underlying implementation of the “Document” can change at any time. The “View” (the visible window) doesn’t ever need to know how the Document works – it just requests small amounts of data at a time to satisfy its drawing requirements.</p>
+
+<h2 id="document-design">Document Design</h2>
+
+<p>The “Document” portion of our hex-viewer will be implemented as a C++ class. I chose C++ because it is much easier to perform object encapsulation than just using plain C. I don’t intend to use any advanced features of C++ such as templates or inheritance, so feel free to convert the class into a C structure if you really can’t stand C++.</p>
+
+<p>The first thing to draw your attention to is the data-type I use to represent the size of files and sequences. I created a new <code class="highlighter-rouge">typedef</code> called <code class="highlighter-rouge">size_w</code>, which is currently an unsigned integer. This type has to be unsigned, so that the full 4Gb range can be represented. At some time in the future this type could be changed to an unsigned 64-bit integer. With a simple recompile, the sequence would be capable of handling huge 18 exabyte files (18 thousand thousand megabytes!).</p>
+
+<p>This is what the class interface will look like:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">sequence</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">sequence</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">sequence</span><span class="p">();</span>
+    <span class="n">BOOL</span> <span class="n">init</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">BOOL</span> <span class="n">close</span><span class="p">();</span>
+
+    <span class="n">size_w</span> <span class="n">size</span><span class="p">();</span>
+    <span class="n">BOOL</span> <span class="n">render</span><span class="p">(</span><span class="n">BYTE</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="n">size_w</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size_w</span> <span class="n">length</span><span class="p">);</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">BYTE</span> <span class="o">*</span><span class="n">get_adjusted_ptr</span><span class="p">(</span><span class="n">size_w</span> <span class="n">offset</span><span class="p">);</span>
+
+    <span class="c1">// private implementation details    
+</span>    <span class="n">HANDLE</span> <span class="n">hMemMap</span><span class="p">;</span> <span class="c1">// memory mapped object
+</span>    <span class="n">HANDLE</span> <span class="n">hFile</span><span class="p">;</span> <span class="c1">// handle to current file
+</span>    <span class="n">size_w</span> <span class="n">length</span><span class="p">;</span> <span class="c1">// logical size of this sequence
+</span>    <span class="n">size_w</span> <span class="n">filebufferlength</span><span class="p">;</span> <span class="c1">// size in bytes of the entire file
+</span>    <span class="n">BYTE</span> <span class="o">*</span><span class="n">filebuffer</span><span class="p">;</span> <span class="c1">// base of the view of the file
+</span>    <span class="n">BYTE</span> <span class="o">*</span><span class="n">adjustedptr</span><span class="p">;</span> <span class="c1">// an adjusted version of the filebuffer pointer
+</span>    <span class="n">size_w</span> <span class="n">mappedoffset</span><span class="p">;</span> <span class="c1">// offset of the current view within the memmap object
+</span>    <span class="n">size_w</span> <span class="n">mappedlength</span><span class="p">;</span> <span class="c1">// length of the view};
+</span></code></pre></div></div>
+
+<p>As you can see, the design is very simple. The constructor and destructor don’t really do an awful lot apart from setting everything to zero and cleaning up, so I’ll start by describing the <code class="highlighter-rouge">init()</code> member function.</p>
+
+<h2 id="initialising-the-sequence-with-a-file">Initialising the sequence with a file</h2>
+
+<p>The <code class="highlighter-rouge">init()</code> member function simply opens a file, and creating the file mapping which spans the length of the whole file. The rest of the work is resetting all the member variables to their default values. Note that no view of the file has been created at this stage.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">sequence</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HANDLE</span> <span class="n">hTemp</span><span class="p">;</span>
+
+    <span class="c1">// try to open the specified file for read-only access
+</span>    <span class="n">hTemp</span> <span class="o">=</span> <span class="n">CreateFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">GENERIC_READ</span><span class="p">,</span> <span class="n">FILE_SHARE_READ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">OPEN_EXISTING</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> 
+
+    <span class="c1">// if we failed to open the file, then exit now and keep the current file open
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">hTemp</span> <span class="o">==</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>
+
+    <span class="c1">// now close the CURRENT file, and let the new file become the current one
+</span>    <span class="n">close</span><span class="p">();</span>
+    <span class="n">hFile</span> <span class="o">=</span> <span class="n">hTemp</span><span class="p">;</span>
+
+    <span class="c1">// create a file mapping which spans the entire file.
+</span>    <span class="c1">// This works even for the 4Gb file sizes
+</span>    <span class="n">hMemMap</span> <span class="o">=</span> <span class="n">CreateFileMapping</span><span class="p">(</span><span class="n">hFile</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PAGE_READONLY</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">GetFileSize</span><span class="p">(</span><span class="n">hFile</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">filebufferlength</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="requesting-a-pointer-to-the-files-contents">Requesting a pointer to the file’s contents</h2>
+
+<p>The “brains” behind the sequence object is the <code class="highlighter-rouge">get_adjusted_ptr</code> member function. This function is a private member, so it can’t (and doesn’t need to) be called from outside the sequence class.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BYTE</span> <span class="o">*</span><span class="n">sequence</span><span class="o">::</span><span class="n">get_adjusted_ptr</span><span class="p">(</span><span class="n">size_w</span> <span class="n">offset</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">size_w</span> <span class="n">baseoff</span> <span class="o">=</span> <span class="n">calc_index_base</span><span class="p">(</span><span class="n">offset</span><span class="p">);</span>
+
+    <span class="c1">// if we already have the right range of memory mapped in
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">adjustedptr</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">mappedoffset</span> <span class="o">==</span> <span class="n">baseoff</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">adjustedptr</span><span class="p">;</span>
+    <span class="c1">//otherwise, map in the new area
+</span>    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">filebuffer</span><span class="p">)</span>
+            <span class="n">UnmapViewOfFile</span><span class="p">(</span><span class="n">filebuffer</span><span class="p">);</span>        
+        
+        <span class="n">mappedlength</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">filebufferlength</span> <span class="o">-</span> <span class="n">baseoff</span><span class="p">,</span> <span class="n">MEM_BLOCK_SIZE</span><span class="p">);</span>        
+        <span class="n">filebuffer</span> <span class="o">=</span> <span class="p">(</span><span class="n">BYTE</span> <span class="o">*</span><span class="p">)</span><span class="n">MapViewOfFile</span><span class="p">(</span><span class="n">hMemMap</span><span class="p">,</span> <span class="n">FILE_MAP_READ</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">baseoff</span><span class="p">,</span> <span class="n">mappedlength</span><span class="p">);</span>        
+        
+        <span class="n">mappedoffset</span> <span class="o">=</span> <span class="n">baseoff</span><span class="p">;</span>
+        <span class="n">adjustedptr</span> <span class="o">=</span> <span class="n">filebuffer</span> <span class="o">-</span> <span class="n">mappedoffset</span><span class="p">;</span>            
+
+        <span class="k">return</span> <span class="n">adjustedptr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The idea behind <code class="highlighter-rouge">get_adjusted_ptr</code> is to hide the details of the memory-mapped file from the rest of the class. As far as the rest of the class is concerned, all <code class="highlighter-rouge">get_adjusted_ptr</code> does is to return a pointer to the contents of the current file. This pointer can then be used to access the file using simple array subscripting.</p>
+
+<blockquote>
+  <p>There is one very important detail to mention. The pointer that is returned is ADJUSTED, so that it ALWAYS points to the first byte in the file, regardless of what portion of the file is mapped into memory. Think about this carefully and re-read the previous sentence if you didn’t understand it.</p>
+</blockquote>
+
+<p>This may seem a little confusing at first, but read on anyway.</p>
+
+<p>When a 64Kb view of the file is mapped in (aligned to a 64Kb boundary of course), the pointer to the view would be relative to the start of the <code class="highlighter-rouge">view</code> , and not the start of the file. This presents a problem, because ideally we want to access the file in as normal a way as possible. By subtracting the current view-offset (the position of the memory-mapped view within the file) from the pointer we get from MapViewOfFile, we get an adjusted pointer to the start of the file.</p>
+
+<p>Let’s use a very small example. We want to access a region of the file at offset 0x56789. We request a pointer to the file’s contents like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BYTE</span> <span class="o">*</span><span class="n">filestart</span> <span class="o">=</span> <span class="n">get_adjusted_ptr</span><span class="p">(</span><span class="mh">0x56789</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now we have a 64Kb window which encompasses offset 0x56789, through which we can access the file’s contents. Note that we are allowed to read at most 64Kb past this pointer. Let’s read some memory from this region of the file.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BYTE</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="o">&amp;</span>
+<span class="n">filestart</span><span class="p">[</span><span class="mh">0x56789</span><span class="p">],</span> <span class="mi">200</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Now comes the magic part (bear with me here!). We are adding 0x56789 back onto the adjusted pointer. The result of this is a pointer to the start of the current view, so we are back where we started. The memory is read from the mapped region, instead of from the start of the file, and we now have a nice intuitive way to access the file’s contents as if it were one contiguous block of memory.</p>
+
+<p>Ok, it doesn’t seem like much, and you may even be wondering why I’ve made such alot of work for myself.</p>
+
+<p>The simple fact of the matter is that the pointer arithimetic has to be performed at some stage, simply because we are accessing the file in sections. It just makes sense to hide the arithmetic <em>in one single place</em>, at an early stage, and let the rest of the class design be blissfully un-aware that any pointer arithmetic has to be done at all.</p>
+
+<h2 id="what-section-do-we-map-in">What section do we map in?</h2>
+
+<p>A view of a memory-mapped file MUST be aligned to a 64Kb boundary, otherwise MapViewOfFile will fail. So, we can’t simply map a view of the file at any old offset (such as 0x56789). We need some method to determine the closest 64Kb boundary to the desired access offset, and create a view at this offset instead. This is what the <code class="highlighter-rouge">calc_base_index</code> function does.</p>
+
+<p><code class="highlighter-rouge">calc_base_index</code> takes one parameter (an offset or index), and returns a new offset which is on a 64Kb boundary. i.e. the number returned is a multiple of 65536 (0x1000).</p>
+
+<p>Now, you might just think that the following formula works pretty well:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">&amp;</span> <span class="mh">0xffff0000</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>What this does is round offset down to the nearest 64Kb boundary, which is exactly what we want.</p>
+
+<p>It’s not perfect though, for the following reason. Assume that the input offset ranges from 0 to 0xFFFFFFFF. The simple formula above provides us with consequetive 64Kb offsets, one after the other. This problem with this approach is this: What happens when we scroll down the file in our hex-view window? We reach a point when we come to the end of one mapped view, and the next view needs to be mapped in. No problems so far. The formula above provides us with the next offset to map in. The problem occurs when we want to scroll back. We need to re-map the previous section in, just after we mapped the new one! And what happens if we scroll forwards again?</p>
+
+<p>What we really need is a formula which instead of rounding down to the nearest allocation unit, rounds to the middle of the nearest unit. So, if we request a some memory at an offset which is exactly on a 64Kb boundary, we don’t get a memory-region starting at this offset - instead, the memory region starts half-way back to the previous 64Kb boundary. This gives us freedom to move backwards and forwards from the requested memory address, safe in the knowledge that we have half a block-size either side to play with. This has an effect - now we are calculating offsets every 32Kb. All this means is we need to increase our window size to 128Kb to make sure we still get offsets 64Kb-aligned, but that’s no problem.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">size_w</span> <span class="kr">inline</span> <span class="nf">calc_index_base</span><span class="p">(</span><span class="n">size_w</span> <span class="n">index</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">MEM_BLOCK_SIZE</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">index</span> <span class="o">+</span> <span class="n">MEM_BLOCK_SIZE</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&amp;</span> 
+               <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="n">MEM_BLOCK_SIZE</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">-</span> <span class="n">MEM_BLOCK_SIZE</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The formula is especially nasty (it took me a while to come up with it I can tell you!). But, not only does it give us 64Kb aligned offsets, but the sections that we get from it are rounded to the centre of our input offset, not the beginning. This means that our adjusted pointer can move backwards <em>and</em> forwards by 32Kb without causing any views to be remapped.</p>
+
+<p>If you really don’t like the function above then just use “return index &amp; 0xffff0000”. The work’s been done for you though, so you might as well take advantage of it.</p>
+
+<p>Feel free to sit down with a pen and paper and figure out how it works!</p>
+
+<h2 id="rendering-the-sequence">Rendering the sequence</h2>
+
+<p>The rest pf the work is collected in the <code class="highlighter-rouge">render()</code> member function. This function will be called whenever the hex-view window wants some data to draw on the screen. Other uses for this function would be copying data to the clipboard, or saving a file to disk in blocks (by repeatedly calling it).</p>
+
+<p>Because we only have access to a “small” section of the file at any one time, we have to be careful when we copy the file’s contents into the destination buffer. The copy has to be split into sections if the requested amount of data would over-flow our view of the file. The render function handles this with a simple while-loop, as seen below.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">sequence</span><span class="o">::</span><span class="n">render</span><span class="p">(</span><span class="n">BYTE</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="n">size_w</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size_w</span> <span class="n">length</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">size_w</span> <span class="n">len</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">MEM_BLOCK_SIZE</span> <span class="o">/</span> <span class="mi">4</span><span class="p">);</span>
+
+        <span class="n">BYTE</span> <span class="o">*</span><span class="n">source</span> <span class="o">=</span> <span class="n">get_adjusted_ptr</span><span class="p">(</span><span class="n">offset</span><span class="p">);</span>        
+
+        <span class="k">if</span><span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">FALSE</span><span class="p">;</span>        
+
+        <span class="n">memcpy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">source</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>        
+
+        <span class="n">offset</span> <span class="o">+=</span> <span class="n">len</span><span class="p">;</span> <span class="c1">// advance the source position
+</span>        <span class="n">buffer</span> <span class="o">+=</span> <span class="n">len</span><span class="p">;</span> <span class="c1">// advance the destination offset
+</span>        <span class="n">length</span> <span class="o">-=</span> <span class="n">len</span><span class="p">;</span> <span class="c1">// decrement the length of the copy
+</span>    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That really sums up the whole design of the sequence document object. It may seem complicated at first, but there isn’t any other way to do this sort of thing. We decided early on that we wanted access to 4Gb of file contents, so we just have to live with the consequences.</p>
+
+<h2 id="hexview-window-design">HexView Window Design</h2>
+
+<p>The design of the actual window that displays the hex-dump of a file is fairly straightforward. The only time the hex-view needs to access any of the file’s contents is when it needs to update its display. When it does this, it calls the <code class="highlighter-rouge">sequence::render()</code> method to obtain 1 line (16 bytes) worth of data to display.</p>
+
+<p>I’m not going to describe how the hex-view window works because it would take another article to cover just that. The design is very straight-forward, and if you have a little Win32 knowledge then you shouldn’t have any difficulty in understanding how the gui part works.</p>
+
+<p>Don’t forget I’ve included the full source-code to the hex-view application, and its pretty well commented. You’ve now have a good spring-board to develop this file viewer into a full-blown file editing application.</p>
+
+<h2 id="coming-soon--part-2">Coming soon – Part 2</h2>
+
+<p>The next article in the series, titled “Algorithms and Techniques” will cover the powerful span-table data structure, which I use in HexEdit to allow insertion and deletion from large sequences of data.</p>
+
+<p>I will show you how to build on the existing sequence document class to provide this functionality by simply adding a few more member functions to the class. The source-code for the HexView window will remain unchanged – only the under-lying implementation of the sequence class will be modified.</p>
+
+<p>See you next time!</p>
+
+<p>James.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/hexview01.zip">hexview01.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-08-20T00:00:00+00:00">August 20, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="using-cards-dll-api.html" class="pagination--pager" title="Using cards.dll API
+">Previous</a>
+    
+    
+      <a href="customize-date-time-controls.html" class="pagination--pager" title="Customize date-time controls
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/memory-management-techniques-part-1 by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

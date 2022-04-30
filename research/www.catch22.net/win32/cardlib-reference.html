@@ -1,0 +1,1165 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/cardlib-reference by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>CardLib Reference - Catch22</title>
+<meta name="description" content="CardLib User Guide">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="CardLib Reference">
+<meta property="og:url" content="cardlib-reference.html">
+
+
+  <meta property="og:description" content="CardLib User Guide">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-12-04T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="cardlib-reference.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">CardLib Reference</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="CardLib Reference">
+    <meta itemprop="description" content="CardLib User Guide">
+    <meta itemprop="datePublished" content="December 04, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">CardLib Reference
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>CardLib Reference</h1-->
+<!--h3>CardLib Programmer's Quick-Reference</h3-->
+
+<p><a href="http://www.catch22.net/cardtut3.asp">CardLib User Guide</a></p>
+
+<p>The following document describes the various C++ classes which make up the CardLib game library.</p>
+
+<h2 id="class-card">class Card</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Function Prototype</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int Suit()</code></td>
+      <td>Returns the suit of the card [0..3]</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int LoVal()</code></td>
+      <td>Returns the value of the card, Aces Low, [1..13]</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int HiVal()</code></td>
+      <td>Returns the value of the card, Aces High, [2..14]</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int Idx()</code></td>
+      <td>Returns the unique card index, [0..51]</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool FaceUp()</code></td>
+      <td>Returns if card is face-up</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool FaceDown()</code></td>
+      <td>Returns if card is face-down</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetFaceUp(bool)</code></td>
+      <td>Sets the face direction</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool IsBlack()</code></td>
+      <td>Returns if card is Clubs or Spades</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool IsRed()</code></td>
+      <td>Returns if card is Diamonds or Hearts</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="class-cardstack">class CardStack</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Function Prototype</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void NewDeck()</code></td>
+      <td>Allocates a new 52-card deck</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int NumCards()</code></td>
+      <td>Returns number of cards in stack</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Shuffle()</code></td>
+      <td>Shuffles the cards in the stack</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Clear()</code></td>
+      <td>Removes all cards from the stack</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Reverse()</code></td>
+      <td>Reverses the order of cards</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Push(Card card)</code></td>
+      <td>Pushes the specified card</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Push(CardStack &amp;cardstack)</code></td>
+      <td>Pushes the specified CardStack</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Card Pop()</code></td>
+      <td>Pops the top-most card</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CardStack Pop(int items)</code></td>
+      <td>Pops the top-most n-cards</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Card Top()</code></td>
+      <td>Peeks the top-most card, without removing it</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CardStack Top(int items)</code></td>
+      <td>Peeks the top-most n-cards, without removing them</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Card RemoveCard(size_t index)</code></td>
+      <td>Removes the card at specified index</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void InsertCard(size_t index, Card card)</code></td>
+      <td>Inserts a card at specified index</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="class-cardbutton">class CardButton</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Function Prototype</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetStyle(UINT uStyle)</code></td>
+      <td>Sets the button style (push-button, label etc).</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">UINT GetStyle()</code></td>
+      <td>Returns the button style.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetText(TCHAR *fmt, ...)</code></td>
+      <td>Set the button text.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetFont(HFONT hFont)</code></td>
+      <td>Set the button type-face.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetPlacement( ... )</code></td>
+      <td>* Aligns the button within it’s parent CardWindow.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetForeColor(COLORREF col)</code></td>
+      <td>Set the button text colour.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetBackColor(COLORREF col)</code></td>
+      <td>Set the button background colour.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Move(int x, int y, int w, int h)</code></td>
+      <td>Re-position the button.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Show(bool fShow)</code></td>
+      <td>Show / Hide the button.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Redraw()</code></td>
+      <td>Force the button to repaint itself.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Id()</code></td>
+      <td>Return the button ID.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>* See <code class="highlighter-rouge">CardRegion::SetPlacement</code> for more details.</p>
+
+<p><img src="http://www.catch22.net/assets/img/splitter.gif" alt="{short description of image}" /></p>
+
+<h2 id="class-cardregion">class CardRegion</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Function Prototype</strong></td>
+      <td><strong>Description</strong></td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetBackColor(COLORREF cr)</code></td>
+      <td>Set a new colour-scheme for the cardgame.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetCardStack(const CardStack &amp;cs)</code></td>
+      <td>Assign a new CardStack.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">const CardStack &amp; GetCardStack()</code></td>
+      <td>Retrieve the current CardStack.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool SetThreedCount(int count)</code></td>
+      <td>Control how high a card-stack can appear by grouping cards together. (Useful for decks with large numbers of cards).</td>
+      <td> </td>
+      <td><code class="highlighter-rouge">void SetOffsets(int x, int y)</code></td>
+      <td>Control the direction that stacked cards take.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetPos(int x, int y)</code></td>
+      <td>Position the card region.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Show(bool fShow)</code></td>
+      <td>Show / Hide the card region.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool IsVisible()</code></td>
+      <td>Is the card region visible?</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetEmptyImage(UINT uImage)</code></td>
+      <td>Set the image used to represent an empty card stack. Use <code class="highlighter-rouge">CS_EI_NONE</code> or <code class="highlighter-rouge">CS_EI_SUNK</code>.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetBackCardIdx(UINT uBackIdx)</code></td>
+      <td>Set the card bitmap used for the card-backs.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetPlacement( ... )</code></td>
+      <td>Align the card region within its parent CardWindow.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Redraw()</code></td>
+      <td>Force the card region to repaint itself.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void SetFaceDirection( ... )</code></td>
+      <td>Control how cards are placed on the stack (face-down, face-up, or a combination of the two).</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">UINT GetFaceDirection( ... )</code></td>
+      <td>Return the current face-direction rule.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void Flash(int count, int timeout)</code></td>
+      <td>Make the stack flash a number of times.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">void StopFlash()</code></td>
+      <td>Stop the stack flashing.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int Id()</code></td>
+      <td>Return the ID.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool PlayCard( ... )</code></td>
+      <td>Move the specified number of cards with index [0..51] to the specified CardRegion.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bool MoveCard( ... )</code></td>
+      <td>Move the specified number of cards from the top of the stack.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><strong>CardStack wrappers</strong> (for the internal stack).</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int NumCards()</code></td>
+      <td>Returns the number of cards in the internal CardStack.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int NewDeck()</code></td>
+      <td>Allocates a new 52-card deck.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int Shuffle()</code></td>
+      <td>Shuffles the cards in the stack.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">int Clear()</code></td>
+      <td>Removes all cards from the stack.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><strong>Event Callbacks</strong> (see user guide for details).</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetDragRule</code></td>
+      <td>Set the dragging rule for the CardStack.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetDropRule</code></td>
+      <td>Set the drop rule.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetClickProc</code></td>
+      <td>Mouse-button click event.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetDblClickProc</code></td>
+      <td>Mouse-button double-click event.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetAddCardProc</code></td>
+      <td>Post-add event callback.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetRemoveCardProc</code></td>
+      <td>Post-remove event callback.</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The following list describes a few of the functions in the above table which need more careful explanation.</p>
+
+<h3 id="cardregionsetplacement">CardRegion::SetPlacement</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">SetPlacement</span><span class="p">(</span><span class="n">UINT</span> <span class="n">xJustify</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">yJustify</span><span class="p">,</span> 
+                      <span class="kt">int</span> <span class="n">xAdjust</span><span class="p">,</span> <span class="kt">int</span> <span class="n">yAdjust</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Controls the alignment of the CardRegion within it’s CardWindow.</p>
+
+<p><strong>xJustify</strong> specifies the horizontal alignment. Possible values are:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">CS_XJUST_NONE</code></td>
+      <td>Default alignment (left-aligned).</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_XJUST_CENTER</code></td>
+      <td>Aligned to the center of the CardWindow.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_XJUST_RIGHT</code></td>
+      <td>Aligned to the right side of the CardWindow.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>yJustify</strong> specifies the vertical alignment. Possible values are:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">CS_YJUST_NONE</code></td>
+      <td>Default alignment (aligned to the top of the window).</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_YJUST_CENTER</code></td>
+      <td>Aligned to the middle of the CardWindow.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_YJUST_RIGHT</code></td>
+      <td>Aligned to the bottom of the CardWindow.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>xAdjust</strong> specifies a horizontal offset (or border) to use. This offset is applied when the card-region is aligned to the center or right of the window. A positive value offsets the card-region to the right, a negative value offsets to the left.</p>
+
+<p><strong>yAdjust</strong> specifies a vertical offset (or border) to use. This offset is applied when the card-region is aligned to the middle or bottom of the window. A positive value offsets the card-region downwards, a negative value offsets the card-region upwards.</p>
+
+<h3 id="cardregionsetfacedirection">CardRegion::SetFaceDirection</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">SetFaceDirection</span><span class="p">(</span><span class="n">UINT</span> <span class="n">uDirType</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nOption</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Controls how cards are placed onto the card-stack. Cards can be either face-up, face-down, or a combination of the two.</p>
+
+<p><code class="highlighter-rouge">uDirType</code> specifies what the face-direction is. Possible values are:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">CS_FACE_UP</code></td>
+      <td>All cards will be face-up when added to the stack.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_FACE_DOWN</code></td>
+      <td>Cards will be face-down.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_FACE_DOWNUP</code></td>
+      <td>The bottom most <code class="highlighter-rouge">nOption</code> cards will be face-down, all other cards on top of these will be face-up.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_FACE_UPDOWN</code></td>
+      <td>The bottom most <code class="highlighter-rouge">nOption</code> cards will be face-up, all other cards on top of these will be face-down.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_FACE_ANY</code></td>
+      <td>Cards can be either face-up or face-down.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>nOption</strong> is used in conjunction with <code class="highlighter-rouge">CS_FACE_DOWNUP</code> and <code class="highlighter-rouge">CS_FACE_UPDOWN</code>. This value controls the face-direction of the bottom-most nOption cards.</p>
+
+<p>For example, assume that <code class="highlighter-rouge">uDirType</code> is <code class="highlighter-rouge">CS_FACE_DOWNUP</code> and <code class="highlighter-rouge">nOption</code> is 3. This means that the bottom 3 cards will always be face-down, and any cards above these 3 will always be face-up.</p>
+
+<h3 id="cardregiongetfacedirection">CardRegion::GetFaceDirection</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UINT</span> <span class="n">GetFaceDirection</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">pnOption</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Returns the current face-direction rules.</p>
+
+<p>This function returns the direction-type variable, and stores the option in the address specified by <code class="highlighter-rouge">pnOption</code>.</p>
+
+<h3 id="cardregionflash">CardRegion::Flash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">Flash</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Causes the card-region to flash on and off. This is achieved by hiding and then showing the card-region multiple times.</p>
+
+<p><strong>count</strong> specifies how many times the card-region will be hidden and shown again.</p>
+
+<p><strong>timeout</strong> specifies the duration of each stage of animation, in milliseconds.</p>
+
+<h3 id="cardregionstopflash">CardRegion::StopFlash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">StopFlash</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Stops immediately any stack-flashing that might be active.</p>
+
+<h3 id="cardregionplaycard">CardRegion::PlayCard</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">PlayCard</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">*</span><span class="n">pDest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">,</span> <span class="kt">int</span> <span class="n">num</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Moves <strong>num</strong> cards of face-value <strong>val</strong> to the specified card-region.</p>
+
+<p><strong>val</strong> specifies the face-value of the card, using “Aces High” numbering [2..14].</p>
+
+<p><strong>num</strong> identifies the number of these cards to move.</p>
+
+<p>PlayCard returns <strong>true</strong> on success, <strong>false</strong> on failure.</p>
+
+<h3 id="cardregionmovecard">CardRegion::MoveCard</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">MoveCard</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">*</span><span class="n">pDest</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nNumCards</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fAnimate</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Moves the specified number of cards from the top of the current stack, to the specified destination stack.</p>
+
+<p><strong>nNumCards</strong> specifies how many cards are to be moved.</p>
+
+<p><strong>fAnimate</strong> is a boolean value, which specifies if the cards are to be animated when they are moved, or (when fAnimate is false) moved without any animation.</p>
+
+<p>MoveCard returns <strong>true</strong> on success, <strong>false</strong> on failure.</p>
+
+<p><img src="http://www.catch22.net/assets/img/splitter.gif" alt="{short description of image}" /></p>
+
+<h2 id="class-cardwindow">class CardWindow</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Function Name</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Create</code></td>
+      <td>Create a physical card window.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CreateButton</code></td>
+      <td>Create a button.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CreateRegion</code></td>
+      <td>Create a card-region.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CardButtonFromId</code></td>
+      <td>Return the card-button with specified ID.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CardRegionFromId</code></td>
+      <td>Return the card-region with specified ID.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DeleteButton</code></td>
+      <td>Deletes the specified button.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DeleteRegion</code></td>
+      <td>Deletes the specifies card-region.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DeleteAll</code></td>
+      <td>Deletes ALL regions, buttons and drop-zones</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">EmptyStacks</code></td>
+      <td>Empty all card-stacks in the card-window.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Redraw</code></td>
+      <td>Force the card-window to repaint itself.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Update</code></td>
+      <td>Update the position of all card-stacks and buttons.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DistributeStacks</code></td>
+      <td>Position a range of card-stacks in an aligned manner.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetResizeProc</code></td>
+      <td>Specify a callback function for window resizes.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">GetWidth</code></td>
+      <td>Return the width of the card-window.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">GetHeight</code></td>
+      <td>Return the height of the card-window.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetBackColor</code></td>
+      <td>Set the current background colour.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">GetBackColor</code></td>
+      <td>Return the current background colour.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetBackCardIdx</code></td>
+      <td>Specify which bitmap is to be used as the card-backs.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetBackImage</code></td>
+      <td>Set the bitmap to be used as window background.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">RegisterDropZone</code></td>
+      <td>Creates a new DropZone area.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DeleteDropZone</code></td>
+      <td>Deletes the specified DropZone.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The CardWindow functions are not as obvious as the previous classes, so following section describes each CardWindow member function separately.</p>
+
+<h3 id="cardwindowcreate">CardWindow::Create</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">Create</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndParent</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwExStyle</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">dwStyle</span><span class="p">,</span> 
+                  <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Creates a physical window which will form the basis for a card-game.</p>
+
+<h3 id="cardwindowcreatebutton">CardWindow::CreateButton</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardButton</span> <span class="o">*</span><span class="n">CreateButton</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uStyle</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fVisible</span><span class="p">,</span> 
+                             <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Create a button within the window.</p>
+
+<p><strong>id</strong> specifies a unique integer ID for the button.</p>
+
+<p><strong>szText</strong> is the address of a null-terminated string, which contains the button text.</p>
+
+<p><strong>uStyle</strong> specifies the button styles. The following styles are supported.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">CB_STATIC</code></td>
+      <td>Creates a static text label (default)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CB_PUSHBUTTON</code></td>
+      <td>Creates a normal push-button</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CB_ALIGN_CENTER</code></td>
+      <td>Centers the button text (default)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CB_ALIGN_LEFT</code></td>
+      <td>Left-aligns the button text</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CB_ALIGN_RIGHT</code></td>
+      <td>Right-aligns the button text</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>fVisible</strong> specifies whether or not the button is visible.</p>
+
+<p><strong>x, y</strong> specifies the position of the button.</p>
+
+<p><strong>width, height</strong> specifies the dimensions of the button.</p>
+
+<h3 id="cardwindowcreateregion">CardWindow::CreateRegion</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardRegion</span> <span class="o">*</span><span class="n">CreateRegion</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fVisible</span><span class="p">,</span>
+                             <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">xoffset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">yoffset</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Create a card-stack region within the window.</p>
+
+<p><strong>id</strong> specifies a unique integer ID for the region.</p>
+
+<p><strong>fVisible</strong> specifies whether or not the region is visible.</p>
+
+<p><strong>x, y</strong> specifies the position of the region.</p>
+
+<p><strong>xoffset, yoffset</strong> specifies the direction that cards take when placed on the stack.</p>
+
+<h3 id="cardwindowcardbuttonfromid">CardWindow::CardButtonFromId</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardButton</span> <span class="o">*</span><span class="n">CardButtonFromId</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Returns a pointer to the CardButton object with the specified ID.</p>
+
+<h3 id="cardwindowcardregionfromid">CardWindow::CardRegionFromId</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CardRegion</span> <span class="o">*</span><span class="n">CardRegionFromId</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Returns a pointer to the CardRegion object with the specified ID.</p>
+
+<h3 id="cardwindowdeletebutton">CardWindow::DeleteButton</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">DeleteButton</span><span class="p">(</span><span class="n">CardButton</span> <span class="o">*</span><span class="n">pButton</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Destroy the specified button. Do not use the <code class="highlighter-rouge">delete</code> operator to delete a button - use this function instead. Note that the CardWindow will automatically delete all buttons when it is deleted itself.</p>
+
+<h3 id="cardwindowdeleteregion">CardWindow::DeleteRegion</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">DeleteRegion</span><span class="p">(</span><span class="n">CardRegion</span> <span class="o">*</span><span class="n">pRegion</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Destroy the specified region. Do not use the <code class="highlighter-rouge">delete</code> operator to delete a region - use this function instead. Note that the CardWindow will automatically delete all region when it is deleted itself.</p>
+
+<h3 id="cardwindowdeleteall">CardWindow::DeleteAll</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">DeleteAll</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Destroys every CardRegion, CardButton and drop-zone. All pointers to these objects become invalid.</p>
+
+<h3 id="cardwindowemptystacks">CardWindow::EmptyStacks</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">EmptyStacks</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Empty ALL card-stacks currently in the card-window.</p>
+
+<h3 id="cardwindowredraw">CardWindow::Redraw</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">Redraw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Force the card-window to repaint itself.</p>
+
+<h3 id="cardwindowupdate">CardWindow::Update</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">Update</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Force the card-window to reposition all stacks and buttons.</p>
+
+<h3 id="cardwindowdistributestacks">CardWindow::DistributeStacks</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">DistributeStacks</span><span class="p">(</span><span class="kt">int</span> <span class="n">nIdFrom</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nNumStacks</span><span class="p">,</span> 
+                           <span class="n">UINT</span> <span class="n">xJustify</span><span class="p">,</span> <span class="kt">int</span> <span class="n">xSpacing</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nStartX</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Physically distribute the specified card stacks. The stack with the specified id ( <code class="highlighter-rouge">nIdFrom</code> ) is used as the starting point., and the <code class="highlighter-rouge">nNumStacks</code> created after this stack will have their positions modified.</p>
+
+<p><strong>xJustify</strong> specifies the type of alignment to use:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">CS_XJUST_NONE</code></td>
+      <td>No alignment (left-aligned, default)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_XJUST_CENTER</code></td>
+      <td>Center alignment</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CS_XJUST_RIGHT</code></td>
+      <td>Right-aligned</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>xSpacing</strong> specifies how far apart each stack is to be placed.</p>
+
+<p><strong>nStartX</strong> specifies the starting x-coordinate to place the series of card-stacks.</p>
+
+<h3 id="cardwindowsetresizeproc">CardWindow::SetResizeProc</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">SetResizeProc</span><span class="p">(</span><span class="n">pResizeWndProc</span> <span class="n">proc</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Specify a callback function, which is executed whenever the CardWindow’s size is altered. The callback function must have the following prototype:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">CARDLIBPROC</span> <span class="n">ResizeWndProc</span><span class="p">(</span><span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="cardwindowgetwidth">CardWindow::GetWidth</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">GetWidth</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Returns the width (in pixels) of the card-window.</p>
+
+<h3 id="cardwindowgetheight">CardWindow::GetHeight</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">GetHeight</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Returns the height (in pixels) of the card-window.</p>
+
+<h3 id="cardwindowsetbackcolor">CardWindow::SetBackColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">SetBackColor</span><span class="p">(</span><span class="n">COLORREF</span> <span class="n">cr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Set the current background colour.</p>
+
+<h3 id="cardwindowgetbackcolor">CardWindow::GetBackColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">COLORREF</span> <span class="n">GetBackColor</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Returns the current background colour.</p>
+
+<h3 id="cardwindowsetbackcardidx">CardWindow::SetBackCardIdx</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">SetBackCardIdx</span><span class="p">(</span><span class="n">UINT</span> <span class="n">uBackIdx</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Specify which card-bitmap is to be used as the card-back.</p>
+
+<p><strong>uBackIdx</strong> must be in the range [53..68] inclusive. Use one of the ecbxxx constants defined in CardLib.h</p>
+
+<h3 id="cardwindowsetbackimage">CardWindow::SetBackImage</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">SetBackImage</span><span class="p">(</span><span class="n">HBITMAP</span> <span class="n">hBitmap</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Specifies a bitmap to be used as the card-window background. The CardWindow does not assume ownership of the bitmap.</p>
+
+<p><strong>hBitmap</strong> must be a valid handle to a bitmap object, or <strong>NULL</strong> to remove the background bitmap.</p>
+
+<h3 id="cardwindowregisterdropzone">CardWindow::RegisterDropZone</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">RegisterDropZone</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span><span class="n">rect</span><span class="p">,</span> <span class="n">pDropZoneProc</span> <span class="n">proc</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Creates a DropZone within the card-window.</p>
+
+<p><strong>id</strong> specifies a unique ID for the DropZone. This id must NEVER be -1.</p>
+
+<p><strong>rect</strong> is the address of a RECT structure, which specifies the coordinates of the DropZone.</p>
+
+<p><strong>proc</strong> is the address of a callback function, which is executed whenever a card is dropped inside the rectangular area.</p>
+
+<p>A DropZone is a special area within a CardWindow which cards can be dropped on. Even if a card-stack is within the area, the cards will not be dropped on it.</p>
+
+<p>The specified function callback is called whenever one or more cards are dropped within the zone. This function must have the following prototype:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">CARDLIBPROC</span> <span class="n">DropZoneProc</span><span class="p">(</span><span class="kt">int</span> <span class="n">dzid</span><span class="p">,</span> <span class="k">const</span> <span class="n">CardStack</span> <span class="o">&amp;</span><span class="n">cards</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The callback function returns the ID of the stack to drop the specified cards onto. Using this mechanism provides complete control over which stack cards are dropped.</p>
+
+<p>The function must return a valid ID of a CardRegion to send the cards to, or use a value of <code class="highlighter-rouge">CS_DROPZONE_NODROP</code> to prevent the cards from being dropped.</p>
+
+<h3 id="cardwindowdeletedropzone">CardWindow::DeleteDropZone</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">DeleteDropZone</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Deletes the DropZone with the specified ID.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-12-04T00:00:00+00:00">December 04, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="flicker-free-drawing.html" class="pagination--pager" title="Flicker-free Drawing
+">Previous</a>
+    
+    
+      <a href="cardlib.html" class="pagination--pager" title="CardLib
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/cardlib-reference by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

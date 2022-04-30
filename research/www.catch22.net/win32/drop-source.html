@@ -1,0 +1,581 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/drop-source by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Drop Source - Catch22</title>
+<meta name="description" content="Updated 6 Dec 2006">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Drop Source">
+<meta property="og:url" content="drop-source.html">
+
+
+  <meta property="og:description" content="Updated 6 Dec 2006">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2004-06-17T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="drop-source.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Drop Source</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dropsource.zip">dropsource.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Drop Source">
+    <meta itemprop="description" content="Updated 6 Dec 2006">
+    <meta itemprop="datePublished" content="June 17, 2004">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Drop Source
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Drop Source</h1-->
+<!--h3>Implementing the IDropSource interface</h3-->
+
+<h2 id="updated-6-dec-2006">Updated 6 Dec 2006</h2>
+
+<p>Many thanks to Davide Chiodi from Italy who has very kindly converted the drop-source code into a Pure C implementation</p>
+
+<p><img src="http://www.catch22.net/assets/img/dragdrop06.gif" alt="" class="align-center" /></p>
+
+<p>Welcome to the fifth article in the “OLE Drag and Drop” tutorial series! We are almost at the final stages in our OLE drag and drop implementation. The only thing left to do is implement the <code class="highlighter-rouge">IDropSource</code> and <code class="highlighter-rouge">IDropTarget</code> interfaces. Once we have done this we will be ready to add drag and drop to any application..</p>
+
+<p>The aim of this article is to implement a simple application which can be used as the source of a drag-drop operation. It won’t be able to accept any drag-drop data, but this doesn’t matter because we can use any normal Windows program which supports text drag+drop (such as WordPad) for testing. The application will basically be a normal Windows EDIT control, which will be subclassed and drag-support added.</p>
+
+<p>The details of this subclassing won’t be discussed in this tutorial, but the source-code download clearly demonstrates how to perform this simple task.</p>
+
+<h2 id="become-a-drop-source">Become a “Drop Source”</h2>
+
+<p>It is very simple to initiate a drag-and-drop operation. Calling the <code class="highlighter-rouge">DoDragDrop</code> API call is sufficient.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WINOLEAPI</span> <span class="n">DoDragDrop</span><span class="p">(</span>
+   <span class="n">IDataObject</span> <span class="o">*</span> <span class="n">pDataObject</span><span class="p">,</span> <span class="c1">// Pointer to the data object
+</span>   <span class="n">IDropSource</span> <span class="o">*</span> <span class="n">pDropSource</span><span class="p">,</span> <span class="c1">// Pointer to the source
+</span>   <span class="n">DWORD</span> <span class="n">dwOKEffect</span><span class="p">,</span> <span class="c1">// Effects allowed by the source
+</span>   <span class="n">DWORD</span> <span class="o">*</span> <span class="n">pdwEffect</span> <span class="c1">// Pointer to effects on the source
+</span>   <span class="p">);</span>
+</code></pre></div></div>
+
+<p>As soon as this API is called, the OLE runtime takes over and handles all the necessary mouse and keyboard windows messages on behalf of your application, so you basically release control to OLE once you call this function.</p>
+
+<p>The first two parameters to <code class="highlighter-rouge">DoDragDrop</code> are COM interfaces. One is an <code class="highlighter-rouge">IDataObject</code> - we have already implemented this in a previous tutorial.</p>
+
+<p>The third parameter is a DWORD value which specifies (in the form of a bit-mask) the “effects” that are allowed by the source (i.e. us). These effects are taken from the <code class="highlighter-rouge">DROPEFFECT_xxx</code> values, and will usually be and combination of <code class="highlighter-rouge">DROPEFFECT_MOVE</code> and <code class="highlighter-rouge">DROPEFFECT_COPY</code>. If we wanted to allow only copying data from our source, then we would specify just <code class="highlighter-rouge">DROPEFFECT_COPY</code>, and the opposite is true as well.</p>
+
+<p>The last parameter is a pointer to a DWORD value. This value is accessed when <code class="highlighter-rouge">DoDragDrop</code> returns, and will contain the “effect” or action that OLE wants the source to perform - i.e. did the user elect to move or copy the data?</p>
+
+<p>The code to perform a drag-and-drop operation is usually split into three steps. First of all though we need to write a small utility function called <code class="highlighter-rouge">StringToHandle</code> , which will convert a normal char* string into HGLOBAL form so we can use it with OLE:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HANDLE</span> <span class="nf">StringToHandle</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nTextLen</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+	
+    <span class="c1">// if text length is -1 then treat as a nul-terminated string
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">nTextLen</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">nTextLen</span> <span class="o">=</span> <span class="n">lstrlen</span><span class="p">(</span><span class="n">szText</span><span class="p">);</span>
+    
+    <span class="c1">// allocate and lock a global memory buffer. Make it fixed
+</span>    <span class="c1">// data so we don't have to use GlobalLock
+</span>    <span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">GlobalAlloc</span><span class="p">(</span><span class="n">GMEM_FIXED</span><span class="p">,</span> <span class="n">nTextLen</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+	
+    <span class="c1">// copy the string into the buffer
+</span>    <span class="n">memcpy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">szText</span><span class="p">,</span> <span class="n">nTextLen</span><span class="p">);</span>
+    <span class="n">ptr</span><span class="p">[</span><span class="n">nTextLen</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'\0'</span><span class="p">;</span>
+	
+    <span class="k">return</span> <span class="n">ptr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">StringToHandle</code> function has absolutely no error checking so it’s up to you to add this on your own. The next step is to prepare some data to use in the drag-and-drop operation:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FORMATETC</span> <span class="n">fmtetc</span> <span class="o">=</span> 
+<span class="p">{</span> 
+    <span class="n">CF_TEXT</span><span class="p">,</span> <span class="c1">// we will be dropping some text
+</span>    <span class="mi">0</span><span class="p">,</span> 
+    <span class="n">DVASPECT_CONTENT</span><span class="p">,</span> 
+    <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">TYMED_HGLOBAL</span> <span class="c1">// stored as a HGLOBAL
+</span><span class="p">};</span>
+
+<span class="n">STGMEDIUM</span> <span class="n">stgmed</span> <span class="o">=</span> 
+<span class="p">{</span> 
+    <span class="n">TYMED_HGLOBAL</span><span class="p">,</span> <span class="c1">// the data goes here
+</span>    <span class="p">{</span> <span class="mi">0</span> <span class="p">},</span> 
+    <span class="mi">0</span> 
+<span class="p">};</span>
+
+<span class="c1">// Create a HGLOBAL inside the storage medium
+</span><span class="n">stgmed</span><span class="p">.</span><span class="n">hGlobal</span> <span class="o">=</span> <span class="n">StringToHandle</span><span class="p">(</span><span class="s">"Hello, World"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Next up is the creation of the two COM interfaces required for drag and drop - <code class="highlighter-rouge">IDropSource</code> and <code class="highlighter-rouge">IDataObject</code>. We have already implemented <code class="highlighter-rouge">CreateDataObject</code> in a previous tutorial, and <code class="highlighter-rouge">CreateDropSource</code> will be implemented shortly!</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IDropSource</span> <span class="o">*</span><span class="n">pDropSource</span><span class="p">;</span>
+<span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">;</span>
+
+<span class="n">CreateDropSource</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pDropSource</span><span class="p">);</span>
+<span class="n">CreateDataObject</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pDataObject</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fmtetc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">stgmed</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The call to <code class="highlighter-rouge">DoDragDrop</code> can be made once the <code class="highlighter-rouge">IDataObject</code> and <code class="highlighter-rouge">IDropSource</code> have been successfully created.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DWORD</span> <span class="n">dwResult</span><span class="p">;</span>
+
+<span class="c1">// do the drag-drop!
+</span><span class="n">dwResult</span> <span class="o">=</span> <span class="n">DoDragDrop</span><span class="p">(</span><span class="n">pDataObject</span><span class="p">,</span> <span class="n">pDropSource</span><span class="p">,</span> <span class="n">DROPEFFECT_COPY</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dwEffect</span><span class="p">);</span>
+
+<span class="c1">// finished. Check the return values to see if we need to do anything else
+</span><span class="k">if</span><span class="p">(</span><span class="n">dwResult</span> <span class="o">==</span> <span class="n">DRAGDROP_S_DROP</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dwEffect</span> <span class="o">==</span> <span class="n">DROPEFFECT_MOVE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// remove the data we just dropped from active document
+</span>    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The very last thing to do is cleanup any resources we used. First of all we remove the last reference to the two COM interfaces, after which they will be automatically deleted. And lastly, we delete the HGLOBAL memory buffer that contains our text.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// release the COM interfaces
+</span><span class="n">pDropSource</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+<span class="n">pDataObject</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+
+<span class="n">ReleaseStgMedium</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stgmed</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="when-to-call-dodragdrop">When to call DoDragDrop</h2>
+
+<p>Knowing how to initiate a drag-and-drop operation is all very well, but it is important to understand where to integrate the above code into your applications.</p>
+
+<p>Because drag &amp; drop is mouse-based, it is customary for an application to initiate it whilst processing normal Windows mouse messages. If you take the time to play with some drag-and-drop enabled applications (such as WordPad) you will observe the following behaviour for the RichEdit control:</p>
+
+<ol>
+  <li>When the mouse moves over a selected area of text it’s cursor shape changes to an arrow.</li>
+  <li>When the left button is pressed, the selection is not removed. Instead an internal state is set to indicate that a drag-drop operation might be about to start.</li>
+  <li>When the mouse is first moved (and the internal state indicates that the left button is currently being held down inside a selected area of text), the drag and drop operation starts.</li>
+  <li>At this point, OLE takes over and handles all further mouse messages until the operation is complete.</li>
+  <li>However, if the left button is released and the mouse didn’t move at all, it is customary for the RichEdit’s selection to be cleared and the text-caret positioned under the mouse.</li>
+</ol>
+
+<p>This behaviour is quite simple to implement in C or C++. For our subclassed EDIT control it will look something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_LBUTTONDOWN</span><span class="p">:</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">MouseInSelection</span><span class="p">(</span><span class="n">hwndEdit</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">fMouseDown</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">break</span><span class="p">;</span>
+
+<span class="k">case</span> <span class="n">WM_MOUSEMOUVE</span><span class="p">:</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">fMouseDown</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">DoDragDrop</span><span class="p">(...);</span>
+    <span class="p">}</span>
+
+    <span class="n">fMouseDown</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+    <span class="k">break</span><span class="p">;</span>
+
+<span class="k">case</span> <span class="n">WM_LBUTTONUP</span><span class="p">:</span>
+    <span class="n">fMouseDown</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+    <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="the-idropsource-interface">The IDropSource Interface</h2>
+
+<p><code class="highlighter-rouge">IDropSource</code> is the simplest of all the drag-and-drop interfaces. Excluding the <code class="highlighter-rouge">IUnknown</code> functions, it has only two functions that need to implemented.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>IDropSource Methods</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">QueryContinueDrag</code></td>
+      <td>Determines whether a drag-and-drop operation should be continued, cancelled or completed, based on the state of the mouse buttons and the <code class="highlighter-rouge">&lt;Escape&gt;</code>, <code class="highlighter-rouge">&lt;Control&gt;</code> and <code class="highlighter-rouge">&lt;Shift&gt;</code> keys.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">GiveFeedback</code></td>
+      <td>Provides a method for the source of the drag-drop to give visual feedback based on the state of the modifier keys listed above (i.e. mouse buttons, escape, control etc).</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Both of these functions are called by the COM/OLE runtime whenever the state of the drag-and-drop modifier keys are changed. Very little work needs to be done to implement this interface - in fact, far more coding has already been performed just to prepare for the drag-drop!</p>
+
+<h2 id="implementing-idropsource">Implementing IDropSource</h2>
+
+<p>Again we can use a single source-file to implement a drop-source. Inside dropsource.cpp will be the class declaration for our drop-source object. This is what you need to type in:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CDropSource</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IDropSource</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">//
+</span>    <span class="c1">// IUnknown members
+</span>    <span class="c1">//
+</span>    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">QueryInterface</span> <span class="p">(</span><span class="n">REFIID</span> <span class="n">iid</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span> <span class="n">ppvObject</span><span class="p">);</span>
+    <span class="n">ULONG</span> <span class="kr">__stdcall</span> <span class="n">AddRef</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+    <span class="n">ULONG</span> <span class="kr">__stdcall</span> <span class="n">Release</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+    <span class="c1">//
+</span>    <span class="c1">// IDropSource members
+</span>    <span class="c1">//
+</span>    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">QueryContinueDrag</span> <span class="p">(</span><span class="n">BOOL</span> <span class="n">fEscapePressed</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">);</span>
+    <span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">GiveFeedback</span> <span class="p">(</span><span class="n">DWORD</span> <span class="n">dwEffect</span><span class="p">);</span>
+
+    <span class="c1">//
+</span>    <span class="c1">// Constructor / Destructor
+</span>    <span class="c1">//
+</span>    <span class="n">CDropSource</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">CDropSource</span><span class="p">();</span>
+<span class="k">private</span><span class="o">:</span>
+
+    <span class="c1">//
+</span>    <span class="c1">// private members and functions
+</span>    <span class="c1">//
+</span>    <span class="n">LONG</span> <span class="n">m_lRefCount</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The constructor for this class does not perform any task other than initializing the object’s reference count.</p>
+
+<h2 id="idropsourcequerycontinuedrag">IDropSource::QueryContinueDrag</h2>
+
+<p>Below is the definition for the IDropSource::QueryContinueDrag function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">QueryContinueDrag</span><span class="p">(</span>
+   <span class="n">BOOL</span> <span class="n">fEscapePressed</span><span class="p">,</span> <span class="c1">// Is the &lt;Escape&gt; key being pressed?
+</span>   <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">,</span> <span class="c1">// Current state of keyboard modifier keys
+</span>   <span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function can return one of three values:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">S_OK</code> The drag operation should continue. This result occurs if no errors are detected, the mouse button starting the drag-and-drop operation has not been released, and the Esc key has not been detected.</li>
+  <li><code class="highlighter-rouge">DRAGDROP_S_DROP</code> The drop operation should occur completing the drag operation. This result occurs if <code class="highlighter-rouge">grfKeyState</code> indicates that the key that started the drag-and-drop operation has been released.</li>
+  <li><code class="highlighter-rouge">DRAGDROP_S_CANCEL</code> The drag operation should be canceled with no drop operation occurring. This result occurs if <code class="highlighter-rouge">fEscapePressed</code> is TRUE, indicating the Esc key has been pressed.</li>
+</ul>
+
+<p>Is is customary in COM for the following two behaviours to be observed whilst in a drag-and-drop operation.</p>
+
+<ol>
+  <li>When the <code class="highlighter-rouge">Escape</code> key is <em>pressed</em>, cancel the drag-drop operation.</li>
+  <li>When the <code class="highlighter-rouge">Left</code> mouse button is <em>released</em>, the drop should be performed.</li>
+</ol>
+
+<p>Adhering to these guidelines results in the following implementation of <code class="highlighter-rouge">IDropSource::QueryContinueDrag</code>:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDropSource</span><span class="o">::</span><span class="n">QueryContinueDrag</span><span class="p">(</span><span class="n">BOOL</span> <span class="n">fEscapePressed</span><span class="p">,</span> <span class="n">DWORD</span> <span class="n">grfKeyState</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// if the Escape key has been pressed since the last call, cancel the drop
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">fEscapePressed</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DRAGDROP_S_CANCEL</span><span class="p">;</span>	
+
+    <span class="c1">// if the LeftMouse button has been released, then do the drop!
+</span>    <span class="k">if</span><span class="p">((</span><span class="n">grfKeyState</span> <span class="o">&amp;</span> <span class="n">MK_LBUTTON</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DRAGDROP_S_DROP</span><span class="p">;</span>
+
+    <span class="c1">// continue with the drag-drop
+</span>    <span class="k">return</span> <span class="n">S_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="idropsourcegivefeedback">IDropSource::GiveFeedback</h2>
+
+<p>The <code class="highlighter-rouge">IDropSource::GiveFeedback</code> function is usually different for every application, because no one application will be the same. However, unless we are providing graphical feedback effects whilst an object is being dragged from our application, our implementation of <code class="highlighter-rouge">GiveFeedback</code> is extremely simple.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="kr">__stdcall</span> <span class="n">CDropSource</span><span class="o">::</span><span class="n">GiveFeedback</span><span class="p">(</span><span class="n">DWORD</span> <span class="n">dwEffect</span><span class="p">)</span>
+<span class="p">{</span>    
+    <span class="k">return</span> <span class="n">DRAGDROP_S_USEDEFAULTCURSORS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">dwEffect</code> parameter (which tells us which mouse buttons are pressed and which of the keyboard modifiers are in use) can be ignored for alot of drag-and-drop applications. By simply returning the value <code class="highlighter-rouge">DRAGDROP_S_USEDEFAULTCURSORS</code> we can instruct COM to update the mouse cursor automatically whenever the modifiers change.</p>
+
+<p>Of course, we could inspect the <code class="highlighter-rouge">DROPEFFECT_xxx</code> flags inside <code class="highlighter-rouge">dwEffect</code>, do some painting on our source-window and return <code class="highlighter-rouge">S_OK</code> instead, but why bother?</p>
+
+<h2 id="coming-up-in-part-6---idroptarget">Coming up in Part 6 - IDropTarget</h2>
+
+<p>With the drop-source out of the way, we are now ready to start implementing a drop target interface. This is the last component needed for OLE drag and drop.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/dropsource.zip">dropsource.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2004-06-17T00:00:00+00:00">June 17, 2004</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="enumerating-formatetc.html" class="pagination--pager" title="Enumerating FORMATETC
+">Previous</a>
+    
+    
+      <a href="drop-target.html" class="pagination--pager" title="Drop Target
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/drop-source by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

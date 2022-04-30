@@ -1,0 +1,520 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/visual-c-tips-and-tricks by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Visual C++ Tips &amp; Tricks - Catch22</title>
+<meta name="description" content="This section presents a collection of Visual C++ 6.0 tips which are often hard to find information about. All of the tips are useful in their own way, and many will work exactly as-is in Visual Studio .NET also, so take a moment to browse through the collection.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Visual C++ Tips &amp; Tricks">
+<meta property="og:url" content="visual-c-tips-and-tricks.html">
+
+
+  <meta property="og:description" content="This section presents a collection of Visual C++ 6.0 tips which are often hard to find information about. All of the tips are useful in their own way, and many will work exactly as-is in Visual Studio .NET also, so take a moment to browse through the collection.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-03-26T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="visual-c-tips-and-tricks.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Visual C++ Tips & Tricks</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Visual C++ Tips &amp; Tricks">
+    <meta itemprop="description" content="This section presents a collection of Visual C++ 6.0 tips which are often hard to find information about. All of the tips are useful in their own way, and many will work exactly as-is in Visual Studio .NET also, so take a moment to browse through the collection.">
+    <meta itemprop="datePublished" content="March 26, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Visual C++ Tips &amp; Tricks
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Visual C++ Tips & Tricks</h1-->
+<!--h3>Lots of useful tips for using Visual C++</h3-->
+
+<p>This section presents a collection of Visual C++ 6.0 tips which are often hard to find information about. All of the tips are useful in their own way, and many will work exactly as-is in Visual Studio .NET also, so take a moment to browse through the collection.</p>
+
+<h2 id="1-debug-build-works-release-build-doesnt-">1. Debug build works, Release build doesn’t ??</h2>
+
+<p>This is the single most common posting made to programming forums and usenet. The answer is simple - fix the bug in your code!!! The reason you are experiencing problems is usually due to uninitialized variables in functions or classes. Problems like this are present in <em>both</em> Debug and Release builds, but typically only manifest themselves in the release binary because the debug build is alot more tolerant to errors.</p>
+
+<h2 id="2-fix-intellisense-problems">2. Fix Intellisense problems</h2>
+
+<p>This is the most frustrating “feature” of Visual Studio - when intellisense stops working. Simply exit Visual Studio and browse to your project directory - then delete the <strong>.ncb</strong> file for your project. When you restart Visual Studio the problem will be fixed.</p>
+
+<h2 id="3-auto-indent-current-selection">3. Auto-indent current selection</h2>
+
+<p>Press <strong>Alt+F8</strong> on any highlighted text in the code-editor, and the code will be automatically adjusted so that each line is at the correct indentation level. Selecting an entire function body properly indents each line within the function.</p>
+
+<h2 id="4-define-custom-keywords">4. Define custom keywords</h2>
+
+<p>Visual C++ has the ability to highlight user-defined keywords in your code. The colour of these user-defined keywords is easily adjusted using the Options dialog, but adding user-defined keywords is not documented.</p>
+
+<p>Simply create a file called “ <strong>usertype.dat</strong>” in your <code class="highlighter-rouge">C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin</code> directory (the same directory that contains MSDEV.EXE). The contents of this file is a series of custom keywords, each one on a separate line. These keywords do not need to contain the built-in types such as int, char etc - only additional keywords that you want highlighted.</p>
+
+<p>Here is the <a href="http://www.catch22.net/misc/usertype.dat">usertype.dat</a> I use on my development machine. This same tip applies to Visual Studio.NET - look in the <code class="highlighter-rouge">C:\Program Files\Visual Studio.NET\Common7\IDE</code> directory (where DEVENV.EXE lives) and place your usertype.dat file there.</p>
+
+<h2 id="5-define-custom-colours-in-the-ide">5. Define custom colours in the IDE</h2>
+
+<p>The Visual C++ IDE only allows you to select from 16 different colours. If you are fussy about the these colours then you can modify the base 16 colours from the following registry location:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HKCU\Software\Microsoft\Devstudio\6.0\Format\Source Window\
+</code></pre></div></div>
+
+<p>Inside this key there are a series of binary data items, one for each user-definable entity in the source window - such as comments, keywords, strings and normal text. Each value is made up using the same format. The first four bytes are the foreground colour, in RGBA format (3 bytes for RGB and 1 byte for padding). The background colour follows immediately afterwards using the same format:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[RR GG BB xx][RR GG BB xx]
+  Foreground  Background
+</code></pre></div></div>
+
+<p>You can use the Registry Editor to <strong>Export</strong> and <strong>Import</strong> your colour settings from machine-to-machine.</p>
+
+<h2 id="6-column-based-selection">6. Column-based selection</h2>
+
+<p>The Visual studio editor lets you select text in a line-by-line manner. However, holding the <strong>ALT</strong> key down whilst making a selection with the mouse causes <em>columns</em> of text to be selected rather than rows (lines).s</p>
+
+<h2 id="7-view-structure-members">7. View structure members</h2>
+
+<p>Position the cusor next to the same of a structure variable and press <strong>CTRL+SPACE</strong>. The structure members popup window will appear.</p>
+
+<h2 id="8-view-function-parameters">8. View function parameters</h2>
+
+<p>Position the cursor on/after the name of a function and press <strong>CTRL+SHIFT+SPACE</strong>. The function-parameters popup window will appear.</p>
+
+<h2 id="9-display-disassembly">9. Display Disassembly</h2>
+
+<p>Whilst debugging a project, press <strong>ALT+8</strong> to switch to assembler mode.</p>
+
+<h2 id="10-find-definition-of-any-identifier">10. Find Definition of any identifier</h2>
+
+<p>Right-click the mouse on any variable, function, structure or macro. A popup menu will appear - select “ <strong>Goto Definition Of</strong>”. Usually an error box will appear stating that you need to rebuild your project with browse information. Click YES, and wait for the project to rebuild. Now when you “Goto Definition Of”, Visual C++ will open the appropriate source / header file and jump to the line containing the definition of the item you just selected.</p>
+
+<h2 id="11-bookmark-lines-of-text">11. Bookmark lines of text</h2>
+
+<p>You can bookmark lines of text for further reference, using the “Mark” commands. Press <strong>Ctrl+F2</strong> to mark/unmark a line of text. Press <strong>F2</strong> to skip between marked positions within each source-file.</p>
+
+<p>The list of current bookmarks can be displayed by the <strong>Edit -&gt; Bookmarks</strong> dialog or by pressing <strong>ALT+F2</strong>.</p>
+
+<h2 id="12-callgraphs">12. Callgraphs</h2>
+
+<p>Position the cursor over any function name and hit <strong>ALT+F12</strong>. If your project was built with browse-information, a dialog will appear asking what you want to do. Select <strong>CallGraph</strong> to view a hierarchy of all sub-functions which are called by your function. This is a very useful feature often overlooked in Visual Studio.</p>
+
+<h2 id="13-navigate-around-your-source-quickly">13. Navigate around your source quickly</h2>
+
+<p>Hold down <strong>Control</strong> whilst using the <strong>Arrow Keys</strong> to make the cursor skip between words, rather than moving character-by-character.</p>
+
+<h2 id="14-find-corresponding-brackets">14. Find corresponding brackets</h2>
+
+<p>Position the cursor over any “{“, “[”, “(“, “}”, “]” or “)” bracket and hit <strong>CTRL</strong> +”<strong>]</strong>”. The cursor will move to the corresponding opening/closing bracket of that expression.</p>
+
+<h2 id="15-showhide-whitespace">15. Show/Hide whitespace</h2>
+
+<p>Press <strong>CTRL+SHIFT+8</strong> to show / hide whitespace markers.</p>
+
+<h2 id="16-open-header-files">16. Open header files</h2>
+
+<p>Right-click any filename in your source-code (i.e. in a string expression or #include line) and click “ <strong>Open Document</strong>”. Visual Studio will open the corresponding file in the IDE.</p>
+
+<h2 id="17-installing-platform-sdk">17. Installing Platform SDK</h2>
+
+<p>The simplest method to install a new SDK or DDK is to install the entire package to a <em>new</em> location on your hard-disk (rather than install over the old one). I always recommend storing SDKs and MSDN help libraries in a “simple” directory location so it is easy to browse to using the command-prompt. i.e.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\MSVS\SDK2004\ 
+C:\MSVS\MSDN2004\
+</code></pre></div></div>
+
+<p>When you want to integrate this new SDK into Visual C++, bring up the <strong>Tools-&gt;Options</strong> dialog box, and select the “ <strong>Directories</strong>” tab. There is a drop-down list which lets you entire directories for Include files (*.h) and Library files (*.lib). Enter a new directory location for the following paths and move them to the top of their respective lists:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\MSVS\SDK2004\Include
+C:\MSVS\SDK2004\Lib
+</code></pre></div></div>
+
+<p>When Visual C++ compiles your project, it first searches the specified directories for include and library files. By putting the new directories at the top of the list it searches those first, before resorting to the “default” locations.</p>
+
+<h2 id="18-preserve-keyboard-and-layout-settings">18. Preserve Keyboard and Layout settings</h2>
+
+<p>Visual Studio’s keyboard and layout settings are stored in the following locations:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HKEY_CURRENT_USER\Software\Microsoft\DevStudio\6.0\Keyboard
+HKEY_CURRENT_USER\Software\Microsoft\DevStudio\6.0\Layout
+</code></pre></div></div>
+
+<p>Use REGEDIT to <strong>Export</strong> these registry locations to an external file, then simply <strong>Import</strong> the settings when you need them on any new machine.</p>
+
+<h2 id="19-using-map-files">19. Using MAP files</h2>
+
+<p>You can see exactly what functions and global variables have been compiled into your project by looking at the corresponding MAP file in your /Debug or /Release directory. To enable this feature, open the <strong>Project-&gt;Settings</strong> dialog and select the “ <strong>Linker</strong>” tab. Make sure the “ <strong>Generate Map File</strong>” checkbox is selected.</p>
+
+<h2 id="20-generate-assembly-language-output">20. Generate assembly-language output</h2>
+
+<p>You can see the full assembly language output of your project (complete with corresponding source-line and op-code output). Open the <strong>Project-&gt;Settings</strong> dialog and select the “ <strong>C/C++</strong>” tab. Select the “ <strong>Listing Files</strong>” option from the drop-down list and then select what type of output you want. The resulting file is generated in your /Debug or /Release directory.</p>
+
+<h2 id="21-tiny-executables">21. Tiny Executables!</h2>
+
+<p>Generate instantly smaller executables by performing the following steps:</p>
+
+<ol>
+  <li>Open the <strong>Project Settings</strong> dialog from the <strong>Project</strong> menu.</li>
+  <li>Select the <strong>C/C++</strong> tab</li>
+  <li>Select <strong>Code Generation</strong> from the <strong>Category</strong> combo-box.</li>
+  <li>In the <strong>Use run-time library</strong> drop-down-list, select:</li>
+</ol>
+
+<p><strong>Debug Multithreaded DLL</strong> for Debug builds <strong>Multithreaded DLL</strong> for Release builds</p>
+
+<p>Now add the following line to the top of your main source file and you will have instantly smaller exes:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma comment(linker, "/OPT:NOWIN98")
+</span></code></pre></div></div>
+
+<h2 id="22-breakpoints-dialog">22. Breakpoints Dialog</h2>
+
+<p>It is very easy to miss the <strong>Breakpoints</strong> dialog from the <strong>Edit</strong> menu (what a strange place to put it!).</p>
+
+<p>However some very powerful debugging can be achieved. Set breakpoints when specific variables change in value, when a Window procedure is called with a certain window-message, or when other conditions are met.</p>
+
+<h2 id="23-edit-executable-resources">23. Edit Executable Resources</h2>
+
+<p>Visual Studio is a fully functional binary resource editor. Simply open an executable or dll using the <strong>File-&gt;Open</strong> dialog, but before pressing OK, select the “ <strong>Resources</strong>” option in the “ <strong>Open</strong>** As**” drop-down-list. You can use this feature to edit menus, dialogs, strings and bitmaps in regular executables and dlls such as notepad, paint, wordpad etc.</p>
+
+<h2 id="24-display-workspace-window">24. Display Workspace window</h2>
+
+<p>Press <strong>Alt+0</strong> (Alt+zero) at any time to bring up the Project Workspace window.</p>
+
+<h2 id="25-debug-release-builds">25. Debug Release Builds</h2>
+
+<p>It is possible (and usually desirable) to generate debug information for your release builds. This is advantageous because you can now debug problems that only manifest themselves in a release-build environment. You can do this in such a way that the debug information is not stored inside the executable (thus bloating it up) - instead, it is stored in a separate .pdb (program database) file. The only entry in the executable is a small string which directs the debugger to your program database, so you can distribute the executable without this sensitive information.</p>
+
+<p>Select “ <strong>Link</strong>” from the <strong>Project-&gt;Settings</strong> dialog, and then select “ <strong>Debug</strong>” from the <strong>Category</strong> drop-down list. Make sure that the “ <strong>Debug Info</strong>” checkbox is selected, and then enable “ <strong>COFF Format</strong>”.</p>
+
+<p>Now for any source-file that you want debugging information generated for, select that file (or your entire project) in the Project-&gt;Settings dialog, and then make sure that the “Program Database” option is enabled in the C/C++ General-settings tab.</p>
+
+<h2 id="26-warning-level-4">26. Warning Level 4</h2>
+
+<p>Catch more errors in your project by enabling “ <strong>Warning Level 4</strong>” in the <strong>C/C++</strong> General settings tab.</p>
+
+<h2 id="27-console-and-window-applications">27. Console and Window applications</h2>
+
+<p>You can switch between Console and Win32 applications at any time by editing the Linker options manually in the “Project Options” edit-field under the Project-&gt;Settings-&gt;Link dialog. Edit the /SUBSYSTEM option to switch between console and gui builds. i.e.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/SUBSYSTEM:CONSOLE
+/SUBSYSTEM:WINDOWS
+</code></pre></div></div>
+
+<h2 id="28-generate-browse-information">28. Generate Browse Information</h2>
+
+<p>Select <strong>Generate Browse Info</strong> under the C/C++ project settings tab, for any source-files that you want to be included. This is very useful for searching for function definitions and declarations - just right-click a function / variable and select “Goto Definition Of…” and the IDE will take you straight there.</p>
+
+<h2 id="29-visual-studio-debugger---watch-window">29. Visual Studio Debugger - Watch Window</h2>
+
+<p>There are many useful commands available in the watch window, which can alter the way variables and error values are displayed by the debugger.</p>
+
+<p><img src="http://www.catch22.net/assets/img/vctip04.gif" alt="" /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Command</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td>eax</td>
+      <td>Displays the return value of a function after it returns.</td>
+    </tr>
+    <tr>
+      <td><strong>@err</strong></td>
+      <td>Display the current Win32 <strong>GetLastError</strong> value</td>
+    </tr>
+    <tr>
+      <td><em>string</em>, <strong>su</strong></td>
+      <td>Display the specified string as <strong>Unicode</strong>.</td>
+    </tr>
+    <tr>
+      <td><em>value</em>, <strong>hr</strong></td>
+      <td>Treat the specified value as a HRESULT and display it’s string representation</td>
+    </tr>
+    <tr>
+      <td><em>value</em>, <strong>wm</strong></td>
+      <td>Decode the specified value as a <strong>Windows Message</strong>.</td>
+    </tr>
+    <tr>
+      <td><em>value</em>, <strong>x</strong></td>
+      <td>Display value in <strong>Hexadecimal</strong></td>
+    </tr>
+    <tr>
+      <td><em>array</em>, <strong>23</strong></td>
+      <td>Display exactly 23 elements of the specified array</td>
+    </tr>
+    <tr>
+      <td>address, <strong>mb</strong></td>
+      <td>Display the specified address/variable as a <strong>memory-block</strong> hex-dump.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="30-avoid-stepping-into-crt-functions">30. Avoid stepping into CRT functions</h2>
+
+<p>The reason the Visual Studio debugger steps into CRT functions (i.e. into new/delete) when you don’t want it to, is because you installed the source-code to the CRT/MFC libraries. Either move the source-code to a different location, or prevent the Visual Studio debugger from stepping into specific functions (whilst pressing F11) by performing the following steps:</p>
+
+<ol>
+  <li>Open <code class="highlighter-rouge">AUTOEXP.DAT</code> (from the <code class="highlighter-rouge">COMMON\MSDEV98\BIN\</code> directory)</li>
+  <li>Add a section called <code class="highlighter-rouge">[ExecutionControl]</code></li>
+  <li>
+    <p>Add a line in this section with the following format:</p>
+
+    <p><code class="highlighter-rouge">functionName=NoStepInto</code> <code class="highlighter-rouge">className::*=NoStepInto</code></p>
+  </li>
+  <li>Restart the IDE for the changes to take effect.</li>
+</ol>
+
+<p>Of course as soon as you accidently step into a function that you didn’t want to be in, simply press <strong>SHIFT+F11</strong> to step out again.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-03-26T00:00:00+00:00">March 26, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="introduction-to-device-drivers.html" class="pagination--pager" title="Introduction to Device Drivers
+">Previous</a>
+    
+    
+      <a href="2005-03-28-remote-debugging-using-vmware/index.html" class="pagination--pager" title="Remote Debugging using VMWare
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/visual-c-tips-and-tricks by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:43 GMT -->
+</html>

@@ -1,0 +1,695 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/introduction-uniscribe by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Introduction to Uniscribe - Catch22</title>
+<meta name="description" content="Uniscribe is a low-level Win32 API that provides a high degree of control over the processing and display of Unicode text. The API is designed to provide a generic interface to all forms of Unicode text (complex or otherwise), and transparently handles properties such as bi-directional text and combining characters sequences.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Introduction to Uniscribe">
+<meta property="og:url" content="introduction-uniscribe.html">
+
+
+  <meta property="og:description" content="Uniscribe is a low-level Win32 API that provides a high degree of control over the processing and display of Unicode text. The API is designed to provide a generic interface to all forms of Unicode text (complex or otherwise), and transparently handles properties such as bi-directional text and combining characters sequences.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-02-27T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="introduction-uniscribe.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Introduction to Uniscribe</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/scriptstring.zip">scriptstring.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="active">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Introduction to Uniscribe">
+    <meta itemprop="description" content="Uniscribe is a low-level Win32 API that provides a high degree of control over the processing and display of Unicode text. The API is designed to provide a generic interface to all forms of Unicode text (complex or otherwise), and transparently handles properties such as bi-directional text and combining characters sequences.">
+    <meta itemprop="datePublished" content="February 27, 2006">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Introduction to Uniscribe
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Introduction to Uniscribe</h1-->
+<!--h3>Introducing Uniscribe</h3-->
+
+<p>Uniscribe is a low-level Win32 API that provides a high degree of control over the processing and display of Unicode text. The API is designed to provide a generic interface to all forms of Unicode text (complex or otherwise), and transparently handles properties such as bi-directional text and combining characters sequences.</p>
+
+<p>Uniscribe is a single DLL called <code class="highlighter-rouge">USP10.DLL</code>, which contains all of the Uniscribe APIs. This DLL is present on Windows 2000 and above, or any computer with Internet Explorer 5.0 (or greater) installed. Two Platform SDK files (<code class="highlighter-rouge">USP10.H</code> and <code class="highlighter-rouge">USP10.LIB</code>) are provided by Microsoft to allow an application to make use of this complex-script support. An important point about Uniscribe is that it doesn’t just handle complex-scripts - it can be used to process and display <em>all</em> Unicode text - so can be used as a direct replacement for existing text-output routines such as <code class="highlighter-rouge">DrawText</code> and <code class="highlighter-rouge">TextOut</code>.</p>
+
+<p>The Uniscribe API is divided into two categories - the low-level API itself, and a wrapper library called <strong>ScriptString</strong> which hides much of the complexities of dealing with Uniscribe directly. The purpose of this tutorial is to give a brief introduction to the world of Uniscribe before we start delving in properly.</p>
+
+<h2 id="uniscribe-in-windows">Uniscribe in Windows</h2>
+
+<p>When I first started Neatpad I was unfamiliar as to exactly what Uniscribe entailed, and it was only after researching Unicode that I fully appreciated the issues surrounding the display of Unicode text. Although Uniscribe occupies it’s own section within the MSDN documentation (<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/intl/uniscrib_35k5.asp">here</a>), other than the occasional reference it is very easy to miss unless you already know of it’s existence.</p>
+
+<p>MSDN states that since Windows 2000, the <code class="highlighter-rouge">ExtTextOut</code> function (and others like <code class="highlighter-rouge">TextOut</code>, <code class="highlighter-rouge">DrawText</code> etc) have been extended to support complex scripts. Although this is true, it gives the impression that an application can call <code class="highlighter-rouge">ExtTextOutW</code> (the Unicode version) at any time with a buffer of UTF-16 text and it will always display correctly.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1003.gif" alt="" /></p>
+
+<p>Unless Windows has been configured to do so, functions such as <code class="highlighter-rouge">ExtTextOut</code> do not automatically support complex scripts. The image above shows the “Regional and Language Options” dialog. The two settings which have been highlighted are not normally enabled by a default installation of American/English Windows.</p>
+
+<p>Enabling complex-script support installs a number of extra libraries, after which <code class="highlighter-rouge">ExtTextOut</code> will use the Uniscribe when necessary to display complex scripts.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">ExtTextOut</span> <span class="p">(</span>
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="c1">// handle to DC
+</span>  <span class="kt">int</span> <span class="n">X</span><span class="p">,</span> <span class="c1">// x-coordinate of reference point
+</span>  <span class="kt">int</span> <span class="n">Y</span><span class="p">,</span> <span class="c1">// y-coordinate of reference point
+</span>  <span class="n">UINT</span> <span class="n">fuOptions</span><span class="p">,</span> <span class="c1">// text-output options (ETO_GLYPH_INDEX etc)
+</span>  <span class="n">RECT</span> <span class="o">*</span> <span class="n">lprc</span><span class="p">,</span> <span class="c1">// optional dimensions
+</span>  <span class="n">LPCTSTR</span> <span class="n">lpString</span><span class="p">,</span> <span class="c1">// string
+</span>  <span class="n">UINT</span> <span class="n">cbCount</span><span class="p">,</span> <span class="c1">// number of characters in string
+</span>  <span class="n">INT</span> <span class="o">*</span> <span class="n">lpDx</span> <span class="c1">// array of spacing values
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ExtTextOut</code> is most commonly used to display a string of text. However it can do much more than this. When the <code class="highlighter-rouge">ETO_GLYPH_INDEX</code> and <code class="highlighter-rouge">ETO_PDY</code> options are specified, <code class="highlighter-rouge">ExtTextOut</code> can be used to display a buffer of <em>glyphs</em> instead of <em>characters</em>. This feature of <code class="highlighter-rouge">ExtTextOut</code> is used when displaying a string containing complex-scripts, as the diagram below illustrates.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1101.gif" alt="" /></p>
+
+<p>Text drawing in Windows 2000 and above</p>
+
+<p>For any complex string containing complex scripts, ExtTextOut makes use of Uniscribe to display it. Uniscribe breaks the string down into groups of glyphs and then re-calls <code class="highlighter-rouge">ExtTextOut</code>, this time with the <code class="highlighter-rouge">ETO_GLYPH_INDEX</code> option, and a buffer of glyph-indices instead of the original character values. For regular Unicode text which doesn’t require any special processing, <code class="highlighter-rouge">ExtTextOut</code> behaves exactly the same as it did under previous Windows versions.</p>
+
+<p>You may be wondering why Uniscribe is necessary if routines such as <code class="highlighter-rouge">DrawText</code> and <code class="highlighter-rouge">TextOut</code> can for the most part render complex scripts quite sucessfully. For applications which just output single strings of text, Uniscribe is not necessary.</p>
+
+<p>It is only when a string must be broken up (for the purposes of styling/formatting) that Uniscribe is required. It is just not possible to split a Unicode string into sections (as we have been with Neatpad up ‘til now). Doing so breaks all kinds of things such as contextual shaping behaviours and bidirectional support. A modern text-editor simply must support Unicode and all the various scripts that come along with that - we have no other choice than to move to Uniscribe.</p>
+
+<h2 id="the-scriptstring-api">The ScriptString API</h2>
+
+<p>The <code class="highlighter-rouge">ScriptString</code> API is designed for applications which want to display text in a single font and colour. Notepad (and the standard Windows EDIT control) is a prime example of the <code class="highlighter-rouge">ScriptString</code> API. One of the nice features of this API is that it allows you to display a string of text, with a portion of that string optionally displayed as ‘selected’. This is actually a very nice touch as it saves a tremendous amount of effort.</p>
+
+<p>The <code class="highlighter-rouge">ScriptStringAnalyze</code> function is the starting point with Uniscribe. It is a pretty intimidating function to look at. However its purpose is used to perform shaping and glyph-generation for any string of Unicode text, and returns a <code class="highlighter-rouge">SCRIPT_STRING_ANALYSIS</code> structure when complete.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptStringAnalyse</span> <span class="p">(</span>
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>
+  <span class="kt">void</span> <span class="o">*</span> <span class="n">pString</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">cString</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">cGlyphs</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">iCharset</span><span class="p">,</span>
+  <span class="n">DWORD</span> <span class="n">dwFlags</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">iReqWidth</span><span class="p">,</span>
+  <span class="n">SCRIPT_CONTROL</span> <span class="o">*</span> <span class="n">psControl</span><span class="p">,</span>
+  <span class="n">SCRIPT_STATE</span> <span class="o">*</span> <span class="n">psState</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="o">*</span> <span class="n">piDx</span><span class="p">,</span>
+  <span class="n">SCRIPT_TABDEF</span> <span class="o">*</span> <span class="n">pTabdef</span><span class="p">,</span>
+  <span class="n">BYTE</span> <span class="o">*</span> <span class="n">pbInClass</span><span class="p">,</span>
+  <span class="n">SCRIPT_STRING_ANALYSIS</span> <span class="o">*</span> <span class="n">pssa</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">SCRIPT_STRING_ANALYSIS</code> is an opaque structure - there is no documention which details what it contains. This is not important though as this structure is simply passed to the rest of the ScriptString API without requiring any further knowledge.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptStringOut</span> <span class="p">(</span>
+  <span class="n">SCRIPT_STRING_ANALYSIS</span> <span class="n">ssa</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">iX</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">iY</span><span class="p">,</span> 
+  <span class="n">UINT</span> <span class="n">uOptions</span><span class="p">,</span> 
+  <span class="n">RECT</span> <span class="o">*</span> <span class="n">prc</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">iMinSel</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">iMaxSel</span><span class="p">,</span> 
+  <span class="n">BOOL</span> <span class="n">fDisabled</span> 
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ScriptStringOut</code> is used to display a string of text that was previously analyzed. Note that a text-string is not specified with this call - only the <code class="highlighter-rouge">SCRIPT_STRING_ANALYSIS</code> structure is passed which contains all the necessary information to display the original string.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptStringXtoCP</span> <span class="p">(</span>
+  <span class="n">SCRIPT_STRING_ANALYSIS</span> <span class="n">ssa</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">iX</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="o">*</span> <span class="n">piCh</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="o">*</span> <span class="n">piTrailing</span> 
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ScriptStringXtoCP</code> is an interesting function. It provides a mechanism for caret and mouse positioning within a string of Unicode text.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptStringCPtoX</span> <span class="p">(</span>
+  <span class="n">SCRIPT_STRING_ANALYSIS</span> <span class="n">ssa</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="n">icp</span><span class="p">,</span> 
+  <span class="n">BOOL</span> <span class="n">fTrailing</span><span class="p">,</span> 
+  <span class="kt">int</span> <span class="o">*</span> <span class="n">pX</span> 
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ScriptStringCPtoX</code> is the counterpart to <code class="highlighter-rouge">ScriptXtoCP</code>. It performs the opposite task - converting a string-position to a display-coordinate.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptStringFree</span><span class="p">(</span>
+  <span class="n">SCRIPT_STRING_ANALYSIS</span> <span class="o">*</span> <span class="n">pssa</span>  
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>When an application has finished displaying the string the <code class="highlighter-rouge">ScriptStringFree</code> function can be used to clean up. There are more ScriptString functions than what I have listed here, but with just these five an application can implement the front-end to a fully-functional text-editor with minimal effort.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1102.gif" alt="" /></p>
+
+<p>The image above shows a simple application I wrote which demonstrates the ScriptString API. The source-code and demo executable can be downloaded at the top of this article.</p>
+
+<p>An oddity of ScriptString is this: ScriptStringOut fails if the device-context used to render is not the same as the one used when analyzing the string with ScriptAnalyze!</p>
+
+<h2 id="introducing-usplib">Introducing UspLib</h2>
+
+<p>The main problem with the ScriptString API is its inability to display text in more than one font and colour. This makes it particularly unsuitable for our purposes with Neatpad. Our only option is to make use of the low-level Uniscribe functions directly.</p>
+
+<p>USPLib is a library I have written to provide a far richer capability than ScriptString can offer. This new library provides a wrapper around the low-level Uniscribe API that we will be discussing over the next couple of tutorials. UspLib is very similar in approach to the ScriptString Uniscribe wrapper, but goes alot further in terms of text-colouring and formatting.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">USPDATA</span> <span class="o">*</span> <span class="n">USP_Allocate</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>The first API is <code class="highlighter-rouge">USP_Allocate</code>. This function returns a pointer to a <code class="highlighter-rouge">USPDATA</code> object which must be used for subsequent UspLib operations.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">USP_Analyze</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>
+  <span class="n">WCHAR</span> <span class="o">*</span> <span class="n">wstr</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">wlen</span><span class="p">,</span>
+  <span class="n">ATTR</span> <span class="o">*</span> <span class="n">attrRunList</span><span class="p">,</span>
+  <span class="n">UINT</span> <span class="n">flags</span><span class="p">,</span>
+  <span class="n">USPFONT</span> <span class="o">*</span> <span class="n">uspFont</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">USP_Analyze</code> is similar to <code class="highlighter-rouge">ScriptStringAnalyze</code>. The difference is, a string of text can be <em>re-analyzed</em> using an existing <code class="highlighter-rouge">USPDATA</code> object.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">USP_ApplyAttributes</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="n">ATTR</span> <span class="o">*</span> <span class="n">attrRunList</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Once a string has been analyzed (i.e. itemized and shaped etc.), colour-attributes can be reapplied at any time using the <code class="highlighter-rouge">USP_ApplyAttributes</code>. The font-information stored in the ATTR run-list is ignored.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">USP_ApplySelection</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">selStart</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">selEnd</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">USP_ApplySelection</code> performs a similar task to <code class="highlighter-rouge">USP_ApplyAttributes</code>. However this time only the selection-flags are modified in the <code class="highlighter-rouge">USPDATA</code> object.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">USP_TextOut</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">ypos</span><span class="p">,</span>
+  <span class="n">RECT</span> <span class="o">*</span> <span class="n">rect</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">USP_TextOut</code> is the counterpart to <code class="highlighter-rouge">ScriptStringOut</code>. It takes as input the <code class="highlighter-rouge">USPDATA</code> object which was previously analyzed, and draws it to the specified location. Any fonts, colours and selection-highlights are applied to the text as it is drawn.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">USP_Free</span><span class="p">(</span><span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">USP_Free</code> should be called then the <code class="highlighter-rouge">USPDATA</code> object is no longer needed. Over the course of the next two or three tutorials I will be detailing how I have implemented UspLib, and will provide details and examples of using Uniscribe directly.</p>
+
+<p>I have designed UspLib in isolation from Neatpad. My intention is that it is a completely stand-along library, which can be used by any application to add complex-script support. It should certainly be possible to import UspLib into your projects and use it straight away, because it contains no dependencies other than the Uniscribe DLL.</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<p>There is very little information available about Uniscribe other than what is available in MSDN.</p>
+
+<p><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/intl/uniscrib_35k5.asp">Uniscribe Platform SDK Reference</a></p>
+
+<p><a href="http://www.microsoft.com/msj/1198/multilang/multilang.aspx">Supporting Multilanguage Text Layout and Complex Scripts with Windows NT 5.0</a></p>
+
+<p><a href="http://www.microsoft.com/globaldev/getWR/steps/wrg_cscripts.mspx">Globalization Step-by-Step - Complex Scripts Awareness</a></p>
+
+<p><a href="http://www.microsoft.com/typography/Glyph Processing/intro.mspx">Windows Glyph Processing</a></p>
+
+<p>There is also the CSSamp example program from Platform SDK, in the Samples sub-directory:<code class="highlighter-rouge">\PlatformSDK\Samples\winui\globaldev\CSSamp</code></p>
+
+<h2 id="alternatives-to-uniscribe">Alternatives to Uniscribe</h2>
+
+<p>Not every editor uses Uniscribe. If open-source is your thing then there are currently two very impressive efforts available which offer a very strong alternative to Uniscribe. There is also an equivalent version of Uniscribe available for Apple’s OSX called ATSUI.</p>
+
+<p><a href="http://www-306.ibm.com/software/globalization/icu/index.jsp">International Components for Unicode (ICU)</a> is IBM’s open-source Unicode support library. It contains alot of functionality, from character-conversions, analysis, searching and layout.</p>
+
+<p><a href="http://www.pango.org/">Pango</a> is an open-source library for laying out and rendering Unicode text. It appears to sit on top of the GTK display library and can specify either Cairo or Win32 (Uniscribe) rendering back-ends. It offers a more complete solution than Uniscribe and appears to be very well designed and implemented. However Pango is UTF-8 based so this may be a consideration if the rest of your application is UTF-16.</p>
+
+<p><a href="http://developer.apple.com/intl/atsui.html">Apple Type Services For Unicode Imaging (ATSUI</a>) is Apple’s own version of Uniscribe, although it appears to be higher-level than Microsoft’s effort. A brief look at the documentation for ATSUI indicated a much easier-to-use design, and substantially better documentation than Microsoft had managed for Uniscribe.</p>
+
+<h2 id="coming-up-in-part-12">Coming up in Part 12</h2>
+
+<p>This was just a short introduction to Uniscribe - hopefully you are a little more aware of what Uniscribe is capable of, and have downloaded and tested the ScriptString sample program.</p>
+
+<p>Part 12 will focus on the first two Uniscribe functions: <code class="highlighter-rouge">ScriptItemize</code> and <code class="highlighter-rouge">ScriptLayout</code>. There is alot of detail to cover with just these two APIs and it won’t be until Part 13 that we actually see any text being drawn this way with Neatpad.</p>
+
+<p>Lastly, I’ve not had much feedback in the last few months about Neatpad - did you read this tutorial and find it useful?</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/scriptstring.zip">scriptstring.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2006-02-27T00:00:00+00:00">February 27, 2006</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="transparent-text.html" class="pagination--pager" title="Transparent Text
+">Previous</a>
+    
+    
+      <a href="uniscribe-mysteries.html" class="pagination--pager" title="Uniscribe Mysteries
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/introduction-uniscribe by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

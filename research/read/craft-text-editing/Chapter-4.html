@@ -1,0 +1,222 @@
+<html>
+<title>The Craft of Text Editing: Chapter 4</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 4: Editing Models</h1>
+
+<blockquote>
+So rested he by the Tumtum tree,<br>
+&nbsp;&nbsp;And stood a while in thought.<br>
+</blockquote>
+
+<p>An editing model is the view of the file that the editor presents
+to the user.  This chapter describes several editing models.  You can
+build other models by varying and combining these models.</p>
+
+<p>The following discussions review the models themselves, not the
+commands available to the user.  You should assume that essentially
+the same commands are available in all models.</p>
+
+<h2>One-Dimensional Array of Bytes</h2>
+
+<p>The most general form of a data file is a one-dimensional array of
+bytes.  The one-dimensional editing model presents this form of a data
+file directly to the user.  In it, the bytes of the file are displayed
+uninterpreted for the user to see.  The basic editing operations are
+&quot;insert&quot; and &quot;delete bytes.&quot;</p>
+
+<p>This model is very pure, but it is a little difficult for most
+users to deal with.  Text editors that appear to use this model
+actually use a slightly modified form of the model where some
+characters -- in particular, the tab and newline characters -- are
+interpreted during the display process.  Thus, text files appear as a
+series of lines.</p>
+
+<p>In this model, line breaks may or may not require special handling.
+Whether they do depends on how they are represented.  Various
+representations are described in detail in the next chapter.</p>
+
+<p>This model supports both insertion and replacement editing equally
+well.  Replacement editing is probably best implemented as a hybrid
+scheme where it automatically switches to insert mode to prevent
+replacing a line break.</p>
+
+<h2>Two-Dimensional Array of Bytes</h2>
+
+<p>This model is the basic two-dimensional form.  Instead of editing a
+line, the user is editing in a quarter-plane, with the origin usually
+in the upper-left corner.  Conceptually, the user can move freely in
+the two-dimensional quadrant.  In practice, the editor usually only
+stores the non-blank portions, as storing an infinite-quadrant's worth
+of data can be prohibitively expensive.  Some systems may impose fixed
+upper bounds on the width or length of the quadrant.</p>
+
+<p>Line breaks are implicit in the editing model itself.  Hence,
+implementations usually provide explicit commands to split and join
+lines.</p>
+
+<p>Both insertion and replacement editing are possible, although the
+model lends itself to replacement editing in a natural manner.
+Editors that use this model often have explicit commands to insert
+(and delete) both rows and characters within a row.</p>
+
+<p>While the pure form of this model arranges the text into a
+rectangle, most implementations actually impart a left-to-right, then
+top-to-bottom (or one of the other seven combinations) bias.  This
+bias affects all of the editing operations.  For example, it is often
+the case that implementations offer many commands for editing within a
+line, but only a few commands for editing entire lines.</p>
+
+<h2>List of Lines</h2>
+
+<p>This model is halfway between the first two.  It consists of a
+one-dimensional array of lines.  Each line is then a one-dimensional
+array of bytes.  From the user's viewpoint, this model differs from
+the two-dimensional model in that text exists only where it has been
+entered.  If the user wants to extend a line to the right, he or she
+must go into insert mode and type space characters.</p>
+
+<p>In the two-dimensional model, on the other hand, the quadrant is
+assumed to be filled with blanks.  Hence, there is no concept of
+extending the line to the right, as the line is assumed to extend
+infinitely far.  To add text to the right, the user simply moves to
+the desired position.</p>
+
+<p>Implementations that use this model usually make a very sharp
+distinction between editing within a line and editing lines.  For
+example, lines may have a maximum length or cut and paste operations
+may only operate on line boundaries.</p>
+
+<h2>Paged Models</h2>
+
+<p>It once was popular to divide the text into a series of pages.
+Editing was performed within a page, and explicit commands were
+required to move to another page or to re-paginate the text.  Any of
+the models could be used for editing within a page.  This division was
+thought to be natural: not coincidentally, it just
+&quot;happened&quot; to make it easier to write editors on systems
+that had very limited amounts of memory.</p>
+
+<p>Most modern editors show page breaks as a &quot;framework&quot;
+that &quot;floats&quot; over the underlying text.  This framework can
+be placed over any of the other underlying editing models.</p>
+
+<h2>Objects</h2>
+
+<p>Editing is a very general concept: there is no reason to limit the
+basic objects being edited to characters (or bytes) and lines.  It may
+make sense in some cases to provide ways of editing such objects as
+words, sentences, paragraphs, sections, chapters, and other
+&quot;natural&quot; objects as explicit objects.  Most editors provide
+commands to manipulate these objects without having them affect the
+fundamental editing model.</p>
+
+<p>Other objects cannot be readily simulated.  Examples of these
+objects are links to other documents, &quot;opaque&quot; objects
+included from other objects (<i>e.g.</i>, bitmaps), and graphical
+objects (lines, boxes, circles, etc.).</p>
+
+<p>In addition, text can be viewed in more than two dimensions.  For
+example, multiple files can be &quot;stacked&quot; into a third
+dimension, multiple versions of a single file can be combined into a
+time-like dimension, or portions of a file can be viewed and
+manipulated as a tree or list structure.  The possibilities are
+endless.</p>
+
+<h2>Dealing with Real Text</h2>
+
+<p>The models just listed are more or less pure forms.  Each model has
+its advantages and disadvantages because text has a more complex
+structure than is represented by any of the models.</p>
+
+<p>On the one hand, text is composed of a hierarchy of lexical
+units:</p>
+
+<ul>
+<li>characters
+<li>words
+<li>phrases
+<li>sentences
+<li>paragraphs
+<li>subsections
+<li>sections
+<li>chapters
+<li>documents
+</ul>
+
+<p>These units reflect the <i>meaning</i> of the text.  When the user
+is thinking in terms of meaning, the editor should provide an editing
+model -- and commands -- that reflect these units.  Since text is read
+sequentially, the one-dimensional model is well-matched to this
+mode.</p>
+
+<p>On the other hand, the printed page is composed of:</p>
+
+<ul>
+<li>characters, which are arranged into
+<li>words, which are arranged into
+<li>lines, which are arranged into
+<li>pages, which are arranged into
+<li>documents
+</ul>
+
+<p>These units reflect the <i>layout</i> of the text.  When the user
+is thinking in terms of appearance, the editor should provide an
+editing model -- and commands -- that reflect these units.  As a page
+is a two-dimensional object, the two-dimensional model fits this mode
+well.</p>
+
+<p>Many &quot;simple&quot; editors and word processors support this
+mode of thinking.  This mode is attractive for new users.  After all,
+isn't the whole purpose of a word processor to put characters on a
+page?  So doesn't it follow that users should be thinking in terms of
+placing each character on the page, one after the other?  If taken to
+extreme, the user is forced to make every placement decision, a
+situation that doesn't leave the user with much time or energy left to
+decide what to write.</p>
+
+<p>While layout is important, it does not directly relate to the
+meaning of the text.  And while meaning is important, the user sees
+the text in a particular layout, so layout-oriented editing is also
+important.  The challenge, then, is to design an editing model -- and
+an editor -- that allows the user to select the most appropriate
+features of each model with minimal effort.  Thus, it can take
+advantage of the best of both models while avoiding the
+disadvantages.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Explore the ramifications of a two-dimensional editing model where
+the origin is in the center of the document instead of the upper-left
+corner.  What additional commands might be required?  What operations
+(if any) does such a model make easier?  Harder? (Easy)</p>
+
+<p>Provide an algorithm for transforming between the one-dimensional
+and two-dimensional models. (Medium)</p>
+
+<p>What is a good way to support proportionally spaced text in the
+<i>pure</i> two-dimensional array of bytes model? (Hard)</p>
+
+<p>What problems are encountered when trying to support more than one
+model at the same time? (Easy) What is a good solution to these
+problems? (Hard)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

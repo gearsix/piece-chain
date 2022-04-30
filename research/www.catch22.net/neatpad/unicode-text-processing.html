@@ -1,0 +1,802 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/unicode-text-processing by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Unicode Text Processing - Catch22</title>
+<meta name="description" content="The last tutorial presented an overview of the various encoding formats that are used to store Unicode text. It is now time to take this theory and apply it to Neatpad. Therefore the subject of this article will be Unicode text processing.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Unicode Text Processing">
+<meta property="og:url" content="unicode-text-processing.html">
+
+
+  <meta property="og:description" content="The last tutorial presented an overview of the various encoding formats that are used to store Unicode text. It is now time to take this theory and apply it to Neatpad. Therefore the subject of this article will be Unicode text processing.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-12-05T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="unicode-text-processing.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Unicode Text Processing</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad9.zip">neatpad9.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="active">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Unicode Text Processing">
+    <meta itemprop="description" content="The last tutorial presented an overview of the various encoding formats that are used to store Unicode text. It is now time to take this theory and apply it to Neatpad. Therefore the subject of this article will be Unicode text processing.">
+    <meta itemprop="datePublished" content="December 05, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Unicode Text Processing
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Unicode Text Processing</h1-->
+<!--h3>Unicode file support in Neatpad</h3-->
+
+<p>The last tutorial presented an overview of the various encoding formats that are used to store Unicode text. It is now time to take this theory and apply it to Neatpad. Therefore the subject of this article will be Unicode text processing.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor805.gif" alt="" class="align-center" /></p>
+
+<p>The image above shows Neatpad’s new <em>Encoding</em> menu option - with a UTF-8 file displayed in all it’s glory. At the top of this tutorial are a collection of Unicode files which you can use to test Neatpad’s Unicode capability.</p>
+
+<h2 id="loading-text-files">Loading text files</h2>
+
+<p>Previous incarnations of Neatpad supported a single text encoding - plain ASCII text. A Unicode text editor must naturally support the various Unicode file-formats so our first step will be to modify the TextDocument’s <code class="highlighter-rouge">init()</code> function to detect what type of file we are opening.</p>
+
+<p>Of course it isn’t possible to detect what type of encoding a text-file uses until we actually open the file and read the first few bytes. We will use what Unicode terms the “Byte Order Mark” - a specific sequence of bytes that can only appear at the start of a Unicode text file, and if present will determine the exact encoding method used to save the file.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Byte Signature</td>
+      <td>Unicode Format</td>
+      <td>Neatpad Format</td>
+    </tr>
+    <tr>
+      <td><em>none</em></td>
+      <td>Plain ASCII/ANSI</td>
+      <td>NCP_ASCII</td>
+    </tr>
+    <tr>
+      <td><strong>EF BB BF</strong></td>
+      <td>UTF-8</td>
+      <td>NCP_UTF8</td>
+    </tr>
+    <tr>
+      <td><strong>FF FE</strong></td>
+      <td>UTF-16, little-endian</td>
+      <td>NCP_UTF16</td>
+    </tr>
+    <tr>
+      <td><strong>FE FF</strong></td>
+      <td>UTF-16, big-endian</td>
+      <td>NCP_UTF16BE</td>
+    </tr>
+    <tr>
+      <td><strong>FF FE 00 00</strong></td>
+      <td>UTF-32, little-endian</td>
+      <td>NCP_UTF32</td>
+    </tr>
+    <tr>
+      <td><strong>00 00 FE FF</strong></td>
+      <td>UTF-32, big-endian</td>
+      <td>NCP_UTF32BE</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Therefore a new function has been added to the TextDocument - <code class="highlighter-rouge">TextDocument::detect_file_format</code> - who’s purpose is to detect the format of the text-file as it is being loaded during <code class="highlighter-rouge">TextDocument::init</code>. In the absence of any file-signature we will assume that the file-contents is plain ASCII/ANSI text.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">TextDocument</span><span class="o">::</span><span class="n">detect_file_format</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">headersize</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function’s sole task is to analyse the first <em>x</em> bytes of a file and compare them against the various Byte-Order-Mark values that are defined in the table above. It is literally a task of performing a series of <code class="highlighter-rouge">memcmp</code> ‘s until we match a format. The <code class="highlighter-rouge">detect_file_format</code> function returns an appropriate NCP_xxx value (Neatpad Codepage) to indicate what type of file is being processed.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor0908.gif" alt="" class="align-center" /></p>
+
+<p>The file’s text-format is stored internally by the TextDocument (in member-variable <code class="highlighter-rouge">fileformat</code>). The length of the Byte-Order-Mark header is also saved away in the <code class="highlighter-rouge">headersize</code> member-variable - so that we can always identify the start of the real content no matter what type of file we are loading.</p>
+
+<h2 id="internal-text-representations">Internal text representations</h2>
+
+<p>Most text-editors (such as Notepad) will load an entire text-file into memory. No matter what the underlying file format (i.e. ASCII, UTF-8 or UTF-16), the contents will be converted to an internal format to make it easier to work with. For Windows programs, this is usually (but not always) the native UTF-16 format of Windows NT. This makes sense because all of the text-based Windows APIs are designed to handle UTF-16/UCS2.</p>
+
+<p>This is a great way to structure a program because you maintain one set of source-code for the main editor (which interfaces directly with the OS’s text routines), and then write a set of simple file I/O conversion routines which load and save each of your supported formats. The editor is kept very simple because the text it processes is always in one format. When it comes back to saving a file in it’s original format then the entire text is converted back again.</p>
+
+<p>Of course this method could require large amounts of memory because the entire file must be loaded at one time. In order for us to support our goal of a multi-gigabyte text editor we <em>must</em> leave the file in it’s “raw” state and only map specific parts of a file into memory as required - much like the HexEdit program on this site.</p>
+
+<p>However this leaves us with a problem - how do we handle many different forms of text within the same program but still keep a single code-base which is not over-complicated by the various encodings it must process? Here are the two basic strategies available:</p>
+
+<ol>
+  <li>Write <em>separate</em> versions of the TextView/TextDocument for each specific file format. We would then create a specific instance of TextView (i.e. TextViewUtf8 / TextViewUtf16) depending on what type of file we encountered. We could potentially use macro’s / C++ templates to make our lives easier but I believe this method will be a <em>code-maintanence-nightmare</em>. Avoid at all costs!</li>
+  <li>Write a <em>generic</em> TextView which always handles text in the “native” format (i.e. UTF-16 for Windows). The TextView would have no knowledge of the underlying file-format, and it would be up to the TextDocument to convert the underlying file-format into UTF-16 as the TextView requested.</li>
+</ol>
+
+<p>I think that method#2 will provide the greatest flexibility and with careful design should work well for Neatpad.</p>
+
+<h2 id="generic-text-processing">Generic text processing</h2>
+
+<p>The idea behind a “generic” design is that the TextView always gets to see and process UTF-16 text (i.e. standard wide-character Unicode strings). It is completely unaware that the underlying file the TextDocument is reading is anything other than UTF-16 text. This means that whenever the TextView asks for text to display, it is up to the TextDocument to translate (if necessary) the underlying file contents into UTF-16 (i.e. on the fly in realtime).</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor0904.gif" alt="" class="align-center" /></p>
+
+<p>The TextDocument on the other hand understands “all” types of file-format. It knows how to read the various encodings that we will support - so this would be ASCII, UTF-8 and UTF-16.</p>
+
+<p>I feel that this type of design will suit Neatpad very well. Because the user-interface (the TextView) has the potential to be so complicated, it is very important to try and isolate all of the text-conversion problems into one place so that we only have to worry about it once. It also has the advantage that we could add further text-formats to the TextDocument (i.e. UTF-32) and the TextView would never have to be modified. The TextView should <em>only</em> care about UTF-16.</p>
+
+<h2 id="two-coordinate-systems">Two coordinate systems</h2>
+
+<p>Deciding to move to this “generic” text model has introduced a major problem, because we now have <em>two</em> coordinate systems to consider - one for the TextView, and one for the TextDocument. At this point we could just say “we’ll support UTF-16 for the moment and add UTF-8 later on” - but this would be a mistake. The design of a “single format” editor is very different to an editor that must handle arbitrary file-formats and we must move to a more <em>generic</em> design or this will cause us even bigger problems later on.</p>
+
+<p>So, we have decided that the <strong>TextView</strong> will work exclusively in UTF-16 units. This is a <em>good thing</em>. It basically means that the entire “user-interface” to the TextView control is in the Native Windows Unicode format. Don’t underestimate how important this is. We haven’t progressed this far yet, but try to imagine a “user” of the TextView control (i.e. a programmer) using it in a C++ project:</p>
+
+<p>This programmer’s project will naturally be Unicode and all text operations will therefore also be UTF-16. TextView operations such as cursor positioning, selection management, getting and setting text at specific offsets, searching for text etc must be UTF-16 also. The user/programmer doesn’t care what the underlying format of the textfile is, all they see of the world is UTF-16, and all operations must match this view of the world. Therefore our cursor offsets and selection offsets - our entire coordinate “front end” to the control <em>- must</em> be UTF-16 based. This is where we hit our problem though:</p>
+
+<p>The <strong>TextDocument</strong> has a different view of things. It must work with arbitrary file formats and it won’t know - until loaded - what format a text-file will be in. It could be dealing in single-byte formats (ASCII), multi-byte formats (UTF-8) or wide-character formats (UTF-16). The TextDocument must use a coordinate-system that is common to all these formats. Of course this will be a byte-oriented system - so all line-offsets and text-accesses will must be <em>byte-based.</em></p>
+
+<p>To try and illustrate this TextView/TextDocument divide, let’s look at a quick example of some Unicode text:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="https://www.catch22.net/assets/img/editor0906.gif" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">U</span><span class="o">+</span><span class="mo">0041</span> <span class="n">LATIN</span> <span class="n">CAPITAL</span> <span class="n">LETTER</span>
+<span class="n">U</span><span class="o">+</span><span class="mo">06</span><span class="n">AF</span> <span class="n">ARABIC</span> <span class="n">LETTER</span> <span class="n">GAF</span>
+<span class="n">U</span><span class="o">+</span><span class="mi">16</span><span class="n">D4</span> <span class="n">RUNIC</span> <span class="n">LETTER</span> <span class="n">DOTTED</span><span class="o">-</span><span class="n">P</span>
+<span class="n">U</span><span class="o">+</span><span class="mi">10416</span> <span class="n">DESERAT</span> <span class="n">CAPITAL</span> <span class="n">LETTER</span> <span class="n">JEE</span>
+</code></pre></div></div>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<p>The text above is just a random collection of four Unicode characters - with the Unicode code-point values listed to the side. To see how these characters relate to Neatpad, we will imagine that the text above has been encoded as UTF-8 and loaded into Neatpad. The TextDocument would therefore be working in UTF-8 multi-byte units:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor0907.gif" alt="" class="align-center" /></p>
+
+<p>The TextView of course sees the file as UTF-16. Hopefully the diagram illustrates just how separated the TextView has become from the underlying file. Apart from the first character (‘A’), the raw data that the TextView gets to see is completely different to how it really appears on disk. Remember, all this should be happening in realtime, not during the file-loading process.</p>
+
+<p>But we still haven’t solved our problem. The TextView speaks UTF-16 and the TextDocument speaks byte-offsets. We need to devise some kind of mechanism to perform mappings between UTF-16 offsets (i.e. code-unit offsets) and the underlying file-content (whatever that may be). This task will fall to the TextDocument, and it will be the line-offset buffer that will be doing all the hard work.</p>
+
+<h2 id="reading-unicode-data">Reading Unicode data</h2>
+
+<p>The decision to make the TextView UTF-16 only means that our <code class="highlighter-rouge">TextDocument::getline</code> routine must change. Remember that this is the main “gateway” between the TextView and the TextDocument. Let’s look at what we had before:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="n">TextDocument</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="n">ULONG</span> <span class="o">*</span><span class="n">fileoff</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">TextDocument::getline</code> routine basically returns a block of text from the specified line - and always returns this text as plain ANSI. Two things are going to change here. Obviously the text-type must change from <code class="highlighter-rouge">char*</code> to <code class="highlighter-rouge">wchar_*</code> if we want to support Unicode. This change has been achieved by converting all <code class="highlighter-rouge">char*</code> types to <code class="highlighter-rouge">TCHAR*</code> on a project-wide basis and creating a separate <em>Unicode Build</em>.</p>
+
+<p>The second change is to move away from a line-oriented text-retrieval model. What we have now is a <code class="highlighter-rouge">getline</code> replacement - called <code class="highlighter-rouge">TextDocument::gettext</code>. The purpose of this new routine is to return UTF-16 text from the specified <em>byte</em> offset within the current file:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">TextDocument</span><span class="o">::</span><span class="n">gettext</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">offset</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">maxbytes</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">buflen</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>No matter what the underlying text-format, this routine will always return UTF-16 data (for a Unicode build). The text is stored in the <code class="highlighter-rouge">buf</code> parameter, and the number of “characters” stored in <code class="highlighter-rouge">buf</code> is returned in the <code class="highlighter-rouge">*buflen</code> parameter.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCHAR</span> <span class="n">buf</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">buflen</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+
+<span class="c1">// read a block of text as UTF-16 from the specified position
+</span><span class="n">len_bytes</span> <span class="o">=</span> <span class="n">textDoc</span><span class="o">-&gt;</span><span class="n">gettext</span><span class="p">(</span><span class="n">byte_offset</span><span class="p">,</span> <span class="n">max_bytes</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">buflen</span><span class="p">);</span>
+
+<span class="c1">// adjust offsets ready for next read
+</span><span class="n">off_bytes</span> <span class="o">+=</span> <span class="n">len_bytes</span><span class="p">;</span>
+<span class="n">max_bytes</span> <span class="o">-=</span> <span class="n">len_bytes</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Most importantly though, the number of bytes that were processed from the underlying file is returned from the function directly - i.e. the return value represents the number of ASCII/UTF-8/UTF-16 bytes that were processed during the conversion to UTF-16. This is required so that we can keep track of the “byte position” in the underlying file - to allow us to continue reading blocks of UTF-16 in an iterative fashion.</p>
+
+<p>Even though the TextView will be reading UTF-16 data (and using UTF-16 based offsets for cursor positioning etc), we <em>must</em> access the underlying file using byte-offsets. This is to make the text-retrieval a direct form of access to the underlying file, converting whatever data happens to be at the <em>byte-offsets</em> into UTF-16. If we used UTF-16 coordinates to access the file content, we would have to convert this character-offset to a byte-offset by performing lengthy processing.</p>
+
+<p>The new <code class="highlighter-rouge">TextDocument::gettext</code> function is a little more complicated than what we had before:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">TextDocument</span><span class="o">::</span><span class="n">gettext</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">offset</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">lenbytes</span><span class="p">,</span> <span class="n">WCHAR</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">buflen</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">BYTE</span> <span class="o">*</span><span class="n">rawdata</span> <span class="o">=</span> <span class="n">buffer</span> <span class="o">+</span> <span class="n">headersize</span> <span class="o">+</span> <span class="n">offset</span><span class="p">;</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">fileformat</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">NCP_ASCII</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ascii_to_utf16</span><span class="p">(</span><span class="n">rawdata</span><span class="p">,</span> <span class="n">lenbytes</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+
+    <span class="k">case</span> <span class="n">NCP_UTF8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">utf8_to_utf16</span><span class="p">(</span><span class="n">rawdata</span><span class="p">,</span> <span class="n">lenbytes</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+
+    <span class="k">case</span> <span class="n">NCP_UTF16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">copy_utf16</span><span class="p">(</span><span class="n">rawdata</span><span class="p">,</span> <span class="n">lenbytes</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">WCHAR</span><span class="p">),</span> <span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+
+    <span class="k">case</span> <span class="n">NCP_UTF16BE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">swap_utf16</span><span class="p">(</span><span class="n">rawdata</span><span class="p">,</span> <span class="n">lenbytes</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">WCHAR</span><span class="p">),</span> <span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+
+    <span class="k">default</span><span class="o">:</span>
+        <span class="o">*</span><span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We must use the <code class="highlighter-rouge">TextDocument::fileformat</code> member-variable to decide how to convert the underlying text into UTF-16. Notice that there is one conversion routine for each type of text that we will support.</p>
+
+<p>One thing I should mention which isn’t detailed here is the actual conversion process to UTF-16. We must be very careful that we never “split apart” UTF-16 surrogate pairs accidently when converting to UTF-16. This could potentially happen when converting from UTF-8 and we run out of buffer space to store both of the surrogate characters. The conversion routines all make sure that surrogate pairs are kept together.</p>
+
+<h2 id="problems-with-multibytetowidechar">Problems with MultiByteToWideChar</h2>
+
+<p>You may have noticed that I have written my own Unicode-conversion routines in the <code class="highlighter-rouge">TextDocument::gettext</code> function. I <em>really</em> wanted to use the <strong>MultiByteToWideChar</strong> API to perform all conversions to UTF-16. Unfortunately nothing is that simple. Although <strong>MultiByteToWideChar</strong> is good at converting <em>valid</em> UTF-8 data, it is not so good when it comes to <em>invalid</em> text-sequences (such as malformed or overlong sequences).</p>
+
+<p>When it comes to processing this type of data the preferred behaviour for a text-editor is to indicate invalid sequences of UTF-8/UTF-16 by using a special Unicode character - “U+FFFD Unicode Replacement Character”. The problem with MultiByteToWideChar is, it doesn’t perform this conversion for invalid sequences - it just returns with a failure and you don’t know how many characters were invalid. This makes it impossible to restart the conversion process, because you don’t know <em>where</em> to restart.</p>
+
+<p>By writing my own routines I was able to process both valid and <em>invalid</em> data in a manner that is more suitable for text-stream processing - i.e. more suitable for a text editor.</p>
+
+<h2 id="line-buffer-management">Line Buffer Management</h2>
+
+<p>Changing to Unicode and the “double coordinate system” means that the line-buffer scheme we developed earlier in the series needs revisiting. I’m not going to go into too much detail here because I know full well that I will be changing it yet again when we come to adding “gigabyte file support” <em>later</em> in the series. But this needs some discussion right now so here goes:</p>
+
+<p>The line-buffer in Neatpad serves two purposes. Firstly, it provides a method to quickly locate a line of text’s physical location within a file. This provides a kind of “random access” to the file content. The second purpose of the line buffer is to perform the reverse operation - i.e. given a physical “cursor offset”, work out which line contains this offset.</p>
+
+<p>Now that coordinate-system of the TextView is UTF-16, we need to rethink the design of the line-buffer. The problem is, we still need to know where lines of text are physically located within a file so we can’t just change the line-buffer to UTF-16 coordinates. Of course a “single-format” editor such as Notepad would go down this route but because we must support multiple file-formats we need to be dealing with <em>real__physical locations</em>.</p>
+
+<p>What I have done is add a <em>second</em> line-buffer to the TextDocument - adjacent to the original “byte-based” line-buffer. So the original line-buffer still holds real, physical byte-offsets of each line’s starting position within the file. The new line-buffer records each line’s starting position, however this time it stores the information as UTF-16 offsets (character positions) rather than byte-offsets. Even if the underlying file is UTF-8, this second line-buffer stores each line’s offset <em>as if it were encoded as UTF-16</em>.</p>
+
+<p>The diagram below should hopefully illustrate what I am trying to explain.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor0905.gif" alt="" class="align-center" /></p>
+
+<p>Moving to Unicode has introduced yet <em>another</em> problem: Exactly how do we initialize the line-buffer(s) with these “line start” offsets with all these extra formats? Previously the method used to search for CR/LF combinations was a simple byte search. Unfortunately this method will no longer be sufficient for our multi-format text editor:</p>
+
+<p>We can’t do a byte-search for “\r” and “\n” characters and expect it to work any more. There is no problem with ASCII and UTF-8 (they are still byte-based and CL/LF are no different), but UTF-16 presents a challange. The CR-LF ASCII sequence (0x0D followed by 0x0A) is actually “U+0D0A MALAYALAM LETTER UU” in Unicode. We must search specifically for U+0x000D and U+0x000A when processing a UTF-16 text file.</p>
+
+<p>Unicode also defines it’s own line-breaking and paragraph-breaking codepoints: U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR. However the convention in text-files is still to use CR/LF sequences so we must really support all these conventions.</p>
+
+<p>We have two options for parsing lines of text and building the line-buffers. The first is to write separate routines - one for each format we will support. Although this might be the most efficient approach in terms of processing-speed, it is definitely not the most efficient in terms of code-maintanence. Perhaps when Neatpad is complete I will look at this approach, but for now I prefer the following method:</p>
+
+<p>Quite simply, the better method for the time being is to use a generic line-parsing routine. The <code class="highlighter-rouge">TextDocument::init_linebuffer</code> remains intact, and still processes the file on a character-by-character basis, searching for CR/LF sequences. The difference is now, the file is converted into a stream of UTF-32 characters which enables us to handle all forms of text.</p>
+
+<h2 id="text-iteration">Text Iteration</h2>
+
+<p>You may be thinking that this is all getting quite complicated now - and you’d be right, it is! The main complication arises (as we already know) because the TextView deals in UTF-16 character offsets, whereas the TextDocument deals in byte-offsets. Although the TextView always retrieves UTF-16 text from the TextDocument, it must still do so using byte-offsets. This is not a terribly neat solution.</p>
+
+<p>To solve the problem I have introduced a third C++ class called <code class="highlighter-rouge">TextIterator</code>. The purpose of this class is to provide a “bridge” between the coordinate system of the TextView and the underlying file-format that the TextDocument understands. This means that the TextView no longer asks the Document directly for text - all text retrieval now goes through the Iterator.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TextIterator</span>
+<span class="p">{</span>
+    <span class="k">friend</span> <span class="k">class</span> <span class="nc">TextDocument</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">gettext</span><span class="p">(</span><span class="n">WCHAR</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="c1">// only "friends" of the TextIterator can create them
+</span>    <span class="n">TextIterator</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">off</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">len</span><span class="p">,</span> <span class="n">TextDocument</span> <span class="o">*</span><span class="n">doc</span><span class="p">);</span>
+
+    <span class="c1">// keep track of position within the specified TextDocument
+</span>    <span class="n">TextDocument</span> <span class="o">*</span> <span class="n">text_doc</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">off_bytes</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">len_bytes</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>As you can see the class definition for a TextIterator is very simple. It keeps track of the TextDocument that it is being used for, and the byte-offset within the document. These values are set when the TextIterator is constructed. The only code which actually does anything useful is shown below in the <code class="highlighter-rouge">TextIterator::gettext</code> function.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">TextIterator</span><span class="o">::</span><span class="n">gettext</span><span class="p">(</span><span class="n">WCHAR</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">buflen</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// get text from the TextDocument at the specified byte-position
+</span>    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">text_doc</span><span class="o">-&gt;</span><span class="n">gettext</span><span class="p">(</span><span class="n">off_bytes</span><span class="p">,</span> <span class="n">len_bytes</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">buflen</span><span class="p">);</span>
+
+    <span class="c1">// adjust the iterator's internal position
+</span>    <span class="n">off_bytes</span> <span class="o">+=</span> <span class="n">len</span><span class="p">;</span>
+    <span class="n">len_bytes</span> <span class="o">-=</span> <span class="n">len</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">buflen</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The TextIterator basically encapsulates the byte-based fileoffset details and hides them from the TextView. A single function has also been added to the TextDocument which is used to start a line-iteration:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TextIterator</span> <span class="n">TextDocument</span><span class="o">::</span><span class="n">iterate_line</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">ULONG</span> <span class="o">*</span><span class="n">linestart</span><span class="p">,</span> <span class="n">ULONG</span> <span class="o">*</span><span class="n">linelen</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ULONG</span> <span class="n">offset_bytes</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">length_bytes</span><span class="p">;</span>
+
+    <span class="n">lineinfo_from_lineno</span><span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="n">linestart</span><span class="p">,</span> <span class="n">linelen</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">offset_bytes</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length_bytes</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">TextIterator</span><span class="p">(</span><span class="n">offset_bytes</span><span class="p">,</span> <span class="n">length_bytes</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">interate_line</code> function returns an independent <code class="highlighter-rouge">TextIterator</code> object which can then be used to access the file’s text in a transparent manner. An example of text-iteration using this new class is shown below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TextIterator</span> <span class="n">itor</span> <span class="o">=</span> <span class="n">m_pTextDoc</span><span class="o">-&gt;</span><span class="n">iterate_line</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+
+<span class="n">WCHAR</span> <span class="n">buf</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+
+<span class="n">len</span> <span class="o">=</span> <span class="n">itor</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>You can see how simple the process is now. The TextView now accesses the file-content through the TextIterator. Everything is line/character offset based as far as the TextView is concerned. The nasty byte-offsets and conversion details are hidden away in the Iterator and TextDocument, which is exactly how we want it.</p>
+
+<p>In all probability I will end up changing the design yet again when some other issue crops up (I am expecting headaches with bidirectional text and complex scripts), but for the time being the TextView/TextIterator/TextDocument design that I have outlined here seems to work pretty well.</p>
+
+<h2 id="additions-to-neatpad">Additions to Neatpad</h2>
+
+<p>A quick mention on some changes to the actual Neatpad application. I have added three things. The first is command-line support. Now it is possible to specify a text-file at the commandline (just like with Notepad) and the file opens automatically when Neatpad starts.</p>
+
+<p>The second addition is shell-menu support. There is a new setting in Neatpad’s options to add an entry to Explorer’s shell context menu for <em>all</em> filetypes, enabling you to right-click any file and select “Open with Neatpad”. I always add this entry for Notepad when I build a new system and having the same (automatic) feature for Neatpad will be very useful in my opinion.</p>
+
+<p>The last addition is window-position persistence. You may have noticed with Notepad that it saves it’s window-position each time it exits, so that the next time it starts the window is restored to the saved position. I have gone one step further than this - Neatpad saves the window position for individual files rather than for the application as a whole. This means that you could open+close different files in Neatpad and they each remember their own position on screen.</p>
+
+<p>The way I have done this is to use NTFS Alternate Data Streams. I have been dying to find a use for “NTFS Streams” since they first appeared in Windows NT and I believe I have found the perfect use for them. Each time a file is opened, an NTFS steam attached to the file (called <code class="highlighter-rouge">Neatpad.WinPos</code>) is opened as well. A <code class="highlighter-rouge">WINDOWPLACEMENT</code> structure is saved in this stream - so when a file is opened the <code class="highlighter-rouge">SetWindowPlacement</code> API is called using the saved structure. And when a file is closed, Neatpad’s current window position is retrieved with and saved back into the main file’s <code class="highlighter-rouge">Neatpad.WinPos</code> stream.</p>
+
+<h2 id="coming-up-in-part-10">Coming up in Part 10</h2>
+
+<p>The subject of Unicode has proven to be rather difficult to solve. In fact I went through several rewrites of the TextView/TextDocument classes before I arrived at the solution I’ve presented here. This is just one of the reasons why it took such a long time to get right - the other reason being that I had to do alot of background reading to make sure I understood all of the issues surrounding Unicode before I started.</p>
+
+<p>I will mention again the book “Unicode Demystified” by Richard Gillam - this book is well worth a read and covers many more Unicode topics than I can present here. Although it was written for Unicode 3.0 don’t let this put you off - the changes between Unicode 3.0 and 4.0 are fairly minimal and are basically just things like additions to the character repertoire.</p>
+
+<p>Moving on to Part 10. The next tutorial will focus on the proper display of Unicode text. Understand that at the moment, all I have really done is turn Neatpad into a “wide-character” text viewer which happens to support UTF-8 and UTF-16 encoding formats. Although we are now using the “unicode” Windows APIs (specifically TextOutW) we are still a long way off being a real Unicode editor. Complex scripts, combining characters and bidirectional text are <em>not</em> supported yet. If you thought displaying Unicode text was a matter of simply calling TextOutW then think again - Unicode text display is a <em>very</em> complicated problem which cannot be solved using TextOut on it’s own.</p>
+
+<p>The next tutorial will therefore focus on the <strong>Uniscribe API</strong>. This API (available since Windows 2000) provides support for displaying complex-scripts and bidirectional text. We will have to redesign Neatpad’s text-display engine slightly because of the way Uniscribe works, and also modify the mouse-input and selection routines, but hopefully after the next tutorial we will be in a very good position in terms of Unicode support.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad9.zip">neatpad9.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-12-05T00:00:00+00:00">December 05, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="introduction-unicode.html" class="pagination--pager" title="Introduction to Unicode
+">Previous</a>
+    
+    
+      <a href="transparent-text.html" class="pagination--pager" title="Transparent Text
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/unicode-text-processing by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

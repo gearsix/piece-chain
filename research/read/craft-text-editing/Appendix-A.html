@@ -1,0 +1,411 @@
+<html>
+<title>The Craft of Text Editing: Appendix A</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Appendix-A.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Appendix A: A Five-Minute Introduction to C</h1>
+
+<p>This Appendix provides a brief introduction to that part of the C
+programming language as used in the examples presented in this book.
+This appendix is not a reference manual, nor does it describe all of
+C.  Rather, it assumes that you are familiar with other programming
+languages in general and just need a nudge or two to follow the
+examples presented in this book.  If you want to learn more about the
+C language, consult ANSI (1990) or Kernighan (1978).  If you are
+interested in C, you should also look into the C++ language.</p>
+
+<p>The best way to think of the C programming language is to consider
+it as providing the programmer with a mechanism for allocating and
+naming memory, control structure, and an extension mechanism.  Many
+people consider it barely a high-level language.  Perhaps for that
+very reason, it is ideally suited for systems and utilities such as
+text editors.</p>
+
+<p>The <i>declaration mechanism</i> provides the programmer a way to
+allocate and name memory.  Data types are oriented around what is best
+suited to the hardware.</p>
+
+<p>The <i>language statements</i> provide a control structure
+mechanism.  All of the usual control structures are available.  In
+addition, a full suite of arithmetic and bit operators is available,
+again focusing around what is best suited to the hardware.</p>
+
+<p>The <i>procedure definition and call mechanism</i> provide the
+extension mechanism.  Many &quot;standard&quot; C operations such as
+string copy and input/output are implemented in terms of this
+mechanism.</p>
+
+<p>Comments are enclosed in &quot;/* ... */&quot;.</p>
+
+<h2>Case Conventions</h2>
+
+<p>The names in this book follow the convention that <i>UPPERCASE</i>
+names are pre-defined constants, <i>MixedCase</i> names are
+procedures, and <i>lowercase</i> names are variables. Again, these are
+conventions, not requirements.</p>
+
+<h2>Data Types and Declarations</h2>
+
+<p>All variables and procedures used are declared.  Declarations are
+of the following form:</p>
+
+<blockquote><i>type variable</i>;</blockquote>
+
+<p>The language supports the following data types:</p>
+
+<dl compact="compact">
+<dt><b>char</b></dt><dd>The variable holds one character.  Characters are
+typically 8 bits wide.  They may either be signed (range -128 to +127)
+or unsigned (range 0 to 255) at the implementation's discretion.</dd>
+
+<dt><b>int</b></dt><dd>The variable holds an integer of a size convenient for
+the hardware.  This size is typically 16 or 32 bits.</dd>
+
+<dt><b>float</b></dt><dd>The variable holds a floating point number.</dd>
+
+<dt><b>FILE *</b></dt><dd>The variable holds a file descriptor.</dd>
+
+<dt><b>struct <i>name</i> { &lt;list of declarations&gt; };</b></dt><dd>The
+declarations are combined into a single, larger data type named
+<i>name</i>.</dd>
+
+<dt><b><i>type</i> (*<i>name</i>)();</b></dt><dd>The <i>name</i> is the
+address of a procedure that returns a value of type <i>type</i>.</dd>
+
+<dt><b>void</b></dt><dd>No value.  Used to indicate that a procedure does not
+return anything or accepts no arguments.</dd>
+</dl>
+
+<p>A declaration of the form</p>
+
+<blockquote>
+<i>type</i> *
+</blockquote>
+
+<p>means that the variable holds the address of an object of the
+specified type.  The variable is called a <i>pointer</i> to the
+specified type.  A declaration of the form</p>
+
+<blockquote>
+<i>type name</i>[<i>constant</i>]
+</blockquote>
+
+<p>means that the variable holds an array of objects of the specified
+data type.  The array is <i>constant</i> object long. The form</p>
+
+<blockquote>
+<i>type name</i>[<i>constant1</i>][<i>constant2</i>]
+</blockquote>
+
+<p>is used for a two-dimensional array.</p>
+
+<p>The following data types are not part of the language, but
+represent types used in examples.  An implementation would define
+these in terms of existing-language data types.</p>
+
+<dl compact="compact">
+<dt><b>FLAG</b></dt><dd>The variable holds a True or False value.  (In C a 0
+value is considered to be False and any non-zero value is considered
+to be True.)</dd>
+
+<dt><b>status</b></dt><dd>The variable holds a success or failure status
+value.  This value may include warning or error information.</dd>
+
+<dt><b>location</b></dt><dd>The variable holds a value that represents a
+point or mark location within a buffer.</dd>
+
+<dt><b>time</b></dt><dd>The variable holds a value that represents the time
+date and time.</dd>
+
+<dt><b>private</b></dt><dd>You get to define this.</dd>
+</dl>
+
+<h2>Constants</h2>
+
+<p>Integers are written as themselves (<i>e.g.</i>, &quot;56&quot;
+means the value fifty-six).</p>
+
+<p>Hexadecimal constants are written in the form &quot;0x##&quot;,
+where the ##s are hexadecimal digits.</p>
+
+<p>Character strings are enclosed in double quotes (&quot; &quot;).  A
+NUL-terminator (a byte of decimal value 0) is automatically appended
+to the string by the compiler.  Character strings are considered to
+have the type &quot;array of char.&quot;</p>
+
+<p>Character constants are enclosed in single quotes ('').  They are
+automatically converted to integers whose value is that of the
+character.  For example:</p>
+
+<dl compact="compact">
+<dt><b>&quot;a&quot;</b></dt><dd>is an array of two characters, consisting of
+the characters 'a' and NUL (values 97 and 0 decimal, assuming
+ASCII).</dd>
+<dt><b>'a'</b></dt><dd>is an integer whose value is 97, assuming ASCII.</b></dt>
+</dl>
+
+<p>while:</p>
+
+<p>&quot;abc&quot; is an array of four characters, consisting of the
+characters 'a', 'b', 'c', and NUL (values 97, 98, 99, and 0 decimal,
+assuming ASCII).</p>
+
+</p>The form 'abc' is officialy undefined (some compilers might
+consider this as an integer whose value is 97 * 65536 + 98 * 256 + 99,
+but don't count on it).</p>
+
+<p>The character '\b' refers to the ASCII Back Space character
+(8 decimal).</p>
+
+<p>Note: the &quot;&quot; / '' syntax is used in all code excerpts.
+However, the normal English typographical conventions of using
+&quot;&quot; are followed in the body of the text.</p>
+
+<h2>Pre-defined Constants</h2>
+
+<dl compact="compact">
+<dt><b>NEWLINE</b></dt><dd>The character string that represents a
+system-specific newline, written &quot;\n&quot;.</dd>
+
+<dt><b>NL</b></dt><dd>The character that represents a newline, 10 decimal.</dd>
+
+<dt><b>SP</b></dt><dd>The space character, 32 decimal.</dd>
+
+<dt><b>TAB</b></dt><dd>The horizontal tab character, 9 decimal.</dd>
+
+<dt><b>NUL</b></dt><dd>The nul character, 0 decimal.  Character strings are
+terminated by this character.</dd>
+
+<dt><b>NULL</b></dt><dd>The null pointer: no data object can be at this address.</dd>
+
+<dt><b>BUFFERNAMEMAX</b></dt><dd>The size of the longest possible buffer name
+plus 1 for the trailing NUL.  Possibly 33.</dd>
+
+<dt><b>FILENAMEMAX</b></dt><dd>The size of the longest possible file name
+plus 1 for the trailing NUL.  Typically 1,025.</dd>
+</dl>
+
+<h2>Procedure Structure</h2>
+
+<p>Procedures have the following structure:</p>
+
+<pre>
+<i>type Name</i>(&lt;arguments&gt;)
+		{
+		&lt;local variables&gt;
+
+		&lt;statements&gt;
+		}
+</pre>
+
+<p>The procedure is named <i>Name</i> and returns data of type
+<i>type</i> (<i>type</i> can be a structure or pointer as well as a
+basic type).  The argument list contains a list of declarations or the
+keyword <b>void</b> if the procedure takes no arguments.  The local
+variables are then declared (and may be initialized at each procedure
+invocation).  Last are the procedure statements.</p>
+
+<h2>Statements</h2>
+
+<p>The statements are the usual ones.  A semi-colon (&quot;;&quot;)
+terminates a statement.  Comments start with &quot;/*&quot; and end
+with &quot;*/&quot;.  Statements can be grouped with &quot;{&quot; and
+&quot;}&quot; characters, so the sequence</p>
+
+<pre>
+	{
+	&lt;statement 1&gt;
+	&lt;statement 1&gt;
+		...
+	&lt;statement n&gt;
+	}
+</pre>
+
+is equivalent to one statement.  White space and columns are not significant.
+
+<pre>
+<p><b>if (</b><i>condition</i><b>) </b><i>then-statement</i>
+
+<b>if (</b><i>condition</i><b>) </b><i>then-statement</i><b>
+else </b><i>else-statement</i>
+
+<b>for (</b><i>initializer</i><b>; </b><i>end-test</i><b>; </b><i>increment</i><b>)
+
+	</b><i>statements</i>
+			execute the initializer, then the end test, then
+			repeat the statements, the increment, and end test
+			until the end test becomes True
+
+	<b>break;</b>	exit a loop immediately
+
+	<b>continue;</b>	skip the rest of the loop body, but don't
+			 exit the loop
+
+<b>while (</b><i>end-test</i><b>) </b><i>statements</i>
+			repeat the end test and statements until the end
+			test becomes True
+
+<b>for (;;) </b><i>statements</i>
+			repeat the statements forever: a break, continue,
+			or return statement is used to exit the loop
+
+<b>switch (</b><i>expression</i><b>) {
+
+case</b> LABEL1:
+	<i>statements</i>
+	<b>break;
+
+case</b> LABEL2:
+	<i>statements</i>
+	<b>break;
+
+	...
+
+default:</b>
+	<i>statements</i>
+	<b>break;
+	}</b>
+			execute the statements after the label whose value
+			matches the expression, or the statements after
+			&quot;default&quot; if present and no label matches
+
+<b>return(</b><i>expression</i><b>);</b>
+				return a value from a procedure
+</pre>
+
+<h2>Operators</h2>
+
+<p>The (possibly unusual) language operators are these:</p>
+
+<dl compact="compact">
+<dt><b>=</b></dt><dd>assignment; not test for equality</dd>
+
+<dt><b>==</b></dt><dd>test for equality; not assignment</dd>
+
+<dt><b>!=</b></dt><dd>test for not equal</dd>
+
+<dt><b>!</b></dt><dd>logical negation: !FALSE becomes TRUE</dd>
+
+<br>
+
+<dt><b>a+b</b></dt><dd>returns the sum of a and b</dd>
+
+<dt><b>a-b</b></dt><dd>returns the difference of a and b</dd>
+
+<dt><b>a*b</b></dt><dd>returns the product of a and b</dd>
+
+<dt><b>a/b</b></dt><dd>returns a divided by b</dd>
+
+<dt><b>a%b</b></dt><dd>returns a modulo b</dd>
+
+<dt><b>a&amp;b</b></dt><dd>returns the bitwise and of a and b</dd>
+
+<dt><b>a|b</b></dt><dd>returns the bitwise or of a and b</dd>
+
+<dt><b>a^b</b></dt><dd>returns the bitwise exclusive or of a and b</dd>
+</dl>
+
+<p>The construct &quot;a @= b&quot; where &quot;@&quot; is any of the
+operators &quot;+&quot; through &quot;^&quot; does the same as &quot;a
+= a @ b&quot;, except that &quot;a&quot; is only evaluated once.</p>
+
+<p>Operators that return True / False results return 1 for True and 0
+for False.  However, when a True / False value is required (say, in an
+if-condition), any non-zero value means True and zero means False.</p>
+
+<dl compact="compact">
+<dt><b>&amp;v</b></dt><dd>returns the address of v</dd>
+
+<dt><b>s.m</b></dt><dd>selects member m of the structure s (s is of type
+&quot;struct&quot;)</dd>
+
+<dt><b>p-&gt;m</b></dt><dd>selects member m of the structure pointed to by p
+(p is of type &quot;struct *&quot;)</dd>
+
+<dt><b>++v</b></dt><dd>increment the value in v and return the new value</dd>
+
+<dt><b>v++</b></dt><dd>increment the value in v and return the pre-increment
+value</dd>
+
+<dt><b>--v</b></dt><dd>decrement the value in v and return the new value</dd>
+
+<dt><b>v--</b></dt><dd>decrement the value in v and return the pre-decrement
+value</dd>
+</dl>
+
+<p>The construct <b>(</b><i>type</i><b>)</b><i>expression</i> (called
+a &quot;cast&quot;) converts the value returned by the expression to
+the specified type.</p>
+
+<h2>Standard Library Functions Used in This Book</h2>
+
+<p><i>fclose(&lt;fileptr&gt;)</i> closes a file opened earlier with
+fopen.</p>
+
+<p><i>fgets(&lt;buffer&gt;, &lt;length&gt;, &lt;fileptr&gt;)</i> reads
+one line from a file opened earlier with fopen.</p>
+
+<p><i>fopen(&lt;name&gt;, &lt;mode&gt;)</i> opens a file for reading.
+A &lt;mode&gt; of &quot;r&quot; means &quot;read-only.&quot;</p>
+
+<p><i>free(&lt;ptr&gt;)</i> frees memory previously allocated by
+malloc.</p>
+
+<p><i>isprint(&lt;key&gt;)</i> returns True if &lt;key&gt; is a
+printing character or False if not.</p>
+
+<p><i>malloc(&lt;size&gt;)</i> allocates a block of memory at least
+&lt;size&gt; characters long.</p>
+
+<p><i>memmove(&lt;to&gt;, &lt;from&gt;, &lt;length&gt;)</i> moves
+&lt;length&gt; characters from &lt;from&gt; to &lt;to&gt;, working
+properly if the areas overlap.</p>
+
+<p><i>memset(&lt;start&gt;, &lt;char&gt;, &lt;length&gt;)</i> sets
+&lt;length&gt; characters starting from &lt;start&gt; to the character
+&lt;char&gt;.</p>
+
+<p><i>printf(&lt;format&gt;)</i> or <i>printf(&lt;format&gt;,
+&lt;arg&gt;)</i> copies the characters from the format string to the
+screen &quot;as is&quot; until a '%' character is encountered.  The
+sequence &quot;%s&quot; means to take the next argument and send it as
+a string to the screen.  The sequence &quot;%c&quot; means to take the
+next argument and send it as a single character to the screen.  (The
+routine does a lot more, but the examples in this book don't use the
+extra functionality.)</p>
+
+<p><i>strcpy(&lt;to&gt;, &lt;from&gt;)</i> copy the from string to the
+to string.</p>
+
+<p><i>strlen(&lt;sting&gt;)</i> returns the number of characters in
+the string, not counting the terminating NUL.</p>
+
+<h2>Non-Standard Library Functions Used in This Book</h2>
+
+<p><i>Fatal(&lt;message&gt;)</i> handles a fatal error.</p>
+
+<p><i>xiswhite(&lt;c&gt;)</i> returns True if the supplies character
+is a white-space character (space or tab) or False if not.</p>
+
+<p><i>xstrcpy(&lt;to&gt;, &lt;from&gt;)</i> works like the C
+<i>strcpy</i> routine to copy one string to another, but is defined to
+work properly if the strings overlap.</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Appendix-A.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

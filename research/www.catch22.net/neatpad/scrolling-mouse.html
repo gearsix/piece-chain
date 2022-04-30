@@ -1,0 +1,761 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/scrolling-mouse by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Scrolling with the Mouse - Catch22</title>
+<meta name="description" content="Originally I had planned to keep all of the mouse-related concepts together in one tutorial. The problem is, does mouse-scrolling belong in the mouse tutorial (part#5) or the scrolling tutorial (part#3)? In the end I’ve decided to make it a separate topic by itself. Actually it has worked quite well because it gives a good sense of progression between basic mouse selection (with no scrolling) and a fully working selectable, scrollable control.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Scrolling with the Mouse">
+<meta property="og:url" content="scrolling-mouse.html">
+
+
+  <meta property="og:description" content="Originally I had planned to keep all of the mouse-related concepts together in one tutorial. The problem is, does mouse-scrolling belong in the mouse tutorial (part#5) or the scrolling tutorial (part#3)? In the end I’ve decided to make it a separate topic by itself. Actually it has worked quite well because it gives a good sense of progression between basic mouse selection (with no scrolling) and a fully working selectable, scrollable control.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-05-30T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="scrolling-mouse.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Scrolling with the Mouse</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad6.zip">neatpad6.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="active">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Scrolling with the Mouse">
+    <meta itemprop="description" content="Originally I had planned to keep all of the mouse-related concepts together in one tutorial. The problem is, does mouse-scrolling belong in the mouse tutorial (part#5) or the scrolling tutorial (part#3)? In the end I’ve decided to make it a separate topic by itself. Actually it has worked quite well because it gives a good sense of progression between basic mouse selection (with no scrolling) and a fully working selectable, scrollable control.">
+    <meta itemprop="datePublished" content="May 30, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Scrolling with the Mouse
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Scrolling with the Mouse</h1-->
+<!--h3>Mouse selection and scrolling</h3-->
+
+<p>Originally I had planned to keep all of the mouse-related concepts together in one tutorial. The problem is, does mouse-scrolling belong in the mouse tutorial (part#5) or the scrolling tutorial (part#3)? In the end I’ve decided to make it a separate topic by itself. Actually it has worked quite well because it gives a good sense of progression between basic mouse selection (with no scrolling) and a fully working selectable, scrollable control.</p>
+
+<h2 id="scrolling-with-the-mouse">Scrolling with the mouse</h2>
+
+<p>The basic idea behind “mouse scrolling” is to cause the window to scroll when the mouse is dragged outside the window whilst making a selection. Almost any application that hosts a window with scrollbars will support mouse-scrolling in some form or fashion. Try it with whatever browser you are using right now - select some text and whilst holding the left-button down, drag the mouse outside the browser window. The contents is automatically scrolled into view.</p>
+
+<p>The very first step we must take is to detect when the mouse leaves the window and initiate some kind of appropriate scrolling action. Fortunately we already have <code class="highlighter-rouge">TextView::Scroll</code> (written in part#3) which we will be able to use for this tutorial.</p>
+
+<p>Now, take a quick look at Notepad and you will see how it handles mouse-scrolling. Notepad (or rather the embedded EDIT control) works by detecting when the mouse leaving the confines of the window, but it only does this whilst the mouse is moving. As soon as the EDIT control stops receiving mouse-movement, the scrolling stops. So to achieve this very basic functionality we first add some code to our <code class="highlighter-rouge">WM_MOUSEMOVE</code> handler which can detect when the mouse is outside the TextView:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+<span class="n">POINT</span> <span class="n">pt</span> <span class="o">=</span> <span class="p">{</span> <span class="n">mx</span><span class="p">,</span> <span class="n">my</span> <span class="p">};</span>
+
+<span class="c1">// get the non-scrolling area (an even no. of lines)
+</span><span class="n">GetClientRect</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+<span class="n">rect</span><span class="p">.</span><span class="n">bottom</span> <span class="o">-=</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span> <span class="o">%</span> <span class="n">m_nLineHeight</span><span class="p">;</span>
+
+<span class="c1">// detect where mouse is
+</span><span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">)</span> <span class="o">==</span> <span class="n">FALSE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// mouse is outside window, scroll in that direction
+</span></code></pre></div></div>
+
+<p>This basic method is not enough for a “grown-up” editor so we need to take this one step further. We will use a timer to generate regular scrolling events. However we won’t just stop there - the other issue that we will look at is what to do about variable-speed scrolling. For example, many controls scroll their window-content slowly when the mouse is just outside the window, and speed up incrementally when the mouse gets further and further away. The picture below should help to illustrate this idea.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor26.gif" alt="&lt;&gt;" /></p>
+
+<p>The inner red rectangle represents the client-area of the window. When the mouse is inside this region no scrolling is required. As the mouse move further and further away (represented by the red arrows) the window should be scrolled in that direction at the appropriate speed.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// If mouse is within client area, we don't need to scroll
+</span><span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m_nScrollTimer</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">KillTimer</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">m_nScrollTimer</span><span class="p">);</span>
+        <span class="n">m_nScrollTimer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// If mouse is outside window, start a timer in
+// order to generate regular scrolling intervals
+</span><span class="k">else</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m_nScrollTimer</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_nScrollCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">m_nScrollTimer</span> <span class="o">=</span> <span class="n">SetTimer</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="variable-speed-scrolling">Variable speed scrolling</h2>
+
+<p>There are several methods which we can use to create variable-speed scrolling - however all methods are based around <code class="highlighter-rouge">WM_TIMER</code> and the <code class="highlighter-rouge">SetTimer</code> API. The first method is to reprogram the timer interval each time the mouse gets closer/further away from the window, resulting in a faster/slower rate of <code class="highlighter-rouge">WM_TIMER</code> messages being received by the window. When we receive a <code class="highlighter-rouge">WM_TIMER</code>, we scroll +1/-1 in whatever direction the mouse is. This is a little messy because it causes the timer to be reset each time <code class="highlighter-rouge">SetTimer</code> is called. See the following from excert MSDN on <code class="highlighter-rouge">SetTimer</code> :</p>
+
+<blockquote>
+  <p><em>“If the hWnd parameter is not NULL and the window specified by hWnd already has a timer with the value nIDEvent, then the existing timer is replaced by the new timer. When SetTimer replaces a timer, the timer is reset. Therefore, a message will be sent after the current time-out value elapses, but the previously set time-out value is ignored.”</em></p>
+</blockquote>
+
+<p>I’m unsure if this behaviour will cause us problems (i.e stuttering movement) or not. But the main reason I want to avoid this technique is that it doesn’t support 2-dimensional scrolling very well. Imagine the following scenario: the mouse is held quite a distance from the top of the TextView (the vertical scrolling direction), but is only just outside on the left side (the horizontal direction). Which direction do we choose to base our scrolling speed on? The answer is, we can’t have both fast scrolling (vertically) and slow scrolling (horizontally) at the same time with this technique.</p>
+
+<p>The next method is to therefore use a constant timer interval set at a slowish rate. As the mouse moves further from the window (in either dimension), instead of speeding up the scrolling, the distance that is scrolled is increased - i.e. slow scrolling would be 1-line-at-a-time using the slow timer interval, faster scrolling would be 3-lines-at-a-time, and so on. This is a perfectly reasonable method and you can observe many controls using it for their scrolling.</p>
+
+<p>The last method is similar to the previous one, but instead we program the timer to have a high repeat rate (i.e. 10ms). This fast interval allows us to scroll the window quickly when the mouse is at it’s furthest from the window. And as we move the mouse closer, we can simply “skip” processing selected <code class="highlighter-rouge">WM_TIMER</code> messages. For example, we would process every <code class="highlighter-rouge">WM_TIMER</code> for full-speed scrolling, 1 out of 2 for half speed and 1 out of every 5 for very slow speeds. This results in smoother scrolling (we always scroll a line-at-a-time) but requires more CPU because more redrawing needs to be done. It has the advantage that we only ever scroll 1 line at a time so it is a little simpler from a coding and debugging point of view.</p>
+
+<p>I opted for method#3 for Neatpad, simply because it was easier.</p>
+
+<h2 id="avoiding-flicker">Avoiding flicker</h2>
+
+<p>Perhaps the reason that many text-editors exhibit flickering artifacts when they are scrolled up and down is because mouse-scrolling (in general) is so hard to get right. I do hate any sign of flickering though so it is very important from my point to view to ensure that Neatpad suffers no such problems.</p>
+
+<p>There are two basic manifestations of “scroll flicker” that can be found in some applications. Both occur because the mouse selection and scrolling are not correctly synchronized. A lot of the time people don’t notice these problems because most text files contain lines of varying length, and it isn’t until you scroll a solid block of text that you begin to see what is going wrong. The animated gifs below hopefully illustrate the two problems - well, I hope they do because they took me ages to make! Once you’ve had enough of the animations just click the “stop” button in your browser window and they should stop.</p>
+
+<p><img src="https://www.catch22.net/assets/img/edanim01.gif" alt="&lt;&gt;" /></p>
+
+<p>The first flicker problem occurs because as the mouse moves outside of the window, the selection is redrawn, briefly extending outside of the window. Then the window is scrolled, bringing the end-of-selection back into view. It has the effect that the area to the left of the cursor appears to toggle between selected and unselected states. It’s quite unsettling in my opinion but many controls exhibit this problem, including many standard Windows controls. We can prevent this problem by “clipping” the mouse coordinates to the edge of the window before we work out where the selection end-point should be.</p>
+
+<p><img src="https://www.catch22.net/assets/img/edanim02.gif" alt="&lt;&gt;" /></p>
+
+<p>The second case is almost the same as the first, except this time the scrolling happens first, which causes the whole display to scroll down. The selection is extended upwards after the scrolling, which again results in some fairly nasty flickering - this time because the unselected area on the first line is (wrongly) scrolled downwards and briefly appears as unselected text - then it is correctly repainted as highlighted. We can also prevent this problem by using <strong>clipping</strong> when we scroll the window - in this case, restricting the area that we scroll to a specific region which doesn’t include the top/bottom lines.</p>
+
+<p>It is not easy to get the mouse-selection and scrolling correctly synchronized. The basic problem is, we can’t really treat these two actions as separate events because (obviously) they must occur at the same time. Adding to the problem is the fact that we have already written the scrolling and selection functionality, and it would be nice if we could still keep these as “separate” as possible so the code is kept clean. Let’s have a brief recap of what we have so far:</p>
+
+<ul>
+  <li><strong><code class="highlighter-rouge">TextView::Scroll(int dx, int dy)</code></strong>
+This routine scrolls the entire display in the specified direction, and also updates the scrollbar positions at the same time.</li>
+  <li><strong><code class="highlighter-rouge">TextView::MouseCoordToFilePos(...)</code></strong> <br />
+Retrieves the cursor position under the mouse, taking the scrollbar positions into account.</li>
+  <li><strong><code class="highlighter-rouge">TextView::InvalidateRange(...)</code></strong> <br />
+Redraws the specified range of text, also using scrollbar positions.</li>
+</ul>
+
+<p>The basic strategy to synchronized mouse movement is outlined below.</p>
+
+<ol>
+  <li>Work out the correct clipping region, based on the direction we are scrolling. i.e. if we are scrolling up, we exclude the top line from being scrolled. If we scroll left, we exclude the left-most column. This can all happen inside the existing <code class="highlighter-rouge">TextView::Scroll</code> routine.</li>
+  <li>Scroll the window using <code class="highlighter-rouge">ScrollWindowEx</code>, but use the clipping rectangle worked out in step#1.</li>
+  <li>Work out the new cursor position and selection end points. The scrolling had the effect of modifying the scrollbar positions (because we used <code class="highlighter-rouge">TextView::Scroll</code>), so we must work out the new cursor position <em>after</em> this scrolling has taken place.</li>
+  <li>Redraw the region that wasn’t scrolled (i.e. the area outside of the clipping rectangle).</li>
+</ol>
+
+<p>In other words, all we are really doing is scrolling a sub-region of the window and then manually repainting the area we didn’t scroll once the cursor/selection endpoint has been placed appropriately. How we fit all this together will determine how successful we will be.</p>
+
+<h2 id="scrollwindowex">ScrollWindowEx</h2>
+
+<p>Let’s look at <code class="highlighter-rouge">ScrollWindowEx</code> so we know what scrolling facilities we have at our disposal:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">ScrollWindowEx</span><span class="p">(</span>
+  <span class="n">HWND</span> <span class="n">hWnd</span><span class="p">,</span> <span class="c1">// handle to window
+</span>  <span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="c1">// horizontal scrolling
+</span>  <span class="kt">int</span> <span class="n">dy</span><span class="p">,</span> <span class="c1">// vertical scrolling
+</span>  <span class="n">RECT</span> <span class="o">*</span> <span class="n">prcScroll</span><span class="p">,</span> <span class="c1">// client area [optional]
+</span>  <span class="n">RECT</span> <span class="o">*</span> <span class="n">prcClip</span><span class="p">,</span> <span class="c1">// clipping rectangle [optional]
+</span>  <span class="n">HRGN</span> <span class="n">hrgnUpdate</span><span class="p">,</span> <span class="c1">// handle to update region [optional]  
+</span>  <span class="n">RECT</span> <span class="o">*</span> <span class="n">prcUpdate</span><span class="p">,</span> <span class="c1">// invalidated region [optional]
+</span>  <span class="n">UINT</span> <span class="n">flags</span> <span class="c1">// scrolling options
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>I have highlighted (in bold) the two optional parameters that we will be using - but first a brief recap of all parameters is probably appropriate at this stage:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">hWnd</code> is the window that we want to scroll. In our case this will be <code class="highlighter-rouge">m_hWnd</code> (the TextView!).</li>
+  <li><code class="highlighter-rouge">dx</code> and <code class="highlighter-rouge">dy</code> specify the direction (in pixels) to scroll the window. These values can be positive or negative and can therefore be used to scroll in any direction.</li>
+  <li><code class="highlighter-rouge">prcScroll</code> is a pointer to a <code class="highlighter-rouge">RECT</code> structure that defines the area to scroll. If this parameter is <code class="highlighter-rouge">NULL</code> then the entire client area is scrolled. Unless that is, ….</li>
+  <li><code class="highlighter-rouge">prcClip</code> is a pointer to a <code class="highlighter-rouge">RECT</code> structure that defines a “clipping rectangle”. This rectangle is the client coordinates of the window area that <em>could</em> be scrolled. No area outside of this rectangle will be affected by the scrolling.</li>
+  <li><code class="highlighter-rouge">hrgnUpdate</code> is a HRGN (a handle-to-region). It is optional, but if specified, it must be initialized as a valid region (it doesn’t matter what to). When <code class="highlighter-rouge">ScrollWindowEx</code> returns, <code class="highlighter-rouge">hrgnUpdate</code> represents the area of the window that has become invalid after the scrolling. This could be an irregular shape if we are scrolling in two dimensions at once.</li>
+  <li><code class="highlighter-rouge">prcUpdate</code> is another <code class="highlighter-rouge">RECT</code> structure and receives the <em>bounding</em> rectangle of the update-region (above). It is not terribly useful because <code class="highlighter-rouge">hrgnUpdate</code> can be a <code class="highlighter-rouge">COMPLEXREGION</code> so a simple <code class="highlighter-rouge">RECT</code> structure cannot represent these regions accurately.</li>
+  <li><code class="highlighter-rouge">flags</code> is a simple 32bit value. Usually this value is set to <code class="highlighter-rouge">SW_INVALIDATE,</code> to tell <code class="highlighter-rouge">ScrollWindowEx</code> to automatically invalidate the region that becomes invalid after the scroll, and add it to the window’s update region. The next time the window processes WM_PAINT this invalid region is redrawn. This is the identical region that would be stored in <code class="highlighter-rouge">hrgnUpdate</code> (if this parameter was specified). However if we pass zero here, <code class="highlighter-rouge">hrgnUpdate</code> does <strong>not</strong> get invalidated, which would give us the chance to redraw this region later on if we so desired.</li>
+</ul>
+
+<p>Due to the way we are scrolling (we always scroll <em>away</em> from the region we are protecting) it doesn’t matter if we use the <code class="highlighter-rouge">prcScroll</code> or <code class="highlighter-rouge">prcClip</code> rectangles - both rectangles would hold the same values and the effect will be identical. In the sourcecode I have elected to use <code class="highlighter-rouge">prcClip</code> just because it is a little more obvious what it is being used for.</p>
+
+<h2 id="scrolling-example">Scrolling Example</h2>
+
+<p>At this point we need to look at a scrolling example so that we are sure that we understand exactly what is happening with clipping rectangles, and update/invalid regions.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor27.gif" alt="&lt;&gt;" /></p>
+
+<p>The picture above shows the Neatpad window before any scrolling has taken place. The Window is going to be scrolled <strong>upwards</strong> and <strong>left</strong> at the same time (i.e. -1, -1 in text-character-units). <em>However</em>, this means that we scroll the content <strong>down</strong> one line and <strong>right</strong> one character position (in order to expose new content at the top/left edges). In other words, the <code class="highlighter-rouge">dx</code> and <code class="highlighter-rouge">dy</code> parameters to <code class="highlighter-rouge">ScrollWindowEx</code> are positive.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor28.gif" alt="&lt;&gt;" /></p>
+
+<p>Before the <code class="highlighter-rouge">ScrollWindowEx</code> function is invoked we define the clipping rectangle to be used. The cross-hatch shaded area represents content <em>outside</em> of the clipping rectangle - although this region is never invalidated or modified by the scrolling it is basically “dirty” and must be redrawn manually. The clipping rectangle we pass to <code class="highlighter-rouge">ScrollWindowEx</code> covers the clientarea of content/text that is <em>not</em> shaded. In this example, we took the top/left corner of the client-area and offset it to create the clipping rectangle.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor29.gif" alt="&lt;&gt;" /></p>
+
+<p>The window after <code class="highlighter-rouge">ScrollWindowEx</code>. You should be able to notice that the content has scrolled down one line and right by one character. The cross-hatch/shaded area stays where it is because it is outside of the clipping rectangle. The inverted region represents the area that became invalid after the scrolling took place. I have chosen inverted colours purely to illustrate this area - in reality these pixels do not get modified by <code class="highlighter-rouge">ScrollWindowEx</code> and are only updated because the <code class="highlighter-rouge">SW_INVALIDATE</code> flag is specified.</p>
+
+<blockquote>
+  <p><em>Note: If we were using the <code class="highlighter-rouge">hrgnUpdate</code> parameter, this HRGN object would be modified to exactly fit the area represented by the inverted colours. It is quite an odd shape (an upside-down “L”), and for this example ScrollWindowEx returns <code class="highlighter-rouge">COMPLEXREGION</code> even though we’re not using <code class="highlighter-rouge">hrgnUpdate</code>.</em></p>
+</blockquote>
+
+<p>Both the cross-hatch and inverted regions need to be updated. For simplicity’s sake we will use <code class="highlighter-rouge">SW_INVALIDATE</code> when we call <code class="highlighter-rouge">ScrollWindowEx</code> which will invalidate (and consequently update) the “inverted” region. However this leaves the cross-hatch region - we must manually create a <code class="highlighter-rouge">HRGN</code> which describes this area and call <code class="highlighter-rouge">InvalidateRgn</code> at some later point to redraw it. See below for how this is achieved.</p>
+
+<h2 id="synchronized-scrolling">Synchronized Scrolling</h2>
+
+<p>The first thing we must do is develop support for this “clipped” scrolling. I have rewritten the existing <code class="highlighter-rouge">TextView::Scroll</code> routine and called it <code class="highlighter-rouge">TextView::ScrollRgn</code>. It has an extra parameter now which specifies whether or not to return a handle to the region that is invalid after the scrolling (and indirectly controls the clipping behaviour).</p>
+
+<p>When <code class="highlighter-rouge">fReturnUpdateRgn</code> is true, the scrolling is performed with the appropriate clipping, and a HRGN is returned to the caller. When <code class="highlighter-rouge">fReturnUpdateRgn</code> is false, the entire window is scrolled normally (i.e. with no clipping area defined).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRGN</span> <span class="n">TextView</span><span class="o">::</span><span class="n">ScrollRgn</span><span class="p">(</span><span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">fReturnUpdateRgn</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RECT</span> <span class="n">clip</span><span class="p">;</span>
+    <span class="n">GetClientRect</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">clip</span><span class="p">);</span>
+
+    <span class="c1">// adjust the clipping rectangle fReturnUpdateRgn is false
+</span>
+    <span class="c1">// do the scrolling
+</span>    <span class="n">ScrollWindowEx</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> 
+                   <span class="o">-</span><span class="n">dx</span> <span class="o">*</span> <span class="n">m_nFontWidth</span><span class="p">,</span> 
+                   <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="n">m_nFontHeight</span><span class="p">,</span> 
+                   <span class="nb">NULL</span><span class="p">,</span> <span class="c1">// scroll the entire window
+</span>                   <span class="o">&amp;</span><span class="n">clip</span><span class="p">,</span> <span class="c1">// clip the non-scrolling part
+</span>                   <span class="nb">NULL</span><span class="p">,</span>
+                   <span class="nb">NULL</span><span class="p">,</span>
+                   <span class="n">SW_INVALIDATE</span>
+                   <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">fReturnUpdateRgn</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">RECT</span> <span class="n">client</span><span class="p">;</span>
+        <span class="n">GetClientRect</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">client</span><span class="p">);</span>
+
+        <span class="n">HRGN</span> <span class="n">hrgnClient</span> <span class="o">=</span> <span class="n">CreateRectRgnIndirect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="p">);</span>
+        <span class="n">HRGN</span> <span class="n">hrgnUpdate</span> <span class="o">=</span> <span class="n">CreateRectRgnIndirect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">clip</span><span class="p">);</span>
+
+        <span class="c1">// create a region that represents the area outside the
+</span>        <span class="c1">// clipping rectangle (i.e. the part that is never scrolled)
+</span>        <span class="n">CombineRgn</span><span class="p">(</span><span class="n">hrgnUpdate</span><span class="p">,</span> <span class="n">hrgnClient</span><span class="p">,</span> <span class="n">hrgnUpdate</span><span class="p">,</span> <span class="n">RGN_XOR</span><span class="p">);</span>
+
+        <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hrgnClient</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">hrgnUpdate</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It is important that we preserve the existing <code class="highlighter-rouge">TextView::Scroll</code> functionality so we make this a wrapper function around <code class="highlighter-rouge">TextView::ScrollRgn</code> and specify <code class="highlighter-rouge">false</code> for <code class="highlighter-rouge">fReturnUpdateRgn</code> (i.e. make <code class="highlighter-rouge">ScrollRgn</code> scroll the entire window as normal).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="n">TextView</span><span class="o">::</span><span class="n">Scroll</span><span class="p">(</span><span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">)</span>
+<span class="p">{</span>
+     <span class="n">ScrollRgn</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>One thing I should mention is the units used by <code class="highlighter-rouge">Scroll</code> and <code class="highlighter-rouge">ScrollRgn</code>. These are always “text” units (i.e. line/character based) rather than pixel coordinates. The <code class="highlighter-rouge">ScrollRgn</code> function converts these to pixel coordinates when it is time to scroll. Also understand that when I write Scroll(-1, -1) this scrolls the document up/left - however the screen content is scrolled down/right to achieve this.</p>
+
+<p>The function below is the “almost” full implementation of the <code class="highlighter-rouge">TextView::OnTimer</code> routine. The only part that has been omitted is the code that calculates what the values for <code class="highlighter-rouge">dx</code> and <code class="highlighter-rouge">dy</code> should be - its clearer without this going on so you can look in the sourcecode download to see how it is done.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnTimer</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// [omitted] work out scrolling increments
+</span>    <span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">;</span>
+
+    <span class="c1">// do the scroll but return the region to be manually painted
+</span>    <span class="n">HRGN</span> <span class="n">hrgnUpdate</span> <span class="o">=</span> <span class="n">ScrollRgn</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">hrgnUpdate</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// do a "fake" WM_MOUSEMOVE to get the new cursor position
+</span>        <span class="n">OnMouseMove</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mouse_x</span><span class="p">,</span> <span class="n">mouse_y</span><span class="p">);</span>
+
+        <span class="c1">// manually repaint the update region
+</span>        <span class="n">InvalidateRgn</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="n">hrgnUpdate</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+
+        <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hrgnUpdate</span><span class="p">);</span>
+        <span class="n">UpdateWindow</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">);</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The function fulfills all our criteria for smooth, synchronized scrolling. Firstly the window content is scrolled - however a HRGN is returned which specifies an invalid region that needs manually repainting. The text-caret and selection offsets are computed <em>after</em> doing the scroll (when the <code class="highlighter-rouge">m_nxScrollPos</code> variables become valid) - this is achieved by manually calling <code class="highlighter-rouge">OnMouseMove</code> and reusing the code that was already there. Just in case the mouse was moved whilst the timer went off, we also take advantage of the fact that <code class="highlighter-rouge">OnMouseMove</code> will also invalidate any area affected by selection change.</p>
+
+<p>The very last thing to occur is to manually invalidate the region returned by <code class="highlighter-rouge">ScrollRgn</code>. The invalid window areas are finally repainted when <code class="highlighter-rouge">UpdateWindow</code> is called, using the updated cursor and selection offsets.</p>
+
+<h2 id="neatpad-additions">Neatpad additions</h2>
+
+<p>Most of this tutorial series will be focussed on the TextView component of Neatpad. I don’t intend to cover the development of Neatpad in any great detail unless it is directly related to the support of the TextView. Instead I’ll just give a brief mention of what has been added and let the readers study the sourcecode at their leisure.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor22.gif" alt="&lt;&gt;" /></p>
+
+<p>This time around an Options dialog has been implemented which allows you to select the font and colours used by Neatpad. The dialog is fairly complete and the settings are saved to the registry each time Neatpad exits. The second options-pane doesn’t do anything yet, but I have left it in as a “todo” which will be implemented at some point in the future. The code can be found in the Neatpad directory, in the <code class="highlighter-rouge">Options.c</code> and <code class="highlighter-rouge">OptionsFont.c</code> files.</p>
+
+<p>A new message (<code class="highlighter-rouge">TXM_SETCOLOR</code>) has been added to the TextView in order to support programmatic control of colour settings:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define TXM_SETCOLOR (TXM_BASE + 5)
+</span><span class="c1">// wParam = TXC_xxx index value
+// lParam = RGB color#define TextView_SetColor(hwndTV, nIndex, rgbColor)
+</span></code></pre></div></div>
+
+<p>To send the message, use the <code class="highlighter-rouge">TextView_SetColor</code> macro. There are two parameters in addition to the window-handle. <code class="highlighter-rouge">nIndex</code> is a zero-based value taken from the <code class="highlighter-rouge">TXC_xxx</code> range of numbers. <code class="highlighter-rouge">rgbColor</code> is (you guessed it) a <code class="highlighter-rouge">COLORREF</code> RGB colour. For example, to set the selection background colour, use the following code:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TextView_SetColor</span><span class="p">(</span><span class="n">hwndTV</span><span class="p">,</span> <span class="n">TXC_HIGHLIGHT</span><span class="p">,</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">240</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>There is one nice feature about this message which I hope people will like. If you want to set the colour to one of the predefined system colours (i.e. <code class="highlighter-rouge">COLOR_WINDOWTEXT</code> used with <code class="highlighter-rouge">GetSysColor</code>), then use the <code class="highlighter-rouge">SYSCOL</code> macro (defined in TextView.h):</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TextView_SetColor</span><span class="p">(</span><span class="n">hwndTV</span><span class="p">,</span> <span class="n">TXC_HIGHLIGHT</span><span class="p">,</span> <span class="n">SYSCOL</span><span class="p">(</span><span class="n">COLOR_3DFACE</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">SYSCOL</code> macro creates a “special” RGB value which the TextView recognises as a system-colour, not a plain RGB value. You only need to set the colour this way once, and subsequent changes in system colour schemes are automatically reflected in the TextView.</p>
+
+<h2 id="coming-up-in-part-7">Coming up in Part 7</h2>
+
+<p>Hopefully I have given a good overview and explanation of how to scroll using the mouse-selection. Although it’s not a particularly technical subject, it is fairly difficult to iron out the finer subtleties of mouse and timer interactions, and to be able to visualise these interactions whilst designing something like this (and then write about it!).</p>
+
+<p>Onto the next tutorial then. Part 7 will be something a little simpler (I need to give my brain a rest!), so I will be implementing support for borders and margins. Margins will be provide us the ability to show line numbers and custom icons in a “selection” area (i.e. like Visual Studio uses for placing breakpoints). I also want to provide a “printer margin” on the right-side so that the printable area of a text document is distinguishable from any text that might get clipped due to printing.</p>
+
+<p>You’ve probably noticed that so far all of the tutorials have been focussed around the graphical / user-interface aspects of Neatpad. This is a deliberate tactic as I feel it is important to have a good foundation before diving into complicated memory/file-management techniques. From experience I know it is easy to get distracted because of a half-finished GUI so I want to get all the GUI details completed.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad6.zip">neatpad6.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-05-30T00:00:00+00:00">May 30, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="mouse-selection-highlighting.html" class="pagination--pager" title="Mouse Selection &amp; Highlighting
+">Previous</a>
+    
+    
+      <a href="margins-and-long-lines.html" class="pagination--pager" title="Margins and Long Lines
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/scrolling-mouse by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

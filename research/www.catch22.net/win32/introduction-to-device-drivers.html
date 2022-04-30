@@ -1,0 +1,522 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/introduction-to-device-drivers by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Introduction to Device Drivers - Catch22</title>
+<meta name="description" content="Introduction to Device Drivers">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Introduction to Device Drivers">
+<meta property="og:url" content="introduction-to-device-drivers.html">
+
+
+  <meta property="og:description" content="Introduction to Device Drivers">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-03-25T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="introduction-to-device-drivers.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Introduction to Device Drivers</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/drvload.zip hello_drv.zip">drvload.zip hello_drv.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Introduction to Device Drivers">
+    <meta itemprop="description" content="Introduction to Device Drivers">
+    <meta itemprop="datePublished" content="March 25, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Introduction to Device Drivers
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Introduction to Device Drivers</h1-->
+<!--h3>Kernel 101 - writing a simple Windows NT device driver</h3-->
+
+<h2 id="introduction-to-device-drivers">Introduction to Device Drivers</h2>
+
+<p>Seeing as I’ve been spending alot of time doing kernel-level programming recently I thought it was time I wrote a few articles on the subject. This first article (and the rest in this “kernel” series) will cover the steps needed to build, install and start a Windows NT device-driver. Now, although the term “device driver” may seem intimidating to anyone who has never written such software, in reality this term is really a generic label for any software module which acts as a core operating system service. By following this tutorial you will see how simple it is to create your own device driver from scratch.</p>
+
+<p>There are many confusing technologies associated with Windows kernel-programming. Legacy NT4-style device drivers, WDM (Windows Driver Model) device drivers, filesystem filter drivers, bus-drivers, miniport-drivers - the list goes on and on. Don’t be mislead by all these terms though. All types of device-driver share the same underlying image format - the Microsoft Portable Executable. The only real difference is the libraries and header files used to build the drivers - and once built, the drivers all work in very similar ways.</p>
+
+<p>At the very heart of a kernel device-driver is a single file very similar in concept to a DLL - called a SYS file. The only difference between a driver and a DLL is what libraries the driver links against - Windows NT drivers (SYS files) link against <code class="highlighter-rouge">ntoskrnl.exe</code> and <code class="highlighter-rouge">HAL.DLL</code>, Win32 PEs (DLL/EXE) link against <code class="highlighter-rouge">kernel32.dll</code> and <code class="highlighter-rouge">ntdll.dll</code>.</p>
+
+<p>This tutorial will show you how to create an NT4-style “legacy” driver. This type of driver will not only function perfectly well on Windows 2000 and XP - but will also work on Windows NT4. Because we don’t need the features that newer driver-models support we can make our lives much simpler by using this older style of driver.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>Writing a device-driver is very simple because Microsoft gives you all the tools you need to get started. And you don’t need to spend lots of money or use complicated IDEs, because the official <strong>Windows Device Driver Development Kit</strong> (Windows DDK) can be obtained from the following location:</p>
+
+<p><a href="http://www.microsoft.com/whdc/devtools/ddk/default.mspx">http://www.microsoft.com/whdc/devtools/ddk/default.mspx</a></p>
+
+<p>You only need to pay for the shipping cost of the CDs - and if you have an MSDN subscription you will have the DDK CDs anyway. If you want to target other Windows OS’s other than XP then don’t worry: the XP-DDK can be used to build “older” drivers, as long as you don’t use newer kernel functions that only exist in XP.</p>
+
+<p>Once the DDK is installed simply use the Start menu to open up the command-prompt build environment:</p>
+
+<p><code class="highlighter-rouge">Start Menu -&gt; Windows DDK -&gt; Windows XP Checked Build Environment</code></p>
+
+<p><img src="http://www.catch22.net/assets/img/kernel01.gif" alt="" class="align-center" /></p>
+
+<p>Everything can done via the command-line with Windows Drivers. The command-line build environment (shown above) helps you out because all the correct environment-variables are already set, although the only one that is really necessary is “BASEDIR” which must point to the DDK install directory.</p>
+
+<p>All your source-editing can be done using your favourite text-editor (e.g. Visual Studio is generally what people use). However it is quite difficult at first to configure Visual Studio to compile a driver project because Visual-Studio is designed to use the Platform SDK and the Visual C++ compiler. The DDK comes with its own compiler which <em>must</em> be used instead of the Visual Studio compiler (this is all that Microsoft supports - obviously with some trickery you could use the normal compiler, but that’s not the point). So to start with we will use the DDK build environment and <em>not</em> Visual Studio. Maybe a later tutorial can address using Visual Studio for driver projects.</p>
+
+<p>One other thing I should mention is the OSR (Open System Resources) website, <a href="http://www.osronline.com/">www.osronline.com</a>. This is by far the best resource on the Internet for device-driver development, so head over there and subscribe to their forums.</p>
+
+<h2 id="hello-world-kernel-style">Hello World, Kernel Style</h2>
+
+<p>Writing a device-driver in Windows is incredibly simple - but first create an empty directory to store your driver project in. Use a simple path with no spaces in it, just because it is easier to navigate to in the command-prompt:</p>
+
+<p><code class="highlighter-rouge">C:\DRIVERS\HELLO\</code></p>
+
+<p>Create an empty text file in this directory and call it “hello.c”, then type the following code into it:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;ntddk.h&gt; 
+</span>
+<span class="n">NTSTATUS</span> <span class="nf">DriverEntry</span><span class="p">(</span><span class="n">PDRIVER_OBJECT</span> <span class="n">DriverObject</span><span class="p">,</span> <span class="n">PUNICODE_STRING</span> <span class="n">RegistryPath</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="n">DbgPrint</span><span class="p">(</span><span class="s">"Hello, World</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">STATUS_SUCCESS</span><span class="p">;</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Pretty simple, right? The <code class="highlighter-rouge">DriverEntry</code> is a function required by the DDK - it is similar in concept to DllMain because it is called when your driver first loads - however your driver remains loaded after you return back to the kernel.</p>
+
+<p>The two parameters are worth mentioning. <code class="highlighter-rouge">DriverObject</code> is a pointer to a <code class="highlighter-rouge">DRIVER_OBJECT</code> structure, a kernel data structure used to represent the loaded device driver. <code class="highlighter-rouge">RegistryPath</code> is a unicode string which holds the corresponding service entry location in the registry.</p>
+
+<p>Unlike win32 programs which use BOOL return types, and TRUE and FALSE, kernel drivers use <code class="highlighter-rouge">NTSTATUS</code> return types. This is a 32bit value which can hold many different error codes and severity levels. The value <code class="highlighter-rouge">STATUS_SUCCESS</code> (which is zero) is used to indicate a successful return value. Other <code class="highlighter-rouge">STATUS_xxx</code> codes can be found in the <code class="highlighter-rouge">ntstatus.h</code> header file. Note that, if we return anything other than <code class="highlighter-rouge">STATUS_SUCCESS</code> from <code class="highlighter-rouge">DriverEntry</code>, our driver will fail to load - so make sure you get it right!</p>
+
+<h2 id="building-a-driver">Building a Driver</h2>
+
+<p>Assuming that you have created your project directory, you need to create two more files which the DDK build utility requires in order to build your project. The first file you need to create is called “makefile” - note that there is no extension on this filename. Be very <strong>careful</strong> about this last point - if you have “Hide Extensions for known file types” enabled in your Windows settings then Notepad will automatically append a “.txt” extension onto your files without you realising.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!INCLUDE $(NTMAKEENV)\makefile.def
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">makefile</code> should contain a single line (shown above) and must never be edited in any way. Usually the DDK samples include such a file, so you can copy it straight from there.</p>
+
+<p>The second file you need to create is your main project file, called “sources”, again with no file extension. The contents of this file direct the <strong>DDK build utility</strong> to your sourcecode files.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TARGETNAME = hello
+TARGETPATH = obj
+TARGETTYPE = DRIVER
+
+INCLUDES = %BUILD%\inc
+LIBS = %BUILD%\lib
+SOURCES = hello.c
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">sources</code> contains two important pieces of information - the name of your driver, and a list of source-files. If you have more than one source-file, then they should be listed one-after-the-other on the same line, separated by a space. You have to be careful with filenames that contain spaces (i.e. use quotes), so it is easiest just to use simple names.</p>
+
+<p>Building a driver is very simple once you have created a driver project. At this point you should have three files in your project directory - <code class="highlighter-rouge">hello.c</code>, <code class="highlighter-rouge">sources</code> and <code class="highlighter-rouge">makefile</code>. Open up the <strong>DDK Checked Build Environment</strong> (the DDK command-prompt) and type “<code class="highlighter-rouge">build</code> “:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">C:</span><span class="err">\</span><span class="n">DRIVERS</span><span class="err">\</span><span class="n">HELLO</span><span class="o">&gt;</span> <span class="n">build</span>
+</code></pre></div></div>
+
+<p>That’s it! Assuming you installed the DDK correctly the driver will compile with no problems will be placed into the <code class="highlighter-rouge">objchk/i386</code> directory.</p>
+
+<h2 id="drivers-and-services">Drivers and Services</h2>
+
+<p>Installing and executing a driver is quite a bit different than running a “normal” program from the command line. There is no concept of running a new process because a driver is a kernel module which lives permanently inside the system. Two steps are required to get a driver installed - registering the driver as a system service, and then starting the driver.</p>
+
+<p>This is usually the area that confuses people who are not used to working with drivers. A driver is treated by Windows as a regular service which can be started and stopped just like any other service. The Windows component that controls all this is called the <strong>Service Control Manager</strong>. This component exposes an API which can be used to register, unregister, and start &amp; stop drivers and regular Win32 services.</p>
+
+<p>Actually registering a driver and starting it can be a little confusing if you’ve not done it before. But even if you are familiar with these concepts I advise anyone who hasn’t done so to visit <a href="http://www.osronline.com/">www.osronline.com</a> and download their <strong>Driver Loader</strong> tool from the downloads section. This handy tool allows you to register, start, stop and unregister drivers, all from a single GUI.</p>
+
+<h2 id="installing-a-driver">Installing a Driver</h2>
+
+<p>There are two ways to register a driver as a system service. The first (and easist) is to use the <code class="highlighter-rouge">CreateService</code> API which is documented in MSDN. But basically all this does is create a few values in the Registry on your behalf. The second method is to manually create these values in the following registry location:</p>
+
+<p><code class="highlighter-rouge">HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\&lt;driver name&gt;</code></p>
+
+<p>You need to make a new subkey with the name of your service (in this case the service is a kernel driver), so you could call it “hello” for instance. Inside this registry key you need supply the name, path and start-type of the driver, using the following registry values:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Registry Value</td>
+      <td>Description</td>
+      <td>Example</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DisplayName</code></td>
+      <td>Name of your driver as it appears in the service list</td>
+      <td>hello</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">ImagePath</code></td>
+      <td>Full NT-style path to the driver (or just the filename if it lives in system32\drivers).</td>
+      <td><code class="highlighter-rouge">\??\C:\DRIVERS\HELLO\hello.sys</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Start</code></td>
+      <td>How the driver can be started. For testing the recommended value is <code class="highlighter-rouge">Demand</code> (3), which indicates that the driver can only be started manually.</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The other start values - <code class="highlighter-rouge">Boot</code> (0), <code class="highlighter-rouge">System</code> (1) and <code class="highlighter-rouge">Auto</code> (2) instruct Windows to load the driver at various points during the system startup.
+The last value - <code class="highlighter-rouge">Disabled</code> (4) - prevents the driver from loading at all.| 3|
+| <code class="highlighter-rouge">Type</code> | The type of service. Basic kernel drivers must have a value of “1” here. | 1|</p>
+
+<p>Be <strong>very</strong> careful what value you give to the <code class="highlighter-rouge">Start</code> item. For testing purposes you should only ever use <em>Demand</em> (or <em>Manual</em> as it is also known). All the other options (<em>System</em>, <em>Boot</em> and <em>Automatic</em>) cause the driver to be loaded during boot-time - which can be fatal if your driver has a bug in it because you may never recover your system.</p>
+
+<p>Note that a driver only needs to be registered once (it can <em>only</em> be registered once) - and can be started and stopped as many times as you like after this. I would advise you at this stage to use the <strong>OSR Driver Loader</strong> to register your driver.</p>
+
+<h2 id="starting-a-driver">Starting a Driver</h2>
+
+<p>Once a driver has been registered as a system-service, it can be loaded (and unloaded) using the Service Control Manager. You can start a driver programmatically using the <code class="highlighter-rouge">StartService</code> API call, but it is far easier to goto the command-prompt and type:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net start hello
+</code></pre></div></div>
+
+<p>The following output will then be displayed:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The hello service was started successfully.
+</code></pre></div></div>
+
+<p>Nothing else will appear to happen though because drivers don’t (and can’t) output any data to the console.</p>
+
+<p>Note that at this point the driver has been loaded into kernel-space and your <code class="highlighter-rouge">DriverEntry</code> function has been executed. If you have gotten this far then you haven’t blue-screened your computer - so congratulations! Maybe for the first time code that you have written is now in the area of system memory that is inaccessible to usermode programs (address range 0x80000000 and above).</p>
+
+<h2 id="viewing-driver-output">Viewing Driver Output</h2>
+
+<p>For debugging purposes it is common for drivers to use the <code class="highlighter-rouge">DbgPrint</code> API to emit debug messages:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="n">DbgPrint</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">DbgPrint</code> is very similar to the regular printf routine, the difference being that it can only be called from kernel mode. The debug messages, instead of displaying on the screen, are sent to the kernel debugger (usually WinDbg), assuming that one is attached.</p>
+
+<p><img src="http://www.catch22.net/assets/img/kernel02.gif" alt="" class="align-center" /></p>
+
+<p>However there are a variety of programs on the internet that can capture these kernel messages without having to use a debugger. One of the best is <a href="http://www.sysinternals.com/ntw2k/freeware/debugview.shtml">DebugView</a> from SysInternals, shown above. Note that I am currently working on a version of my own (with complete source-code) which you will soon be able to download from this site.</p>
+
+<h2 id="unloading-a-driver">Unloading a Driver</h2>
+
+<p>Stopping (and unloading) a driver is as simple as starting it:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">net</span> <span class="n">stop</span> <span class="n">hello</span>
+</code></pre></div></div>
+
+<p>However the driver we have built at this point will never unload, because we have omitted a tiny detail. The one thing we left out was the <code class="highlighter-rouge">DriverUnload</code> routine, which the service-control-manager calls when a driver is about to unload. This unload routine must be specified during <code class="highlighter-rouge">DriverEntry</code> if our driver is to be unloadable, and a pointer to the routine stored in the <code class="highlighter-rouge">DriverObject</code> :</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;ntddk.h&gt;
+</span>
+<span class="kt">void</span> <span class="nf">DriverUnload</span><span class="p">(</span><span class="n">PDRIVER_OBJECT</span> <span class="n">pDriverObject</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DbgPrint</span><span class="p">(</span><span class="s">"Driver unloading</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">NTSTATUS</span> <span class="nf">DriverEntry</span><span class="p">(</span><span class="n">PDRIVER_OBJECT</span> <span class="n">DriverObject</span><span class="p">,</span> <span class="n">PUNICODE_STRING</span> <span class="n">RegistryPath</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DriverObject</span><span class="o">-&gt;</span><span class="n">DriverUnload</span> <span class="o">=</span> <span class="n">DriverUnload</span><span class="p">;</span>
+    <span class="n">DbgPrint</span><span class="p">(</span><span class="s">"Hello, World</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">STATUS_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You will have to rebuild the driver and reboot your computer, but now you will be able to use “net start” and “net stop” as often as you like to start and stop the driver.</p>
+
+<h2 id="catch22-driver-loader">Catch22 Driver Loader</h2>
+
+<p>I have stated previously that it is possible to register and start a driver programmatically - i.e. from your own usermode application. The API is part of the Service Control Manager API - functions such as <code class="highlighter-rouge">OpenSCManager</code> , <code class="highlighter-rouge">CreateService</code> , <code class="highlighter-rouge">StartService</code> , <code class="highlighter-rouge">StopService</code> , <code class="highlighter-rouge">CloseServiceHandle</code> are all used together to achieve this goal.</p>
+
+<p>The second sourcecode download at the top of this tutorial is a Win32 console application, which demonstrates how a program can extract a driver from it’s own resources and drop it to disk. Once extracted it starts and then stops the driver before cleaning up afterwards - all using the Service Control Manager API.</p>
+
+<p>This is a very useful little program which provides a good framework for usermode projects requiring the use of a device-driver, so take a look at the sources and give it a whirl - you should be able to replace the sample driver with your own version and carry on using the same program.</p>
+
+<h2 id="related-reading">Related Reading</h2>
+
+<p>There are many books on Device Driver development for Windows. My favourite is “ <strong>Windows NT Device Driver Development</strong>” by Peter Viscarola and W. Anthony Mason. Both of these authors work for Open System Resources and <em>really</em> know their stuff. Other books worth reading are listed below.</p>
+
+<p><strong>Programming the Microsoft Windows Driver Model 2nd Edition</strong> - by Walter Oney. <strong>Microsoft Windows Internals 4th Edition</strong> - by Mark Russinovich. <strong>Undocumented Windows 2000 Secrets</strong> - by Sven Schreiber. <strong>Undocumented Windows NT</strong> - by Prasad Dabak, Sandeep Phadke and Milind Borate. <strong>Windows NT/2000 Native API Reference</strong> - by Gary Nebbett.</p>
+
+<p>All these books contain vital information for kernel programming and device-driver writers.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That pretty much covers the first steps necessary to build, install and start a device driver in Windows NT/2000/XP. Note that at no point have we needed to write complicated INF files (driver-installation files), nor have we needed to use driver signing wizards or complicated GUIs. These things are only necessary for more complex WDM drivers which have additional requirements for their installation. For our simple NT4 legacy driver we can avoid all this hassle and install the driver ourselves.</p>
+
+<p>I strongly advise anyone doing driver development to invest in a separate debugging machine on which to test your drivers - it’s just not worth risking your main development machine with a buggy driver. When a driver crashes, it <em>really</em> crashes - the infamous <strong>Blue Screen Of Death</strong> will become a very familiar site to you as you are learning device-driver programming - I guarantee it!</p>
+
+<p>Well hopefully you have found this tutorial useful, if you have any feedback I’d love to hear it. Don’t forget to check out the downloads at the top of this tutorial - they’re very useful!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/drvload.zip hello_drv.zip">drvload.zip hello_drv.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-03-25T00:00:00+00:00">March 25, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../neatpad/scrollbars-scrolling.html" class="pagination--pager" title="Scrollbars &amp; Scrolling
+">Previous</a>
+    
+    
+      <a href="visual-c-tips-and-tricks.html" class="pagination--pager" title="Visual C++ Tips &amp; Tricks
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/introduction-to-device-drivers by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

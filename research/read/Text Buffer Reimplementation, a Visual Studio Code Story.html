@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="hNs7DXrTySP_X-0P_AC0WulAXvUwgSXEmgfcO2r79dw" />
+
+  <!-- Twitter and Facebook OpenGraph Metadata-->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@code" />
+
+  <meta name="description" content="Text Buffer Reimplementation in the Visual Studio Code/Monaco editor" />
+<meta name="keywords" content="" />
+<!-- Twitter and Facebook OpenGraph Metadata-->
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="og:url" content="https://code.visualstudio.com/blogs/2018/03/23/text-buffer-reimplementation" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Text Buffer Reimplementation, a Visual Studio Code Story" />
+<meta property="og:description" content="Text Buffer Reimplementation in the Visual Studio Code/Monaco editor" />
+
+<meta property="og:image" content="https://code.visualstudio.com/opengraphimg/opengraph-blog.png" />
+
+
+
+  <link rel="shortcut icon" href="/favicon.ico" sizes="128x128" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <title>Text Buffer Reimplementation, a Visual Studio Code Story</title>
+
+  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/dist/style.css">
+
+  <script src="https://js.monitor.azure.com/scripts/c/ms.jsll-3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var config = {
+      coreData: {
+        appId: "vscode"
+      },
+      instrumentationKey: "1a3eb3104447440391ad5f2a6ee06a0a-62879566-bc58-4741-9650-302bf2af703f-7103",
+      webAnalyticsConfiguration: {
+        urlCollectQuery: true
+      }
+  
+    };
+    if (window.awa) {
+      awa.init(config);
+    }
+  </script>
+  
+  <link rel="dns-prefetch" href="//target.microsoft.com">
+  <link rel="dns-prefetch" href="//microsoftmscompoc.tt.omtrdc.net">
+  <script>
+  var at_property = 'a7e3965e-a530-9aab-41f3-2145f10bc083';
+  </script>
+  <script src="/vendor/at/at-config.js" type="text/javascript"></script>
+  <script src="/vendor/at/at.js" type="text/javascript"></script>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  </script>  
+  <link rel="alternate" type="application/atom+xml" title="RSS Feed for code.visualstudio.com" href="/feed.xml" />
+</head>
+
+<body>
+  <!-- EU Cookie Compliance JS -->
+  <script src="https://wcpstatic.microsoft.com/mscc/lib/v2/wcp-consent.js"></script>
+
+  <div id="main">
+          <div class="navbar-fixed-container">
+              <div class="navbar navbar-inverse navbar-fixed-top ">
+                  <div id='cookie-banner'></div>        <nav role="navigation" aria-label="Top Level">
+                      <div class="container">
+                          <div class="nav navbar-header">
+                              <a role="button" id="skip-to-content" class="link-button" href="#main-content">Skip to content<i>&nbsp;</i><span class="glyphicon glyphicon-menu-down"></span></a>
+                              <a class="navbar-brand" href="/">Visual Studio Code</a>
+                              <button type="button" class="navbar-toggle" role="navigation" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle Navigation Menu">
+                                  <span class="icon-bar"></span>
+                                  <span class="icon-bar"></span>
+                                  <span class="icon-bar"></span>
+                              </button>
+                          </div>
+                          <div class="navbar-collapse collapse" role="navigation">
+                              <ul class="nav navbar-nav navbar-left">
+                                  <li ><a id="nav-docs" href="/docs">Docs</a></li>
+                                  <li ><a id="nav-updates" href="/updates">Updates</a></li>
+                                  <li class="active" ><a id="nav-blogs" href="/blogs">Blog</a></li>
+                                  <li ><a id="nav-extend" href="/api">API</a></li>
+                                  <li><a href="https://marketplace.visualstudio.com/VSCode" target="_blank" id="nav-extensions">Extensions</a></li>
+                                  <li ><a id="nav-faqs" href="/docs/supporting/faq">FAQ</a></li>
+                                  <li ><a id="nav-learn" href="/learn">Learn</a></li>
+                                  <li class='search visible-xs visible-sm'
+                                      ><a href="/Search">Search</a></li>
+                              </ul>
+          
+                              <ul class="nav navbar-nav navbar-right" role="presentation">
+                                  <!-- Floating search icon -->
+                                  <li>
+                                      <a href="/Search" title="Search" class="btn search-btn" id="nav-search">
+                                          <img class="search-icon" src="/assets/icons/search.svg" width="16px" height="16px" alt="Search"/>
+                                          <img class="search-icon-inverted" src="/assets/icons/search_dark.svg" width="16px" height="16px" alt="Search" />
+                                      </a>
+                                  </li>
+                                  <!-- Actual search icon -->
+                                  <li class="search" role="presentation">
+                                      <form class="nav-search search-form" role="search" aria-label="Search">
+                                          <div class="input-group" role="presentation">
+                                              <input type="text" name="q" class="search-box form-control" placeholder="Search Docs" aria-label="Search text"/>
+                                              <span class="input-group-btn">
+                                                  <button tabindex="0" class="btn" type="submit" aria-label="Search">
+                                                          <img class="search-icon" src="/assets/icons/search.svg" width="16px" height="16px" alt="Search" />
+                                                          <img class="search-icon-inverted" src="/assets/icons/search_dark.svg" width="16px" height="16px" alt="Search" />
+                                                  </button>
+                                              </span>
+                                          </div>
+                                      </form>                        </li>
+                                  <!-- this was hiden in the home and download page, keeping it for now -->
+                                  <li><a class="link-button" href="/Download" id="nav-download">
+                                      <img class="download-icon" src="/assets/icons/download.svg" width="16px" height="16px" alt="Download VS Code"/>
+                                      <img class="download-icon-inverted" src="/assets/icons/download-black.svg" width="16px" height="16px" alt="Download VS Code" />
+                                      <span>Download</span>
+                                  </a></li>
+                              </ul>
+                          </div>
+                      </div>
+                  </nav>
+              </div>
+          </div>          <div class="updates-banner  ">
+              <div class="container">
+                  <p class="message"><a href="/updates" id="banner-link-updates">Version 1.66</a> is now available! Read about the new features and fixes from March.</p> 
+              </div>
+              <div tabindex="0" role="button" title="Dismiss this update" class="dismiss-btn" id="banner-dismiss-btn"><span class="sr-only">Dismiss this update</span><span aria-hidden="true" class="glyph-icon"></span></div>
+          </div>      <div role="main" id="main-content">
+        <div class="container body-content docs blog">
+    <div class="row">
+        <div class="col-md-2 docs-navbar-container">
+            <nav id="docs-navbar" aria-label="Blog posts" class="docs-nav updates-nav visible-md visible-lg">
+            	<h4>Blog posts</h4>
+            	<ul class="nav">
+            		
+            			<li >
+            				<a href="/blogs/2022/04/04/increase-productivity-with-containers" >Moving from Local to Remote Development</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2022/03/08/the-tutorial-problem" >The problem with tutorials</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/11/08/custom-notebooks" >Custom Notebooks</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/10/20/vscode-dev" >vscode.dev</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/10/11/webview-ui-toolkit" >Webview UI Toolkit</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/09/29/bracket-pair-colorization" >Bracket Pair Colorization</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/08/05/notebooks" >Notebooks</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/07/06/workspace-trust" >Workspace Trust</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/06/10/remote-repositories" >Remote Repositories</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/06/02/build-2021" >Build 2021</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2021/02/16/extension-bisect" >Extension bisect</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/12/03/chromebook-get-started" >VS Code on Chromebook</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/07/27/containers-edu" >Development Containers in Education</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/07/01/containers-wsl" >Remote Containers in WSL 2</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/06/09/go-extension" >The Go experience</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/05/14/vscode-build-2020" >VS Code at Build</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/05/06/github-issues-integration" >GitHub Issues Integration</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/03/02/docker-in-wsl2" >Docker in WSL 2</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/02/24/custom-data-format" >Custom Data Format</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2020/02/18/optimizing-ci" >Improving CI Build Times</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2019/10/31/inspecting-containers" >Inspecting Containers</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2019/10/03/remote-ssh-tips-and-tricks" >SSH Tips and Tricks</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2019/09/03/wsl2" >WSL 2</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2019/07/25/remote-ssh" >Remote SSH</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2019/05/23/strict-null" >Strict null checking</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2019/05/02/remote-development" >Remote Development</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2019/02/19/lsif" >Language Server Index Format</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/12/04/rich-navigation" >Rich Code Navigation</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/11/26/event-stream" >Event-Stream Package Security Update</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/09/12/engineering-with-azure-pipelines" >Using Azure Pipelines</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/09/10/introducing-github-pullrequests" >GitHub Pull Requests</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/08/07/debug-adapter-protocol-website" >New home for Debug Adapter Protocol</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/07/12/introducing-logpoints-and-auto-attach" >Logpoints and auto-attach</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/05/07/live-share-public-preview" >Live Share Preview</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2018/04/25/bing-settings-search" >Settings Search</a>
+            			</li>
+            		
+            			<li class="active">
+            				<a href="/blogs/2018/03/23/text-buffer-reimplementation" aria-label="Current Page: Text Buffer Reimplementation">Text Buffer Reimplementation</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/12/20/chrome-debugging" >What's New for Chrome Debugging</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/11/16/connect" >Connect 2017</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/11/15/live-share" >Introducing Live Share</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/10/24/theicon" >The Icon Journey</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/10/03/terminal-renderer" >Integrated Terminal Performance</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/09/28/java-debug" >Java Debugging</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/08/07/emmet-2.0" >Emmet 2.0</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/06/20/great-looking-editor-roundup" >Fresh Paint</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/05/10/build-2017-demo" >Build 2017 Demo</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/04/10/sublime-text-roundup" >Sublime Text Extension Roundup</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/03/07/extension-pack-roundup" >Extension Packs</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/02/12/code-lens-roundup" >Extensions using CodeLens</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/02/08/syntax-highlighting-optimizations" >Optimizations in Syntax Highlighting</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2017/01/15/connect-nina-e2e" >Node.js Development with Visual Studio Code and Azure</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/12/12/roundup-customize" >Customize VS Code Extension Roundup</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/11/30/hot-exit-in-insiders" >Hot Exit Comes to Insiders</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/11/15/formatters-best-practices" >Creating a Formatter Extension</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/10/31/js_roundup_2" >JavaScript Extensions Part 2</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/09/14/js_roundup_1" >JavaScript Extensions Part 1</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/09/08/icon-themes" >File Icon Themes</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/07/29/extensions-roundup-git" >Extensions Roundup - Fun with Git</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/06/27/common-language-protocol" >The Language Server Protocol</a>
+            			</li>
+            		
+            			<li >
+            				<a href="/blogs/2016/05/04/extension-roundup-may" >Extensions Roundup</a>
+            			</li>
+            		
+            	</ul>
+            </nav>
+            <nav id="small-nav" aria-label="Blog posts" class="docs-nav updates-nav hidden-md hidden-lg">
+            	<h4>Blogs</h4>
+            	<select id="small-nav-dropdown">
+            		
+            			<option value="/blogs/2022/04/04/increase-productivity-with-containers" >Moving from Local to Remote Development</option>
+            		
+            			<option value="/blogs/2022/03/08/the-tutorial-problem" >The problem with tutorials</option>
+            		
+            			<option value="/blogs/2021/11/08/custom-notebooks" >Custom Notebooks</option>
+            		
+            			<option value="/blogs/2021/10/20/vscode-dev" >vscode.dev</option>
+            		
+            			<option value="/blogs/2021/10/11/webview-ui-toolkit" >Webview UI Toolkit</option>
+            		
+            			<option value="/blogs/2021/09/29/bracket-pair-colorization" >Bracket Pair Colorization</option>
+            		
+            			<option value="/blogs/2021/08/05/notebooks" >Notebooks</option>
+            		
+            			<option value="/blogs/2021/07/06/workspace-trust" >Workspace Trust</option>
+            		
+            			<option value="/blogs/2021/06/10/remote-repositories" >Remote Repositories</option>
+            		
+            			<option value="/blogs/2021/06/02/build-2021" >Build 2021</option>
+            		
+            			<option value="/blogs/2021/02/16/extension-bisect" >Extension bisect</option>
+            		
+            			<option value="/blogs/2020/12/03/chromebook-get-started" >VS Code on Chromebook</option>
+            		
+            			<option value="/blogs/2020/07/27/containers-edu" >Development Containers in Education</option>
+            		
+            			<option value="/blogs/2020/07/01/containers-wsl" >Remote Containers in WSL 2</option>
+            		
+            			<option value="/blogs/2020/06/09/go-extension" >The Go experience</option>
+            		
+            			<option value="/blogs/2020/05/14/vscode-build-2020" >VS Code at Build</option>
+            		
+            			<option value="/blogs/2020/05/06/github-issues-integration" >GitHub Issues Integration</option>
+            		
+            			<option value="/blogs/2020/03/02/docker-in-wsl2" >Docker in WSL 2</option>
+            		
+            			<option value="/blogs/2020/02/24/custom-data-format" >Custom Data Format</option>
+            		
+            			<option value="/blogs/2020/02/18/optimizing-ci" >Improving CI Build Times</option>
+            		
+            			<option value="/blogs/2019/10/31/inspecting-containers" >Inspecting Containers</option>
+            		
+            			<option value="/blogs/2019/10/03/remote-ssh-tips-and-tricks" >SSH Tips and Tricks</option>
+            		
+            			<option value="/blogs/2019/09/03/wsl2" >WSL 2</option>
+            		
+            			<option value="/blogs/2019/07/25/remote-ssh" >Remote SSH</option>
+            		
+            			<option value="/blogs/2019/05/23/strict-null" >Strict null checking</option>
+            		
+            			<option value="/blogs/2019/05/02/remote-development" >Remote Development</option>
+            		
+            			<option value="/blogs/2019/02/19/lsif" >Language Server Index Format</option>
+            		
+            			<option value="/blogs/2018/12/04/rich-navigation" >Rich Code Navigation</option>
+            		
+            			<option value="/blogs/2018/11/26/event-stream" >Event-Stream Package Security Update</option>
+            		
+            			<option value="/blogs/2018/09/12/engineering-with-azure-pipelines" >Using Azure Pipelines</option>
+            		
+            			<option value="/blogs/2018/09/10/introducing-github-pullrequests" >GitHub Pull Requests</option>
+            		
+            			<option value="/blogs/2018/08/07/debug-adapter-protocol-website" >New home for Debug Adapter Protocol</option>
+            		
+            			<option value="/blogs/2018/07/12/introducing-logpoints-and-auto-attach" >Logpoints and auto-attach</option>
+            		
+            			<option value="/blogs/2018/05/07/live-share-public-preview" >Live Share Preview</option>
+            		
+            			<option value="/blogs/2018/04/25/bing-settings-search" >Settings Search</option>
+            		
+            			<option value="/blogs/2018/03/23/text-buffer-reimplementation" selected>Text Buffer Reimplementation</option>
+            		
+            			<option value="/blogs/2017/12/20/chrome-debugging" >What's New for Chrome Debugging</option>
+            		
+            			<option value="/blogs/2017/11/16/connect" >Connect 2017</option>
+            		
+            			<option value="/blogs/2017/11/15/live-share" >Introducing Live Share</option>
+            		
+            			<option value="/blogs/2017/10/24/theicon" >The Icon Journey</option>
+            		
+            			<option value="/blogs/2017/10/03/terminal-renderer" >Integrated Terminal Performance</option>
+            		
+            			<option value="/blogs/2017/09/28/java-debug" >Java Debugging</option>
+            		
+            			<option value="/blogs/2017/08/07/emmet-2.0" >Emmet 2.0</option>
+            		
+            			<option value="/blogs/2017/06/20/great-looking-editor-roundup" >Fresh Paint</option>
+            		
+            			<option value="/blogs/2017/05/10/build-2017-demo" >Build 2017 Demo</option>
+            		
+            			<option value="/blogs/2017/04/10/sublime-text-roundup" >Sublime Text Extension Roundup</option>
+            		
+            			<option value="/blogs/2017/03/07/extension-pack-roundup" >Extension Packs</option>
+            		
+            			<option value="/blogs/2017/02/12/code-lens-roundup" >Extensions using CodeLens</option>
+            		
+            			<option value="/blogs/2017/02/08/syntax-highlighting-optimizations" >Optimizations in Syntax Highlighting</option>
+            		
+            			<option value="/blogs/2017/01/15/connect-nina-e2e" >Node.js Development with Visual Studio Code and Azure</option>
+            		
+            			<option value="/blogs/2016/12/12/roundup-customize" >Customize VS Code Extension Roundup</option>
+            		
+            			<option value="/blogs/2016/11/30/hot-exit-in-insiders" >Hot Exit Comes to Insiders</option>
+            		
+            			<option value="/blogs/2016/11/15/formatters-best-practices" >Creating a Formatter Extension</option>
+            		
+            			<option value="/blogs/2016/10/31/js_roundup_2" >JavaScript Extensions Part 2</option>
+            		
+            			<option value="/blogs/2016/09/14/js_roundup_1" >JavaScript Extensions Part 1</option>
+            		
+            			<option value="/blogs/2016/09/08/icon-themes" >File Icon Themes</option>
+            		
+            			<option value="/blogs/2016/07/29/extensions-roundup-git" >Extensions Roundup - Fun with Git</option>
+            		
+            			<option value="/blogs/2016/06/27/common-language-protocol" >The Language Server Protocol</option>
+            		
+            			<option value="/blogs/2016/05/04/extension-roundup-may" >Extensions Roundup</option>
+            		
+            	</select>
+            </nav>        </div>
+        <div class="col-sm-9 col-md-8 body">
+            <h1>Text Buffer Reimplementation</h1>
+<p>March 23, 2018 by Peng Lyu, <a href="https://twitter.com/njukidreborn" class="external-link" target="_blank">@njukidreborn</a></p>
+<p>The Visual Studio Code 1.21 release includes a brand new text buffer implementation which is much more performant, both in terms of speed and memory usage. In this blog post, I'd like to tell the story of how we selected and designed the data structures and algorithms that led to those improvements.</p>
+<p>Performance discussions about JavaScript programs usually involve a discussion about how much should be implemented in native code. For the VS Code text buffer, these discussions started more than a year ago. During an in-depth exploration, we found that a C++ implementation of the text buffer could lead to significant memory savings, but we didn't see the performance enhancements we were hoping for. Converting strings between a custom native representation and V8's strings is costly and in our case, compromised any performance gained from implementing text buffer operations in C++. We will discuss this in more detail at <a href="#_why-not-native">the end</a> of this post.</p>
+<p>Not going native, we had to find ways to improve our JavaScript/TypeScript code. Inspiring blog posts like <a href="https://mrale.ph/blog/2018/02/03/maybe-you-dont-need-rust-to-speed-up-your-js.html" class="external-link" target="_blank">this one</a> from <a href="https://mrale.ph" class="external-link" target="_blank">Vyacheslav Egorov</a> show ways to push a JavaScript engine to its limits and squeeze out as much performance as possible. Even without low level engine tricks, it is still possible to improve speed by one or more orders of magnitude by using better suited data structures and faster algorithms.</p>
+<h2 id="_previous-text-buffer-data-structure" data-needslink="_previous-text-buffer-data-structure">Previous text buffer data structure</h2>
+<p>The mental model for an editor is line based. Developers read and write source code line by line, compilers provide line/column based diagnostics, stack traces contain line numbers, tokenization engines run line by line, etc. Although simple, the text buffer implementation powering VS Code hadn't changed much since the first day we kicked off the Monaco project. We used an array of lines, and it worked pretty well because typical text documents are relatively small. When the user is typing, we located the line to modify in the array and replaced it. When inserting a new line, we spliced a new line object into the line array and the JavaScript engine would do the heavy lifting for us.</p>
+<p>However, we kept receiving reports that opening certain files would cause Out-Of-Memory crashes in VS Code. For example, one user failed to open a <a href="https://github.com/microsoft/vscode/issues/13187" class="external-link" target="_blank">35 MB file</a>. The root cause was that the file had too many lines, 13.7 million. We would create a <code>ModelLine</code> object for each line and every object used around 40-60 bytes, so the line array used around 600MB memory to store the document. That's roughly 20 times the initial file size!</p>
+<p>Another problem with the line array representation was the speed of opening a file. To construct the array of lines, we had to split the content by line breaks, such that we would get a string object per line. The split itself hurts performance which you'll see in benchmarks further down.</p>
+<h2 id="_finding-a-new-text-buffer-implementation" data-needslink="_finding-a-new-text-buffer-implementation">Finding a new text buffer implementation</h2>
+<p>The old line array representation can take a lot of time to create and consumes a lot of memory, but it gives fast line look-up. In a perfect world, we would store only the text of the file and no additional metadata. Thus, we started looking for data structures that require less metadata. After reviewing various data structures, I found that <a href="https://en.wikipedia.org/wiki/Piece_table" class="external-link" target="_blank">piece table</a> may be a good candidate to start with.</p>
+<h3 id="_avoiding-too-much-metadata-by-using-a-piece-table" data-needslink="_avoiding-too-much-metadata-by-using-a-piece-table">Avoiding too much meta-data by using a piece table</h3>
+<p>Piece table is a data structure used to represent a series of edits on a text document (source code in TypeScript):</p>
+<pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">PieceTable</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">original</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">; </span><span style="color: #008000">// original contents</span>
+<span style="color: #000000">  </span><span style="color: #001080">added</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">; </span><span style="color: #008000">// user added contents</span>
+<span style="color: #000000">  </span><span style="color: #001080">nodes</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">[];</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Node</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">type</span><span style="color: #000000">: </span><span style="color: #267F99">NodeType</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">start</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">length</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">enum</span><span style="color: #000000"> </span><span style="color: #267F99">NodeType</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #098658">Original</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #098658">Added</span>
+<span style="color: #000000">}</span></code></pre>
+<p>After the file is initially loaded, the piece table contains the whole file contents in the <code>original</code> field. The <code>added</code> field is empty. There is a single node of type <code>NodeType.Original</code>. When a user types at the end of a file, we append the new content to the <code>added</code> field, and we will insert a new node of type <code>NodeType.Added</code> at the end of the node list. Similarly, when a user makes edits in the middle of a node, we will split that node and insert a new one as needed.</p>
+<p>The animation below shows how to access the document line by line in a piece table structure. It has two buffers (<code>original</code> and <code>added</code>) and three nodes (which is caused by an insertion in the middle of the <code>original</code> content`).</p>
+<hr>
+<p><img src="/assets/blogs/2018/03/23/traditional-piece-table.gif" alt="Traditional piece table" loading="lazy"></p>
+<hr>
+<p>The initial memory usage of a piece table is close to the size of the document and the memory needed for modifications is proportional to the number of edits and text added. So typically a piece table makes good use of memory. However, the price for low memory usage is that accessing a logical line is slow. For example, if you want to get the content of the 1000th line, the only way is to iterate over every character starting at the beginning of the document, find the first 999 line breaks, and read each character until the next line break.</p>
+<h3 id="_use-caching-for-faster-line-lookup" data-needslink="_use-caching-for-faster-line-lookup">Use caching for faster line lookup</h3>
+<p>The traditional piece table nodes only contain offsets, but we can add line break information to make line content lookup faster. The intuitive way to store line break positions is to store the offsets for each line break encountered in a node's text:</p>
+<pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">PieceTable</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">original</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">added</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">nodes</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">[];</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Node</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">type</span><span style="color: #000000">: </span><span style="color: #267F99">NodeType</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">start</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">length</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">lineStarts</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">[];</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">enum</span><span style="color: #000000"> </span><span style="color: #267F99">NodeType</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #098658">Original</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #098658">Added</span>
+<span style="color: #000000">}</span></code></pre>
+<p>For example, if you want to access the second line in a given <code>Node</code> instance, you can read <code>node.lineStarts[0]</code> and <code>node.lineStarts[1]</code> which will give the relative offsets at which a line begins and ends. Since we know how many line breaks a node has, accessing a random line in the document is straight forward: read each node starting from the first one until we find the target line break.</p>
+<p>The algorithm remains simple, and it works better than before as we can now jump over entire chunks of text rather than iterate character-by-character. We'll see later on that we can do even better than that.</p>
+<h3 id="_avoid-the-string-concatenation-trap" data-needslink="_avoid-the-string-concatenation-trap">Avoid the string concatenation trap</h3>
+<p>The piece table holds two buffers, one for original content loaded from disk, and another for user edits. In VS Code, we are loading text files using Node.js <code>fs.readFile</code> that delivers content in 64KB chunks. So when the file is large, for example 64 MB, we'll receive 1000 chunks. After having received all of the chunks, we can concatenate them into one large string and store it in the <code>original</code> field of the piece table.</p>
+<p>This sounds reasonable until V8 steps on your toes. I tried to open a 500MB file and got an exception because in the version of V8 I used, the maximum string length is 256MB. This limit will be lifted to 1GB in future versions of V8 but that doesn't really solve the problem.</p>
+<p>Instead of holding an <code>original</code> and an <code>added</code> buffer, we can hold a list of buffers. We can try to keep that list short or we can be inspired by what we get back from <code>fs.readFile</code> and avoid any string concatenation. Each time we receive a 64KB chunk from disk, we push it directly to the <code>buffers</code> array and create a node that points to this buffer:</p>
+<pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">PieceTable</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">buffers</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">[];</span>
+<span style="color: #000000">  </span><span style="color: #001080">nodes</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">[];</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Node</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">bufferIndex</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">start</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">; </span><span style="color: #008000">// start offset in buffers[bufferIndex]</span>
+<span style="color: #000000">  </span><span style="color: #001080">length</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">lineStarts</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">[];</span>
+<span style="color: #000000">}</span></code></pre>
+<h3 id="_boost-line-lookup-by-using-a-balanced-binary-tree" data-needslink="_boost-line-lookup-by-using-a-balanced-binary-tree">Boost line lookup by using a balanced binary tree</h3>
+<p>With string concatenation out of the way, we can now open large files but this leads us to another potential performance issue. Say we load a 64MB file, the piece table will have 1000 nodes. Even though we cache line break positions in every node, we don't know which absolute line number is in which node. To get the content of a line, we have to go through all nodes until we find the node containing that line. In our example, we have to iterate through up to 1000 nodes depending on which line number we look for. Thus, the time complexity of the worst case is O(N) (N is the count of nodes).</p>
+<p>Caching the absolute line numbers in each node and using binary search on the list of nodes boosts lookup speed but whenever we modify a node, we have to visit all following nodes to apply the line number delta. This is a no-go but the idea of binary search is good. To achieve the same effect, we can leverage a balanced binary tree.</p>
+<p>We now have to decide what metadata we should use as the key to compare tree nodes. As said, using the node's offset in the document or the absolute line number will bring the time complexity of editing operations to O(N). If we want a time complexity of O(log n), we need something that's only related to a tree node's subtree. Thus, when a user edits text, we recompute the metadata for the modified nodes, and then bubble the metadata change along the parent nodes all the way to the root.</p>
+<p>If a <code>Node</code> has only four properties (<code>bufferIndex</code>, <code>start</code>, <code>length</code>, <code>lineStarts</code>), it takes seconds to find the result. To get faster, we can also store the text length and the line break count of a node's left subtree. This way searching by offset or line number from the root of the tree can be efficient. Storing metadata of the right subtree is the same but we don't need to cache both.</p>
+<p>The classes now look like this:</p>
+<pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">PieceTable</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">buffers</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">[];</span>
+<span style="color: #000000">  </span><span style="color: #001080">rootNode</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Node</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">bufferIndex</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">start</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">length</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">lineStarts</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">[];</span>
+
+<span style="color: #000000">  </span><span style="color: #001080">left_subtree_length</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">left_subtree_lfcnt</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">left</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">right</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #001080">parent</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span></code></pre>
+<p>Among all the different types of balanced binary trees, we choose <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree" class="external-link" target="_blank">red-black tree</a> because it is more 'editing' friendly.</p>
+<h3 id="_reduce-objects-allocation" data-needslink="_reduce-objects-allocation">Reduce objects allocation</h3>
+<p>Assume we store the line break offsets in each node. Whenever we change the node, we might have to update the line break offsets. For example, say we have a node that contains 999 line breaks, the <code>lineStarts</code> array has 1000 elements. If we split the node evenly, then we'll create two nodes, each has an array containing around 500 elements. As we are not directly operating on linear memory space, splitting an array into two is more costly than just moving pointers.</p>
+<p>The good news is that the buffers in a piece table are either readonly (original buffers) or append-only (changed buffers), so the line breaks within a buffer don't move. <code>Node</code> can simply hold two references to the line break offsets on its corresponding buffer. The less we do, the better the performance is. Our benchmarks showed that applying this change made the text buffer operations in our implementation three times faster. But more about the actual implementation later.</p>
+<pre class="shiki" style="background-color: #FFFFFF"><code><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Buffer</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">value</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #001080">lineStarts</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">[];</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">BufferPosition</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">index</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">; </span><span style="color: #008000">// index in Buffer.lineStarts</span>
+<span style="color: #000000">    </span><span style="color: #001080">remainder</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">PieceTable</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">buffers</span><span style="color: #000000">: </span><span style="color: #267F99">Buffer</span><span style="color: #000000">[];</span>
+<span style="color: #000000">    </span><span style="color: #001080">rootNode</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">;</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Node</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">bufferIndex</span><span style="color: #000000">: </span><span style="color: #267F99">number</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #001080">start</span><span style="color: #000000">: </span><span style="color: #267F99">BufferPosition</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #001080">end</span><span style="color: #000000">: </span><span style="color: #267F99">BufferPosition</span><span style="color: #000000">;</span>
+<span style="color: #000000">    ...</span>
+<span style="color: #000000">}</span></code></pre>
+<hr>
+<p><img src="/assets/blogs/2018/03/23/piece-tree.gif" alt="piece tree" loading="lazy"></p>
+<hr>
+<h2 id="_piece-tree" data-needslink="_piece-tree">Piece tree</h2>
+<p>I'd love to call this text buffer <strong>&quot;Multiple buffer piece table with red-black tree, optimized for line model&quot;</strong>. But in our daily standup, when everyone is limited to 90 seconds to share what they've been up to, repeating this long name multiple times would not be wise. So I simply started calling it <strong>&quot;piece tree&quot;</strong>, which reflects what it is.</p>
+<p>Having a theoretical understanding of this data structure is one thing, real world performance is another. The language you use, the environment the code runs in, the way clients invoke your API, and other factors may significantly affect the outcome. Benchmarks can provide a comprehensive picture so we ran benchmarks on small/medium/large files against the original line array implementation and the piece tree implementation.</p>
+<h3 id="_preparations" data-needslink="_preparations">Preparations</h3>
+<p>For telling results, I looked for realistic files online:</p>
+<ul>
+<li><a href="https://github.com/microsoft/TypeScript/blob/master/src/compiler/checker.ts" class="external-link" target="_blank">checker.ts</a> - 1.46 MB, 26k lines.</li>
+<li><a href="https://github.com/kripken/emscripten/blob/master/tests/sqlite/sqlite3.c" class="external-link" target="_blank">sqlite.c</a> - 4.31MB, 128k lines.</li>
+<li><a href="https://github.com/titoBouzout/Dictionaries/blob/master/Russian-English%20Bilingual.dic" class="external-link" target="_blank">Russian English Bilingual dictionary</a> - 14MB, 552k lines.</li>
+</ul>
+<p>and manually created a couple of large files:</p>
+<ul>
+<li>Chromium heap snapshot of newly opened VS Code Insider - 54MB, 3M lines.</li>
+<li>checker.ts X 128 - 184MB, 3M lines.</li>
+</ul>
+<h3 id="_1-memory-usage" data-needslink="_1-memory-usage">1. Memory usage</h3>
+<p>The memory usage of the piece tree immediately after loading is very close to the original file size, and it is significantly lower than the old implementation. First round, piece tree wins:</p>
+<p><img src="/assets/blogs/2018/03/23/memoryusage.png" alt="Memory usage" loading="lazy"></p>
+<h3 id="_2-file-opening-times" data-needslink="_2-file-opening-times">2. File opening times</h3>
+<p>Finding and caching line breaks is much faster than splitting the file into an array of strings:</p>
+<p><img src="/assets/blogs/2018/03/23/fileopen.png" alt="File opening" loading="lazy"></p>
+<h3 id="_3-editing" data-needslink="_3-editing">3. Editing</h3>
+<p>I have simulated two workflows:</p>
+<ul>
+<li>Making edits in random positions in the document.</li>
+<li>Typing in sequence.</li>
+</ul>
+<p>I tried to mimic these two scenarios: Apply 1000 random edits or 1000 sequential inserts to the document, then see how much time every text buffer needs:</p>
+<p><img src="/assets/blogs/2018/03/23/write.png" alt="Random edits" loading="lazy"></p>
+<p>As expected, line array wins when the file is very small. Accessing a random position in a small array and tweaking a string which has around 100~150 characters is really fast. The line array starts to choke when the file has many lines (100k+). Sequential inserts in large files make this situation worse as the JavaScript engine does a lot of work in order to resize the large array. Piece tree behaves in a stable fashion as each edit is just a string append and a couple red-black tree operations.</p>
+<h3 id="_4-reading" data-needslink="_4-reading">4. Reading</h3>
+<p>For our text buffers, the hottest method is <code>getLineContent</code>. It is invoked by the view code, by the tokenizer, the link detector, and pretty much every component relying on document content. Some of the code traverses the entire file, like the link detector, while other code reads only a window of sequential lines, like the view code. So I set out to benchmark this method in various scenarios:</p>
+<ul>
+<li>Call <code>getLineContent</code> for all lines after doing 1000 random edits.</li>
+<li>Call <code>getLineContent</code> for all lines after doing 1000 sequential inserts.</li>
+<li>Read 10 distinct line windows after doing 1000 random edits.</li>
+<li>Read 10 distinct line windows after doing 1000 sequential inserts.</li>
+</ul>
+<p><img src="/assets/blogs/2018/03/23/read.png" alt="Read all lines after random edits" loading="lazy"></p>
+<p>TA DA, we found the Achilles heel of piece tree. A large file, with 1000s of edits, will lead to thousands or tens of thousands of nodes. Even though looking up a line is <code>O(log N)</code>, where <code>N</code> is the number of nodes, that is significantly more than <code>O(1)</code> which the line array enjoyed.</p>
+<p>Having thousands of edits is relatively rare. You might get there after replacing a commonly occurring sequence of characters in a large file. Also, we are talking about microseconds for each <code>getLineContent</code> call so it is not something we are concerned about at this time. Most of <code>getLineContent</code> calls are from view rendering and tokenization, and the post processes of line contents are much more time consuming. DOM construction and rendering or tokenization of a view port usually takes tens of milliseconds, in which <code>getLineContent</code> only accounts for less than 1%. Nevertheless, we are considering eventually implementing a normalization step, where we would recreate buffers and nodes if certain conditions such as a high number of nodes are met.</p>
+<h2 id="_conclusion-and-gotchas" data-needslink="_conclusion-and-gotchas">Conclusion and gotchas</h2>
+<p>Piece tree outperforms line array in most scenarios, with the exception of line based lookup, which was to be expected.</p>
+<h3 id="_lessons-learned" data-needslink="_lessons-learned">Lessons learned</h3>
+<ul>
+<li>The most important lesson this reimplementation taught me is to <strong>always do real world profiling</strong>. Every time I found that my assumptions about which methods would be hot did not match reality. For example, when I started the piece tree implementation, I focused on tuning the three atomic operations: <code>insert</code>, <code>delete</code> and <code>search</code>. But when I integrated it in VS Code, none of those optimizations mattered. The hottest method was <code>getLineContent</code>.</li>
+<li><strong>Dealing with <code>CRLF</code> or mixed line breaks sequences is a programmer's nightmare</strong>. For every modification, we need to check if it splits a Carriage Return/Line Feed (CRLF) sequence, or if it creates a new CRLF sequence. Dealing with all the possible cases, in the context of a tree, took several attempts until I had a solution that was correct and fast.</li>
+<li><strong>GC can easily eat your CPU time</strong>. Our text model used to assume that the buffer is stored in an array and we frequently use <code>getLineContent</code> even though sometimes it wasn't necessary. For example, if we just want to know the character code of the first character of a line, we used a <code>getLineContent</code> first and then did <code>charCodeAt</code>. With piece tree, <code>getLineContent</code> creates a substring and after checking the character code, the line substring is thrown away immediately. This is wasteful and we are working on adopting better suited methods.</li>
+</ul>
+<h3 id="_why-not-native" data-needslink="_why-not-native">Why not native?</h3>
+<p>I promised at the beginning that I would get back to this question.</p>
+<p><strong>TL;DR</strong>: We tried. It didn't work out for us.</p>
+<p>We built a text buffer implementation in C++ and used native node module bindings to integrate it in VS Code. The text buffer is a popular component in VS Code and thus many calls were being made to the text buffer. When both the caller and the implementation were written in JavaScript, V8 was able to inline many of these calls. With a native text buffer, there are <strong>JavaScript &lt;=&gt; C++</strong> round trips and given the number to round-trips, they slowed everything down.</p>
+<p>For example, the VS Code <strong>Toggle Line Comment</strong> command is implemented by looping through all the selected lines, and analyzing them one-by-one. This logic is written in JavaScript, and will invoke <code>TextBuffer.getLineContent</code> for each line. For each call, we end up crossing the C++/JavaScript boundary and we have to return a JavaScript <code>string</code> in order to respect the API that all of our code is built on top of.</p>
+<p>Our options are simple. In C++, we either allocate a new JavaScript <code>string</code> on each call to <code>getLineContent</code> which implies copying the actual string bytes around, or we leverage V8's <code>SlicedString</code> or <code>ConstString</code> types. However, we can use V8's string types only if our underlying storage is also using V8's strings. Unfortunately, V8's strings are not multi-thread safe.</p>
+<p>We could have tried to overcome this by changing the TextBuffer API, or by moving more and more code to C++ to avoid the JavaScript/C++ boundary cost. However, we realized we were doing two things at the same time: we were writing a text buffer using a different data structure than a line array, and we were writing it in C++ rather than JavaScript. So, rather than spending half a year on something we didn't know would pay off, we decided to keep the text buffer's runtime in JavaScript, and only change the data structure and associated algorithms. In our opinion, this was the right decision.</p>
+<h2 id="_future-work" data-needslink="_future-work">Future work</h2>
+<p>We still have a handful of cases that need to be optimized. For example, the <strong>Find</strong> command currently runs line-by-line but shouldn't. We can also avoid needless calls to <code>getLineContent</code> when only a line substring is needed. We will incrementally release these optimizations. Even without these further optimizations, the new text buffer implementation provides a better user experience then what we had before and is now the default in the latest stable VS Code version.</p>
+<p>Happy Coding!</p>
+<p>Peng Lyu, VS Code Team member <a href="https://twitter.com/njukidreborn" class="external-link" target="_blank">@njukidreborn</a></p>
+
+        </div>
+        <div class="col-sm-3 col-md-2 docs-subnavbar-container">
+            <nav id="docs-subnavbar" aria-label="On Page" data-spy="affix" data-offset-top="20">
+                
+                <h4 tabIndex="0"><span class="sr-only">In this blog post there are 5
+                        sections</span><span aria-hidden="true">In this blog post</span></h4>
+                
+                <ul class="nav">
+                    
+                    <li><a href="#_previous-text-buffer-data-structure">Previous text buffer data structure</a></li>
+                    
+                    <li><a href="#_finding-a-new-text-buffer-implementation">Finding a new text buffer implementation</a></li>
+                    
+                    <li><a href="#_piece-tree">Piece tree</a></li>
+                    
+                    <li><a href="#_conclusion-and-gotchas">Conclusion and gotchas</a></li>
+                    
+                    <li><a href="#_future-work">Future work</a></li>
+                    
+                </ul>
+                <div class="connect-widget"></div>
+            </nav>
+        </div>
+    </div>
+</div>
+      </div>
+  </div>
+
+  <footer role="contentinfo">
+      <div class="container">
+          <div class="row">
+              <div class="left col-md-7">
+                  <ul class="links">
+                      <li>
+                          <span class="message">Hello from Seattle.</span>
+                      </li>
+                      <li>
+                          <a href="https://go.microsoft.com/fwlink/?LinkID=533687" onclick="followOnTwitter()" tabindex="0">Follow @code</a>
+                      </li>
+                      <li>
+                          <div class="github-star-button">
+                              <iframe src="/assets/github-button.html?user=Microsoft&repo=vscode&type=star&count=true"
+                                  frameborder="0" scrolling="0" width="130px" height="20px" title="GitHub follow button" loading="lazy"></iframe>
+                          </div>
+                      </li>
+  
+                      <script>
+                          function followOnTwitter() {
+                              var windowFeatures = "location=yes,height=600,width=550,scrollbars=yes,status=yes";
+                              var originalReferer = "&original_referer=" + document.URL;
+                              var screenName = "&screen_name=code";
+                              var URL = "https://twitter.com/intent/follow?" + originalReferer + screenName;
+                              window.open(URL, "_blank", windowFeatures);
+                          }
+  
+                          function manageConsent() {
+                              if(WcpConsent.siteConsent.isConsentRequired){
+                                  WcpConsent.siteConsent.manageConsent();
+                              }
+                          }
+                      </script>
+                  </ul>
+              </div>
+              <div class="right col-md-5">
+                  <ul class="links">
+                      <li><a id="footer-support-link" href="https://support.serviceshub.microsoft.com/supportforbusiness/create?sapId=d66407ed-3967-b000-4cfb-2c318cad363d"
+                              target="_blank">Support</a></li>
+                      <li><a id="footer-privacy-link" href="https://privacy.microsoft.com/privacystatement"
+                              target="_blank">Privacy</a></li>
+                      <li style="display: none;"><a id="footer-cookie-link" style="cursor: pointer;" onclick="manageConsent()"
+                              target="_blank">Manage Cookies</a></li>
+                      <li><a id="footer-terms-link" href="https://www.microsoft.com/legal/terms-of-use"
+                              target="_blank">Terms of Use</a></li>
+                      <li><a id="footer-license-link" href="/License">License</a></li>
+                  </ul>
+                  <div class="copyright">
+                      <a id="footer-microsoft-link" class="logo" href="https://www.microsoft.com">
+                          <img class="microsoft-logo" src="/assets/images/microsoft-logo.png" height="20" alt="Microsoft homepage"/>
+                          <img class="microsoft-logo-inverted" src="/assets/images/microsoft-logo-inverted.png" height="20" alt="Microsoft homepage" />
+                      </a>
+                      <span>&copy; 2022 Microsoft</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </footer>
+  <script src="/dist/index.js"></script>
+
+  
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "SoftwareApplication",
+      "name" : "Visual Studio Code",
+      "softwareVersion": "1.66",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "applicationCategory": "DeveloperApplication",
+      "applicationSubCategory": "Text Editor",
+      "alternateName": "VS Code",
+      "datePublished": "2021-11-03",
+      "operatingSystem": "Mac, Linux, Windows",
+      "logo": "https://code.visualstudio.com/assets/apple-touch-icon.png",
+      "screenshot": "https://code.visualstudio.com/assets/home/home-screenshot-win.png",
+      "releaseNotes": "https://code.visualstudio.com/updates",
+      "downloadUrl": "https://code.visualstudio.com/download",
+      "license": "https://code.visualstudio.com/license",
+      "softwareRequirements": "https://code.visualstudio.com/docs/supporting/requirements",
+      "url" : "https://code.visualstudio.com",
+      "author": {
+        "@type": "Organization",
+        "name": "Microsoft"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Microsoft"
+      },
+      "maintainer": {
+        "@type": "Organization",
+        "name": "Microsoft"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://code.visualstudio.com/Search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "sameAs" : [
+        "https://en.wikipedia.org/wiki/Visual_Studio_Code",
+        "https://twitter.com/code",
+        "https://www.youtube.com/code",
+        "https://www.tiktok.com/@vscode",
+        "https://github.com/microsoft/vscode"
+      ]
+    }
+  </script>
+</body>
+</html>

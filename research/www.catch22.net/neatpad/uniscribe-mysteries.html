@@ -1,0 +1,836 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/uniscribe-mysteries by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Uniscribe Mysteries - Catch22</title>
+<meta name="description" content="The last tutorial presented a very brief overview of the Uniscribe ScriptString API. Unfortunately ScriptString is insufficient for our purposes with Neatpad because of the limitations of a single font and colour. The aim of this tutorial is to therefore investigate the “low-level” Uniscribe API. Because we have very specific requirements for Neatpad’s text display our approach that of a multi-font, syntax-coloured text editor.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Uniscribe Mysteries">
+<meta property="og:url" content="uniscribe-mysteries.html">
+
+
+  <meta property="og:description" content="The last tutorial presented a very brief overview of the Uniscribe ScriptString API. Unfortunately ScriptString is insufficient for our purposes with Neatpad because of the limitations of a single font and colour. The aim of this tutorial is to therefore investigate the “low-level” Uniscribe API. Because we have very specific requirements for Neatpad’s text display our approach that of a multi-font, syntax-coloured text editor.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-03-01T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="uniscribe-mysteries.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Uniscribe Mysteries</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="active">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Uniscribe Mysteries">
+    <meta itemprop="description" content="The last tutorial presented a very brief overview of the Uniscribe ScriptString API. Unfortunately ScriptString is insufficient for our purposes with Neatpad because of the limitations of a single font and colour. The aim of this tutorial is to therefore investigate the “low-level” Uniscribe API. Because we have very specific requirements for Neatpad’s text display our approach that of a multi-font, syntax-coloured text editor.">
+    <meta itemprop="datePublished" content="March 01, 2006">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Uniscribe Mysteries
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Uniscribe Mysteries</h1-->
+<!--h3>Looking at ScriptItemize and ScriptLayout</h3-->
+
+<p>The last tutorial presented a very brief overview of the Uniscribe ScriptString API. Unfortunately ScriptString is insufficient for our purposes with Neatpad because of the limitations of a single font and colour. The aim of this tutorial is to therefore investigate the “low-level” Uniscribe API. Because we have very specific requirements for Neatpad’s text display our approach that of a multi-font, syntax-coloured text editor.</p>
+
+<p>The string of Unicode text shown below will be used as the basis for much of our discussion. The Arabic phrase in the middle has been chosen because it’s Unicode properties suit the context of our discussion, not because they have any special meaning.</p>
+
+<p>HelloيُساوِيWorld</p>
+
+<p>You will notice that two of the “glyphs” in the Arabic phrase above have been highlighted in different colours to the rest of the string. These two letters are “<em>U+0633 ARABIC LETTER SEEN</em>” and “<em>U+0627 ARABIC LETTER ALEF</em>”. In isolation they display as follows:</p>
+
+<table class="table-figure-center">
+  <tbody>
+    <tr>
+      <td>سا</td>
+      <td>س‌ا</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The box on the left shows the two characters rendered with contextual-shaping (assuming you are using a Unicode-enabled web-browser such as Internet Explorer and have the appropriate fonts installed). This is the behaviour we are aiming for. The box on the right shows the characters rendered separately from each other. If both boxes look the same then your browser is not displaying Unicode properly.</p>
+
+<p>One of the big reasons Unscribe exists is to provide the kind of complex “shaping” behaviour illustrated above. The requirement on our part (as programmer) is that we do not split Unicode strings into individual characters because this would break the shaping behaviour we are aiming for. Therefore the major goal of this tutorial is to explain how characters can be drawn individually (in different colours) whilst still maintaining the contextual shaping.</p>
+
+<h2 id="basic-outline">Basic Outline</h2>
+
+<p>The basic set of steps for drawing text with Uniscribe are outlined below. Note that I am omitting word-wrapping (and the <code class="highlighter-rouge">ScriptBreak</code> API) for the moment. So assuming that we have a string of UTF-16 Unicode text, this is what we do:</p>
+
+<ol>
+  <li><code class="highlighter-rouge">ScriptItemize</code> - to break the string into distinct scripts or “item-runs”.</li>
+  <li>Merge item runs with application-defined “style” runs to produce finer-grained items.</li>
+  <li><code class="highlighter-rouge">ScriptLayout</code> - to potentially reorder the items.</li>
+</ol>
+
+<p>Then for each item/run (in the order dictated by the <code class="highlighter-rouge">ScriptLayout</code> results)</p>
+
+<ol>
+  <li><code class="highlighter-rouge">ScriptShape</code> - to apply contextual shaping behaviour and convert the <em>characters</em> from each run into a series of <em>glyphs</em>.</li>
+  <li><code class="highlighter-rouge">ScriptPlace</code> - to calculate the width and positions of each glyph in the run.</li>
+  <li>Apply colouring/highlighting to the individual <em>glyphs</em>.</li>
+  <li><code class="highlighter-rouge">ScriptTextOut</code> - to display the glyphs.</li>
+</ol>
+
+<p>This outline closely follows how Microsoft recommends you use the Uniscribe API. Note however that I have included an extra step#6 (text-colouring) which is not mentioned in MSDN. The reasoning behind this difference will be explained as we progress through the tutorial. I will leave the subject of word-wrapping to a later tutorial, as this is more of a problem of line-buffer management rather than using Uniscribe.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">UspAnalyze</span> <span class="p">(</span>
+  <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span>   
+  <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span>
+  <span class="n">WCHAR</span> <span class="o">*</span> <span class="n">wstr</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">wlen</span><span class="p">,</span>
+  <span class="n">ATTR</span> <span class="o">*</span> <span class="n">attrRunList</span><span class="p">,</span>
+  <span class="n">UINT</span> <span class="n">flags</span><span class="p">,</span>
+  <span class="n">SCRIPT_TABDEF</span> <span class="o">*</span> <span class="n">tabDef</span><span class="p">,</span>
+  <span class="n">USPFONT</span> <span class="o">*</span> <span class="n">uspFont</span> 						  
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>The function prototype above is for a function called <code class="highlighter-rouge">UspAnalyze</code>. It is part of the new UspLib text-rendering engine that I have written for Neatpad. <code class="highlighter-rouge">UspAnalyze</code> is similar in many ways to <code class="highlighter-rouge">ScriptStringAnalyze</code>, but with the additional capability of allowing the caller to specify font and style information for the string.</p>
+
+<p>The rest of this tutorial will begin to focus on each aspect of the Uniscribe API as outlined above and will discuss any issues related to each stage. However each stage that we look at will be a key step towards implementing the <code class="highlighter-rouge">UspAnalyze</code> function.</p>
+
+<h2 id="1-scriptitemize">1. ScriptItemize</h2>
+
+<p><code class="highlighter-rouge">ScriptItemize</code> is usually the first Uniscribe function to be called when displaying a string of Unicode text. It’s purpose is to identify the various <em>scripts</em> in a string, and then split this string into items (or runs) according to the script, with one item per script.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>H</td>
+      <td>e</td>
+      <td>l</td>
+      <td>l</td>
+      <td>o</td>
+      <td>ي</td>
+      <td>ُ</td>
+      <td>س</td>
+      <td>ا</td>
+      <td>و</td>
+      <td>ِ</td>
+      <td>ي</td>
+      <td>W</td>
+      <td>o</td>
+      <td>r</td>
+      <td>l</td>
+      <td>d</td>
+    </tr>
+    <tr>
+      <td>0048</td>
+      <td>0065</td>
+      <td>006C</td>
+      <td>006C</td>
+      <td>006F</td>
+      <td>064A</td>
+      <td>064F</td>
+      <td>0633</td>
+      <td>0627</td>
+      <td>0648</td>
+      <td>0650</td>
+      <td>064A</td>
+      <td>0057</td>
+      <td>006F</td>
+      <td>0072</td>
+      <td>006C</td>
+      <td>0064</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The table above illustrates how the UTF-16 string “HelloيُساوِيWorld” would be treated by <code class="highlighter-rouge">ScriptItemize</code>. The characters are shown in <em>logical order</em> - in other words, the order that they appear when stored in memory. The string has been divided into three segments. Note that these items are derived purely by their script - not by the finer-grained glyphs and grapheme clusters that are present in the string.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptItemize</span><span class="p">(</span>
+  <span class="n">WCHAR</span> <span class="o">*</span> <span class="n">wszText</span><span class="p">,</span> <span class="c1">// pointer to unicode string
+</span>  <span class="kt">int</span> <span class="n">wszLength</span><span class="p">,</span> <span class="c1">// count of WCHARs         
+</span>  <span class="kt">int</span> <span class="n">cMaxItems</span><span class="p">,</span> <span class="c1">// length of pItems buffer
+</span>  <span class="n">SCRIPT_CONTROL</span> <span class="o">*</span> <span class="n">psControl</span><span class="p">,</span>    
+  <span class="n">SCRIPT_STATE</span> <span class="o">*</span> <span class="n">psState</span><span class="p">,</span> 
+  <span class="n">SCRIPT_ITEM</span> <span class="o">*</span> <span class="n">pItems</span><span class="p">,</span> <span class="c1">// out - array of SCRIPT_ITEM structures
+</span>  <span class="kt">int</span> <span class="o">*</span> <span class="n">pcItems</span> <span class="c1">// out - count of items
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ScriptItemize</code> returns an array of <code class="highlighter-rouge">SCRIPT_ITEM</code> structures, one for each “shapable” item (script) in the paragraph of text. The number of structures is returned in <code class="highlighter-rouge">*pcItems</code>. In the example above, <code class="highlighter-rouge">*pcItems</code> would hold the value “3”. This <code class="highlighter-rouge">SCRIPT_ITEM</code> structure is very simple and is shown below.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">SCRIPT_ITEM</span>
+<span class="p">{</span> 
+   <span class="kt">int</span> <span class="n">iCharPos</span><span class="p">;</span> 
+   <span class="n">SCRIPT_ANALYSIS</span> <span class="n">a</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">SCRIPT_ITEM::iCharPos</code> variable is used to identify the starting position of each “run” of text in the string. The <code class="highlighter-rouge">SCRIPT_ANALYSIS</code> child structure holds alot of extra information about the run including the reading-direction and the shaping-engine that should be used to convert the run into glyphs.</p>
+
+<p>The image below this time illustrates how our Unicode string is represented by an array of <code class="highlighter-rouge">SCRIPT_ITEM</code> structures:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1007.gif" alt="" class="align-center" /></p>
+
+<p>Notice that there is always a “hidden” <code class="highlighter-rouge">SCRIPT_ITEM</code> on the end of the array which represents the end-of-string. This makes it possible to calculate the length of each <code class="highlighter-rouge">SCRIPT_ITEM</code> by using the following construct:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">itemLength</span> <span class="o">=</span> <span class="n">pItems</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="n">iCharPos</span> <span class="o">-</span> <span class="n">pItems</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">iCharPos</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>There are a couple of general points worth making here. Notice that the first parameter to <code class="highlighter-rouge">ScriptItemize</code> is a <code class="highlighter-rouge">WCHAR</code> *. There is no ANSI version of this function so from now on Neatpad will be a pure Unicode application. Unless we can use the Microsoft Layer for Unicode (MSLU) we will have to drop support for Win9x.</p>
+
+<p>Note also that you can never know in advance how many <code class="highlighter-rouge">SCRIPT_ITEM</code> s will be returned for a string of text, so it is usually necessary to use a loop of some kind - which allocates more and more memory for the <code class="highlighter-rouge">SCRIPT_ITEM</code> buffer until the call to <code class="highlighter-rouge">ScriptItemize</code> succeeds:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SCRIPT_CONTROL</span> <span class="n">scriptControl</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+<span class="n">SCRIPT_STATE</span> <span class="n">scriptState</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+
+<span class="n">SCRIPT_ITEM</span> <span class="o">*</span><span class="n">itemList</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">itemCount</span><span class="p">;</span>
+
+<span class="k">do</span> <span class="p">{</span>
+    <span class="n">itemList</span> <span class="o">=</span> <span class="n">realloc</span><span class="p">(</span><span class="n">itemList</span><span class="p">,</span> <span class="p">...</span> <span class="p">);</span>
+
+    <span class="n">hr</span> <span class="o">=</span> <span class="n">ScriptItemize</span><span class="p">(</span>
+            <span class="n">wstr</span><span class="p">,</span>
+            <span class="n">wlen</span><span class="p">,</span>
+            <span class="n">allocLen</span><span class="p">,</span>
+            <span class="o">&amp;</span><span class="n">scriptControl</span><span class="p">,</span>
+            <span class="o">&amp;</span><span class="n">scriptState</span><span class="p">,</span>
+            <span class="n">itemList</span><span class="p">,</span>
+            <span class="o">&amp;</span><span class="n">itemCount</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">hr</span> <span class="o">!=</span> <span class="n">S_OK</span> <span class="o">&amp;&amp;</span> <span class="n">hr</span> <span class="o">!=</span> <span class="n">E_OUTOFMEMORY</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">hr</span> <span class="o">!=</span> <span class="n">S_OK</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>A word of warning here - make sure you always pass fully initialized <code class="highlighter-rouge">SCRIPT_CONTROL</code> and <code class="highlighter-rouge">SCRIPT_STATE</code> structures to <code class="highlighter-rouge">ScriptItemize</code> even if their contents are initialized to all “zeros”. Unless both these structures are specified, the Unicode bi-directional algorithm will not be used for the purposes of itemizing the string. This can result in incorrect identification of item-run positions in some circumstances (such as LTR and RTL scripts appearing in the same string).</p>
+
+<p>Interestingly, MSDN says that when the <code class="highlighter-rouge">SCRIPT_CONTROL</code> and <code class="highlighter-rouge">SCRIPT_STATE</code> are NULL the itemization is based purely on character code. When non-null, the full bidirectional algorithm is applied as stated above. For this latter case the entire paragraph must be in memory. Although I’m not going to go down this path, this does suggest a method for handling arbitrarily long lines of text that cannot reside in memory as whole paragraphs.</p>
+
+<h2 id="2-merging-style-runs">2. Merging Style Runs</h2>
+
+<p>The reason we are using Uniscribe directly instead of the <code class="highlighter-rouge">ScriptString</code> functions is because we want finer-grained control over text colouring and font selection. And we have now reached the point (after calling <code class="highlighter-rouge">ScriptItemize</code>) where Microsoft’s documentation advises us to merge “application-defined” style runs with the item information returned by <code class="highlighter-rouge">ScriptItemize</code>. Here’s the quote from MSDN:</p>
+
+<blockquote>
+  <p><em>“Before using Uniscribe, an application divides the paragraph into runs, that is, a string of characters with the same style. The style depends on what the application has implemented, but typically includes such attributes as font, size, and <strong>color</strong>….Merge the item information with the run information to produce runs with a single style, script and direction.”</em></p>
+</blockquote>
+
+<p>This quote is one of the most confusing, cryptic and <em>misleading</em> statements in the whole of the Uniscribe documentation. The problem is, there are no hints in MSDN as to <em>how</em> one should merge style-runs with item-runs, or even what a “style run” actually is. We will look at how to “merge runs” a little further down, but first let’s understand what is meant by the term “style run”.</p>
+
+<p>Of course, a style-run is whatever an application wants it to be. In essence it is a range of text that has been assigned a specific set of attributes. In the case of Neatpad I have used an <code class="highlighter-rouge">ATTR</code> structure to represent colour and font - one for each character in a string of text. The string of text and the attribute-list looked something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WCHAR</span> <span class="n">buff</span><span class="p">[</span><span class="n">MAXLINELEN</span><span class="p">];</span>
+<span class="n">ATTR</span> <span class="n">attr</span><span class="p">[</span><span class="n">MAXLINELEN</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>However since migrating to Uniscribe and the ‘inversion-highlighting’ scheme, I have extended the <code class="highlighter-rouge">ATTR</code> structure somewhat, so that it is no longer a ‘one ATTR per character’:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">ATTR</span>
+<span class="p">{</span>
+   <span class="n">COLORREF</span> <span class="n">fg</span><span class="p">;</span> <span class="c1">// foreground text colour
+</span>   <span class="n">COLORREF</span> <span class="n">bg</span><span class="p">;</span> <span class="c1">// background text colour
+</span>   <span class="kt">int</span> <span class="n">len</span> <span class="o">:</span> <span class="mi">16</span><span class="p">;</span> <span class="c1">// length of this run (in WCHARs)
+</span>   <span class="kt">int</span> <span class="n">font</span> <span class="o">:</span> <span class="mi">7</span><span class="p">;</span> <span class="c1">// font-index
+</span>   <span class="kt">int</span> <span class="n">sel</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// selection flag (yes/no)
+</span>   <span class="kt">int</span> <span class="n">ctrl</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// show as an isolated control-character
+</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>The foreground and background colours remain unchanged. The new structure-members are detailed below.</p>
+
+<ul>
+  <li>The first change is a new <strong>length</strong> field which represents the length (in characters) of an attribute-run - simply because Uniscribe likes to deal with “runs” of things rather than single characters. I won’t be modifying the existing Neatpad code just yet (which assumes 1 ATTR per character) and this extra field will just be used for “internal housekeeping” when dealing with the Uniscribe API.</li>
+  <li>The <strong>font</strong> field is no different than before. It is still used as an index into a font-table.</li>
+  <li>The <strong>sel</strong> boolean is used to indicate the selection-state of the text-run - in other words, if the run should be rendered with selection-highlighting. This is quite an important change - I no longer store the selection-colours in ::fg and ::bg - a separate flag is used to indicate whether a character (or range of text) is selected. The move to an ‘inversion highlighting’ scheme requires this change.</li>
+  <li>The <strong>ctrl</strong> boolean is the last addition and is used to indicate whether or not the characters in the text-run should be rendered normally, or as individual control-characters.</li>
+</ul>
+
+<p>The problem we now face is that we have two lists of unrelated entities - a <code class="highlighter-rouge">SCRIPT_ITEM</code> list which identifies the position of <em>scripts</em> within the original character array, and an <code class="highlighter-rouge">ATTR</code> list which identifies the ranges of <em>style</em> in the original string. We need to understand what MSDN means when it instructs us to merge these two unrelated lists together:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SCRIPT_ITEM</span> <span class="o">*</span><span class="n">itemList</span><span class="p">;</span>
+<span class="n">ATTR</span> <span class="o">*</span><span class="n">attrList</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The basic process is to look at the style-runs and item-runs together and identify any position within the string where a run of one type overlaps another. For example, suppose a <code class="highlighter-rouge">SCRIPT_ITEM</code> run overlaps the boundary-position between two <code class="highlighter-rouge">ATTR</code> structures. This <code class="highlighter-rouge">SCRIPT_ITEM</code> would have to be <em>split</em> into two new halves - each representing a different <code class="highlighter-rouge">ATTR</code> style-run.</p>
+
+<p>The way the split occurs is like this: the <code class="highlighter-rouge">SCRIPT_ITEM::iCharOffset</code> variables are modified to point to new positions within the original string and an array of <code class="highlighter-rouge">ITEM_RUN</code> structures is built up which holds these new character-postions. The other contents of the <code class="highlighter-rouge">SCRIPT_ITEM</code> (i.e. the <code class="highlighter-rouge">SCRIPT_ANALYSIS</code> structure) must be duplicated between the resulting two halves. Think of it as follows: The <code class="highlighter-rouge">ScriptItemize</code> function first breaks the string into discrete units based on <em>script</em>. The merge process then <em>further</em> breaks the string into smaller units based on <em>style</em>, should there be any overlap between the two.</p>
+
+<p>The following diagram hopefully illustrates what is meant by a “style merge”:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1006.gif" alt="" class="align-center" /></p>
+
+<p>Now here’s the problem. If we break up a <code class="highlighter-rouge">SCRIPT_ITEM</code> won’t this affect the contextual shaping behaviour of the Uniscribe engines? The short answer is, yes, we will break the Uniscribe shaping behaviours by breaking up a string - and no, there is no magic way to get around this problem.</p>
+
+<p>You may notice in the above diagram that I have written “font only” next to the <code class="highlighter-rouge">ATTR</code> style runs. This is delibrate, because although Microsoft advises us to break up a string based on style, this is not really correct. In fact, breaking a string due to colour differences (for the purpose of selection/syntax highlights) at this stage is <strong>wrong</strong> :</p>
+
+<blockquote>
+  <p><em>We must only take <strong>fonts</strong> into account when merging style-runs and item-runs, and <strong>ignore</strong> colour-information entirely.</em></p>
+</blockquote>
+
+<p>Hopefully I have gotten this point across adequately. After following the advise of the Microsoft docs I wasted about a week trying to figure out how to colourise a string only to realise that I was going about it the wrong way. Syntax-colouring (or any kind of text colouring for that matter) must be applied to a string <strong>after</strong> the shaping has taken place - i.e. after <code class="highlighter-rouge">ScriptShape</code> and <code class="highlighter-rouge">ScriptPlace</code> have been called, and just prior to calling <code class="highlighter-rouge">ScriptTextOut</code>. This doesn’t mean that we can’t store colours in our <code class="highlighter-rouge">ATTR</code> structures - it’s just that we don’t use this information whilst performing the ‘merge’. Any <code class="highlighter-rouge">ATTR</code> structures which share the same font must therefore be coalesced into a single run by the merge process before doing any “splits”.</p>
+
+<p>OK so once we have broken up the <code class="highlighter-rouge">ATTR</code> and <code class="highlighter-rouge">SCRIPT_ITEM</code> structures what do we do with them? I have defined a new structure called <code class="highlighter-rouge">ITEM_RUN</code> which contains the necessary content from the <code class="highlighter-rouge">SCRIPT_ITEM</code> and <code class="highlighter-rouge">ATTR</code> structures:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">ITEM_RUN</span>
+<span class="p">{</span>
+   <span class="n">SCRIPT_ANALYSIS</span> <span class="n">analysis</span><span class="p">;</span> <span class="c1">// from the original SCRIPT_ITEM
+</span>   <span class="kt">int</span> <span class="n">charPos</span><span class="p">;</span> <span class="c1">// character-offset within the original string
+</span>   <span class="kt">int</span> <span class="n">len</span><span class="p">;</span> <span class="c1">// length of run in WCHARs
+</span>   <span class="kt">int</span> <span class="n">font</span><span class="p">;</span> <span class="c1">// only font is required, not colours
+</span>   <span class="p">...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ITEM_RUN</code> basically allows us to keep “formatting” information alongside the item-runs. Once we have itemized the string, Uniscribe only cares about the <code class="highlighter-rouge">SCRIPT_ANALYSIS</code> structures for each run. The other members of the <code class="highlighter-rouge">ITEM_RUN</code> structure are for our own private use. The item-run-list is stored inside the <code class="highlighter-rouge">USPDATA</code> structure for the string, in the <code class="highlighter-rouge">itemRunList</code> field:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">USPDATA</span>
+<span class="p">{</span>
+   <span class="n">ITEM_RUN</span> <span class="o">*</span> <span class="n">itemRunList</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">itemRunCount</span><span class="p">;</span>
+   <span class="p">...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The algorithm to merge runs is actually quite complicated - in fact it’s one of the trickier aspects with Uniscribe programming, not helped by the fact that Microsoft give absolutely no hint as to how this should be performed, other than the 7-year old CSSamp application from the 1998 article <a href="http://www.microsoft.com/msj/1198/multilang/multilang.aspx">“Supporting Multilanguage Text Layout and Complex Scripts with Windows NT 5.0</a>”.</p>
+
+<p>To solve this problem I have written a new function called <code class="highlighter-rouge">BuildMergedItemRunList</code> that builds an array of <code class="highlighter-rouge">ITEM_RUN</code> structures for a given Uniscribe string. It performs two tasks - calling <code class="highlighter-rouge">ScriptItemize</code> and then merging the results with the style-runs specified by <code class="highlighter-rouge">attrList</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">BuildMergedItemRunList</span><span class="p">(</span>
+                 <span class="n">USPDATA</span> <span class="o">*</span> <span class="n">uspData</span><span class="p">,</span> <span class="c1">// in/out - holds results of merge
+</span>                 <span class="n">WCHAR</span> <span class="o">*</span> <span class="n">wstr</span><span class="p">,</span>          
+                 <span class="kt">int</span> <span class="n">wlen</span><span class="p">,</span> 
+                 <span class="n">ATTR</span> <span class="o">*</span> <span class="n">attrList</span><span class="p">,</span>      
+ <span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">BuildMergedItemRunList</code> is an private function to USPLib, and is called by <code class="highlighter-rouge">UspAnalyze</code> as one of the first steps when building a <code class="highlighter-rouge">USPDATA</code> object. Taken in isolation, the function is used something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ATTR</span> <span class="n">attrList</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> 
+<span class="p">{</span>
+    <span class="p">{</span> <span class="n">RGB</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">),</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">},</span> <span class="c1">// five characters using font#0
+</span>    <span class="p">{</span> <span class="n">RGB</span><span class="p">(</span><span class="mh">0xAA</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0xAA</span><span class="p">),</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span> <span class="c1">// six characters using font#1
+</span><span class="p">}</span>
+
+<span class="n">BuildMergedItemRunList</span><span class="p">(</span><span class="n">uspData</span><span class="p">,</span> <span class="s">L"Hello World"</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="n">attrList</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Understand that the big advantage of using Uniscribe is the contextual-shaping and complex-script support. Dividing a Unicode string into sections by splitting <code class="highlighter-rouge">SCRIPT_ITEM</code> structures will break the script-shaping behaviour that we seek. We must try to keep the number of split <code class="highlighter-rouge">SCRIPT_ITEM</code> s to a minimum - and splitting based on colour differences at this stage is <strong>wrong</strong>. Although Neatpad will already have built it’s <code class="highlighter-rouge">ATTR</code> style-lists before displaying text with Uniscribe, using the colour information in these lists must occur <em>after</em> shaping has taken place.</p>
+
+<p>Finally, if you are building a text-editor that only deals with a single font then you can completely skip this phase and save yourself alot of work (or even use the <code class="highlighter-rouge">ScriptString</code> API if you don’t want syntax colouring!)</p>
+
+<h2 id="3-scriptlayout">3. ScriptLayout</h2>
+
+<p>The next stage with Uniscribe is to take the merged item-runs and establish the correct visual order for display. In our case we use the array of <code class="highlighter-rouge">ITEM_RUN</code> structures produced by <code class="highlighter-rouge">BuildMergedItemRunList</code>. This is an important step and is the key to the correct display of bidirectional text. Note that unless a string contains right-to-left scripts reordering is not necessary but we still need to go through the motions because we won’t know until runtime what kind of scripts and languages we might be processing.</p>
+
+<p>The Uniscribe <code class="highlighter-rouge">ScriptLayout</code> function is called to perform the reordering, and uses the Unicode Bidirectional Algorithm to achieve this task.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRESULT</span> <span class="n">WINAPI</span> <span class="n">ScriptLayout</span><span class="p">(</span>
+   <span class="kt">int</span> <span class="n">cRuns</span><span class="p">,</span> 
+   <span class="n">BYTE</span> <span class="o">*</span> <span class="n">pbLevel</span><span class="p">,</span> <span class="c1">// in
+</span>   <span class="kt">int</span> <span class="o">*</span> <span class="n">piVisualToLogical</span><span class="p">,</span> <span class="c1">// out
+</span>   <span class="kt">int</span> <span class="o">*</span> <span class="n">piLogicalToVisual</span> <span class="c1">// out
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">ScriptLayout</code> takes as input a simple array of <code class="highlighter-rouge">BYTE</code> s which represent the bidi run-embedding levels of the string - one <code class="highlighter-rouge">BYTE</code> per item-run. This bidi run-embedding value is stored in the <code class="highlighter-rouge">SCRIPT_STATE::uBidiLevel</code> variable for each <code class="highlighter-rouge">ITEM_RUN</code>. It is up to us to build this <code class="highlighter-rouge">BYTE[]</code> array before calling <code class="highlighter-rouge">ScriptLayout</code>.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor1005.gif" alt="" class="align-center" /></p>
+
+<p>We have to therefore manually extract the <code class="highlighter-rouge">uBidiLevel</code> variable from each item-run. <code class="highlighter-rouge">uBidiLevel</code> is buried deep within each <code class="highlighter-rouge">SCRIPT_ANALYSIS,</code> as a member of the <code class="highlighter-rouge">SCRIPT_STATE</code> structure. Once the <code class="highlighter-rouge">BYTE[]</code> array is built the <code class="highlighter-rouge">ScriptLayout</code> API can be called. It all seems like rather alot of work just to return a further array of integers but thats just the way it is. Presumably the Uniscribe developers did it this way because they assumed that you would be creating and merging your own <code class="highlighter-rouge">ITEM_RUN</code> (or similar) structures.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="nf">BuildVisualMapping</span><span class="p">(</span> <span class="n">ITEM_RUN</span> <span class="o">*</span> <span class="n">itemRunList</span><span class="p">,</span> 
+                         <span class="kt">int</span> <span class="n">itemRunCount</span><span class="p">,</span> 
+                         <span class="kt">int</span> <span class="n">visualToLogicalList</span><span class="p">[]</span> <span class="c1">// out
+</span>  <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">BYTE</span> <span class="o">*</span> <span class="n">bidiLevel</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">itemRunCount</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">BYTE</span><span class="p">));</span>
+
+    <span class="c1">// Manually extract bidi-embedding-levels ready for ScriptLayout
+</span>    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">itemRunCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">bidiLevel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">itemRunList</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">analysis</span><span class="p">.</span><span class="n">s</span><span class="p">.</span><span class="n">uBidiLevel</span><span class="p">;</span>
+
+    <span class="c1">// Build a visual-to-logical mapping order
+</span>    <span class="n">ScriptLayout</span><span class="p">(</span><span class="n">itemRunCount</span><span class="p">,</span> <span class="n">bidiLevel</span><span class="p">,</span> <span class="n">visualToLogicalList</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="c1">// free the temporary BYTE[] buffer
+</span>    <span class="n">free</span><span class="p">(</span><span class="n">bidiLevel</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The function above shows how obtain the visual-mapping list given an array of <code class="highlighter-rouge">ITEM_RUN</code> structures. This list is essential when displaying a string of text, or in fact doing <em>anything</em> which requires visual-order processing such as mouse/caret hit testing.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">xpos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ypos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="k">for</span><span class="p">(</span><span class="n">visualIdx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">visualIdx</span> <span class="o">&lt;</span> <span class="n">itemRunCount</span><span class="p">;</span> <span class="n">visualIdx</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">logicalIdx</span> <span class="o">=</span> <span class="n">visualToLogicalList</span><span class="p">[</span><span class="n">visualIdx</span><span class="p">];</span>
+    <span class="n">ITEM_RUN</span> <span class="o">*</span><span class="n">itemRun</span> <span class="o">=</span> <span class="n">itemRunList</span><span class="p">[</span><span class="n">logicalIdx</span><span class="p">];</span>
+
+    <span class="n">ProcessRun</span><span class="p">(</span><span class="n">itemRun</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">ypos</span><span class="p">);</span>
+
+    <span class="n">xpos</span> <span class="o">+=</span> <span class="n">itemRun</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This type of processing-loop is necessary because even though we may be dealing with right-to-left scripts (i.e. Arabic or Hebrew), when it comes to text-display we still draw everything from left-to-right, including the ‘backwards’ runs. The visual-to-logical list provides a way to map from a visual to logical index and ensures we always process the runs in the appropriate order.</p>
+
+<h2 id="coming-up-in-part-13">Coming up in Part 13</h2>
+
+<p>Uniscribe is a very complicated business as you can probably tell from reading this tutorial. Unfortunately this is a necessary evil, as all software written today should be fully Unicode compliant. Don’t think for a minute that Uniscribe can be ignored - we need to support Unicode, and we must accept the added complications that it brings. The days of ASCII/English text display have gone for good.</p>
+
+<p>So far we have covered the process of breaking up, and reordering a string of Unicode text into a series of item-runs. However we are still only half-way towards implementing the <code class="highlighter-rouge">UspAnalyze</code> function. The next tutorial will reveal how to take the item-runs we have produced and generate glyph and width information using the <code class="highlighter-rouge">ScriptShape</code> and <code class="highlighter-rouge">ScriptPlace</code> APIs.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2006-03-01T00:00:00+00:00">March 01, 2006</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="introduction-uniscribe.html" class="pagination--pager" title="Introduction to Uniscribe
+">Previous</a>
+    
+    
+      <a href="more-uniscribe-mysteries.html" class="pagination--pager" title="More Uniscribe Mysteries
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/uniscribe-mysteries by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

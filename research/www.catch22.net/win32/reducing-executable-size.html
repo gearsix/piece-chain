@@ -1,0 +1,739 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/reducing-executable-size by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Reducing Executable Size - Catch22</title>
+<meta name="description" content="There are so many large and bloated applications around today that most people just assume that this is normal and quite willingly put up with poor performance and having to buy larger harddrives.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Reducing Executable Size">
+<meta property="og:url" content="reducing-executable-size.html">
+
+
+  <meta property="og:description" content="There are so many large and bloated applications around today that most people just assume that this is normal and quite willingly put up with poor performance and having to buy larger harddrives.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-10-01T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="reducing-executable-size.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Reducing Executable Size</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/AggressiveOptimize.h">AggressiveOptimize.h</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Reducing Executable Size">
+    <meta itemprop="description" content="There are so many large and bloated applications around today that most people just assume that this is normal and quite willingly put up with poor performance and having to buy larger harddrives.">
+    <meta itemprop="datePublished" content="October 01, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Reducing Executable Size
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Reducing Executable Size</h1-->
+<!--h3>A tutorial covering a variety of techniques for creating tiny executables</h3-->
+
+<p>There are so many large and bloated applications around today that most people just assume that this is normal and quite willingly put up with poor performance and having to buy larger harddrives.</p>
+
+<p>In this tutorial I will present all of the techniques I know (and use) to reduce the size of executables. Some of these techniques can be applied to any C / C++ Win32 project, whilst other techniques are quite restrictive as to the type of application you can apply them to. I regularly use the techniques on this page to build tiny executables - less than 1Kb sometimes!</p>
+
+<p>The techniques described here concentrate on reducing the <em>file size</em> of an executable. They only partly reduce the amount of memory (RAM) required by a program. If your program uses alot of memory to load bitmaps or animations, then this is a completely different issue which can only be controlled by you, the programmer.</p>
+
+<h2 id="dependence-on-third-party-libraries">Dependence on third-party libraries</h2>
+
+<p>If you are using MFC then you know what I’m talking about. MFC (and many other frameworks or libraries) by their very nature introduce code bloat. This is because libraries tend to be general purpose. So, even though you use only a small fraction of what a library offers, you are stuck with using the whole library. If you really want to build a small executable file then you have to bite the bullet and stay away from such frameworks. You have to have complete control over what gets compiled into your executable, and MFC doesn’t give you that control. Jump to the section on Compiler and Linker Settings to try to minimize the damage your MFC project is doing to your harddisk!</p>
+
+<h2 id="debug-vs-release-build">Debug Vs Release build</h2>
+
+<p>It constantly amazes me the number people that don’t understand the difference between a <strong>debug</strong> and <strong>release</strong> build of their application. Always distribute the release version of your program. A debug build has alot of bloat in it which, whilst assisting the debugger to perform its job properly, doesn’t do you any favours if you are trying to keep your program small. A release build on the other hand has minimal bloat and is optimized which always reduces code size.</p>
+
+<p>If you <em>really</em> want to include debugging information for your release builds, then configure Visual Studio’s linker options to use an external debugging database which the exe links to.</p>
+
+<h2 id="static-vs-dynamic-linking-of-library-files">Static Vs Dynamic linking of library files</h2>
+
+<p>One of the first things you could do to reduce executable size is to use the DLL version of your standard libaries. This may be the MFC DLL (mfc42.dll) or the DLL version of the C run-time (MSVCRT.DLL). In either case, you will end up with a smaller executable. There are disadvantages to this approach though. You may still need to distribute the runtime DLL at some point (for example, Win9x doesn’t include MSVCRT.DLL),</p>
+
+<p>I used to say that it best to statically link to your runtime library - however, with Windows 95/98/ME pretty much dead, there is little reason not to link against MSVCRT.DLL. You’re executable will be very small and you get all the benefits of using the entire C-runtime.</p>
+
+<h2 id="the-c-runtime-and-default-libraries">The C-runtime and default libraries</h2>
+
+<p>The C-runtime is a collection of functions and services that you probably didn’t even know existed. The run-time performs many tasks which are required by a C or C++ implementation.</p>
+
+<p>You may have noticed that the smallest C program you can write in visual studio is usually around 20-30Kb. Even the tiny “Hello, world” program results in a not so tiny executable size.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"hello, world</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is not a fault of the compiler or linker. It is only doing what you are telling it to do. A normal, standard C program gets it own copy of the C runtime. Unless you tell the linker otherwise, this is what you will always get. The following program illustrates not only the above “hello world” exacmple, but also a very simplified outline of what happens during program startup:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 
+// This is the same "hello world" as above
+//
+</span><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"hello, world</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//
+// This is what you never get to see...it is the proper
+// entry-point into this application.
+//
+</span><span class="kt">int</span> <span class="nf">mainCRTStartup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">retval</span><span class="p">;</span>    
+    
+    <span class="n">init_heap</span><span class="p">();</span>
+    <span class="n">parse_command_line</span><span class="p">();</span>    
+    <span class="n">init_global_vars</span><span class="p">();</span>    
+    <span class="n">init_exception_handling</span><span class="p">();</span>
+
+    <span class="c1">// finally call the user-defined main
+</span>    <span class="n">retval</span> <span class="o">=</span> <span class="n">main</span><span class="p">();</span>
+
+    <span class="c1">// terminate all threads and exit
+</span>    <span class="n">ExitProcess</span><span class="p">(</span><span class="n">retval</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If we wrote our own <em>minimal</em> version of the C runtime, then we can remove this extra code and rely on the operating system to do much of the work for us. In a moment I will tell you how to remove the default libraries from your program, but there are a few rules you need to obey if you are to do this.</p>
+
+<p>The following list contains some of the tasks that go on behind the scenes in a C or C++ program: You need to be aware of these tasks, and how to write software that doesn’t rely on the features they provide.</p>
+
+<h3 id="heap-management">Heap Management</h3>
+
+<p>Every time you call <code class="highlighter-rouge">malloc</code>, <code class="highlighter-rouge">new[]</code>, <code class="highlighter-rouge">free</code> or <code class="highlighter-rouge">delete[]</code>, the heap manager is behind the scenes reserving memory from the operating system and trying to keep memory fragmentation down. The heap manager is really just a collection of functions which get called by malloc, free etc. You don’t NEED the heap manager though. If you replace the heap manager with small functions which call Win32 memory functions, then you can save alot of space in your program. You lose a bit of performance, but there is always a tradeoff in anything you do.</p>
+
+<h3 id="startup-code">Startup code</h3>
+
+<p>If you didn’t know already, it is very uncommon for <code class="highlighter-rouge">main</code> to be the first function called during the lifetime of your executable. Under Visual C, the standard entry-point into a windows application is called <code class="highlighter-rouge">WinMainCRTStartup</code>, whilst a console application starts life in the <code class="highlighter-rouge">mainCRTStartup</code> function.</p>
+
+<p>These entry-point functions perform many tasks before your <code class="highlighter-rouge">main</code> function is called. Initializing the Heap Manager. Retrieving the command line arguments and putting them into the <code class="highlighter-rouge">argv[]</code> array. Calling your <code class="highlighter-rouge">main</code> function. The final job of the startup function is to call <code class="highlighter-rouge">ExitProcess</code>. Without this, Windows will carry on executing random code at the end of your program, which will probably crash your computer.</p>
+
+<h3 id="math-routines">Math routines</h3>
+
+<p>Everytime you use certain floating point operations, or 64bit integer arithmetic, then an appropriate CRT function will be automatically included to do the actual arithmetic, if the requested operation does not exist as part of the Intel instruction set. This could be something as simple as an integer division (i.e. <code class="highlighter-rouge">int a=b / 5</code> ) - if you look at the assembler that the compiler generates for <em>some</em> operations like these, you can clearly see the resulting function calls.</p>
+
+<h3 id="standard-library-calls">Standard library calls</h3>
+
+<p>Whenever you call <code class="highlighter-rouge">printf</code>, <code class="highlighter-rouge">atoi</code>, <code class="highlighter-rouge">strcpy</code> or any other C library function, then that function is linked into your executable. Some functions are small (<code class="highlighter-rouge">strcpy</code>, <code class="highlighter-rouge">atoi</code> etc), but complicated functions like printf will always add a few Kb to your program. If you can find other ways to perform these tasks then you can reduce the amount of extra code that is linked into your application. There are many Win32 equivalents of the standard C library calls which you can use instead.</p>
+
+<h3 id="static-object-initialization">Static object initialization</h3>
+
+<p>Any variable or structure defined at global scope (i.e. outside of any function) needs to be initialized at program startup, so that when your functions go to use these variables, you know they contain the right values. These variables have to be initialized somehow, and the linker adds the necessary C runtime code to do this for you.</p>
+
+<h3 id="c-exeception-handling">C++ exeception handling</h3>
+
+<p>God only knows how much extra code is included when you use exception handling. If you use this feature then you’ll have your work cut trying to reduce your executable size. If you want small programs, then turn off exception handling.</p>
+
+<p>If you have decided to remove the C runtime from your applications, then you need to be very careful when you write your code. You can no longer rely on static object initialization. The C library calls need to be used with care, because many library functions have to be initialized correctly in the standard startup code. You cannot use new, delete, malloc or new unless you actually write these yourself.</p>
+
+<h2 id="use-win32-equivalents">Use Win32 equivalents</h2>
+
+<p>There are several standard-C functions which have direct replacements in the Windows API. Because these API calls are inside the operating system, this frees up space in your executable that might have been used otherwise. Using the win32 functions instead will obviously lead to unportablity, so you need to decide how badly you want to reduce your exe size. Here is a list of C functions, and the eqivalent win32 function.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Standard function</td>
+      <td>Win32 equivalent</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">malloc</code></td>
+      <td><code class="highlighter-rouge">HeapAlloc</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">free</code></td>
+      <td><code class="highlighter-rouge">HeapFree</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">strcpy</code></td>
+      <td><code class="highlighter-rouge">lstrcpy</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">strcat</code></td>
+      <td><code class="highlighter-rouge">lstrcat</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">strncpy</code></td>
+      <td><code class="highlighter-rouge">lstrncpy</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">strncat</code></td>
+      <td><code class="highlighter-rouge">lstrncat</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">strlen</code></td>
+      <td><code class="highlighter-rouge">lstrlen</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">strcmp</code></td>
+      <td><code class="highlighter-rouge">lstrcmp</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">strcmpi</code></td>
+      <td><code class="highlighter-rouge">lstrcmpi</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">memcpy</code></td>
+      <td><code class="highlighter-rouge">CopyMemory</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">memset</code></td>
+      <td><code class="highlighter-rouge">FillMemory</code> or <code class="highlighter-rouge">ZeroMemory</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">memmove</code></td>
+      <td><code class="highlighter-rouge">MoveMemory</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">toupper</code></td>
+      <td><code class="highlighter-rouge">CharUpper</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">tolower</code></td>
+      <td><code class="highlighter-rouge">CharLower</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">isalpha</code></td>
+      <td><code class="highlighter-rouge">IsCharAlpha</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">isalnum</code></td>
+      <td><code class="highlighter-rouge">IsCharAlphaNumeric</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">islower</code></td>
+      <td><code class="highlighter-rouge">IsCharLower</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">isupper</code></td>
+      <td><code class="highlighter-rouge">IsCharUpper</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">sprintf</code></td>
+      <td><code class="highlighter-rouge">wsprintf</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">vsprintf</code></td>
+      <td><code class="highlighter-rouge">wvsprint</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>There is also a comprehensive list available on the Microsoft site which lists even more functions:</p>
+
+<p><a href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;q99456">http://support.microsoft.com/default.aspx?scid=kb;EN-US;q99456</a></p>
+
+<p>There is a small group of functions that are always available to you, even if you remove the default libraries. These are called intrinsic functions. These instrinsic functions might not be the same versions as those found in the standard libraries, and might not be as optimized. If you want to use these functions, it is always best to include the relevant headers.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">memcmp</code>, <code class="highlighter-rouge">memcpy</code>, <code class="highlighter-rouge">memset</code></li>
+  <li><code class="highlighter-rouge">strcmp</code>, <code class="highlighter-rouge">strcpy</code>, <code class="highlighter-rouge">strlen</code>, <code class="highlighter-rouge">strcat</code>, <code class="highlighter-rouge">strset</code></li>
+</ul>
+
+<h2 id="removing-the-c-run-time-library-rtl">Removing the C run-time library (RTL)</h2>
+
+<p>This is pretty straight forward. Just click on the “Ignore all default libraries” in the Link tab in your project settings, or use the <code class="highlighter-rouge">/NODEFAULTLIB</code> linker setting. However, you probably wont be able to compile your project any more.</p>
+
+<p>Visual C++ requires that you provide three functions (for a normal C program): <code class="highlighter-rouge">__purecall</code> , <code class="highlighter-rouge">new</code> and <code class="highlighter-rouge">delete</code>. A C program requires <code class="highlighter-rouge">malloc</code> and <code class="highlighter-rouge">free</code>. Obviously, if you don’t do ANY memory allocation then you don’t need them. Here are minimal implementations of these functions:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="o">*</span> <span class="kr">__cdecl</span> <span class="k">operator</span> <span class="nf">new</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">bytes</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="n">HeapAlloc</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bytes</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="kr">__cdecl</span> <span class="k">operator</span> <span class="nf">delete</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span> <span class="n">HeapFree</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">extern</span> <span class="s">"C"</span> <span class="kt">int</span> <span class="n">__cdecl__</span> <span class="n">purecall</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This just leaves the entry-point functions. Define which ever one is required by the type of executable you are building. At the very least, your entry-point function must call either main <code class="highlighter-rouge">WinMain</code> or <code class="highlighter-rouge">DllMain</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="n">mainCRTStartup</span><span class="p">();</span>
+<span class="kt">int</span> <span class="kr">__cdecl</span> <span class="n">WinMainCRTStartup</span><span class="p">();</span>
+<span class="n">BOOL</span> <span class="kr">__stdcall</span> <span class="n">_DllMainCRTStartup</span><span class="p">(</span><span class="n">HINSTANCE</span><span class="p">,</span> <span class="n">DWORD</span><span class="p">,</span> <span class="n">LPVOID</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="more-information-in-msdn">More information in MSDN</h2>
+
+<p>There are two important articles which you should read if you want to understand more. I strongly suggest you read the October 1996 “Under the Hood” article, written by Matt Pietrek in the Microsoft Systems Journal. This article was updated recently and published in the Janurary 2001 “Under the Hood” column of MSDN magazine. Go <a href="http://msdn.microsoft.com/msdnmag/issues/01/01/hood/hood0101.asp">here</a> to read this article online.</p>
+
+<p>The second article you should read is called “Remove Fatty Deposits from Your Applications Using Our 32-Bit Liposuction Tools”, also published in the October 1996 MSJ magazine. Go <a href="http://www.microsoft.com/msj/defaulttop.asp?page=/msj/archive/s572.htm">here</a> to read this article online.</p>
+
+<p>Goto Matt’s homepage <a href="http://www.wheaty.net/">here</a>.</p>
+
+<p>Once you have read these articles, then you don’t need to do anything other than download Matt’s LIBCTINY and link it into your application. You don’t need to alter your link settings at all. This cool little library replaces the default C run time and gives you tiny programs with no effort at all. Most of the programs on this site where compiled and linked using this library. The sample program on this page includes LIBCTINY and shows you how to create a small program.</p>
+
+<h2 id="use-the-right-compiler-settings">Use the right Compiler settings</h2>
+
+<p>If you don’t want to remove the C run-time, or you want to go even smaller, then read on. Careful use of compiler and linker settings can have a dramatic effect on the size of your application.</p>
+
+<p>As long as you select the Release build for your project then you are on the right track. However, there are a few important options that you should make sure are set for all your source files.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Switch</td>
+      <td>State</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><strong>/Og</strong></td>
+      <td>on</td>
+      <td>Global optimizations.</td>
+    </tr>
+    <tr>
+      <td><strong>/Os</strong></td>
+      <td>on</td>
+      <td>Favour small code.</td>
+    </tr>
+    <tr>
+      <td><strong>/Oy</strong></td>
+      <td>on</td>
+      <td>No frame pointers.</td>
+    </tr>
+    <tr>
+      <td><strong>/Zl</strong></td>
+      <td>on</td>
+      <td>Prevents the compiler from inserting a “defaultlib” reference to each object file, which causes the C runtime to be implicitly linked.</td>
+    </tr>
+    <tr>
+      <td><strong>/Gy</strong></td>
+      <td>on</td>
+      <td>Enables function-level linking. Prevents unused functions from being included.</td>
+    </tr>
+    <tr>
+      <td><strong>/GX</strong></td>
+      <td><strong>off</strong></td>
+      <td>Enables C++ exception handling. You really don’t want this set if you are aiming for small executables.</td>
+    </tr>
+    <tr>
+      <td><strong>/GZ</strong></td>
+      <td><strong>off</strong></td>
+      <td>Enable run-time checks for call stack validation</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You can turn on the required optimizations by using a #pragma statement at the top of your source files.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma optimize("gsy", on)
+</span></code></pre></div></div>
+
+<h2 id="use-the-right-linker-settings">Use the right Linker settings</h2>
+
+<p>There are several aspects of an executable file’s structure that can be adjusted with the linker settings. The linker that ships with Visual C++ is very powerful, and with the right options you can get some amazingly small programs out of it.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Switch</td>
+      <td>State</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><strong>/FILEALIGN:</strong> <em>number</em></td>
+      <td>on</td>
+      <td>Undocumented (VC 6 only). Specified the alignment of each section in the executable, as it is stored on disk. <em>number</em> is in bytes, and must be a power of 2. The default is 4096, but a smaller number results in a smaller executable because there will be less padding between the sections. Whilst very small numbers can be used here, an executable sometimes won’t load correctly with a section alignment of less than the “safe” 512.</td>
+    </tr>
+    <tr>
+      <td><strong>/ALIGN:</strong> <em>number</em></td>
+      <td>N/A</td>
+      <td>Specifies the alignment of each section in the executable, when it is mapped into memory. Has no relation to file-alignment (above), but an apparent bug in visual studio causes this option to also effect file-section alignment, as well as the intended image-section alignment, under certain circumstances. Default is 4096, it is best to leave this value alone.</td>
+    </tr>
+    <tr>
+      <td><strong>/NODEFAULTLIB</strong></td>
+      <td>on</td>
+      <td>Prevents the linker from using the standard C library.</td>
+    </tr>
+    <tr>
+      <td><strong>/ENTRY:</strong> <em>function</em></td>
+      <td>on</td>
+      <td>Tells the linker the name of the function to be used as the executable entry-point.</td>
+    </tr>
+    <tr>
+      <td><strong>/OPT:NOWIN98</strong></td>
+      <td>on</td>
+      <td>Undocumented. Essentially the same as the FILEALIGN option. Reverts to 512 byte file alignment, instead of the default 4096 byte alignment. This setting causes slightly slower load times, but smaller executables.</td>
+    </tr>
+    <tr>
+      <td><strong>/MERGE:</strong> <em>from=to</em></td>
+      <td>on</td>
+      <td>This option combines the first section with the second section, often reducing exe size. Be careful with section read/write attributes.</td>
+    </tr>
+    <tr>
+      <td><strong>/OPT:REF</strong></td>
+      <td>on</td>
+      <td>Prevents functions and data that is never used from being included.</td>
+    </tr>
+    <tr>
+      <td><strong>/INCREMENTAL</strong></td>
+      <td><strong>off</strong></td>
+      <td>This setting enables incremental linking. Whilst this speeds up the build time of your program, it increases exectuable size.</td>
+    </tr>
+    <tr>
+      <td><strong>/FORCE:MULTIPLE</strong></td>
+      <td>??</td>
+      <td>Sometimes useful when you are messing with removing the C startup code.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A quick word about the <code class="highlighter-rouge">/FILEALIGN</code> and <code class="highlighter-rouge">/ALIGN</code> linker options. Playing with these settings individually is often good enough. You can reduce executable size quite considerably by setting <code class="highlighter-rouge">/FILEALIGN:512</code>. However, some magic can be achieved by setting both <code class="highlighter-rouge">/ALIGN</code> and <code class="highlighter-rouge">/FILEALIGN</code> to the same value. (Note that setting <code class="highlighter-rouge">/ALIGN</code> through the Project-&gt;Settings dialogbox erronously effects the <code class="highlighter-rouge">/FILEALIGN</code> setting also). (I’ll discuss this later on).</p>
+
+<p>These linker settings can be specified using the standard project-settings dialog, or (more helpfully) by the following #pragmas.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Set section alignment to be nice and small
+</span><span class="cp">#pragma comment(linker, "/FILEALIGN:0x200")
+</span>
+<span class="c1">// Merge all default sections into the .text (code) section.
+</span><span class="cp">#pragma comment(linker,"/merge:.rdata=.data")
+#pragma comment(linker,"/merge:.text=.data")
+#pragma comment(linker,"/merge:.reloc=.data")
+</span></code></pre></div></div>
+
+<p>Placing just these lines into one of your project’s file will result in considerably smaller programs. Use this handy <a href="http://www.catch22.net/MakeSmallExe.h">header file</a> which you can #include in every project.</p>
+
+<h2 id="control-your-stack">Control your Stack</h2>
+
+<p>It is a little known fact that Visual C++ automatically inserts what are known as “Stack Probes” into your executable if it detects (at compile time) that your program stack is going to be over 1 page-size in length (4Kb).</p>
+
+<p>If you store too much data (i.e. buffers / arrays) as local variables in your functions, then this will often result in stack-probes being inserted. It’s not a big deal - the code is there to make sure that there is enough memory committed to the stack during runtime. However, it still adds a small amount of code (the <code class="highlighter-rouge">_chkstk</code> function, for example), so being careful with the amount of local-data in your functions can help to eliminate these probes.</p>
+
+<h2 id="use-an-executable-packer">Use an Executable Packer</h2>
+
+<p>An executable packer or compressor is a tools which squeezes a program down as small as possible. Basically, they work by compressing an executable file, which is added as a “payload” to a very small decompressor stub. When you run a packed executable, you are really running a small decompressor program. When executed, the stub decompresses the attached (compressed) executable and runs <em>that</em>. No other external decompressing programs are required.</p>
+
+<p>The disadvantage of this technique is that multiple copies of your program will not share the same memory location, so more RAM is required when running multiple instances. For small programs though an executable packer can work wonders - sometimes reducing exe size by as much as 50%.</p>
+
+<p>The best packer I have found is called UPX (Ultimate Packer for eXecutables). It is fast, compresses very well, and is also FREE. So what are you waiting for? Go to <a href="https://upx.github.io/">https://upx.github.io/</a> and get your copy now!</p>
+
+<h2 id="the-smallest-win32-executable">The Smallest Win32 Executable</h2>
+
+<p>OK, let’s put together everything in this tutorial and see how small we can get an executable to be. The following single C program compiles down to a tiny 480 bytes using Visual C++ 6.0!!</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+</span>
+<span class="c1">// Make section alignment really small
+</span><span class="cp">#pragma comment(linker, "/FILEALIGN:16")
+#pragma comment(linker, "/ALIGN:16")// Merge sections
+#pragma comment(linker, "/MERGE:.rdata=.data")
+#pragma comment(linker, "/MERGE:.text=.data")
+#pragma comment(linker, "/MERGE:.reloc=.data")
+</span>
+<span class="c1">// Favour small code
+</span><span class="cp">#pragma optimize("gsy", on)
+</span>
+<span class="c1">// Single entrypoint
+</span><span class="kt">int</span> <span class="nf">WinMainCRTStartup</span><span class="p">()</span>
+<span class="p">{</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That’s a pretty small program! OK, it doesn’t do a great deal, and it also only executes under NT/2K, but it just goes to show that with a little understanding of how a C program works, together with how your compiler and linker generate your application binary, you can get some pretty impressive results. I realise that it is possible to shave maybe 100 bytes further from this program - but you will need to resort to assembly language and a Hex Editor to be able to beat this all-C solution.</p>
+
+<p>How does it work? The <code class="highlighter-rouge">#pragma</code> settings do alot of the work, but the basic reason that this executable is so small is that there is no c-runtime included. Why? Not because of the “no-default-libraries” linker switch, but because <code class="highlighter-rouge">WinMainCRTStartup</code> has been explicitly defined. When this program is compiled, the linker has to locate the default entry-point function (defined with the <code class="highlighter-rouge">/ENTRY</code> linker switch). By default this is <code class="highlighter-rouge">WinMainCRTStartup</code>. The linker finds this function in the the compiled object file for the program, <em>before</em> it looks in the import libraries for the project. Because our version <code class="highlighter-rouge">WinMainCRTStartup</code> doesn’t call any of the C-runtime startup routines, these functions never get referenced, and the linker doesn’t include them - it’s as simple as that.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I have presented a few techniques that you can use to keep your executables small. This subject can be pretty complicated, especially when you start to use some of the more powerful compiler and linker settings. However, you only need to perform two steps to make small programs.</p>
+
+<ul>
+  <li>Link with the LIBCTINY.LIB library file</li>
+  <li><code class="highlighter-rouge">#include </code>the “AggressiveOptimize.h” header file</li>
+</ul>
+
+<p>Do only these two things and you don’t need to bother with much of what I have presented. I guarantee that you will get results! <a href="http://www.catch22.net/zip/hello_tiny.zip">Download</a> the sample hello-world application to see how to start off.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/AggressiveOptimize.h">AggressiveOptimize.h</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-10-01T00:00:00+00:00">October 01, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="custom-titlebar.html" class="pagination--pager" title="Custom Titlebar
+">Previous</a>
+    
+    
+      <a href="self-deleting-executables.html" class="pagination--pager" title="Self-deleting Executables
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/reducing-executable-size by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

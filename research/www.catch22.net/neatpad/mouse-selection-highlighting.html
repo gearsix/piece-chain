@@ -1,0 +1,769 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/mouse-selection-highlighting by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Mouse Selection &amp; Highlighting - Catch22</title>
+<meta name="description" content="Mouse input has proven to be the most intricate and difficult to write part of Neatpad to date. It hasn’t been helped by the fact that Neatpad now supports variable-width fonts, so in some ways I am still unsure if this extra complexity is a good thing or not (from a tutorial / learning point of view). However, if I had stuck with fixed-width fonts it would be quite a task for anyone to move from that limited capability to a fully variable-width display, so from that perspective I think I made the right decision…">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Mouse Selection &amp; Highlighting">
+<meta property="og:url" content="mouse-selection-highlighting.html">
+
+
+  <meta property="og:description" content="Mouse input has proven to be the most intricate and difficult to write part of Neatpad to date. It hasn’t been helped by the fact that Neatpad now supports variable-width fonts, so in some ways I am still unsure if this extra complexity is a good thing or not (from a tutorial / learning point of view). However, if I had stuck with fixed-width fonts it would be quite a task for anyone to move from that limited capability to a fully variable-width display, so from that perspective I think I made the right decision…">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-05-29T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="mouse-selection-highlighting.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Mouse Selection & Highlighting</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad5.zip">neatpad5.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="active">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Mouse Selection &amp; Highlighting">
+    <meta itemprop="description" content="Mouse input has proven to be the most intricate and difficult to write part of Neatpad to date. It hasn’t been helped by the fact that Neatpad now supports variable-width fonts, so in some ways I am still unsure if this extra complexity is a good thing or not (from a tutorial / learning point of view). However, if I had stuck with fixed-width fonts it would be quite a task for anyone to move from that limited capability to a fully variable-width display, so from that perspective I think I made the right decision…">
+    <meta itemprop="datePublished" content="May 29, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Mouse Selection &amp; Highlighting
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Mouse Selection & Highlighting</h1-->
+<!--h3>Mouse input, window focus and selection highlighting</h3-->
+
+<p>Mouse input has proven to be the most intricate and difficult to write part of Neatpad to date. It hasn’t been helped by the fact that Neatpad now supports variable-width fonts, so in some ways I am still unsure if this extra complexity is a good thing or not (from a tutorial / learning point of view). However, if I had stuck with fixed-width fonts it would be quite a task for anyone to move from that limited capability to a fully variable-width display, so from that perspective I think I made the right decision…</p>
+
+<p>Most of the complexity has been caused by the deliberate separation between the TextView and TextDocument classes. If the TextView had direct memory-access to the underlying file some of the code could be a little simpler. However if we are to move to a 4Gb file-editor we must hide the memory-management behind a TextDocument class and force a strict interface between GUI and file-management, accessing the file content in small chunks at a time. It makes our code cleaner, but a little more difficult. Anyway, without further ado let’s look at what happen’s when a person clicks the mouse-pointer inside our Neatpad window.</p>
+
+<h2 id="carets-focus-and-activation">Carets, Focus and Activation</h2>
+
+<p>In Windows, whenever the mouse is clicked inside a control, the expected behaviour is for the window to receive the input-focus and display some form of graphical feedback which indicates this change in focus. This is a consistent user-interface detail present throughout all of Windows.</p>
+
+<p>The default behaviour in Windows is to send a <code class="highlighter-rouge">WM_MOUSEACTIVATE</code> message during this intial window activation. However, at no point does the target window actually receive the input focus due to this mouse-click - this is a detail not known or understood by many people. We must process this <code class="highlighter-rouge">WM_MOUSEACTIVATE</code> message manually, and set the focus ourselves:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_MOUSEACTIVATE</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ptv</span><span class="o">-&gt;</span><span class="n">OnMouseActivate</span><span class="p">();</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnMouseActivate</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">SetFocus</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">MA_ACTIVATE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So now whenever the mouse is clicked inside our TextView, it will receive the input focus. More importantly though, the TextView will now receive an additional message - <code class="highlighter-rouge">WM_SETFOCUS</code>. It is during the processing of this message that we can create and show a caret.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_SETFOCUS</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ptv</span><span class="o">-&gt;</span><span class="n">OnSetFocus</span><span class="p">();</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnSetFocus</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">nWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="n">SystemParametersInfo</span><span class="p">(</span><span class="n">SPI_GETCARETWIDTH</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nWidth</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">CreateCaret</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">,</span> <span class="p">(</span><span class="n">HBITMAP</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">nWidth</span><span class="p">,</span> <span class="n">m_nLineHeight</span><span class="p">);</span>
+
+    <span class="n">ShowCaret</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">);</span>
+    <span class="n">RefreshWindow</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The text-caret will be just the same as in Notepad or Visual Studio. We specify a NULL bitmap handle to create a solid blinking caret. It will be exactly 2 pixels wide unless we are on Windows 2000 and above, in which case the <code class="highlighter-rouge">SystemParametersInfo</code> request for <code class="highlighter-rouge">SPI_GETCARETWIDTH</code> will succeed and we will use that setting instead. The caret will also be the same height as a line of text. This is a pretty standard way to show show a text caret in Windows.</p>
+
+<p>Whenever the TextView loses the input-focus, it will receive the <code class="highlighter-rouge">WM_KILLFOCUS</code> message and we can hide the text-caret and delete it:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_KILLFOCUS</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ptv</span><span class="o">-&gt;</span><span class="n">OnKillFocus</span><span class="p">();</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnKillFocus</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">HideCaret</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">);</span>
+    <span class="n">DestroyCaret</span><span class="p">();</span>
+
+    <span class="n">RefreshWindow</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note that each time the TextView receives or loses focus, the window entire is redrawn. This will enable us to draw the text-selection in different colours depending on whether the window has focus or not. We now move onto the problem of placing the caret in the correct position whenever the mouse is clicked inside the window. Before we go this far however, we have a decision to make.</p>
+
+<h2 id="textview-coordinates---offset-or-coordinate-based">TextView Coordinates - offset or coordinate based?</h2>
+
+<p>A decision must be made before we go any further. We must decide how to keep track of the current cursor position and selection start/end positions. We have two choices, described below.</p>
+
+<p>The first option is to use a single 32bit file-offset to store all “coordinates”. In other words, this is much like a HexEditor or how the existing EDIT control works. The advantage of this method is it is very simple to store, manage and “work with” file offsets - all data accesses are much simpler to perform because everything is offset/buffer based. The disadvantage is that a file-offset does not directly translate to the GUI - remember that we have to use a line buffer to access the underlying file. There is the potential here to introduce extra dependencies on the line-buffer management that may cause performance problems.</p>
+
+<p>The second option is to use a “text-coordinate” system. This would require using two values - one for the line number, and one for the character-offset (or column number) within that line. The advantage of this technique is that it translates directly to what you see on the screen. Moving the caret around with the mouse and keyboard (i.e. user GUI actions) will be potentially a lot easier than the first method because we are using a more natural coordinate system for those actions. The disadvantages are two-fold. Firstly, data-access is now more difficult, and all data-accesses will be required to go through the line-buffer to find the true file-offset - again with the potential performance problems. The second disadvantage is the text-painting. It is far more cumbersome to perform comparisons with an “x,y” coordinate than it is a single value. For example, the decision as to whether to highlight a character based on an x,y coordinate is much more complicated than performing a simple integer comparison.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="n">m_nCursorOffset</span><span class="p">;</span>
+<span class="n">ULONG</span> <span class="n">m_nSelectionStart</span><span class="p">;</span>
+<span class="n">ULONG</span> <span class="n">m_nSelectionEnd</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>I have experimented with method two in the past and to be honest it was just as complicated as the “pure” file-offset method - the complications and performance issues just get moved to a different place. For this reason the TextView will use the simpler “file-offset” method of storing text coordinates. This will hopefully isolate the difficult issues just inside the mouse-input handling and make the rest of our code easier to write.</p>
+
+<h2 id="placing-the-text-caret">Placing the Text Caret</h2>
+
+<p>When the user clicks the mouse in a “normal” edit control, the text-caret is placed at the beginning of the nearest character to where the mouse is. It seems a kind of obvious thing to do, but this simple operation is going to be the most complex task we have tackled to date.</p>
+
+<p>The first useful message we receive when the user clicks the mouse is <code class="highlighter-rouge">WM_LBUTTONDOWN</code>. The handler for this message is shown below and is actually quite simple. I have structured it in such a way that it doesn’t matter if we are using offset-based or text-based coordinates.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnLButtonDown</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nFlags</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">my</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">nCharOff</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">nFileOff</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">xpos</span><span class="p">;</span>
+
+    <span class="c1">// map the mouse-coordinates to a real file-offset-coordinate
+</span>    <span class="n">MouseCoordToFilePos</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nLineNo</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nCharOff</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nFileOff</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">xpos</span><span class="p">);</span>
+
+    <span class="n">SetCaretPos</span><span class="p">(</span><span class="n">xpos</span><span class="p">,</span> <span class="p">(</span><span class="n">nLineNo</span> <span class="o">-</span> <span class="n">m_nVScrollPos</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_nLineHeight</span><span class="p">);</span>
+
+    <span class="c1">// erase any existing selection
+</span>    <span class="n">InvalidateRange</span><span class="p">(</span><span class="n">m_nSelectionStart</span><span class="p">,</span> <span class="n">m_nSelectionEnd</span><span class="p">);</span>
+
+    <span class="c1">// reset cursor and selection offsets to the same location
+</span>    <span class="n">m_nCursorOffset</span> <span class="o">=</span> <span class="n">nFileOff</span><span class="p">;</span>
+    <span class="n">m_nSelectionStart</span> <span class="o">=</span> <span class="n">nFileOff</span><span class="p">;</span>
+    <span class="n">m_nSelectionEnd</span> <span class="o">=</span> <span class="n">nFileOff</span><span class="p">;</span>
+
+    <span class="c1">// set capture for mouse-move selection 
+</span>    <span class="n">m_fMouseDown</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="n">SetCapture</span><span class="p">(</span><span class="n">m_hWnd</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>There are two basic tasks that must be performed. The first is to identify which text-character within the file has been clicked - we need to retrieve the zero-based file-offset of this selected character (so we can keep track of the current cursor position). The second task is to position the text-caret next to the character we selected in step#1.</p>
+
+<p>These complex operations have been isolated inside a single TextView member-function, <code class="highlighter-rouge">MouseCoordToFilePos</code>. The purpose of this function is to return the line number, character offset within that line (i.e. the column number), physical file offset, and finally the x-coordinate of the character as it appears on screen.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">MouseCoordToFilePos</span> <span class="p">(</span><span class="kt">int</span> <span class="n">mx</span><span class="p">,</span> <span class="c1">// mouse x-coordinate
+</span>                          <span class="kt">int</span> <span class="n">my</span><span class="p">,</span> <span class="c1">// mouse y-coordinate
+</span>                          <span class="n">ULONG</span> <span class="o">*</span><span class="n">pnLineNo</span><span class="p">,</span> <span class="c1">// [out] line number
+</span>                          <span class="n">ULONG</span> <span class="o">*</span><span class="n">pnCharOffset</span><span class="p">,</span> <span class="c1">// [out] column number 
+</span>                          <span class="n">ULONG</span> <span class="o">*</span><span class="n">pnFileOffset</span><span class="p">,</span> <span class="c1">// [out] file-offset
+</span>                          <span class="kt">int</span> <span class="o">*</span><span class="n">px</span><span class="p">);</span> <span class="c1">// [out] adjusted x coordinate
+</span></code></pre></div></div>
+
+<p>I’m not sure if I really want to include the full code this function here because it is likely I will keep tweaking it to try and make it as clear/simple as possible. However I do want to describe the basic operation so people can understand exactly what is involved in this operation.</p>
+
+<h2 id="find-the-line-number">Find the line-number</h2>
+
+<p>The first thing to do is work out which line of text is under the mouse. This is actually very straight-forward because we are using fixed-height lines of text (i.e. every line of text is the same).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ULONG</span> <span class="n">lineno</span> <span class="o">=</span> <span class="p">(</span><span class="n">my</span> <span class="o">/</span> <span class="n">m_nLineHeight</span><span class="p">)</span> <span class="o">+</span> <span class="n">m_nVScrollPos</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>If we were writing a word-processor or a HTML viewer the operation above would be alot more complex, but for our simple text-editor it is sufficient to just divide the mouse Y-coodinate by the line-height. As you will see below, knowing what line we are currently looking at is very important because we must parse each specific line of text in order to calculate the cursor x-position.</p>
+
+<h2 id="the-gettextextent-problem">The GetTextExtent problem</h2>
+
+<p>Once we know what line of text we are dealing with, we must work out which character within that line has been selected. Due to the possibility of tabs and control-characters occuring in the line of text (or if we are using variable-width fonts), we must parse the entire line of text (from the start) to work out which character falls under the mouse.</p>
+
+<p>In Windows there are many APIs which tell you how big a string of text is (in pixels). However there are no APIs which perform the opposite conversion - i.e. how many characters fit within the specified space. Starting with Windows 2000 two new routines were introduced to address this problem - <code class="highlighter-rouge">GetTextExtentPointI</code> and <code class="highlighter-rouge">GetTextExtentExPointI</code>.</p>
+
+<p>However we can’t rely on just Windows 2000, and due to the GUI-file separation of the TextView/TextDocument (i.e. accessing the content in chunks), we must devise our own strategy to work out which character has been selected.</p>
+
+<p>We start by accessing the line of text in fixed-sized blocks. As we proceed in this manner, the width of each block of text is calculated using a function <code class="highlighter-rouge">NeatTextWidth</code> (which is basically a wrapper around <code class="highlighter-rouge">GetTextExtentPoint32</code>, but also takes into account tabs and control-characters). The mouse x-coordinate is then checked against this block of text to see if it falls inside.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor19.gif" alt="&lt;&gt;" /></p>
+
+<p>The picture above should hopefully illustrate this process fairly clearly. It’s not at all accurate (and it isn’t intended to be). All we want at this stage is rough guess as to where the mouse has been placed. The code snippet below is basically what is happening here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">curx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">charoff</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="k">for</span><span class="p">(;;)</span>
+<span class="p">{</span>
+    <span class="c1">// grab some text
+</span>    <span class="k">if</span><span class="p">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">m_pTextDoc</span><span class="o">-&gt;</span><span class="n">getline</span><span class="p">(</span><span class="n">nLineNo</span><span class="p">,</span> <span class="n">charoff</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">TEXTBUFSIZE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fileoff</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="c1">// find it's width
+</span>    <span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="n">NeatTextWidth</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">curx</span> <span class="o">%</span> <span class="n">TABWIDTHPIXELS</span><span class="p">));</span>
+
+    <span class="c1">// does the cursor fall within this segment?
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">mx</span> <span class="o">&gt;=</span> <span class="n">curx</span> <span class="o">&amp;&amp;</span> <span class="n">mx</span> <span class="o">&lt;</span> <span class="n">curx</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// narrow down the search
+</span>    <span class="p">}</span>
+
+    <span class="c1">// move onto the next block
+</span>    <span class="n">curx</span> <span class="o">+=</span> <span class="n">width</span><span class="p">;</span>
+    <span class="n">charoff</span> <span class="o">+=</span> <span class="n">len</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Once the correct block of text has been identified we must narrow down the search using what is essentially a “binary chop” algorithm.</p>
+
+<h2 id="binary-chop">Binary-Chop</h2>
+
+<p>We are now working at the single character level. For efficiency reasons I really don’t want to call <code class="highlighter-rouge">NeatTextWidth</code> for each character in turn so the binary-chop (or binary-search) is perfect for this situation. The diagram below shows the algorithm in action.</p>
+
+<p>We keep track of the search using two variables, <code class="highlighter-rouge">low</code> and <code class="highlighter-rouge">high</code>, which specify offsets into the character-buffer we are searching. These offsets start at the two extreme ends of the buffer and then move inwards, narrowing the search down each interation.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor23.gif" alt="&lt;&gt;" /></p>
+
+<p>For each iteration, we take the mid-point between <code class="highlighter-rouge">low</code> and <code class="highlighter-rouge">high</code>. We then compare the mouse coordinate to see which side of this mid-point the cursor falls. If it is to the left then we center in on this segment, and likewise if it is to the right of this midline. We will eventually get to the point where we have closed in on a single character (<code class="highlighter-rouge">low</code> is exactly one less than <code class="highlighter-rouge">high</code>) with the mouse somewhere in this small range of pixels.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">low</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">high</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">lowx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">highx</span> <span class="o">=</span> <span class="n">width</span><span class="p">;</span>
+
+<span class="k">while</span><span class="p">(</span><span class="n">low</span> <span class="o">&lt;</span> <span class="n">high</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">newlen</span> <span class="o">=</span> <span class="p">(</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="n">width</span> <span class="o">=</span> <span class="n">NeatTextWidth</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">buf</span> <span class="o">+</span> <span class="n">low</span><span class="p">,</span> <span class="n">newlen</span><span class="p">,</span> <span class="o">-</span><span class="n">lowx</span><span class="o">-</span><span class="n">curx</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">mx</span> <span class="o">-</span> <span class="n">curx</span> <span class="o">&lt;</span> <span class="n">width</span> <span class="o">+</span> <span class="n">lowx</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">high</span> <span class="o">=</span> <span class="n">low</span> <span class="o">+</span> <span class="n">newlen</span><span class="p">;</span>
+        <span class="n">highx</span> <span class="o">=</span> <span class="n">lowx</span> <span class="o">+</span> <span class="n">width</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">low</span> <span class="o">=</span> <span class="n">low</span> <span class="o">+</span> <span class="n">newlen</span><span class="p">;</span>
+        <span class="n">lowx</span> <span class="o">=</span> <span class="n">lowx</span> <span class="o">+</span> <span class="n">width</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In computer science terms this method has an efficiency of <code class="highlighter-rouge">O(log~2~n)</code> - actually a binary search is a very efficient algorithm, and even for very long lines of text it should still be quite fast. For variable-width fonts there really isn’t any other way to perform this type of thing. Obviously for a fixed-width font display, we could simply scan through the whole line in one go but I won’t bother “over-optimizing” just yet because it will just clutter the code up.</p>
+
+<h2 id="snap-to-middle-of-character">Snap to middle of character</h2>
+
+<p>It is at this point that we know which character has been clicked/selected with the mouse, and we have the x-coordinates of this character’s starting and ending positions, in the <code class="highlighter-rouge">lowx</code> and <code class="highlighter-rouge">highx</code> variables:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor20.gif" alt="&lt;&gt;" /></p>
+
+<p>The final detail to be implemented is to determine which side of the character to place the text-cursor (caret). Sloppy text-editors simply “round-down” to the start of each character (i.e. they just position the cursor at the start of the character by choosing the <code class="highlighter-rouge">lowx</code> coordinate). However a more natural “feel” can be achieved by using the center of each character to decide which side to place the caret.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">mousepos</span> <span class="o">&gt;</span> <span class="n">highx</span> <span class="o">-</span> <span class="n">FontWidth</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">caret</span> <span class="o">=</span> <span class="n">highx</span><span class="p">;</span>
+<span class="k">else</span>
+    <span class="n">caret</span> <span class="o">=</span> <span class="n">lowx</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Notice that the “TAB” character shown above has the selection-line positioned on the right-hand-side rather than the middle. This is a deliberate detail because I want to emulate the way Visual Studio places the cursor when it is positioned over a TAB (or any control-character which is also wider than a single letter).</p>
+
+<h2 id="selecting-with-the-mouse">Selecting with the mouse</h2>
+
+<p>Now that we are able to position the text-caret under any character within the TextView, we are ready to move onto mouse-selection. Cast your memory back to what we do when we process <code class="highlighter-rouge">WM_LBUTTONDOWN</code> - the <code class="highlighter-rouge">m_nCursorOffset</code>, <code class="highlighter-rouge">m_nSelectionStart</code> and <code class="highlighter-rouge">m_nSelectionEnd</code> variables were all set to point to the same location.</p>
+
+<p>To extend the selection as we drag the mouse we can handle the <code class="highlighter-rouge">WM_MOUSEMOVE</code> message. Again we retreive the file-offset under the mouse using <code class="highlighter-rouge">MouseCoordToFilePos</code>. Now however, we can modify just the <code class="highlighter-rouge">m_nSelectionEnd</code> variable to “point” to this new offset, leaving <code class="highlighter-rouge">m_nSelectionStart</code> where it is. This has the effect of extending the selection. To have this reflected on the screen we must obviously redraw the display, and this is where the tricky part comes in.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnMouseMove</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nFlags</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m_fMouseDown</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">,</span> <span class="n">nCharOff</span><span class="p">,</span> <span class="n">nFileOff</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">px</span><span class="p">;</span>
+
+        <span class="n">MouseCoordToFilePos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nLineNo</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nCharOff</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nFileOff</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">px</span><span class="p">);</span>
+
+        <span class="c1">// update the area that has changed
+</span>        <span class="k">if</span><span class="p">(</span><span class="n">m_nSelectionEnd</span> <span class="o">!=</span> <span class="n">nFileOff</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">InvalidateRange</span><span class="p">(</span><span class="n">m_nSelectionEnd</span><span class="p">,</span> <span class="n">nFileOff</span><span class="p">);</span>
+
+            <span class="n">SetCaretPos</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="p">(</span><span class="n">nLineNo</span> <span class="o">-</span> <span class="n">m_nVScrollPos</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_nLineHeight</span><span class="p">);</span>
+
+            <span class="n">m_nSelectionEnd</span> <span class="o">=</span> <span class="n">nFileOff</span><span class="p">;</span>
+            <span class="n">RefreshWindow</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">WM_MOUSEMOVE</code> handler (above) is quite similar to the <code class="highlighter-rouge">WM_LBUTTONDOWN</code> handler. We first translate the mouse x,y coordinates to a file-offset. Assuming that this offset is different to the current cursor offset, we can reposition the text-caret and redraw the area of text between the old selection-end point and the new cursor position.</p>
+
+<h2 id="invalidate-a-range-of-text">Invalidate a range of text</h2>
+
+<p>The key to a good selection/highlighting strategy is to only redraw the bare minimum at a time - we must only paint where there are changes and never anywhere else - simply to avoid flicker rather than for performance. The <code class="highlighter-rouge">InvalidateRange</code> member-function does exactly this.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">InvalidateRange</span><span class="p">(</span><span class="n">ULONG</span> <span class="n">nStart</span><span class="p">,</span> <span class="n">ULONG</span> <span class="n">nFinish</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The two parameters (<code class="highlighter-rouge">nStart</code> and <code class="highlighter-rouge">nFinish</code>) specifies the range as file-offsets. It is the job of InvalidateRange to convert these two parameters to screen coordinates and cause just the specified region to be redrawn. This is the exact “opposite” to <code class="highlighter-rouge">MouseCoordToFilePos</code> - we are moving from file offsets back to screen coordinates now. You can use whatever coordinate system you want (file-offsets or text-coordinates) - it really doesn’t matter. It is the <em>concept</em> of limiting the redraw to the <em>change</em> in selection that is important here.</p>
+
+<p>Note that the display isn’t actually redrawn using this function - the specified area is instead <em>invalidated</em> (using a series of calls to <code class="highlighter-rouge">InvalidateRect</code>), and the task of doing the actual drawing is left up to the <code class="highlighter-rouge">WM_PAINT</code> handler which we have already implemented.</p>
+
+<p>Even though our <code class="highlighter-rouge">WM_PAINT</code> handler redraws whole lines at a time, it is because we have invalidated a specific area the update region for the window will clip our output and prevent us drawing over areas that didn’t change.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor25.gif" alt="&lt;&gt;" /></p>
+
+<p>The picture above is meant to illustrate a “selection in progress”. The selection has been made in four steps, starting with the lightest blue segment. The basic idea is to break the task up into lines, calling <code class="highlighter-rouge">InvalidateRect</code> for each span of text. What I am trying to show is that a selection-change could be a small segment on one line, or a change involving multiple lines at the same time.</p>
+
+<p>The <code class="highlighter-rouge">InvalidateRange</code> function (however it is implemented) must be able to handle these different scenarios correctly. There is little point in including the function body here so it is time to finish this part of the tutorial.</p>
+
+<h2 id="coming-up-in-part-6">Coming up in Part 6</h2>
+
+<p>Mouse selection is quite a tricky subject but I hope I have covered it adequately for people to appreciate what is required for such a task. Also remember that this is a simple text editor - imagine how much more difficult it would be to write a real word processor or web-browser which has to handle many different types of text and graphics.</p>
+
+<p>Part 6 will take what we have implemented here and add “mouse scrolling” to the equation.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad5.zip">neatpad5.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-05-29T00:00:00+00:00">May 29, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="enhanced-drawing-painting.html" class="pagination--pager" title="Enhanced Drawing &amp; Painting
+">Previous</a>
+    
+    
+      <a href="scrolling-mouse.html" class="pagination--pager" title="Scrolling with the Mouse
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/mouse-selection-highlighting by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

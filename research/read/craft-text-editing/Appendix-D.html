@@ -1,0 +1,1051 @@
+<html>
+<title>The Craft of Text Editing: Appendix D</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Appendix-D.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Appendix D: The TECO Command Set</h1>
+
+<p>This appendix presents a summary of the MIT TECO editor's command
+set.  Should you actually find an ITS or TOPS-20 system and wish to
+run TECO on it, this appendix will be useful but not completely
+replace the full manual.</p>
+
+<p>TECO implements the &quot;one-dimensional array of bytes&quot;
+editing model.  Line breaks are stored as single newline characters.
+Large files are divided into <i>pages</i>.  Pages within a file must
+be edited in order (<i>i.e.</i>, all editing on the first page is
+done, then the second page is read in and edited, etc.).  The only way
+to go backwards is to finish editing the file and to start over.  On
+the other hand, on most systems, only very large files (over 64
+Kilobytes) are split into pages.</p>
+
+<p>Commands are single or double characters.  Upper/lower case is
+ignored.  The basic forms of commands are &quot;C&quot;,
+&quot;nC&quot; and &quot;n,mC&quot;.  The first form executes command
+&quot;C&quot; with the default arguments, the second supplies one
+argument of &quot;n&quot;, and the third supplies two arguments of
+&quot;n&quot; and &quot;m&quot;.</p>
+
+<p>Some commands take string arguments.  The string consists of all
+characters after the command up to the terminator character.  This
+character, called <i>altmode</i>, is the Escape character, and is
+written as &quot;$&quot; (for historical reasons, of course).</p>
+
+<p>Commands are accumulated into a <i>command string</i>, until a
+double altmode terminator is entered, at which time the commands are
+executed.  One of the altmodes may serve to delimit a string.  For
+example:</p>
+
+<pre>
+	5C$$
+</pre>
+
+<p>moves forward five characters, and the command string:</p>
+
+<pre>
+	Ithen$$
+</pre>
+
+<p>inserts the string &quot;then&quot;, and the string:</p>
+
+<pre>
+	5CIthen$8R$$
+</pre>
+
+<p>moves forward five characters, then inserts the string
+&quot;then&quot;, then moves backward eight characters.</p>
+
+<p>TECO also supports the concept of <i>Q-registers</i>.  These are
+variables that can either hold arbitrarily large strings of text or
+numbers.  Each Q-register can either hold a string or a number and may
+change back and forth as desired.  However, it may only hold one or
+the other at any given time.  Q-registers are named by single
+characters.  When holding strings, Q-registers act just like buffers:
+you can switch to, insert into, delete from, move around in, display,
+and search in them.  Q-register names are either</p>
+
+<ul>
+<li>one alphanumeric character preceded by zero, one, or two periods
+(names with two periods are reserved for system variables), a
+&quot;variable name&quot; of the form $name$ (these are dollar signs,
+not altmodes),
+`
+<li>a subscripting expression such as :Q(index),
+
+<li>a * (for certain commands, it causes them to return their data
+instead of storing it),
+
+<li>an expression in parentheses (for certain commands), or
+
+<li>up to 3 periods followed by a ^R or ^^ and any ASCII character.
+</ul>
+
+<p>TECO was first written for PDP-10s running ITS (the Incompatible
+Timesharing System) and its command set incorporates some knowledge of
+that system's file name syntax.  Briefly, an ITS file name has these
+four parts:</p>
+
+<pre>
+	DEV;DIR:PRTONE PRTTWO
+</pre>
+
+<p>Each part can be up to 6 characters long and is stored in one
+36-bit word.  Within that word, each character is squeezed into a
+6-bit character set, so lower-case characters are folded into their
+upper-case equivalents.  The operating system and applications
+programs maintain a default value for each of the four parts.  For
+example, if a user specifies a name of &quot;foo&quot;, the default
+device, directory, and second part of the file name are automatically
+filled in.  Multiple versions of a file are kept by setting the second
+part of the file name to a number.  Successive versions are maintained
+by incrementing the number.  A second part of &quot;&lt;&quot; refers
+to the earliest version around.  A second part of &quot;&gt;&quot;
+refers to the latest version around (for reading) or one past the
+latest version around (for writing).</p>
+
+<h2>General notation:</h2>
+
+<dl compact="compact">
+<dt><b>^X</b></dt><dd>Denotes the specified control character (see Appendix E for a listing of all ASCII characters).</dd>
+<dt><b>$</b></dt><dd>Denotes the altmode character unless otherwise specified.</dd>
+<dt><b>|</b></dt><dd>Denotes a choice (either the form on the left or the form on the right are acceptable).</dd>
+<dt><b>m | n | arg</b></dt><dd>Denote integer arguments.</dd>
+<dt><b>cmd</b></dt><dd>An arbitrary command string.</dd>
+<dt><b>dir</b></dt><dd>Denotes a directory.</dd>
+<dt><b>file</b></dt><dd>Denotes a file name.</dd>
+<dt><b>k</b></dt><dd>Denotes either &quot;m,n&quot; or &quot;n&quot;: either a text range of characters m through n or n successive lines.</dd>
+<dt><b>string</b></dt><dd>Denotes a string argument.</dd>
+<dt><b>: | @</b></dt><dd>Modify the operation of certain commands.</dd>
+</dl>
+
+<h2>Commands</h2>
+
+<dl compact="compact">
+<dt><b>n^@</b></dt><dd>Argument: if n &gt; 0, same as &quot;.,.+n&quot;.  If n &lt;= 0, the same as &quot;.+n,.&quot;</dd>
+<dt><b>m,n^@</b></dt><dd>Returns the value n - m.</dd>
+<dt><b>m,n:^@</b></dt><dd>Returns the value n,m.</dd>
+<br><br>
+
+<dt><b>^A</b></dt><dd>Logical xor operator.</dd>
+<br><br>
+
+<dt><b>^B</b></dt><dd>Used for cleaning up after failed searches.</dd>
+<br><br>
+
+<dt><b>^C</b></dt><dd>When typed from the console, it terminates the command string and starts execution.</dd>
+<br><br>
+
+<dt><b>^Fstring$</b></dt><dd>Inserts its string argument, after deleting the last string found or inserted.  Same as &quot;FKDIstring$&quot;.</dd>
+<br><br>
+
+<dt><b>^G</b></dt><dd>Executes immediately.  Erase's the command string as typed so far.  Also aborts current command if one is executing.</dd>
+<br><br>
+
+<dt><b>^H</b></dt><dd>Inserts a Back Space character.</dd>
+<br><br>
+
+<dt><b>^I</b></dt><dd>Inserts a Tab character.</dd>
+<br><br>
+
+<dt><b>^J</b></dt><dd>Flushes any pending values.</dd>
+<br><br>
+
+<dt><b>^Kstring$</b></dt><dd>Executes string as a system command.</dd>
+<br><br>
+
+<dt><b>^M</b></dt><dd>Flushes any pending values.</dd>
+<br><br>
+
+<dt><b>n^N</b></dt><dd>Sets FS LINES$ to n.</dd>
+<dt><b>:^N</b></dt><dd>Toggle the FS TTMODE$ flag.</dd>
+<dt><b>:n^N</b></dt><dd>Does n^N:^N.</dd>
+<br><br>
+
+<dt><b>^Ofilename$</b></dt><dd>Bigprints filename on the device open for output.</dd>
+<br><br>
+
+<dt><b>^Pcmd0$cmd1$cmd2$</b></dt><dd>ASCII sort command.  Assuming the point is at the start of a record, cmd0 should move the point to the start of the key, cmd1 should move the point to the end of the key, and cmd2 should move the point to the end of the record (= start of the next record).  If FS ^P CASE $ is non-zero, then this command ignores case.</dd>
+<br><br>
+
+<dt><b>^Q</b></dt><dd>Quotes the next character.</dd>
+<br><br>
+
+<dt><b>^R</b></dt><dd>Invokes Real time (Emacs-like) mode.</dd>
+<br><br>
+
+<dt><b>n^S</b></dt><dd>If n &gt; 0, sleeps for n 30ths of a second.  Otherwise, sleeps until system uptime is &gt;= -n.</dd>
+<dt><b>n:^S</b></dt><dd>Sleeps for at most n 30ths of a second, returning immediately when input becomes available.</dd>
+<br><br>
+
+<dt><b>^U</b></dt><dd>Displays the current directory in a user supplied manner.  Executes immediately if it is the first character in a command string.</dd>
+<br><br>
+
+<dt><b>^V</b></dt><dd>Pops the next position off of the ring buffer of positions.  Successive ^Vs move through the 8-item ring.</dd>
+<dt><b>:^V</b></dt><dd>Returns the value on the top of the ring.</dd>
+<dt><b>n^V</b></dt><dd>Pushes n onto the ring buffer unless n is the same as the value on the top of the ring.</dd>
+<dt><b>n:^V</b></dt><dd>Pushes n onto the ring buffer.</dd>
+<br><br>
+
+<dt><b>^W</b></dt><dd>Returns to the top level.</dd>
+<br><br>
+
+<dt><b>^X</b></dt><dd>Its value is m, the first argument to m,nMq.  It is only valid inside macros.</dd>
+<br><br>
+
+<dt><b>^Y</b></dt><dd>Its value is n, the second argument to m,nMq.  It is only valid inside macros.</dd>
+<br><br>
+
+<dt><b>^Z</b></dt><dd>Suspends the editing process.</dd>
+<br><br>
+
+<dt><b>$ (^[)</b></dt><dd>Terminates text argument; two successive altmodes terminates a command string.</dd>
+<br><br>
+
+<dt><b>^\</b></dt><dd>Exits from the innermost macro invocation.</dd>
+<br><br>
+
+<dt><b>^]x</b></dt><dd>Specially processes character x.</dd>
+<dt><b>^]^X</b></dt><dd>Reads and returns the string argument which follows kMq.  It is only valid inside macros.</dd>
+<br><br>
+
+<dt><b>^^x</b></dt><dd>Returns the ASCII value of &quot;x&quot;.</dd>
+<br><br>
+
+<dt><b>SP</b></dt><dd>Same as &quot;+&quot;, except that just a space is not an argument.</dd>
+<br><br>
+
+<dt><b>!label!</b></dt><dd>Defines a label or a comment.  It is a comment if no command attempts to go there.</dd>
+<br><br>
+
+<dt><b>arg&quot;x then-cmd '</b></dt><dd>Conditional.  It checks the arg according to condition x.  Executes the command string then-cmd if the condition is true. Arg is discarded.  Conditionals are:</dd>
+
+<dl compact="compact">
+<dt><b>B</b></dt><dd>is arg the ASCII value of a delimiter (..D)?</dd>
+<dt><b>C</b></dt><dd>is arg the ASCII value of a non-delimiter?</dd>
+<dt><b>D</b></dt><dd>is arg the ASCII value of a digit?</dd>
+<dt><b>E</b></dt><dd>is arg == 0?</dd>
+<dt><b>G</b></dt><dd>is arg &gt; 0?</dd>
+<dt><b>L</b></dt><dd>is arg &lt; 0?</dd>
+<dt><b>N</b></dt><dd>is arg != 0?</dd>
+<dt><b>U</b></dt><dd>is arg the ASCII value of an upper-case character?</dd>
+<dt><b>:x</b></dt><dd>Reverses the meaning of condition x</dd>
+</dl>
+</dd>
+
+<dt><b>arg&quot;x then-cmd '&quot;# else-cmd'</b></dt><dd>Conditional with else.</dd>
+<br><br>
+
+<dt><b>#</b></dt><dd>Logical or operator.</dd>
+<br><br>
+
+<dt><b>%q</b></dt><dd>Increments the numeric contents of q and returns the result.</dd>
+<br><br>
+<dt><b>&amp;</b></dt><dd>Logical and operator.</dd>
+<br><br>
+
+<dt><b>'</b></dt><dd>Terminates a conditional.</dd>
+<br><br>
+
+<dt><b>( | )</b></dt><dd>Specify precedence for argument operators.</dd>
+<br><br>
+
+<dt><b>*</b></dt><dd>Multiplication operator (no precedence).</dd>
+<br><br>
+
+<dt><b>+</b></dt><dd>Addition operator.</dd>
+<br><br>
+
+<dt><b>,</b></dt><dd>Separates numeric arguments.</dd>
+<br><br>
+
+<dt><b>-</b></dt><dd>Subtraction operator.</dd>
+<br><br>
+
+<dt><b>.</b></dt><dd>(by itself) Specifies the position (number) of the point.  See also the special .. Q-register names listed below.</dd>
+<br><br>
+
+<dt><b>/</b></dt><dd>Division operator (no precedence).</dd>
+<br><br>
+
+<dt><b>0-9, .</b></dt><dd>Digits.  XXX is interpreted in base FS IBASE$ (usually 10); XXX. is interpreted in base FS I.BASE$ (usually 8).</dd>
+<br><br>
+
+<dt><b>:</b></dt><dd>Modifies the action of certain commands.</dd>
+<br><br>
+
+<dt><b>n;</b></dt><dd>Does nothing if n &lt; 0.  Otherwise, it passes control to the character after the next &gt;.  In other words, it is used to terminate iteration.  If n is null, it uses the value of the last search.</dd>
+<dt><b>:;</b></dt><dd>Like ;, but reverses the condition.</dd>
+<dt><b>@@;</b></dt><dd>Like ;, but exit if arg == 0.</dd>
+<dt><b>:@@;</b></dt><dd>Like ;, but exit if arg != 0.</dd>
+<br><br>
+
+<dt><b>n&lt;cmd&gt;</b></dt><dd>Does command cmd n times, or indefinitely if n is null.</dd>
+<dt><b>:&lt;cmd&gt;</b></dt><dd>Begins errset.  If an error occurs inside &lt;&gt;, execution will resume after the &gt;.</dd>
+<br><br>
+
+<dt><b>k=</b></dt><dd>Types k.</dd>
+<dt><b>k:=</b></dt><dd>Types k, omits CR/LF.</dd>
+<dt><b>k@=</b></dt><dd>Types k in the echo area.</dd>
+<dt><b>k@:=</b></dt><dd>Types k in the echo area, omitting CR/LF.</dd>
+<br><br>
+
+<dt><b>?</b></dt><dd>If first character after an error message, displays the last several command characters.  Otherwise, enters trace mode.</dd>
+<dt><b>:?</b></dt><dd>Leaves trace mode.</dd>
+<br><br>
+
+<dt><b>@</b></dt><dd>Modifies the action of certain commands.</dd>
+<br><br>
+
+<dt><b>A</b></dt><dd>Appends the next page of the input file to the buffer.</dd>
+<dt><b>n:A</b></dt><dd>Appends the next n lines (up to a page marker)  from the input file to the buffer.</dd>
+<dt><b>@A</b></dt><dd>Appends all of the input file to the buffer and closes the input file.</dd>
+<dt><b>mA</b></dt><dd>Returns the ASCII value of the character m characters to the right of the point.</dd>
+<dt><b>0A</b></dt><dd>Returns the ASCII value of the character at the point.</dd>
+<br><br>
+
+<dt><b>B</b></dt><dd>Argument; equivalent to 0 (<i>i.e.</i>, the beginning of the buffer).  However, its value is modified by the virtual buffer boundaries.</dd>
+<br><br>
+
+<dt><b>nC</b></dt><dd>Moves forwards n characters.</dd>
+<dt><b>n:C</b></dt><dd>Same as moving, but returns -1 if the move succeeds or 0 if the move would fail.</dd>
+<br><br>
+
+<dt><b>mD</b></dt><dd>Deletes forward m characters.</dd>
+<dt><b>-mD</b></dt><dd>Deletes backward m characters (there is no equivalent to R).</dd>
+<br><br>
+
+<dt><b>E...</b></dt><dd>See E-Commands listed below.</dd>
+<br><br>
+
+<dt><b>F...</b></dt><dd>See F-Commands listed below.</dd>
+<br><br>
+
+<dt><b>Gq</b></dt><dd>Inserts the contents of Q-register q into the buffer.  If q has a number, its string representation is inserted.  FS INSLEN$ is set to the length of the inserted text.</dd>
+<dt><b>m,nGq</b></dt><dd>Inserts the range m to n from Q-register q.</dd>
+<dt><b>:Gq</b></dt><dd>Returns a copy of the string in Q-register q.</dd>
+<dt><b>n:Gq</b></dt><dd>Returns the value of the character at position n in Q-register q.</dd>
+<br><br>
+
+<dt><b>H</b></dt><dd>Argument: wHole buffer: equivalent to &quot;B,Z&quot;.</dd>
+<br><br>
+
+<dt><b>Istring$</b></dt><dd>Inserts the string at the point.</dd>
+<dt><b>@Ixstringx</b></dt><dd>Inserts the string delimited by the &quot;x&quot; characters at the point (lets you insert a string that contains an altmode).</dd>
+<dt><b>nI</b></dt><dd>Inserts the character with ASCII value n.</dd>
+<dt><b>m,nI</b></dt><dd>Inserts m copies of character n.</dd>
+<dt><b>:Iq</b></dt><dd>Inserts the Q-register q into the buffer.</dd>
+<dt><b>n:Iq</b></dt><dd>Inserts the character with ASCII value n into Q-register q.</dd>
+<dt><b>m,n:Iq</b></dt><dd>Inserts m copies of character n into Q-register q.</dd>
+<dt><b>:Iqstring$</b></dt><dd>Inserts the string into Q-register q, replacing any prior contents.</dd>
+<dt><b>@n:Iq</b></dt><dd>Inserts the character whose ASCII value is n into Q-register q, replacing any prior contents.</dd>
+<dt><b>@m,n:Iq</b></dt><dd>Same as n:Iq, but inserts m copies.</dd>
+<dt><b>@:Iqxstringx</b></dt><dd>Same as :Iqstring$, except that string is delimited by the characters x.</dd>
+<br><br>
+
+<dt><b>nJ</b></dt><dd>Sets the point to the specified position (BJ or just J is move to start; ZJ is move to end).</dd>
+<dt><b>n:J</b></dt><dd>Does the set and returns -1 if successful and 0 if not.</dd>
+<br><br>
+
+<dt><b>m,nK</b></dt><dd>Kills (deletes and saves the deleted text) the characters in the range; moves the point there.</dd>
+<dt><b>nK</b></dt><dd>Kills what L would move over.</dd>
+<dt><b>n:K</b></dt><dd>Kills what :L would move over.</dd>
+<dt><b>@K</b></dt><dd>Like K, but only LFs preceded by CRs are recognized.</dd>
+<br><br>
+
+<dt><b>mL</b></dt><dd>Moves to start of mth line after the point.</dd>
+<dt><b>0L</b></dt><dd>Moves to the start of the current line.</dd>
+<dt><b>m,nL</b></dt><dd>Same as m+n-.J, used by some other commands.</dd>
+<dt><b>m:L</b></dt><dd>Moves to the end of the m-1th line.</dd>
+<dt><b>0:L</b></dt><dd>Moves to the end of the <i>previous</i> line.</dd>
+<dt><b>@L</b></dt><dd>Like L, but only LFs preceded by CRs are recognized.</dd>
+<br><br>
+
+<dt><b>m,nMqstring$</b></dt><dd>Executes the contents of Q-register q as TECO commands.  If the Q-register contains a number, it executes the corresponding ^R mode command.</dd>
+<dt><b>:M</b></dt><dd>Tail-recursive form of M.  Like M then ^\, but the current function is removed from the stack before the new one is called.</dd>
+<dt><b>@M</b></dt><dd>Fools the called macro into thinking it was called from ^R mode.</dd>
+<br><br>
+
+<dt><b>nNstring$</b></dt><dd>Same as nSstring$, but it does P and continues the search if the end of the buffer is reached.</dd>
+<br><br>
+
+<dt><b>Olabel$</b></dt><dd>Goes to the specified label.  Generates an error if the label is not found.</dd>
+<dt><b>:Olabel$</b></dt><dd>Returns if the label is not found.</dd>
+<dt><b>@Olabel$</b></dt><dd>Allows the label to be abbreviated.</dd>
+<br><br>
+
+<dt><b>nP</b></dt><dd>Writes out the buffer and a ^L (page mark), kills the buffer, and reads one page from the input file.  All of this is repeated n times.</dd>
+<dt><b>m,nP</b></dt><dd>Writes out the specified range of the buffer, but does not kill it or append input.</dd>
+<dt><b>nPW</b></dt><dd>Writes out the buffer and a ^L (page mark), no killing or reading.  All of this is repeated n times.</dd>
+<dt><b>@P</b></dt><dd>As P, except that the low-order bit of each word written should be preserved and not cleared.  Used for writing binary files.</dd>
+<br><br>
+
+<dt><b>Qq</b></dt><dd>Returns the value in Q-register q as a number.  If the Q-register holds text, this returns the pointer to that text.</dd>
+<br><br>
+
+<dt><b>nR</b></dt><dd>Moves backwards n characters (same as -nC).</dd>
+<dt><b>n:R</b></dt><dd>Same as moving, but returns -1 if the move succeeds or 0 if the move would fail.</dd>
+<br><br>
+
+<dt><b>nSstring$</b></dt><dd>Searches forward for the nth occurrence of the string and places the point after the string.  If the argument is null, the last non-null argument is used.  Special characters in search strings:</dd>
+
+<dl compact="compact">
+<dt><b>^B</b></dt><dd>Matches any delimiter (see ..D).</dd>
+<dt><b>^O</b></dt><dd>Divides string into alternate patterns.  Thus, Sfoo^Obar$ will find the first of &quot;foo&quot; or &quot;bar&quot;.</dd>
+<dt><b>^Qx</b></dt><dd>Quotes x.</dd>
+<dt><b>^X</b></dt><dd>Matches any character.</dd>
+<dt><b>^Nx</b></dt><dd>Matches any character except for x, where x is any character.</dd>
+<dt><b>^N^B</b></dt><dd>Matches any non-delimiter.</dd>
+<dt><b>^N^X</b></dt><dd>Matches nothing.</dd>
+</dl>
+<p>Note that Sfoo^O$ will always succeed and will move the point over the next three characters if and only if they are &quot;foo&quot;.  -2-(:Sfoo^O$) will do that and return non-zero if they were &quot;foo&quot;.</p>
+<dt><b>-nSstring$</b></dt><dd>Same as nSstring$, but searches backwards and leaves the point before the string.</dd>
+<dt><b>n@Sxstringx</b></dt><dd>Same as nSstring$, but the string is delimited by the character specified by the &quot;x&quot;s.  If the argument is null, searches for the null string.</dd>
+<dt><b>n:Sstring$</b></dt><dd>Same as nSstring$, but returns the value -1 if successful or 0 if not.  If a ^O is used within -n is returned if the nth subpart is found.</dd>
+<br><br>
+
+<dt><b>kT</b></dt><dd>Types out the text in the range (n lines or m,n characters).</dd>
+<dt><b>@T</b></dt><dd>Types out in the echo area.</dd>
+<br><br>
+
+<dt><b>nUq</b></dt><dd>Inserts number n into Q-register q, returns no value.</dd>
+<dt><b>m,nUq</b></dt><dd>Inserts number n into Q-register q, returns m. </dd>
+<br><br>
+
+<dt><b>kV</b></dt><dd>Displays what T would type.  Puts &quot;/\&quot; where point is and does &quot;--MORE--&quot; processing.</dd>
+<dt><b>@V</b></dt><dd>Does standard buffer redisplay.</dd>
+<dt><b>kVW</b></dt><dd>Does V, then waits for one character and returns its ASCII code as a value.</dd>
+<br><br>
+
+<dt><b>W</b></dt><dd>Flushes current value except when part of PW or VW.</dd>
+<br><br>
+
+<dt><b>kXq</b></dt><dd>Inserts text range k into Q-register q, replacing any prior contents.</dd>
+<dt><b>k@Xq</b></dt><dd>Same as kXq, but appends to q.</dd>
+<br><br>
+
+<dt><b>Y</b></dt><dd>Kills the buffer and reads one page from the input file into the buffer.</dd>
+<dt><b>@Y</b></dt><dd>Kills the buffer and reads the rest of the input file into the buffer.</dd>
+<br><br>
+
+<dt><b>Z</b></dt><dd>Argument: specifies the length of the buffer in characters.</dd>
+<br><br>
+
+<dt><b>[q</b></dt><dd>Push the text or number from Q-register q onto the Q-register push down list.</dd>
+<br><br>
+
+<dt><b>\</b></dt><dd>Moves past number, returns its value.</dd>
+<dt><b>n\</b></dt><dd>Inserts a printed representation of character n (in base ..E).</dd>
+<dt><b>m,n\</b></dt><dd>Is like n\, but pads with spaces to m columns.</dd>
+<dt><b>:\</b></dt><dd>Returns the representation of n as a string instead of inserting it.</dd>
+<br><br>
+
+<dt><b>]q</b></dt><dd>Pop the text or number from the Q-register push down list into Q-register q.</dd>
+<br><br>
+
+<dt><b>^</b></dt><dd>Replaced by @.</dd>
+<br><br>
+
+<dt><b>n_string$</b></dt><dd>Same as nSstring$, but it does Y if the end of the buffer is reached.</dd>
+<br><br>
+
+<dt><b>^?</b></dt><dd>Erases the last character of command string.</dd>
+</dl>
+
+<h2>E-Commands (most file commands are here)</h2>
+
+<dl compact="compact">
+<dt><b>E^Udir$</b></dt><dd>Displays the specified directory in a user-defined manner.</dd>
+<br><br>
+
+<dt><b>E?file$</b></dt><dd>Tries to open file.  Returns 0 if successful or an error code if not.</dd>
+<br><br>
+
+<dt><b>EC</b></dt><dd>Closes the input file.</dd>
+<br><br>
+
+<dt><b>EDfile$</b></dt><dd>Deletes the specified file.</dd>
+<dt><b>:ED</b></dt><dd>Deletes the currently open file.</dd>
+<br><br>
+
+<dt><b>EEfile$</b></dt><dd>Same as the sequence infinityPEFfile$EC.</dd>
+<br><br>
+
+<dt><b>EFfile$</b></dt><dd>Closes the output file and changes its name to file.</dd>
+<br><br>
+
+<dt><b>EG</b></dt><dd>Inserts various information into the buffer on successive lines:  the date as YYMMDD, the time as HHMMSS, the current username, the default file names, the real names of the files open for input and output, the date in text form, a 3-digit value (day of week, day of week of 1st of this year, leap year status), and the phase of the moon.  There are better ways of getting most of this information.</dd>
+<br><br>
+
+<dt><b>EI</b></dt><dd>Opens a file &quot;_TECO_ OUTPUT&quot; for writing on the default device.</dd>
+<dt><b>:EI</b></dt><dd>Same as EI, but uses the current default file name.</dd>
+<dt><b>@EI</b></dt><dd>Same as EI, but sets the default device to DSK:</dd>
+<br><br>
+
+<dt><b>EJfile$</b></dt><dd>Restores the complete state from the file, which must have been saved with @EJ.</dd>
+<dt><b>@EJfile$</b></dt><dd>Saves TECO's complete state to the file.</dd>
+<br><br>
+
+<dt><b>EL</b></dt><dd>Types out a listing of the default directory.</dd>
+<br><br>
+
+<dt><b>EM</b></dt><dd>Inserts a listing of the default directory into the buffer.</dd>
+<br><br>
+
+<dt><b>ENold$new$</b></dt><dd>Renames file old to file new.</dd>
+<br><br>
+
+<dt><b>EPfile$</b></dt><dd>Does ERfile$, then bigprints the file name twice on the device open for writing.</dd>
+<br><br>
+
+<dt><b>EQfrom$to$</b></dt><dd>Creates a link from the file &quot;from&quot; to the file &quot;to&quot;.</dd>
+<br><br>
+
+<dt><b>ERfile$</b></dt><dd>Opens a file for input.</dd>
+<br><br>
+
+<dt><b>ETfile$</b></dt><dd>Sets the default file name to the specified file name.</dd>
+<br><br>
+
+<dt><b>EWdir$</b></dt><dd>Same as EI, but with the specified directory.</dd>
+<dt><b>:EWdir file$</b></dt><dd>Same as EW, but with the specified file name.</dd>
+<br><br>
+
+<dt><b>EYdir$</b></dt><dd>Types out a listing of the specified directory.</dd>
+<br><br>
+
+<dt><b>EZdir$</b></dt><dd>Inserts a listing of the specified directory into the buffer.</dd>
+<br><br>
+
+<dt><b>E[</b></dt><dd>Push the input channel.</dd>
+<br><br>
+
+<dt><b>E\</b></dt><dd>Push the output channel.</dd>
+<br><br>
+
+<dt><b>E]</b></dt><dd>Pop the input channel.</dd>
+<br><br>
+
+<dt><b>E^</b></dt><dd>Pop the output channel.</dd>
+<br><br>
+
+<dt><b>E_old$new$</b></dt><dd>Copies file old to file new.</dd>
+<dt><b>:E_old$new$</b></dt><dd>Copies file old to file new, preserving the old file's date.</dd>
+</dl>
+
+<h2>F-Commands</h2>
+
+<dl compact="compact">
+<dt><b>m,nF^@</b></dt><dd>Returns m and n in numerical order, such that the new m will be &gt; n.</dd>
+<dt><b>nF^@</b></dt><dd>Returns 2 arguments that specify the range from the point to the location n lines away.</dd>
+<br><br>
+
+<dt><b>F^A</b></dt><dd>Runs every character in the buffer through a dispatch table.</dd>
+<br><br>
+
+<dt><b>nF^Bstring$</b></dt><dd>Searches in string for the character whose ASCII value is N.</dd>
+<dt><b>@F^Bstring$</b></dt><dd>Searches the buffer forward for a character not in string.</dd>
+<dt><b>-@F^Bstring$</b></dt><dd>Searches the buffer backward for a character not in string.</dd>
+<dt><b>m,n@F^Bstring$</b></dt><dd>Searches the buffer in the range for a character not in string.</dd>
+<br><br>
+
+<dt><b>F^Estring$</b></dt><dd>Overwrites the next length-of-string characters with string.  Same as deleting and inserting, but the gap does not need to move.</dd>
+<br><br>
+
+<dt><b>F^K</b></dt><dd>Reads a string argument from within a macro.</dd>
+<br><br>
+
+<dt><b>m,nF^Sq</b></dt><dd>Searches Q-register q for a word that contains n, starting at m.</dd>
+<br><br>
+
+<dt><b>F^X</b></dt><dd>Its value is k, all arguments to m,nMq.  It is only valid inside macros.</dd>
+<br><br>
+
+<dt><b>F^Y</b></dt><dd>Its value is the number of arguments to m,nMq.  It is only valid inside macros.</dd>
+<br><br>
+
+<dt><b>string:F^^</b></dt><dd>Determines whether string is a short Q-register name.</dd>
+<br><br>
+
+<dt><b>argF&quot;x</b></dt><dd>Same as regular conditional, but passes the arg to the then or else command string.</dd>
+<br><br>
+
+<dt><b>F$ (dollar)</b></dt><dd>Returns FS CASE$ and inserts in the buffer the case shift and lock characters, if any.  If FS CASE$ is non-zero, all characters are converted to uppercase (if &gt; 0) or lower case (if &lt; 0) on input.  The case-shift character causes the next character to be read in the other case.  The case-lock character temporarily complements the preferred case.  On output, if FS CASE$ is odd, characters in the non-standard case will be preceded by case-shifts.  If even, no translation is done.</dd>
+<dt><b>nF$string$</b></dt><dd>Sets FS CASE$ to n and sets the case shift and lock characters to the first two characters in string.</dd>
+<br><br>
+
+<dt><b>F(</b></dt><dd>Is like (, except that F( returns its arguments, making it easy to use a value twice without using a Q-register.</dd>
+<br><br>
+
+<dt><b>F)</b></dt><dd>Is like ), except that F) returns its arguments exactly, discarding the data saved by (.</dd>
+<br><br>
+
+<dt><b>F*string$</b></dt><dd>Reads and discards a string argument.</dd>
+<br><br>
+
+<dt><b>F+</b></dt><dd>Clears the screen.</dd>
+<br><br>
+
+<dt><b>F6string$</b></dt><dd>Returns string with the first six characters packed into a word (this TECO is running on a 36 bit machine).</dd>
+<dt><b>nF6</b></dt><dd>Expands n into an ASCII string and inserts it into the buffer.</dd>
+<dt><b>n:F6</b></dt><dd>Expands n into a string.</dd>
+<br><br>
+
+<dt><b>F;tag$</b></dt><dd>Throws to the tag.  This is a &quot;long jump.&quot;</dd>
+<br><br>
+
+<dt><b>F&lt;!tag!cmds&gt;</b></dt><dd>Catches a throw and executes the commands.</dd>
+<dt><b>:F&lt;!tag!cmds&gt;</b></dt><dd>Is an errset and a catch at the same time.</dd>
+<br><br>
+
+<dt><b>F=qstring$</b></dt><dd>Compares the Q-register q to string.  Returns 0 if ==, positive if q is &gt; string, or negative if q is &lt; string.  If value is not zero, the value's absolute value is 1 + location of the difference.</dd>
+<dt><b>@F=qxstringx</b></dt><dd>Compares the Q-register q to string delimited by x.</dd>
+<dt><b>m,nF=string$</b></dt><dd>Compares the buffer in the range m to n to string.</dd>
+<dt><b>m,n@Fxstringx</b></dt><dd>Compares the buffer in the range m to n to string delimited by x.</dd>
+<br><br>
+
+<dt><b>F?</b></dt><dd>Same as 30F?</dd>
+<dt><b>0F?</b></dt><dd>Same as 30F?</dd>
+<dt><b>nF?</b></dt><dd>Mbox control.  Argument is a bit string, bits:</dd>
+
+<dl compact="compact">
+<dt><b>bit 2^0</b></dt><dd>close the gap</dd>
+<dt><b>bit 2^1</b></dt><dd>run garbage collect</dd>
+<dt><b>bit 2^2</b></dt><dd>clear the jump cache</dd>
+<dt><b>bit 2^3</b></dt><dd>flush unused core</dd>
+<dt><b>bit 2^4</b></dt><dd>close the gap if it is &gt;5000</dd>
+</dl>
+</dd>
+<br><br>
+
+<dt><b>m,nFA</b></dt><dd>Justifies text within the range.</dd>
+<dt><b>nFA</b></dt><dd>Justifies n lines of text.</dd>
+<dt><b>@FA</b></dt><dd>Fills without justification.</dd>
+<br><br>
+
+<dt><b>kFBstring$</b></dt><dd>Same as Sstring$ in the domain defined by k.  If k is of the form m,n and m &gt; n, search backwards.  &quot;:&quot; and &quot;@&quot; modifiers work.</dd>
+<br><br>
+
+<dt><b>kFC</b></dt><dd>Converts text range k to lower case.</dd>
+<dt><b>k@FC</b></dt><dd>Converts text range k to upper case.</dd>
+<dt><b>n:FC</b></dt><dd>Returns the upper-case version of the character whose ASCII value is n.</dd>
+<br><br>
+
+<dt><b>nFD</b></dt><dd>Returns the range &quot;.,x&quot;, where &quot;x&quot; is the position just after the nth level down in parenthesis after the point.</dd>
+<dt><b>-nFD</b></dt><dd>Goes backward.</dd>
+<br><br>
+
+<dt><b>FE</b></dt><dd>Inserts a list of all TECO error messages into the buffer.</dd>
+<dt><b>nFE</b></dt><dd>Inserts only the message whose error code is n.</dd>
+<dt><b>@FEstring$</b></dt><dd>Returns the code of the error whose message is string.</dd>
+<br><br>
+
+<dt><b>FG</b></dt><dd>Process an error.</dd>
+<dt><b>@FG</b></dt><dd>Process an error and throw away type ahead.</dd>
+<br><br>
+
+<dt><b>FI</b></dt><dd>Reads one character and returns its ASCII value.</dd>
+<dt><b>:FI</b></dt><dd>As FI, but don't flush the character (it will be re-used).</dd>
+<dt><b>@FI</b></dt><dd>As FI, but returns the value in the 9-bit TV character set.</dd>
+<dt><b>@:FI</b></dt><dd>As @FI, but don't flush the character (it will be re-used).</dd>
+<br><br>
+
+<dt><b>FJ</b></dt><dd>Insert the command line used to invoke TECO into the buffer.</dd>
+<br><br>
+
+<dt><b>FK</b></dt><dd>Returns the value - FS INSLEN$, <i>i.e.</i>, length of the last string inserted or found by a search or FW.  FK is always &lt; 0 except for a backwards search or FW.</dd>
+<br><br>
+
+<dt><b>nFL</b></dt><dd>Returns the range &quot;.,x&quot;, where &quot;x&quot; is the position just after the nth list after the point.</dd>
+<dt><b>-nFL</b></dt><dd>Goes backward.</dd>
+<dt><b>n@FL</b></dt><dd>As nFW, but does S-expressions.</dd>
+<dt><b>nFLD</b></dt><dd>Same as nFLK.</dd>
+<dt><b>nFLK</b></dt><dd>Kills what nFL implies.</dd>
+<dt><b>nFLL</b></dt><dd>Does the move implied by the nFL.</dd>
+<dt><b>nFLR</b></dt><dd>Same as nFLL.</dd>
+<dt><b>nFLXq</b></dt><dd>Combines nFL with Xq.</dd>
+<br><br>
+
+<dt><b>m,nFM</b></dt><dd>Attempts to move the point so that the cursor will appear at column n, m lines below where you started.</dd>
+<br><br>
+
+<dt><b>FN</b></dt><dd>Is the same as &quot;[..n:I..N&quot;.  It is needed to eliminate the possibility of a ^G within the string.</dd>
+<br><br>
+
+<dt><b>FOqname$</b></dt><dd>Performs a binary search of a table of fixed-length entries.  It is intended for symbol tables.  Q-register q contains the table and &quot;name&quot; is what should be searched for.  The first word of the table contains the number of words for each entry in the table.</dd>
+<br><br>
+
+<dt><b>objectFP</b></dt><dd>Returns a number describing object.  Values:</dd>
+
+<dl compact="compact">
+<dt><b>-4</b></dt><dd>A number, none of the below.</dd>
+<dt><b>-3</b></dt><dd>A number that could be in pure string space.</dd>
+<dt><b>-2</b></dt><dd>A number that could be in impure string space.</dd>
+<dt><b>-1</b></dt><dd>A dead buffer.</dd>
+<dt><b>0</b></dt><dd>A living buffer.</dd>
+<dt><b>1</b></dt><dd>A Q-vector.</dd>
+<dt><b>100</b></dt><dd>A pure string.</dd>
+<dt><b>101</b></dt><dd>An impure string.</dd>
+</dl>
+</dd>
+<br><br>
+
+<dt><b>FQq</b></dt><dd>Its value is the number of characters in Q-register q or -1 if the Q-register holds a number.</dd>
+<br><br>
+
+<dt><b>FR</b></dt><dd>Updates the display.</dd>
+<br><br>
+
+<dt><b>FSname$</b></dt><dd>Returns the value of the specified variable (listed below).</dd>
+<br><br>
+
+<dt><b>FTstring$</b></dt><dd>Types its string argument.</dd>
+<dt><b>:FTstring$</b></dt><dd>Types its string argument at the top of the screen.</dd>
+<dt><b>@FTstring$</b></dt><dd>Types its string argument in the echo area.</dd>
+<dt><b>@:FTstring$</b></dt><dd>Types its string argument in the echo area but only if no input is available.</dd>
+<br><br>
+
+<dt><b>nFU</b></dt><dd>Returns the range &quot;.,x&quot;, where &quot;x&quot; is the position just after the nth level up in parenthesis after the point.</dd>
+<dt><b>-nFU</b></dt><dd>Goes backward.</dd>
+<br><br>
+
+<dt><b>FVstring$</b></dt><dd>Displays its string argument.</dd>
+<dt><b>:FVstring$</b></dt><dd>Displays its string argument, then clears the rest of the screen.</dd>
+<br><br>
+
+<dt><b>nFW</b></dt><dd>Returns the range &quot;.,x&quot;, where &quot;x&quot; is the position just after the nth word after the point.</dd>
+<dt><b>-nFW</b></dt><dd>Goes backward.</dd>
+<dt><b>n:FW</b></dt><dd>As nFW, but only does n-1 words.</dd>
+<dt><b>n@FW</b></dt><dd>As nFW, but does Lisp atoms and not words.</dd>
+<dt><b>nFWD</b></dt><dd>Same as nFWK.</dd>
+<dt><b>nFWK</b></dt><dd>Kills what nFW implies.</dd>
+<dt><b>nFWL</b></dt><dd>Does the move implied by the nFW.</dd>
+<dt><b>nFWR</b></dt><dd>Same as nFWL.</dd>
+<dt><b>nFWXq</b></dt><dd>Combines nFW with Xq.</dd>
+<br><br>
+
+<dt><b>kFXq</b></dt><dd>Same as X and K combined: kXqkK.</dd>
+<br><br>
+
+<dt><b>FY</b></dt><dd>Inserts all that remains of the input file before the point.</dd>
+<dt><b>nFY</b></dt><dd>Inserts at most n characters.</dd>
+<br><br>
+
+<dt><b>FZfile string$</b></dt><dd>Creates and starts a non-exec fork.</dd>
+<dt><b>FZ$</b></dt><dd>Resumes the inferior fork.</dd>
+<br><br>
+
+<dt><b>F[flag$</b></dt><dd>Pushes the value of FS flag on the Q-register PDL.</dd>
+<dt><b>nF[flag$</b></dt><dd>Pushes and sets the flag to the new value.</dd>
+<dt><b>nF[^R CMACRO$</b></dt><dd>Pushes the definition of the character whose number is n.</dd>
+<dt><b>m,nF[^R CMACRO$</b></dt><dd>Pushes and sets.</dd>
+<br><br>
+
+<dt><b>F_</b></dt><dd>Mostly the same as _, but keeps working regardless of the setting of FS _DISABLE$.</dd>
+<br><br>
+
+<dt><b>F]flag$</b></dt><dd>Pops the value of FS flag from the Q-register PDL.</dd>
+<dt><b>nF]^R CMACRO$</b></dt><dd>Pops the definition of the character whose number is n.</dd>
+<br><br>
+
+<dt><b>F~</b></dt><dd>Like F=, but both strings are compared as if converted to upper case.</dd>
+</dl>
+
+<h2>Special Q-registers, names are of the form &quot;..x&quot;</h2>
+
+<dl compact="compact">
+<dt><b>..0</b></dt><dd>^P puts its three arguments into these.</dd>
+<dt><b>..1</b></dt><dd></dd>
+<dt><b>..2</b></dt><dd></dd>
+<dt><b>..A</b></dt><dd>Holds the string to represent the cursor (default is &quot;/\&quot;).</dd>
+<dt><b>..B</b></dt><dd>Holds the macro to display the user buffer.</dd>
+<dt><b>..D</b></dt><dd>Holds the delimiter dispatch table, which tells several commands (FW, FL, &quot;B, &quot;C and search ^B) how to treat ASCII characters.</dd>
+<dt><b>..E</b></dt><dd>Holds the output radix for = and \.</dd>
+<dt><b>..F</b></dt><dd>Holds the ^R secretary macro.  Can be used for auto save.</dd>
+<dt><b>..G</b></dt><dd>Holds the user-specified directory display macro.</dd>
+<dt><b>..H</b></dt><dd>Is the &quot;suppress-display&quot; flag.</dd>
+<dt><b>..I</b></dt><dd>Holds the value of . at the start of the command.</dd>
+<dt><b>..J</b></dt><dd>Holds user-specified label for --MORE-- processing.</dd>
+<dt><b>..K</b></dt><dd>Holds deleted text.</dd>
+<dt><b>..L</b></dt><dd>Executes when TECO first starts.</dd>
+<dt><b>..N</b></dt><dd>Macro that to be executed when another macro exits.</dd>
+<dt><b>..O</b></dt><dd>The current buffer.</dd>
+<dt><b>..P</b></dt><dd>Holds the user-defined error-handler macro.</dd>
+<dt><b>..Q</b></dt><dd>Holds the symbol table used to define TECO variables.</dd>
+<dt><b>..Z</b></dt><dd>Safety backup copy of ..O.</dd>
+</dl>
+
+<h2>FS Variables</h2>
+
+<p>Names can be up to six characters long.  Spaces in names are
+ignored. Only as much of a name as is required to make it unique is
+required, although programs should include the entire name. Saying
+FSname$ returns the value of the flag.  Saying nFSname$ or m,nFSname$
+sets the value.  If a flag can be set and you want to use the flag as
+the second operand of an arithmetic operator (<i>e.g.</i>,
+.+FSname$C), enclose the FS in parentheses (.+(FSname$)C).</p>
+
+<p>These names can never include control characters.  The
+&quot;^&quot; in some of the names is a leading caret.  However, the
+combination usually relates to the implied control character.</p>
+
+<dl compact="compact">
+<dt><b>% BOTTOM</b></dt><dd>Size of the bottom margin as a percentage of the number of lines being displayed.</dd>
+<dt><b>% CENTER</b></dt><dd>Where TECO should prefer to put the cursor.</dd>
+<dt><b>% END</b></dt><dd>Size of the area at the bottom of the screen, such that TECO should never choose to put the cursor there.</dd>
+<dt><b>% OPLSP</b></dt><dd>(Read only) Non-zero if the input is coming from a Lisp job</dd>
+<dt><b>% TOP</b></dt><dd>Size of the top margin (analogous to %BOTTOM).</dd>
+<dt><b>% TOCID</b></dt><dd>(Read only) Non-zero if the terminal can insert and delete characters.</dd>
+<dt><b>% TOFCI</b></dt><dd>(Read only) Non-zero if the terminal can generate 9-bit characters.</dd>
+<dt><b>% TOHDX</b></dt><dd>(Read only) Non-zero if the terminal is half-duplex.</dd>
+<dt><b>% TOLID</b></dt><dd>(Read only) Non-zero if the terminal can insert and delete lines.</dd>
+<dt><b>% TOLWR</b></dt><dd>(Read only) Non-zero if the terminal can generate lower case characters.</dd>
+<dt><b>% TOMOR</b></dt><dd>(Read only) Non-zero if the use wants --MORE-- processing.</dd>
+<dt><b>% TOOVR</b></dt><dd>(Read only) Non-zero if the terminal can overprint.</dd>
+<dt><b>% TOROL</b></dt><dd>(Read only) Non-zero if the user has selected scroll mode.</dd>
+<dt><b>% TOSAI</b></dt><dd>(Read only) Non-zero if the terminal can print the SAIL character set.</dd>
+<dt><b>*RSET</b></dt><dd>Initially 0. If set to non-zero, trace information is not cleared automatically.</dd>
+<dt><b>.CLRMOD</b></dt><dd>Normally -1.  If negative, screen is normally cleared automatically.  If 0, automatic screen clears are not done (used for debugging).  If positive, the screen is never cleared.</dd>
+<dt><b>.KILMOD</b></dt><dd>Normally -1.  If 0, FS BKILL$ doesn't actually do the kill.</dd>
+<dt><b>.TYI BACK</b></dt><dd>Backs up the point FS .TYI PT$ by one step.  After backing up n steps, you can use FS .TYI NXT$ to re-get those n input characters.</dd>
+<dt><b>.TYI NXT</b></dt><dd>Extracts one character from the ring buffer of past input characters.</dd>
+<dt><b>.TYI PT</b></dt><dd>Pointer into the ring buffer that contains the last 60 input characters.</dd>
+<dt><b>:EJ PAGE</b></dt><dd>Is the number of the lowest page used by :EJ'd shared pure files.</dd>
+<dt><b>ADLINE</b></dt><dd>Is the line size used by the FA command.</dd>
+<dt><b>ALTCOUNT</b></dt><dd>Is the number of $$s that TECO has seen at interrupt level.</dd>
+<dt><b>BACK ARGS</b></dt><dd>(Read only) Returns the arguments to a macro in a different stack frame (<i>i.e.</i>, one of the macros that was called that eventually called you).  Returns 0, 1, or 2 values in the same ways that F^X does.  If the argument to this is 0 or positive, it returns the arguments for the specified frame number (0 is outermost).  If negative, returns the arguments for the relative frame number (-1 is your caller).</dd>
+<dt><b>BACK DEPTH</b></dt><dd>(Read only) Returns the number of stack frames, not counting you.</dd>
+<dt><b>BACK PC</b></dt><dd>Returns the PC of the stack frame that is specified in the same way as FS BACK ARGS$.  m,nFS BACK PC$ sets the PC to m.</dd>
+<dt><b>BACK QP PTR</b></dt><dd>(Read only) Specifies where a ^\ will return to.  Arguments are as for FS BACK ARGS$.</dd>
+<dt><b>BACK RETURN</b></dt><dd>(Write only) Returns from the specified stack frame.</dd>
+<dt><b>Arguments are as for FS BACK ARGS$.  -1 FS BACK RETURN$ is equivalent to ^\.
+BACK STRING</b></dt><dd>(Read only) Returns a pointer to the string or buffer being executed.  Arguments are as for FS BACK ARGS$.</dd>
+<dt><b>BACKTRACE</b></dt><dd>Returns a copy of the program being run by the stack frame.  Arguments are as for FS BACK ARGS$.</dd>
+<dt><b>BBIND</b></dt><dd>is useless, but F[B BIND$ and F]B BIND$ are useful for pushing to and popping from a temporary buffer.</dd>
+<dt><b>BCONS</b></dt><dd>(as in n FS BCONS$) returns a new buffer n characters long.  It is initially filled with 0's (NULs).</dd>
+<dt><b>BCREATE</b></dt><dd>is like FS BCONS$ U..0.  In other words, the buffer is selected instead of returned.</dd>
+<dt><b>BKILL</b></dt><dd>Kills the specified buffer.</dd>
+<dt><b>BOTHCASE</b></dt><dd>Initially 0.  If == 0, case is significant during searches. If &gt; 0, case is ignored.  If &lt; 0, case of special characters (@[\]^_ and `{|}~^?) is also ignored.</dd>
+<dt><b>BOUNDARIES</b></dt><dd>Reads or sets the virtual buffer boundaries.</dd>
+<dt><b>BS NO LF</b></dt><dd>If non-zero, suppresses the LF that follows any backward motion or rubbing out in ^R mode on printing terminals.</dd>
+<dt><b>CASE</b></dt><dd>Like F$, but neither gets nor sets the case-shift or case-lock characters.</dd>
+<dt><b>CLK INTERVAL</b></dt><dd>Is the interval between real time clock ticks in 1/60 seconds.  Only active during user input.</dd>
+<dt><b>CLK MACRO</b></dt><dd>Is the real-time interrupt handler macro.  If the macro types anything out, it must not leave ..H set.</dd>
+<dt><b>CTL MTA</b></dt><dd>If negative, it suppresses the ^R mode definitions for all control-meta characters.  This makes it easy to edit TECO commands.</dd>
+<dt><b>DATA SWITCHES</b></dt><dd>(Read only) The contents of the PDP-10 console switches.</dd>
+<dt><b>DATE</b></dt><dd>(Read only) The current date and time as a number in file-date format.  It can be fed to FS FD CONVERT$ or FS IF CDATE$.</dd>
+<dt><b>D DEVICE</b></dt><dd>Is the default device name.</dd>
+<dt><b>DD FAST</b></dt><dd>(Read only) Is non-zero if the current device is fast (<i>i.e.</i>, local disk).</dd>
+<dt><b>D FILE</b></dt><dd>Is the default file name.</dd>
+<dt><b>D FN1</b></dt><dd>Is the default file name first part.</dd>
+<dt><b>D FN2</b></dt><dd>Is the default file name second part.</dd>
+<dt><b>D FORCE</b></dt><dd>Setting this to non-zero forces a complete redisplay of everything except the mode line.  It is used for putting up temporary displays.</dd>
+<dt><b>D SNAME</b></dt><dd>Is the default sname.</dd>
+<dt><b>D VERSION</b></dt><dd>Is the default versions number, a reflection of FD D FN2$.  If the latter is numeric, reading this value returns the corresponding number.  If it is &quot;&gt;&quot; or &quot;&lt;&quot;, this value is 0 or -2, respectively.  If it is not numeric, this returns -1.  if FD D FN2$ is numeric, setting this value sets the file name.  Otherwise, the setting is ignored.</dd>
+<dt><b>D WAIT</b></dt><dd>When set to non-zero, causes the display to pause slightly between lines of output.</dd>
+<dt><b>ECHO ACTIVE</b></dt><dd>When set to non-zero, indicates that output has been written to the echo area, so the echo area needs to be cleaned up.</dd>
+<dt><b>ECHO CHAR</b></dt><dd>When a ^R mode character is being executed, this value holds the character that caused the invocation.</dd>
+<dt><b>ECHO DISPLAY</b></dt><dd>(Write only) As for FS ECHO OUT$, but outputs in display mode.</dd>
+<dt><b>ECHO ERRORS</b></dt><dd>When set to non-zero, error messages are printed in the echo area.</dd>
+<dt><b>ECHO FLUSH</b></dt><dd>When set to non-zero, automatic clearing of the echo area in ^R mode is enabled.</dd>
+<dt><b>ECHO LINES</b></dt><dd>Then number of lines at the screen bottom that can be used for command echoing.</dd>
+<dt><b>ECHO OUT</b></dt><dd>(Write only) Used for outputs to the echo area.  If it has a numeric argument, the argument is the ASCII code of a character to echo.  With a string argument, the string is echoed.</dd>
+<dt><b>ERR</b></dt><dd>Same as FS ERROR$ if read.  If written to, creates an error with the specified error code.</dd>
+<dt><b>ERRFLAG</b></dt><dd>When negative, signals to redisplay that the first -n lines of the display contain an error message and should not be overwritten.</dd>
+<dt><b>ERROR</b></dt><dd>The error code of the most recent error.</dd>
+<dt><b>ERR THROW</b></dt><dd>(Write only) Return to the innermost error catcher.</dd>
+<dt><b>EXIT</b></dt><dd>(Write only) Does a .break 16.</dd>
+<dt><b>FDCONVERT</b></dt><dd>With a numeric argument, converts it from an ITS file date to a string of the form &quot;dd/mm/yy hh:mm:ss&quot; and inserts the string into the buffer.  The form n:FS FDCONVERT$ returns the string.  With no argument, reads the string from the buffer and converts it to numeric form.</dd>
+<dt><b>FILE PAD</b></dt><dd>Is the character used to pad the last word of files.  Usually 3 (^C).</dd>
+<dt><b>FLUSHED</b></dt><dd>Is set to non-zero if a --MORE-- has been flushed, and thus output is being discarded.</dd>
+<dt><b>FNAM SYNTAX</b></dt><dd>Controls what happens when only one file name is present.  If this is 0, the file name is used as part two.  If &gt; 0, the file name is used as part one.  If &lt; 0, the file name is used as part one and &quot;&gt;&quot; is used for part two.</dd>
+<dt><b>GAP LENGTH</b></dt><dd>(Read only) The length of the gap.</dd>
+<dt><b>GAP LOCATION</b></dt><dd>(Read only) The buffer position of the gap.</dd>
+<dt><b>HEIGHT</b></dt><dd>(Read only) The number of lines on the screen.</dd>
+<dt><b>HELP CHAR</b></dt><dd>Contains the character used for the help character.  Normally, ^_.  If set to -1, help is not recognized (<i>e.g.</i>, useful for ^Q).</dd>
+<dt><b>HELP MAC</b></dt><dd>Is the macro to execute when the help character is typed.</dd>
+<dt><b>H POSITION</b></dt><dd>(Read only) Returns the column that the point is in.</dd>
+<dt><b>HSNAME</b></dt><dd>The user's home directory.</dd>
+<dt><b>I&amp;D CHR</b></dt><dd>When set to non-zero, TECO tries to use the terminal's insert and delete character functions.</dd>
+<dt><b>I&amp;D LINE</b></dt><dd>When set to non-zero, TECO tries to use the terminal's insert and delete line functions.</dd>
+<dt><b>IBASE</b></dt><dd>The input radix for numbers not ended by &quot;.&quot;.  Initially 8 + 2.</dd>
+<dt><b>I.BASE</b></dt><dd>The input radix for numbers ended by &quot;.&quot;.  Initially 8.</dd>
+<dt><b>IF ACCESS</b></dt><dd>(Write only) Sets the access pointer for the input file.</dd>
+<dt><b>IF CDATE</b></dt><dd>The creation data for the input file.</dd>
+<dt><b>IF DEVICE</b></dt><dd>(Read only). The device for the input file.</dd>
+<dt><b>IF DUMP</b></dt><dd>The dumped bit for the input file.</dd>
+<dt><b>I FILE</b></dt><dd>(Read only) The name of the input file.</dd>
+<dt><b>IF FN1</b></dt><dd>(Read only) The first name of the input file.</dd>
+<dt><b>IF FN2</b></dt><dd>(Read only) The second name of the input file.</dd>
+<dt><b>IF LENGTH</b></dt><dd>(Read only) The length of the input file.</dd>
+<dt><b>IF REAP</b></dt><dd>The reap bit for the input file.</dd>
+<dt><b>IF SNAME</b></dt><dd>(Read only) The sname of the input file.</dd>
+<dt><b>IF VERSION</b></dt><dd>(Read only) The version number of the input file or FS IF FN2$.</dd>
+<dt><b>IMAGE OUT</b></dt><dd>Outputs its argument in super-image mode (no translations at all).</dd>
+<dt><b>IN COUNT</b></dt><dd>Is an old name for FS TYI COUNT$</dd>
+<dt><b>INSLEN</b></dt><dd>Is the length of the last string inserted with &quot;I&quot;, &quot;G&quot;, or &quot;\&quot;, or found with &quot;S&quot; or &quot;FW&quot;.  It will be negative after a backward search.</dd>
+<dt><b>JNAME</b></dt><dd>(Read only) Returns the jobname.</dd>
+<dt><b>JRN EXECUTE</b></dt><dd>(Write only) Opens a journal file for playing back.  The form :FS JRN EXECUTE$ closes the file.  The default file names are used.</dd>
+<dt><b>JRN IN</b></dt><dd>(Read only) Is non-zero when a journal file is being replayed.</dd>
+<dt><b>JRN INHIBIT</b></dt><dd>When set to non-zero, input is taken from the terminal even though a journal file is being replayed.  This is how FS JRN MACRO$ can work.</dd>
+<dt><b>JRN INTERVAL</b></dt><dd>Specifies how often a journal file being recorded is updated on disk.  The interval is in units of commands.</dd>
+<dt><b>JRN MACRO</b></dt><dd>This macro is called when a journal file is being replayed and TECO encounters a colon or ^G in the file.  The character is passed as an argument.  In the case of a ^G, the macro should execute a ^R and then quit by doing -1 FS QUIT$.  In the case of a colon, this macro should read more characters from the file by doing FS JRN READ$ and acting upon them.</dd>
+<dt><b>JRN OPEN</b></dt><dd>(Write only) Opens a journal file for writing (recording).  The default file names are used.  The form :FS JRN OPEN$ closes the file.</dd>
+<dt><b>JRN OUT</b></dt><dd>(Read only) Is non-zero when a journal file is being recorded.</dd>
+<dt><b>JRN READ</b></dt><dd>(Read only) Reads a character from the journal file being replayed.  If there is no such file, it returns a random value.</dd>
+<dt><b>JRN WRITE</b></dt><dd>(Write only) Outputs its argument, either a character or a string, to the journal file being written.  If there is no such file, it does nothing.</dd>
+<dt><b>LAST PAGE</b></dt><dd>(Read only) Set to -1 when a file is opened and set to 0 when the last character has been read.</dd>
+<dt><b>LINES</b></dt><dd>Is the number of lines used by a standard buffer redisplay.  0 means to use the whole screen.</dd>
+<dt><b>LISPT</b></dt><dd>When set to non-zero, it means that text is supposed to be passed between TECO and its superior.</dd>
+<dt><b>LISTEN</b></dt><dd>Returns non-zero if input is available to be read by FI.  If it is given an argument and no input is available, the argument is typed out.</dd>
+<dt><b>MACHINE</b></dt><dd>(Read only) Returns the name of the machine that TECO is running on.</dd>
+<dt><b>MODE CHANGE</b></dt><dd>When set to non-zero, the FS MODE MACRO$ needs to be run eventually.</dd>
+<dt><b>MODE MACRO</b></dt><dd>The macro to update Q-register ..J and the mode line.</dd>
+<dt><b>MODIFIED</b></dt><dd>When set to non-zero, the buffer has been changed since last read or written.</dd>
+<dt><b>MP DISPLAY</b></dt><dd>(Write only) Outputs text to the main program display.</dd>
+<dt><b>MSNAME</b></dt><dd>The name of the working directory.</dd>
+<dt><b>NOOP ALTMODE</b></dt><dd>When set to a negative number, an altmode is considered a no-op. When set to 0, an altmode is considered an error.  When set to a positive number, altmode ends execution as ^_ does.</dd>
+<dt><b>NOQUIT</b></dt><dd>Gives the user control over ^G.</dd>
+<dt><b>OF ACCESS</b></dt><dd>(Write only) Sets the access pointer for the output file.</dd>
+<dt><b>OF CDATE</b></dt><dd>The creation data for the output file.</dd>
+<dt><b>O FILE</b></dt><dd>(Read only) The name of the output file.</dd>
+<dt><b>OF LENGTH</b></dt><dd>(Read only) The length of the output file.</dd>
+<dt><b>OF VERSION</b></dt><dd>(Read only) The version number of the output file or FS OF FN2$.</dd>
+<dt><b>OLD FLUSHED</b></dt><dd>Saves the value of FS FLUSHED$ when that is set to zero upon returning to ^R.</dd>
+<dt><b>OLD MODE</b></dt><dd>Is the last Q-register ..J actually displayed.</dd>
+<dt><b>OSPEED</b></dt><dd>The terminal's output speed in baud or 0 if the speed is not known.</dd>
+<dt><b>OUTPUT</b></dt><dd>When set to non-zero, suppresses output to the EW'd file.</dd>
+<dt><b>PAGENUM</b></dt><dd>The number of form feeds read from the input file.</dd>
+<dt><b>PJATTY</b></dt><dd>Set to a negative value whenever TECO detects that the terminal has been taken away. This negative value means that a complete redisplay must be done.</dd>
+<dt><b>PROMPT</b></dt><dd>The ASCII value of the prompt character.</dd>
+<dt><b>PUSHPT</b></dt><dd>(Write only) Same as n^V.</dd>
+<dt><b>QP HOME</b></dt><dd>Returns a string that says where the Q-register PDL (Push Down List == stack) slot n was pushed from.  The form :FS QP HOME$ returns a pointer to the Q-register.  The form n@FS QP HOME$ converts the pointer returned by :FS QP HOME$ into the string form.</dd>
+<dt><b>QP PTR</b></dt><dd>The Q-register PDL pointer.</dd>
+<dt><b>QP SLOT</b></dt><dd>Read the specified PDL slot.</dd>
+<dt><b>QP UNWIND</b></dt><dd>(Write only) Like FS QP PTR$ but pops slots back into the Q-registers they came from.</dd>
+<dt><b>QUIT</b></dt><dd>When set to a negative value, execution will quit at the next opportunity.</dd>
+<dt><b>Q VECTOR</b></dt><dd>Returns an n character long newly-consed up Q-register vector.</dd>
+<dt><b>RANDOM</b></dt><dd>Reads or sets the random number generator seed.</dd>
+<dt><b>READ ONLY</b></dt><dd>When set to non-zero.  Attempt to modify the buffer become an error.</dd>
+<dt><b>REAL ADDRESS</b></dt><dd>Returns the value of the machine address of the start of the buffer.</dd>
+<dt><b>REFRESH</b></dt><dd>When set to non-zero, this macro is executed whenever TECO really clears the whole screen.  It is executed after the screen has been cleared.</dd>
+<dt><b>REREAD</b></dt><dd>When set to non-negative, the 9-bit TV code will be read by the next invocation of FI.</dd>
+<dt><b>RGETTY</b></dt><dd>0 if printing terminal, or contains the tctyp word of a display terminal.</dd>
+<dt><b>RUB CRLF</b></dt><dd>When set to non-zero, both characters of a CR/LF pair are erased together.</dd>
+<dt><b>RUB MACRO</b></dt><dd>The macro called by ^R mode when it wants to do a ^? or ^D.</dd>
+<dt><b>RUNTIME</b></dt><dd>(Read only) TECO's runtime in milliseconds.</dd>
+<dt><b>SAIL</b></dt><dd>When set to non-zero, the terminal is assumed to support the SAIL character set.</dd>
+<dt><b>S ERROR</b></dt><dd>When set to non-zero, a failing search within an iteration or a ^P sort will generate an error.</dd>
+<dt><b>SHOW MODE</b></dt><dd>When set to non-zero, FR will type on the mode line on a printing terminal.  Has no effect on displays.</dd>
+<dt><b>S HPOS</b></dt><dd>Is the horizontal position of the point when everything is taken into account, but assuming an infinitely wide line.</dd>
+<dt><b>S STRING</b></dt><dd>Is the default search string.</dd>
+<dt><b>STEP MACRO</b></dt><dd>When set to non-zero and numeric, TECO displays the buffer and waits at the start of every line in a program.  When set to non-zero and a string, TECO executes this macro at the beginning of every line in a program.  Macros that start with W are never stepped.</dd>
+<dt><b>STEP DEPTH</b></dt><dd>When set to -1, stepping occurs always.  Otherwise, it is the number of the stack level at which to cut off stepping.</dd>
+<dt><b>SUPERIOR</b></dt><dd>Is the macro invoked when superiors want to put text into TECO.</dd>
+<dt><b>S VALUE</b></dt><dd>Is the value returned by last search command.</dd>
+<dt><b>TOP LINE</b></dt><dd>The number of the first line of the screen that TECO should use.</dd>
+<dt><b>TRACE</b></dt><dd>When set to non-zero, TECO is in trace mode.  See ?.</dd>
+<dt><b>TRUNCATE</b></dt><dd>If negative, long lines should be truncated.  If 0 or positive, long lines are wrapped to the next line.</dd>
+<dt><b>TTMODE</b></dt><dd>When set to non-zero, tells TECO that normal buffer display should display on printing terminals.</dd>
+<dt><b>TTY INIT</b></dt><dd>(Re)initializes TECO's TTY information.</dd>
+<dt><b>TTY MACRO</b></dt><dd>Performs user-specified TTY initialization.</dd>
+<dt><b>TTYOPT</b></dt><dd>(Read only) The TTYOPT word for the terminal.  Use the %TOxxx values instead.</dd>
+<dt><b>TTYSMT</b></dt><dd>(Read only) The TTYSMT word for the terminal.</dd>
+<dt><b>TYI BEG</b></dt><dd>The value of FS TYI COUNT$ the last time through the main ^R command loop.</dd>
+<dt><b>TYI COUNT</b></dt><dd>The number of characters read so far.</dd>
+<dt><b>TYI SINK</b></dt><dd>When set to non-zero, is a macro that is executed every time a character is actually read from the terminal.</dd>
+<dt><b>TYI SOURCE</b></dt><dd>When set to non-zero, it a macro that is called to obtain &quot;terminal input.&quot;</dd>
+<dt><b>TYO HASH</b></dt><dd>Returns the hash code of screen line n.  Doing -1,n FS TYO HASH$ forces line n to be redisplayed.</dd>
+<dt><b>TYO HPOS</b></dt><dd>(Read only) Holds the horizontal position at which type out will next appear.</dd>
+<dt><b>TYO VPOS</b></dt><dd>(Read only) Holds the vertical position at which type out will next appear.</dd>
+<dt><b>TYPEOUT</b></dt><dd>Tells where type out will next appear.  If -1, the next type out will appear at the top of the screen.  Otherwise, type out will appear just after the last type out.</dd>
+<dt><b>U HSNAME</b></dt><dd>Determines a user's hsname.</dd>
+<dt><b>UINDEX</b></dt><dd>(Read only) The user index of the TECO job.</dd>
+<dt><b>U MAIL FILE</b></dt><dd>The complete file name of the user's mail file.</dd>
+<dt><b>UNAME</b></dt><dd>(Read only) The user name of the TECO job.</dd>
+<dt><b>UPTIME</b></dt><dd>(Read only) Returns the time that the system has been up in units of 1/30 second.</dd>
+<dt><b>UREAD</b></dt><dd>(Read only) Is -1 if an input file is open, otherwise it is zero.</dd>
+<dt><b>UWRITE</b></dt><dd>(Read only) Is -1 if an output file is open, otherwise it is zero.</dd>
+<dt><b>VAR MACRO</b></dt><dd>When set to non-zero, a macro can be run whenever a variable is set.</dd>
+<dt><b>V B</b></dt><dd>Is the distance between the real beginning of the buffer and the virtual beginning.</dd>
+<dt><b>VERBOSE</b></dt><dd>When set to non-zero, TECO prints long error messages.  Otherwise, TECO prints only short messages and ^X must be typed to see the long version.</dd>
+<dt><b>VERSION</b></dt><dd>(Read only) The TECO version number.</dd>
+<dt><b>V Z</b></dt><dd>Is the distance between the real end of the buffer and the virtual end.</dd>
+<dt><b>WIDTH</b></dt><dd>Width of the terminal in characters.</dd>
+<dt><b>WINDOW</b></dt><dd>The position of the first character in the display window, relative to the virtual beginning of the buffer.</dd>
+<dt><b>WORD</b></dt><dd>Gets or sets words in the current buffer.</dd>
+<dt><b>XJNAME</b></dt><dd>(Read only) Returns the xjname of the TECO job.</dd>
+<dt><b>X MODIFIED</b></dt><dd>Just like FS MODIFIED$, only it doesn't affect the display of the modified flag in the mode line.  Thus, the user can track whether changes were made by intervening commands.</dd>
+<dt><b>X PROMPT</b></dt><dd>Printed and zeroed with each printing terminal prompt.</dd>
+<dt><b>XUNAME</b></dt><dd>(Read only) Returns the xjname of the TECO job.</dd>
+<dt><b>Y DISABLE</b></dt><dd>When set to 0, the Y command is legal.  When set to 1, the Y command is always illegal.  When set to -1, the Y command is treated as @Y.</dd>
+<dt><b>Z</b></dt><dd>(Read only) The number of characters in the buffer.</dd>
+<dt><b>^H PRINT</b></dt><dd>When set to negative, a ^H on output will backspace and overprint.  Otherwise, ^H will type as a ^ and H.</dd>
+<dt><b>^I DISABLE</b></dt><dd>When set to 0, ^I is an insert command.  When set to 1, ^I is illegal.   When set to -1, ^I is a no-op.</dd>
+<dt><b>^L INSERT</b></dt><dd>When set to non-zero, form feeds read from files always go into the buffer and P and PW never output anything except what is in the buffer.</dd>
+<dt><b>^M PRINT</b></dt><dd>When set to negative, a ^M on output will output as a CR/LF.  Otherwise, ^M will type as a ^ and M.</dd>
+<dt><b>^P CASE</b></dt><dd>When set to non-zero, ^P ignores case.</dd>
+<dt><b>^R ARG</b></dt><dd>Is the explicit numeric argument and is 0 (not 1!) if no argument was entered</dd>
+<dt><b>^R ARGP</b></dt><dd>Describes the ^R command's argument.</dd>
+
+<dl compact="compact">
+<dt><b>bit 2^0</b></dt><dd>set if any argument was specified</dd>
+<dt><b>bit 2^1</b></dt><dd>set if a number was typed</dd>
+<dt><b>bit 2^2</b></dt><dd>set if the argument is negative</dd>
+</dl>
+</dd>
+<dt><b>^R CCOL</b></dt><dd>The comment column.</dd>
+<dt><b>^R CMACRO</b></dt><dd>Converts the ASCII value n to a form required for ^R command dispatch.</dd>
+<dt><b>^R DISPLAY</b></dt><dd>When set to non-zero, this macro is executed whenever ^R is about to do a non-trivial redisplay.</dd>
+<dt><b>^R EXIT</b></dt><dd>(Write only) Exits from the innermost ^R invocation.</dd>
+<dt><b>^R ECHO</b></dt><dd>When set to 1, the characters read in by ^R should not be echoed.  When set to 0, they should be echoed only on printing terminals.  When set to -1, they should be echoed on all terminals.</dd>
+<dt><b>^R EC SD</b></dt><dd>When set to non-zero, this macro is executed whenever a space command is typed.  Used for auto-filling and such.</dd>
+<dt><b>^R ENTERED</b></dt><dd>When set to non-zero, this macro is executed whenever ^R is invoked.</dd>
+<dt><b>^R EXPT</b></dt><dd>Is the ^U count for the next ^R mode command.</dd>
+<dt><b>^R H MIN</b></dt><dd>(Read only) Is the leftmost horizontal position requiring redisplay.</dd>
+<dt><b>^R HPOS</b></dt><dd>The current horizontal position of the cursor.</dd>
+<dt><b>^R INDIRECT</b></dt><dd>Given a 9-bit character, follows the alias definitions to find what it is equivalent to.</dd>
+<dt><b>^R INHIBIT</b></dt><dd>When set to non-zero, ^R will not update the display.</dd>
+<dt><b>When set back to zero, ^R will catch up.
+^R INIT</b></dt><dd>Returns the initial definition of the character whose ASCII value is n.</dd>
+<dt><b>^R INSERT</b></dt><dd>Inserts its argument.</dd>
+<dt><b>^R LAST</b></dt><dd>Holds the most recent character read by any ^R.</dd>
+<dt><b>^R LEAVE</b></dt><dd>When set to non-zero, this macro is executed whenever ^R returns.</dd>
+<dt><b>^R MARK</b></dt><dd>Records the position of the mark.</dd>
+<dt><b>^R MAX</b></dt><dd>The maximum number of characters of insertions or deletions printed out by ^R on a printing terminal before it switches to printing a description of the change.  Default is 50.</dd>
+<dt><b>^R MCNT</b></dt><dd>The secretary mode counter.</dd>
+<dt><b>^R MDLY</b></dt><dd>The secretary mode limit value.</dd>
+<dt><b>^R MODE</b></dt><dd>(Read only) Non-zero while in ^R mode.</dd>
+<dt><b>^R MORE</b></dt><dd>When positive, --MORE-- is used for the ^R mode line instead of --TOP--, --BOT--, and --nn%--.  This is used when in an environment where Space means &quot;show me the next screenful.&quot;  When negative, no --XXX-- is displayed.</dd>
+<dt><b>^R NORMAL</b></dt><dd>When set to non-zero, this macro is executed for all normally self-insert characters.</dd>
+<dt><b>^R PAREN</b></dt><dd>When set to non-zero, this macro is executed for every &quot;)&quot; character.</dd>
+<dt><b>^R PREVIOUS</b></dt><dd>Holds the previous (second most recent) command.</dd>
+<dt><b>^R REPLACE</b></dt><dd>When set to non-zero, ^R runs in &quot;replace&quot; mode instead of &quot;insert&quot; mode.</dd>
+<dt><b>^R RUBOUT</b></dt><dd>The internal ^R rubout routine.</dd>
+<dt><b>^R SCAN</b></dt><dd>When set to non-zero and a printing terminal is in use, displays characters that are being moved past.</dd>
+<dt><b>^R STAR</b></dt><dd>When set to non-zero, a star appears in the mode line if the buffer has been modified.</dd>
+<dt><b>^R SUPPRESS</b></dt><dd>When set to 0 or positive, built-in ^R mode commands are suppressed and characters insert.</dd>
+<dt><b>^R THROW</b></dt><dd>Returns control to the innermost invocation of ^R.</dd>
+<dt><b>^R UNSUPP</b></dt><dd>When set to -1, one character will be unsuppressed.</dd>
+<dt><b>^R V MIN</b></dt><dd>(Read only) Is the topmost line requiring redisplay.</dd>
+<dt><b>^R VPOS</b></dt><dd>The current vertical position of the cursor.</dd>
+<dt><b>_ DISABLE</b></dt><dd>When 0, _ is &quot;search and yank.&quot;  When 1, _ is illegal.  When -1, _ is treated like -.</dd>
+</dl>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Appendix-D.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>

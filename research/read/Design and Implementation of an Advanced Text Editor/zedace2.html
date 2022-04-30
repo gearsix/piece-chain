@@ -1,0 +1,685 @@
+<html>
+<head><script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app223.us.archive.org';v.server_ms=255;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="/_static/js/bundle-playback.js?v=36gO9Ebf" charset="utf-8"></script>
+<script type="text/javascript" src="/_static/js/wombat.js?v=UHAOicsW" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html","20080221212131","https://web.archive.org/","web","/_static/",
+	      "1203628891");
+</script>
+<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=fantwOh2" />
+<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
+<!-- End Wayback Rewrite JS Include -->
+</head>
+<title> Design and Implementation of an Advanced Text Editor: Data Structures, File Loading </title>
+<body background="https://web.archive.org/web/20080221212131im_/http://home.mcom.com/assist/net_sites/bg/paper/blue_paper.gif"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
+<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20080221212131/http%3A//www.canberra.edu.au/~scott/C%253DHacking/C-Hacking11/zedace2.html"
+	    scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><div id="wm-ipp-inside">
+  <div id="wm-toolbar" style="position:relative;display:flex;flex-flow:row nowrap;justify-content:space-between;">
+    <div id="wm-logo" style="/*width:110px;*/padding-top:12px;">
+      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
+    </div>
+    <div class="c" style="display:flex;flex-flow:column nowrap;justify-content:space-between;flex:1;">
+      <form class="u" style="display:flex;flex-direction:row;flex-wrap:nowrap;" target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace2.html" onfocus="this.focus();this.select();" style="flex:1;"/><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20080221212131" /><input type="submit" value="Go" />
+      </form>
+      <div style="display:flex;flex-flow:row nowrap;align-items:flex-end;">
+		<div class="s" id="wm-nav-captures">
+	  	  <a class="t" href="/web/20080221212131*/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace2.html" title="See a list of every capture for this URL">34 captures</a>
+	  <div class="r" title="Timespan for captures of this URL">21 Apr 2001 - 29 Sep 2019</div>
+	  </div>
+	<div class="k" style="flex:1;">
+	  <a href="" id="wm-graph-anchor">
+	    <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+	      <canvas id="wm-sparkline-canvas" width="675" height="27" border="0"></canvas>
+	    </div>
+	  </a>
+	</div>
+      </div>
+    </div>
+    <div class="n">
+      <table>
+	<tbody>
+	  <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+	  <tr class="m">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071215133618/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="15 Dec 2007"><strong>Dec</strong></a></td>
+	    <td class="c" id="displayMonthEl" title="You are here: 21:21:31 Feb 21, 2008">FEB</td>
+	    <td class="f" nowrap="nowrap"><a href="https://web.archive.org/web/20080331215141/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="31 Mar 2008"><strong>Mar</strong></a></td>
+	  </tr>
+	  <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+	  <tr class="d">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20071215133618/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="13:36:18 Dec 15, 2007"><img src="/_static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0" /></a></td>
+	    <td class="c" id="displayDayEl" style="width:34px;font-size:22px;white-space:nowrap;" title="You are here: 21:21:31 Feb 21, 2008">21</td>
+	    <td class="f" nowrap="nowrap"><a href="https://web.archive.org/web/20080331215141/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="21:51:41 Mar 31, 2008"><img src="/_static/images/toolbar/wm_tb_nxt_on.png" alt="Next capture" width="14" height="16" border="0" /></a></td>
+	  </tr>
+	  <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+	  <tr class="y">
+	    <td class="b" nowrap="nowrap"><a href="https://web.archive.org/web/20060717013953/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="17 Jul 2006"><strong>2006</strong></a></td>
+	    <td class="c" id="displayYearEl" title="You are here: 21:21:31 Feb 21, 2008">2008</td>
+	    <td class="f" nowrap="nowrap"><a href="https://web.archive.org/web/20181211014319/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="11 Dec 2018"><strong>2018</strong></a></td>
+	  </tr>
+	</tbody>
+      </table>
+    </div>
+    <div class="r" style="display:flex;flex-flow:column nowrap;align-items:flex-end;justify-content:space-between;">
+      <div id="wm-btns" style="text-align:right;height:23px;">
+        	<span class="xxs">
+          <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="#"
+	     title="Share via My Web Archive" >
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php" title="Sign In" id="wm-sign-in">
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
+	</span>
+        	<a class="xxs" href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+	<a id="wm-tb-close" href="#close" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share" class="xxs">
+        <a href="/web/20080221212131/http://web.archive.org/screenshot/http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace2.html"
+           id="wm-screenshot"
+           title="screenshot">
+          <span class="wm-icon-screen-shot"></span>
+        </a>
+        <a href="#" id="wm-video" title="video">
+          <span class="iconochive-movies"></span>
+        </a>
+	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20080221212131/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20080221212131/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+      <div style="padding-right:2px;text-align:right;white-space:nowrap;">
+	<a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span class="xxs" style="font-size:80%;">About this capture</span></a>
+      </div>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+                    <div id="wm-capinfo-collected-by">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center">COLLECTED BY</div>
+    <div style="padding:3px;position:relative" id="wm-collected-by-content">
+            <div style="display:inline-block;vertical-align:top;width:50%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexacrawls);"></span>
+		Organization: <a style="color:#33f;" href="https://archive.org/details/alexacrawls" target="_new"><span class="wm-title">Alexa Crawls</span></a>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Starting in 1996, <a href="http://www.alexa.com/">Alexa Internet</a> has been donating their crawl data to the Internet Archive.  Flowing in every day, these data are added to the <a href="http://web.archive.org/">Wayback Machine</a> after an embargo period.
+	</div>
+	      </div>
+      <div style="display:inline-block;vertical-align:top;width:49%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/51_crawl)"></span>
+		<div>Collection: <a style="color:#33f;" href="https://archive.org/details/51_crawl" target="_new"><span class="wm-title">51_crawl</span></a></div>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  this data is currently not publicly accessible.
+	</div>
+	      </div>
+    </div>
+    </div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
+    </div>
+    </div>
+  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20080221212131/http://www.canberra.edu.au:80/~scott/C=Hacking/C-Hacking11/zedace2.html</div>
+<script type="text/javascript">
+__wm.bt(675,27,25,2,"web","http://www.canberra.edu.au/~scott/C%3DHacking/C-Hacking11/zedace2.html","20080221212131",1996,"/_static/",["/_static/css/banner-styles.css?v=fantwOh2","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<h1><a name="zedace">Design and Implementation of an Advanced Text Editor</a></h1>
+<b>by <a href="https://web.archive.org/web/20080221212131/http://ccnga.uwaterloo.ca/~csbruce/index.html">Craig Bruce</a> (<a href="https://web.archive.org/web/20080221212131/mailto:csbruce@ccnga.uwaterloo.ca">csbruce@ccnga.uwaterloo.ca</a> )</b>
+<h2> 2. DATA STRUCTURES, FILE LOADING </h2>
+ 
+Now we start talking about the implementation of <b>ZED</b>.  What a text editor 
+is, basically, is a program that holds a text document in memory that allows 
+you to use certain commands to alter tiny pieces or large-scale chunks of 
+the document and then to save the changed document permanently back to 
+disk.  The way in which the document is held in memory is the content of 
+this section. 
+
+<h3>2.1. DOCUMENT DATA STRUCTURE </h3>
+ 
+<b>ZED</b> uses a bi-directionally linked list to hold the text document in 
+memory.  A special "trailer" line is used (which is displayed with a little 
+"house" character on it) to make modifications to the linked list and the 
+whole list is in the form of a big ring (the links run around in circles). 
+Here is an asciigram of a document with two data lines: 
+ <pre>
+  /-------------------\ 
+  |   /----------\    | 
+  |   |          V    | 
+  |   |        +------------------------------------- 
+  |   |        |next|prev|  data for line #1... 
+  |   |        +------------------------------------- 
+  |   |          |    ^ 
+  |   |          V    | 
+  |   |        +------------------------------------- 
+  |   |        |next|prev|  data for line #2... 
+  |   |        +------------------------------------- 
+  |   |          |    ^ 
+  |   |          V    | 
+  |   |        +------------------------------------- 
+  |   |        |next|prev|  special trailer line... 
+  |   |        +------------------------------------- 
+  |   |          |    ^ 
+  |   \----------/    | 
+  \-------------------/ 
+ </pre>
+
+I should mention that all pointers are 32-bit values, so that they can point 
+to anywhere in ACE's "far" memory.  (In fact, many of the control variables 
+for <b>ZED</b> are 32 bits in size, to avoid all arbitrary restrictions on the 
+magnitudes of various things).  And, despite where the arrows point in the 
+diagram, the value that is stored for the pointer is the address of the 
+starting byte of the record that is being pointed to. 
+<p>
+I should also mention that lines are stored as they are displayed.  If one 
+physical line (terminated by a carriage return) has to be split (using "soft 
+returns") over multiple display lines, then each _display_ line takes up one 
+linked-record position in the document data structure. 
+<p>
+Using a bi-directionally (doubly) linked list (instead of a uni-directionaly 
+(singly) linked list is a practical necessity in this environment for two 
+reasons.  First, the linking represents the natural way that the user 
+accesses the document: he normally moves cursor up and down, page up and 
+down.  It would take a lot of time to move the cursor up using a singly 
+linked list.  Second, using a double linked list makes it easier to insert 
+or delete a line from the document.  You need to modify the previous record 
+to point beyond the record being deleted, but the previous record is 
+difficult to locate in a singly linked list; you must keep and manage a 
+pointer to it (and if the user moves the cursor up, you lose what you've got 
+for it).  I prefer doubly liked lists for any job anyway, even if the 
+ability to go backwards isn't needed, because they are easier to work with 
+(and to construct reusable library routines for). 
+ <p>
+Using a large block of memory for the data isn't really an option either. 
+Anyone who has used SpeedScript knows what happens when you try to insert 
+text near the beginning of a long document: it takes a lot of time to insert 
+one space in the document memory, and the delay is annoying.  Imagine this 
+played out for a document that is N megabytes in size.  (Some auxiliary data 
+structure would be needed in this case anyway, to break the 64K barrier). 
+I'm guessing that most other word processors/text editors for Commodore 
+computers use this data structure (a "large" block of memory). 
+<p>
+The decision to store each display line in a single record is really one of 
+convenience and efficiency.  Most of the time, the use will be positioning 
+the cursor and whizzing between display pages, so we don't want to be 
+wasting any time uselessly re-formatting the text while he (sic) is doing 
+this.  We only want to re-format the text when an actual modification is 
+made to the document.  This organization does have the ugly implication that 
+physical and logical line numbers may not always match up, but if the 
+"target" line length (the maximum length that a single display line can be) 
+is set to be longer than the maximum physical-line length of a file (often 
+80 characters), then the two will match up. 
+ <p>
+Accessing the document is fairly simple.  All that we need to locate the 
+entire document is the address of the special trailer line.  With this, we 
+know directly where the bottom line is, so we can instantly go to the bottom 
+of the document (Commodore-DOWN) and then follow the links backward to 
+access preceeding lines.  Finding the top of the document is also quite easy 
+since the document is in a ring.  We just locate the trailer line and then 
+follow the "next" link, and we arrive at the first line (Commodore-UP).  It 
+should be no surprise that a pointer is kept to the trailer line in <b>ZED</b> in 
+order to locate a document.  The design allows for many documents to be held 
+in memory at the same time, including the "kill buffer" (which is logically 
+a complete and independent document).  To make management even simpler, it 
+should be noted that this trailer line never changes (therefore, we never 
+have to update the pointer to the trailer line of a document). 
+ 
+<h3> 2.2. LINE DATA STRUCTURE </h3>
+ 
+The format of each individual display line within a document held in the 
+linked-list structure described above is as follows: 
+<pre>
+OFF   SIZ   DESC 
+---   ---   ----- 
+  0     4   pointer to the next line 
+  4     4   pointer to the previous line 
+  8     1   flags for the line, including $80=hard-return, $40=trailer line 
+  9     1   number of characters on the line  
+ 10     n   the displayable characters of the line 
+n+10    -   SIZE 
+ </pre>
+The two 32-bit pointers have already been mentioned.  The "flags" field 
+tells whether the line ends in a "hard return" or a "soft return".  A hard 
+return (indicated by the $80 bit being set) is recorded for every place in 
+the text file where a carriage-return character is present.  A soft return 
+(indicated by the $80 bit being clear) is formatted into the document every 
+place where a line must be broken in order to avoid it exceeding the target 
+line length.  If you modify the document, then words can be wrapped and 
+pulled back around a soft return in order to insure that display lines are 
+as full as possible (whereas they cannot be wrapped around a hard return). 
+ <p>
+When a file is being written back to disk, lines that have a hard return 
+flag will be written with a trailing carriage-return character, whereas 
+lines ending with a soft return will be written with only the characters 
+displayed on the line (no CR), and, as such, they will be logically 
+concatenated together into the same physical line (again) in the output 
+file.  The "trailer line" flag indicates whether the current line is the 
+special trailer line of the document or not.  We need a convenient way to 
+check for running into the trailer line, and we cannot use null pointers 
+since the document is in a ring (note that there won't be any null pointers 
+even if the document contains zero data lines; the trailer line will point 
+to itself). 
+ <p>
+The lower six bits of the flags field are currently unused, but they could 
+be used, for example, to record the number of leading spaces that a 
+line has before the first non-blank character.  This would allow us to 
+hold a file with a lot of indentation (a program, for example) using less 
+memory per line.  This feature is not currently implemented. 
+ <p>
+The next field tells the number of displayable characters that are on the 
+line and then the next field stores the actual characters in a simple 
+string.  If the line ends in a hard return, then the carriage-return 
+character is NOT stored in the line data, since its presence is already 
+indicated in the line header.  When records are allocated in the 
+dynamic-memory space, only the number of bytes that are actually needed are 
+allocated.  This is the number of bytes on the line plus ten bytes for the 
+line header.  Actually, the number of bytes reserved for an allocation is 
+the number of bytes requested rounded up to the nearest multiple of eight 
+bytes, for technical reasons discussed in C= Hacking #2.  A single display 
+line can contain up to 240 characters (not counting the CR). 
+ <p>
+Every time that a line needs to be accessed, it must be fetched from far 
+memory into a buffer in the program space.  There is a slight efficiency 
+problem in accessing a line that there isn't when allocating and storing a 
+line.  When going to read the line, you don't know how big it is, since you 
+know nothing about it other than its far location.  The conservative thing 
+to do would be to read the first ten bytes of the line record (the header 
+information) and then use the value in the line-length field to figure out 
+how many more bytes you need to fetch.  I kind of took a wild stab and made 
+it so that I read the first twenty bytes of a line and then see if the line 
+has ten or fewer displayable characters on it.  If so, then I have 
+successfully fetched the whole line and I am done in one access.  (Note that 
+there is no problem with fetching far memory beyond one record's allocation 
+(although there certainly would be a problem with stashing)).  If not, then 
+I fetch the remaining characters and I am done in two fetches (actually, I 
+fetch all of the characters for simplicity). 
+ <p>
+However, often times I don't actually have to fetch the data of a line at 
+all and I only need to access its header information (to follow or change 
+its linkage, for example).  In this case, I only have to access the header 
+of the line and I only need one access to get it since I already know how 
+long the header is (ten bytes).  I can also write back a modified header in 
+place since it is of fixed length.  If I were to, for example, add 
+characters to a line, then I would have to re-allocate a larger line record 
+for it, free the old line-record storage, and link the new line record in 
+with the rest of the document (by updating the previous record's "next" 
+pointer and updating the next record's "prev" pointer and by updating any 
+necessary global variables... quite a bit or work). 
+ 
+<h3>2.3. GLOBAL VARIABLES </h3>
+ 
+This section describes all of the global variables that <b>ZED</b> keeps in order 
+to edit a document.  First, I have three separate temporary-storage work 
+areas: 
+ <pre>
+work1 = $02 ;(16)  ;used by malloc 
+work2 = $12 ;(16)  ;used by file-load 
+work3 = $22 ;(14) 
+ </pre>
+Each work area is used by successively higher levels of software in order to 
+avoid conflicts between layers.  For example, "work1" is used by the 
+dynamic-memory routines and "work2" gets modified when loading a file.  The 
+process of loading a file involves a lot of memory-allocation work, so it is 
+good that they use separate working storage and don't clobber each other. 
+ <p>
+The following variables are used for managing the screen and the current 
+cursor column: 
+ <pre>
+scrTopAddr      = $30 ;(2)  ;screen address of the top line on the display 
+scrRow          = $34 ;(1)  ;row number of the current line on the display 
+scrCol          = $35 ;(1)  ;virtual screen column number of cursor position 
+scrRows         = $36 ;(1)  ;number of rows on the display 
+scrCols         = $37 ;(1)  ;number of columns on the display 
+scrStartRow:    .buf 1      ;starting row on the display 
+scrStartCol:    .buf 1      ;starting column on the display 
+scrRowInc       = $38 ;(1)  ;row increment for the display 
+scrLeftMargin   = $39 ;(1)  ;left margin for displaying lines 
+statusMargin:   .buf 1      ;left margin of the status line on the display 
+conColor:       .buf 8      ;color palette 
+ </pre>
+Most of these fields are used for interfacing with ACE's direct-access 
+full-screen-control calls.  The ones that are used most often are allocated 
+to zero-page locations (to reduce code size and to increase performance) and 
+the others are allocated to absolute memory.  ACE allows application 
+programs to use zero-page locations $02 to $7F for their own purposes. 
+ <p>
+The current displayed cursor location is stored in "scrRow" and "scrCol". 
+"scrRow" is the current physical display row of the current document line 
+(where display rows start at 2 since the control and separator lines take up 
+rows 0 and 1), and "scrCol" tells the current position on the current line, 
+from 0 up to the length of the line.  Since this version of <b>ZED</b> features 
+horizontal scrolling to handle really long display lines, "scrLeftMargin" is 
+also maintained to tell what the column number of the left margin of the 
+display is.  When we refresh the screen, we will display all lines starting 
+from this character position.  Note that internally, column numbers start 
+from 0 whereas they are numbered starting from 1 in all dialogue with the 
+ape at the keyboard.  Every time that the cursor could possibly move off the 
+right or left edge of the screen, a check is made and if this happens, then 
+the "scrLeftMargin" is adjusted and the screen is re-painted (effectively 
+giving us horizontal scrolling). 
+<p> 
+The following variables are used to keep track of various parameters: 
+ <pre>
+targetLen       = $3a ;(1)  ;length to display lines 
+wrapFlag        = $3b ;(1)  ;$80=wrap,$40=showCR 
+modified        = $3c ;(1)  ;$00=no, $ff=modified 
+modeFlags       = $3d ;(1)  ;$80=insert, $40=indent 
+statusUpdate    = $3e ;(1) ;128=line,64=col,32=mod,16=ins,8=byt,4=fre,2=nm,1=msg 
+markedLinePtr:  .buf 4      ;line that is marked, NULL of none 
+markedLineNum:  .buf 4      ;line number that is marked 
+markedCol:      .buf 1      ;column of marked logical line 
+ </pre>
+"targetLen" is the length that <b>ZED</b> tries to keep wrappable lines as close to 
+without exceeding.  By default, it will be set to the physical display width 
+of the screen, but it can be set to 240 characters by the "-l" option and it 
+will eventually be manually settable to any value you want (10&lt;=l&lt;=240). 
+The "wrapFlag" tells, first, whether word wrapping should be used ($80 set) 
+or whether lines should just be broken at the target length regardless of 
+whether it gets broken in the middle of a word or not ($80 clear), and 
+second, tells whether carriage-return characters should be displayed to the 
+user ($40 set) or not ($40 clear).  (Actually, a suitable character to 
+represent the carriage return is displayed, taken from the graphical palette 
+of the current character set).  You will normally want carriage returns 
+displayed when you are using <b>ZED</b> as a word processor, and you will normally 
+want them not displayed when using <b>ZED</b> as a text editor. 
+ <p>
+The "modeFlags" tell, first, whether auto-insert ($80 bit set) or over-type 
+($80 clear) mode is in effect, and second, whether auto-indent ($40 set) or 
+no-indent ($40 clear) mode is in effect.  Insert/overtype is currently 
+supported and auto-indent is not.  Auto-indent is intended to eventually 
+make programming easier by not requiring you to type a bunch of spaces to 
+indent a new line of a source file that should be at the same nesting level 
+as the previous line. 
+ <p>
+The "statusUpdate" variable is used to reduce the amount of work the needs 
+to be done in order to keep the status line at the top of the screen up to 
+date.  If any of the variables that control the values displayed on the 
+status line change, then the corresponding bit in this variable should be 
+set.  After processing a keystroke but before waiting for the next 
+keystroke, <b>ZED</b> will update all of the fields that have a '1' bit in this 
+variable.  The "msg" bit is special, since it tells whether a dialogue 
+message is currently being displayed on the separator line (between the 
+status line and the first document line), and if there is, then the message 
+should be erased (overwritten by the separator characters) _after_ the user 
+presses the next key (since it wouldn't be much fun if the user had only a 
+couple of milliseconds to read the message). 
+ <p>
+The "marked*" fields tell where the "mark" is currently set for range 
+commands (like delete).  Like in the stand-alone <b>ZED</b>, I will be making this 
+version clear the mark after every modification to the file.  The main 
+reason for this is that it would be a pain in the but to keep track of the 
+mark in some cases like when the line that is marked gets deleted or 
+updated, and that having set-mark/do-operation clear the mark prevents the 
+ape at the keyboard from accidentally hitting a range-destroy key and wiping 
+out his document (he will get a "range not set" error message instead). 
+ <p>
+The following variables are used to keep track of the current position in 
+the document: 
+ <pre>
+linePtr         = $40 ;(4)  ;pointer to current line 
+lineNum         = $44 ;(4)  ;number of current physical line 
+headLinePtr     = $4c ;(4)  ;pointer to the special header/trailer line 
+lineCount       = $50 ;(4)  ;number of display lines in buffer 
+byteCount       = $54 ;(4)  ;number of bytes in buffer 
+ </pre>
+"linePtr" always points to the line record that the cursor is logically on. 
+This is probably the most important global variable.  This variable is 
+needed so that we know what line to modify/etc. if the user enteres a 
+letter/etc.  "lineNum" gives the line number of the "linePtr" line, where 
+line numbers start from 1.  This needs to be maintained in order to tell the 
+ape at the keyboard where in the document he is.  These two fields are 
+sequentially updated as the user moves from line to line in the document. 
+ <p>
+"headLinePtr" is a bit of a misnomer since it actually points to the special 
+trailer line.  As explained above, it is used to find the top and the bottom 
+of the document.  "lineCount" keeps track of the total number of display 
+lines in the current document, and "byteCount", the total number of bytes. 
+Each carriage-return character counts as one byte.  Keeping track of line 
+and byte counts is for convenience rather than necessity. 
+ <p>
+The following variables manage the "kill buffer", where text goes after it's 
+been deleted but before it's completely discarded (a sort of purgatory): 
+ <pre>
+killBufHeadPtr: .buf 4      ;pointer to special header/trailer line of kill buf 
+killLineCount:  .buf 4      ;number of lines in kill buffer 
+killByteCount:  .buf 4      ;number of bytes in the kill buffer 
+ </pre>
+The kill buffer is maintained in exactly the same structure that the main 
+document is: a ring of doubly linked line records.  The three fields shown 
+store the pointer to the special trailer line, the number of data lines in 
+the kill buffer, and the number of data bytes in the kill buffer, 
+respectively. 
+ <p>
+In addition to the kill buffer, there is also a "rub buffer": 
+ </pre>
+RUB_BUFFER_SIZE = 50 
+rubBufPtr:  .buf 1 
+rubBufSize: .buf 1 
+rubBuffer:  .bss RUB_BUFFER_SIZE 
+ </pre>
+It is used to hold the fifty single characters that have most recently been 
+deleted by using either the DEL or Commodore-DEL (Rub).  I found that when 
+using the old version of <b>ZED</b>, I would sometimes unintentionally delete a 
+single character and then want it back, and I had to expend mental effort to 
+figure out what it was.  This mechanism takes the effort out of that job by 
+maintaining a LIFO (Last In First Out) (circular) buffer controlled by the 
+variables given above (note that "RUB_BUFFER_SIZE" is a constant which can 
+be easily changed up to 255 in the source code).  The "rubBuffer" is 
+actually contained in the uninitiali<b>ZED</b>-storage section of the program 
+("bss" in Unix terminology).  (The ".bss" directive is not currently 
+implemented in the ACEassembler, but I used it here as a shorthand for the 
+equates that replace it). 
+ <p>
+The Shift-Ctrl-R (rub recall) keystroke is used to recall the previous 
+character (as if you had typed it in) and has the effect of resetting the 
+"rubBufPtr".  Then, each additional time that you type Shift-Ctrl-R in a 
+row, the "rubBufPtr" is advanced backward to the character previous to 
+the one just recalled.  Pressing anything other than Shift-Ctrl-R resets 
+the "rubBufPtr", so that you could recall the characters again, if you want. 
+You can recall as few characters as you wish. 
+ <p>
+Interpreting command keys is done with the following global variables: 
+ <pre>
+keychar       = $58 ;(1) 
+keyshift      = $59 ;(1) 
+sameKeyCount: .buf 1 
+sameKeyChar:  .byte $00 
+sameKeyShift: .byte $ff 
+ </pre>
+ACE returns both a shift pattern and a key character code, so both are 
+stored.  The shift pattern allows us to take different actions for commands 
+like Ctrl-R and Shift-Ctrl-R.  The "same*" fields store the previous 
+keystroke and the number of times that the exact keystroke has been made, so 
+that slightly different actions can be taken when the same keystroke is made 
+multiple times, such as with Shift-Ctrl-R (or maybe HOME). 
+ <p>
+The following global variables are also maintained for various purposes: 
+ <pre>
+exitFlag:     .buf 1 
+arg:          .buf 2 
+temp:         .buf 4 
+stringbuf:    .bss 256 
+filebuf:      .bss 256 
+tpaFreemap:   .bss 256 
+linebuf:      .bss 256 
+line          = linebuf+headLength ;(241) 
+headBuffer    = $70 ;(10) ;buffer for holding the head of the current line 
+headNext      = $70 ;(4)  ;pointer to the next line in a document 
+headPrev      = $74 ;(4)  ;pointer to the prev line in a document 
+headLineLe    = $78 ;(1)  ;length of the text line 
+headFlags     = $79 ;(1)  ;$80=CR-end, $40=headerLine, &amp;$3F=indent 
+headLength    = 10        ;length of the line header 
+documentBuf:  .bss 256 
+ docbufNext   = documentBuf+0   ;(4) 
+ docbufPrev   = documentBuf+4   ;(4) 
+ docbufInfo   = documentBuf+8   ;(23) 
+ docbufFilenameLen = documentBuf+31 ;(1) 
+ docbufFilename= documentBuf+32  ;(224) 
+ </pre>
+"exitFlag" is set to tell the main loop to bail out and exit back to the 
+calling program.  "arg" is used for scanning the command-line arguments. 
+"temp" is used miscellaneously.  "stringbuf" is used for miscellaneous 
+string processing, and "filebuf" is used for miscellaneous file/string 
+processing.  "tpaFreemap" is used by the dynamic-memory-management code as a 
+free-memory-page map for making allocations out of the application program 
+area (or TPA, Transient Program Area).  The ACE kernel doesn't dynamically 
+allocate pages in the application space (since this cannot normally be done 
+reliably), so a mechanism is needed inside of <b>ZED</b> to make use of this 
+memory. 
+ <p>
+"linebuf" is the place where the current line is fetched to/stashed from 
+when it is being accessed or modified.  "line" is the sub-field of "linebuf" 
+where the actual line data is stored.  The "head*" variables are allocated 
+in zeropage and the record-header information from "linebuf" is copied to 
+these variables whenever a line is fetched and copied from these variables 
+when a line is stashed to far memory.  Zero page is used for these variables 
+since they are manipulated all of the time. 
+ <p>
+Finally, "documentBuf" stores all of the information about the current main 
+document.  There is currently support for only one main document 
+implemented, but the design includes the concept of the user being able to 
+switch between an arbitrary number of documents held in memory at any time. 
+ 
+<h3>2.4 LOADING A FILE </h3>
+ 
+When <b>ZED</b> is first started up, its usual first job is to load in the document 
+that was named on the command line (plus you can load a file at any time 
+with Ctrl-L).  <b>ZED</b> uses the standard ACE "open", "read", and "close" system 
+calls to do this, although there is a bit of business that has to happen to 
+get the data into the internal form that <b>ZED</b> uses.  The job is split into a 
+number of routines to make it easier to program. 
+ <p>
+The main routine opens the file for reading and initializes that variables 
+that the load routine uses.  Among other things, the load routine counts up 
+the number of display lines and physical bytes in the file and must wrap 
+physical lines into display lines while reading.  Later, this routine will 
+perform on-the-fly translation from other file formats to PETSCII and will 
+perform TAB expansion if requested. 
+ <p>
+The main routine repeatedly calls subroutines to read a line into the line 
+buffer, wrap it, and store it to memory.  For the purpose of the following 
+discussion, we will assume that the "target" line length is 80 characters, 
+although it can be set to anything that you want.  The Read routine copies 
+characters from the "filebuf" to the line buffer, with the filebuf being 
+re-filled with file-data characters as necessary in 254-byte chunks (the 
+natural size of Commodore data sectors, for efficiency).  Data bytes are 
+copied until either a carriage-return (CR) character is encountered or we 
+reach the 81st character (target+1).  We have to check the 81st character 
+because it may be a CR, and if we are in the normal text-editor mode, we can 
+store a full 80 data characters on a display line, even if it ends in a CR 
+(some editors, quite annoyingly, cannot do this).  However, if the user 
+selects the mode where CRs are visibly displayed on the screen, then we stop 
+scanning the current display line at a maximum of 80 characters if a CR 
+isn't encountered. 
+ <p>
+After the characters of the display line have been put into the line buffer 
+in the above step, it may be the case that the word at the end of the line 
+has been abruptly broken in the middle.  If the line ended in a CR, then 
+this doesn't need to be checked.  If the line didn't end in a CR and if the 
+"wrap" mode is currently on, then an abruptly cut word will have to be 
+wrapped to the next line.  To do this, we scan from the end of the line back 
+until we encounter the last space character on the line.  Then, we cut the 
+line immediately after that space, and remember where we cut it so that we 
+can later process the overflown characters.  If there is no space on the 
+line (i.e., the first and only word on the line is longer than the target 
+length), then we keep it as-is and end up breaking the word abruptly.  Note 
+that we break the line with a "soft return", so there is no damage done to 
+the data by word wrapping. 
+ <p>
+After the fat (if any) has been trimmed off the current display line, we 
+want to store it into far memory, into the doubly linked ring structure 
+discussed above.  To do this, we first, set the pointer to the previous line 
+to the address of the previous line record (we keep track of this) and set 
+the pointer to the next line to Null (for now).  Then we we allocate memory 
+for the current line and Stash it out.  But we're not done yet; we need to 
+set the "next" pointer on the previous line record to point to our newly 
+allocated line.  This can be done by simply writing the 32-bit pointer value 
+to the start address of the previous line (there is no need to re-fetch the 
+previous-line contents or header). 
+ <p>
+And after stashing out the line, we recall where we wrapped it (if we did) 
+and copy the characters that were cut off to the beginning of the line 
+buffer and we pretend that we have fetched these from the file as if in the 
+Load Line step above.  Then we go back to the Load Line step and continue. 
+ <p>
+When loading is finished (after we hit End-Of-File (EOF) on the file being 
+read), we flush the last incomplete line segment, if there was one (a file 
+is not required to end in a CR) and then we cap things off with the special 
+trailer line.  This trailer line is allocated before we start loading the 
+file (although I didn't mention it above), and now we set up its links so 
+that our entire file is the nice doubly linked ring that we like so much. 
+Now we are finished, and we return the trailer-line pointer, the number of 
+display lines read in, and the number of physical bytes read in to whomever 
+called us (it could be the command-line parser, the Ctrl-L (Load) command, 
+or the Ctrl-I (Insert) command). 
+ <p>
+There are three reasons why I like having this special trailer line around. 
+(1) It allows us to not have to worry about Null pointers.  For example, you 
+will notice that while stashing a loaded line, I allocated the trailer line 
+first so that we would always have a "previous" line to link with.  (2) It 
+allows the user to move the cursor beyond the physical end of the document 
+to do operations like recall (Ctrl-R) a block of text.  This was a problem 
+with the original <b>ZED</b>; you had to go the the end of the file, press RETURN 
+to open up a blank line, recall the text, and then delete the bogus blank 
+line.  (3) It allows a document to have zero characters in it in a 
+consistent fashion. 
+ <p>
+There is also a subtle but complicated issue dealing with dynamic memory 
+allocation that I haven't discussed yet: what if it fails?  (I.e., what if 
+we run out of memory?).  In this case, we must handle the failure 
+gracefully, maintain the integrity of the document as best we can, and 
+inform the user.  In some cases, maintaining the integrity will involve 
+un-doing committed changes to the document, which is a real pain in the 
+butt, but which is still very important.  It would be kind of annoying if 
+you just made the last keystroke on five hours of editing work and the 
+program aborted on an "out of memory" error, sending all of your work to the 
+great bit bucket in the sky. 
+ <p>
+<a href="zedace3.html">On to Chapter 3.</a>
+<hr>
+Last Updated: 1995-12-06 Rev A
+</body>
+</html>
+
+<!--
+     FILE ARCHIVED ON 21:21:31 Feb 21, 2008 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 20:32:49 Apr 27, 2022.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 138.869
+  exclusion.robots: 0.295
+  exclusion.robots.policy: 0.283
+  RedisCDXSource: 4.249
+  esindex: 0.009
+  LoadShardBlock: 116.57 (3)
+  PetaboxLoader3.datanode: 140.817 (4)
+  CDXLines.iter: 15.609 (3)
+  load_resource: 111.455
+  PetaboxLoader3.resolve: 38.199
+-->

@@ -1,0 +1,590 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-titlebar by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Custom Titlebar - Catch22</title>
+<meta name="description" content="This article will teach you the techniques used to insert one or more buttons into the title bar (caption area) of any window. The source code download implements a complete library which supports all types of window, including standard frame windows, and tool windows with smaller captions.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Custom Titlebar">
+<meta property="og:url" content="custom-titlebar.html">
+
+
+  <meta property="og:description" content="This article will teach you the techniques used to insert one or more buttons into the title bar (caption area) of any window. The source code download implements a complete library which supports all types of window, including standard frame windows, and tool windows with smaller captions.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-10-01T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="custom-titlebar.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Custom Titlebar</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/titlebar.zip">titlebar.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Custom Titlebar">
+    <meta itemprop="description" content="This article will teach you the techniques used to insert one or more buttons into the title bar (caption area) of any window. The source code download implements a complete library which supports all types of window, including standard frame windows, and tool windows with smaller captions.">
+    <meta itemprop="datePublished" content="October 01, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Custom Titlebar
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Custom Titlebar</h1-->
+<!--h3>How to insert buttons into a window's caption area</h3-->
+
+<p>This article will teach you the techniques used to insert one or more buttons into the title bar (caption area) of any window. The source code download implements a complete library which supports all types of window, including standard frame windows, and tool windows with smaller captions.</p>
+
+<h2 id="important">Important</h2>
+
+<p>Note that this article was originally written in 20001 - it is only relevant for Windows 95/98/ME and Windows NT/2000/XP. Customizing the titlebar in Vista and Windows 7 (using the Aero theme) requires overlaying windows on top of the titlebar.</p>
+
+<p>The techniques presented here are fairly straight-forward. The same techniques can be applied to perform any title bar customization, although this article will concentrate just on inserting buttons next to the standard minimize, maximize and close caption buttons.</p>
+
+<p><img src="http://www.catch22.net/assets/img/titlebar.gif" alt="Sample screen-shot" class="align-center" /></p>
+
+<h2 id="subclassing-the-window">Subclassing the window</h2>
+
+<p>As with most other window customizations, this method will subclass the window in question in order to provide the additional functionality.</p>
+
+<p>Every inserted button is going to need some form of state. The structure definition below describes the necessary attributes for a button.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">UINT</span> <span class="n">uCmd</span><span class="p">;</span> <span class="c1">//Command to send when clicked (WM_COMMAND)
+</span>    <span class="kt">int</span> <span class="n">nRightBorder</span><span class="p">;</span> <span class="c1">//Pixels between this button and buttons to the right
+</span>    <span class="n">HBITMAP</span> <span class="n">hBmp</span><span class="p">;</span> <span class="c1">//Bitmap to display
+</span>    <span class="n">BOOL</span> <span class="n">fPressed</span><span class="p">;</span> <span class="c1">//Is the button pressed in or out?.
+</span><span class="p">}</span> <span class="n">CaptionButton</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Whilst this is sufficient to describe one button, there is still some additional information we need to keep track of. We need to know the number of buttons that are inserted, an array of these buttons, and somewhere to store the window’s old window procedure. The following structure contains these details, and it is this structure that we associate with the subclassed window.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">CaptionButton</span> <span class="n">buttons</span><span class="p">[</span><span class="n">MAX_TITLE_BUTTONS</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">nNumButtons</span><span class="p">;</span>
+    <span class="n">BOOL</span> <span class="n">fMouseDown</span><span class="p">;</span> <span class="c1">// is the mouse button being clicked?
+</span>    <span class="n">WNDPROC</span> <span class="n">wpOldProc</span><span class="p">;</span> <span class="c1">// old window procedure
+</span>    <span class="kt">int</span> <span class="n">iActiveButton</span><span class="p">;</span> <span class="c1">// the button index being clicked.
+</span><span class="p">}</span> <span class="n">CustomCaption</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>We’re now ready to implement an <code class="highlighter-rouge">InsertButton</code> function. This function will perform a number of steps to insert a button into a window’s titlebar.</p>
+
+<ol>
+  <li>Allocate memory for a <code class="highlighter-rouge">CustomCaption</code> structure fi this is the first button being inserted.</li>
+  <li>Associate this structure with the window (using <code class="highlighter-rouge">SetProp</code> API, if necessary)</li>
+  <li>Replace the window procedure with our custom one.</li>
+  <li>Fill in one entry in the <code class="highlighter-rouge">CaptionButton</code> array to represent a button.</li>
+</ol>
+
+<p>Note that there aren’t any <em>physical</em> changes to the window when we insert a button. Unlike the edit-control button tutorial, where space was allocated for a button in the non-client area using <code class="highlighter-rouge">WM_NCCALCSIZE</code>, in this case there is no need. This is because the caption bar already exists, and we will be drawing our buttons over the top of that.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">Caption_InsertButton</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uCmd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nBorder</span><span class="p">,</span> <span class="n">HBITMAP</span> <span class="n">hBmp</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="calculating-the-button-position">Calculating the button position</h2>
+
+<p>Our custom titlebar buttons don’t have a fixed position or size. Their location and size are completely dependent on the current size of the window, and the current system setting for the titlebar height. It will therefore be necessary to write a function which calculates the current location of a button at any given time. This location is required when we come to draw the buttons, and also when we come to process mouse messages for them.</p>
+
+<p>The function will look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">CustomCaption</span> <span class="o">*</span><span class="n">ctp</span><span class="p">,</span> <span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span><span class="n">rect</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fWindowRelative</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>We need to pass a pointer to the <code class="highlighter-rouge">CustomCaption</code> structure for a given window, the window handle itself, the index of the button we want the location for and a pointer to a <code class="highlighter-rouge">RECT</code> structure to receive the coordinates. The last parameter, <code class="highlighter-rouge">fWindowRelative</code> , controls what the returned coordinates will be relative to. A value of <code class="highlighter-rouge">TRUE</code> results in window-relative coordintes (from the top-left of the window). A value of <code class="highlighter-rouge">FALSE</code> results in screen coordinates.</p>
+
+<p>The <code class="highlighter-rouge">GetButtonRect</code> function needs to take a few things into consideration in order to return a correct button location.</p>
+
+<ol>
+  <li><strong>Titlebar button size (in pixels).</strong> This information can be retrieved using the <code class="highlighter-rouge">GetSystemMetrics</code> API call, but we need to test if the window is a standard window or a tool-window (with a narrow titlebar).</li>
+  <li><strong>Current caption buttons.</strong> A window can contain four different caption buttons. These are the Close [x], Minimize [-], Maximize [+] and Context Help [?] buttons. If we want to preserve these buttons then we need to make sure that our inserted buttons never overlap any existing buttons. The <code class="highlighter-rouge">GetButtonRect</code> function tests the window styles to determine how many buttons are already in place.</li>
+  <li><strong>Window border size.</strong> A window can have many different border sizes, depending on if it has a resizing or fixed border, but also on current system settings. <code class="highlighter-rouge">GetButtonRect</code> calculates the current border size and takes these dimensions into account.</li>
+  <li><strong>Previously inserted buttons.</strong> The <code class="highlighter-rouge">GetButtonRect</code> function also needs to take into account any buttons that were inserted before the one we are interested in, and calculate not only their sizes (based on the system settings), but also the border spacing setting that our buttons have.</li>
+</ol>
+
+<p>Now that we can precisely locate any one of our custom buttons, we can proceed onto the next step: actually drawing the buttons.</p>
+
+<h2 id="drawing-the-inserted-buttons">Drawing the inserted buttons</h2>
+
+<p>The custom buttons live in the non-client area of a window (more precisely, the caption bar). Therefore this requires us to handle the <code class="highlighter-rouge">WM_NCPAINT</code> message.</p>
+
+<p>Drawing the custom buttons is going to be a little more difficult than usual. We ideally want to keep the actual drawing to a minimum. If possible, we want the default window procedure to paint as much as possible before we step in and perform our customization. The problem is that we have to preserve the existing window title bar whilst drawing our own buttons on top. And we have to make sure that there is no flickering or painting glitches.</p>
+
+<p>The basic strategy will be to get the original window procedure to draw the whole window frame and caption, but with the button areas masked out. Once the window has been painted, all that is left to do is to paint each button in turn into the masked-out areas. I will break the process down into steps so that you can see how this is achieved.</p>
+
+<p>The first step is to build up a region which describes the whole window, minus the areas our buttons will take. This is achieved with the <code class="highlighter-rouge">CreateRectRgn</code> API call to obtain the whole window region. The button areas are then masked out with calls to the <code class="highlighter-rouge">CombineRgn</code> API call, specifying the <code class="highlighter-rouge">RGN_XOR</code> flag to “cut” button-shaped rectangles out of the window region.</p>
+
+<p><img src="http://www.catch22.net/assets/img/titlebar2.gif" alt="" class="align-center" /></p>
+
+<p>One very important thing to mention is that all regions and rectangles must be in <em>screen coordinates</em>. The <code class="highlighter-rouge">WM_NCPAINT</code> handler will look something like this.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HRGN</span> <span class="n">hrgn</span><span class="p">,</span> <span class="n">temprgn</span><span class="p">;</span>
+
+<span class="c1">// Get the SCREEN coordinates of this window.
+</span><span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+<span class="c1">// Create a region which covers the whole window. 
+</span><span class="k">if</span><span class="p">(</span><span class="n">wParam</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">hrgn</span> <span class="o">=</span> <span class="n">CreateRectRgnIndirect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+<span class="k">else</span>
+    <span class="n">hrgn</span> <span class="o">=</span> <span class="p">(</span><span class="n">HRGN</span><span class="p">)</span><span class="n">wParam</span><span class="p">;</span>
+
+<span class="c1">// Clip our custom buttons out of the way...
+</span><span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">nNumButtons</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//Get button rectangle in screen coords
+</span>    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">ctp</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+
+    <span class="n">temprgn</span> <span class="o">=</span> <span class="n">CreateRectRgnIndirect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">//Cut out a button-shaped hole
+</span>    <span class="n">CombineRgn</span><span class="p">(</span><span class="n">hrgn</span><span class="p">,</span> <span class="n">hrgn</span><span class="p">,</span> <span class="n">temprgn</span><span class="p">,</span> <span class="n">RGN_XOR</span><span class="p">);</span>
+    <span class="n">DeleteObject</span><span class="p">(</span><span class="n">temprgn</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That’s the tricky part out of the way. The next task is to get the original window procedure to paint the entire window frame and caption (like it would do normally).</p>
+
+<p>The <code class="highlighter-rouge">wParam</code> argument to <code class="highlighter-rouge">WM_NCPAINT</code> is a handle to an update region. MSDN states that when <code class="highlighter-rouge">wParam</code> is 1, this indicates that the entire non-client area is to be updated. Our paint handler needs to test for this occurance and create a valid window region when this happens. Otherwise, <code class="highlighter-rouge">wParam</code> already represents a valid update region, so we can use that instead when we mask our buttons out.</p>
+
+<p>Now, when we call the original window procedure, instead of passing the original handle specified by <code class="highlighter-rouge">wParam</code>, we can pass in our modified update region. It works like a charm. The window is drawn normally, but with our inserted buttons masked out of the way.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CallWindowProc</span><span class="p">(</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">wpOldProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_NCPAINT</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">hrgn</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><img src="http://www.catch22.net/assets/img/titlebar3.gif" alt="" class="align-center" /></p>
+
+<p>All that is left is to draw our buttons! To do this we need to obtain a device context to the window, using the <code class="highlighter-rouge">GetWindowDC</code> API call. Next, the buttons are drawn in a simple for-loop. Another important note here. When we draw into a window device-context, all coordinates must now be <em>window relative</em>. That is, relative to the top-left of the window.</p>
+
+<p><img src="http://www.catch22.net/assets/img/titlebar4.gif" alt="" class="align-center" /></p>
+
+<p>The code below just draws a blank button, either pressed or normal:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HDC</span> <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetWindowDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+<span class="c1">// Draw buttons in a loop
+</span><span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">nNumButtons</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//Get Button rect in window coords
+</span>    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">ctp</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect1</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>
+        
+    <span class="k">if</span><span class="p">(</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fPressed</span><span class="p">)</span>
+        <span class="n">DrawFrameControl</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect1</span><span class="p">,</span> <span class="n">DFC_BUTTON</span><span class="p">,</span> <span class="n">DFCS_BUTTONPUSH</span> <span class="o">|</span> <span class="n">DFCS_PUSHED</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">DrawFrameControl</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect1</span><span class="p">,</span> <span class="n">DFC_BUTTON</span><span class="p">,</span> <span class="n">DFCS_BUTTONPUSH</span><span class="p">);</span>
+
+   <span class="c1">//Draw the bitmap on top...
+</span><span class="p">}</span>
+
+<span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hdc</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">wParam</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">DeleteObject</span><span class="p">(</span><span class="n">hrgn</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>We have to be careful to release the update region if we allocated it ourselves. If <code class="highlighter-rouge">wParam</code> was a valid region, then we don’t need to because Windows owns the update region. The code download also draws a bitmap into the button, but I wanted to keep the code as simple as possible here.</p>
+
+<h2 id="making-the-buttons-work">Making the buttons work.</h2>
+
+<p>What we have so far is a window with extra buttons drawn into the title bar. They don’t actually do anything yet - so far, they’re just decoration. It’s pretty simple to make the buttons behave just like the standard caption buttons. In fact, the process is almost exactly the same as the one I described in another article (Inserting a button into an edit control).</p>
+
+<p><strong>Mouse button down (WM_NCLBUTTONDOWN)</strong></p>
+
+<p>When the left mouse button is clicked, and the mouse cursor is within one of the areas occupied by our buttons, then we need to react to this event and give the button a depressed look. We will also set the mouse capture so we can receive all further mouse messages whilst the mouse button is held down. This means that we can move the mouse outside the window and can still retrieve mouse messages.</p>
+
+<p>The code below checks each inserted button in turn to see if the mouse is inside one as the mouse button is clicked. If a positive intersection is found then the mouse capture is set, and a variable set (<code class="highlighter-rouge">iActiveButton</code>) to record what the active button is. The caption is redrawn to reflect the button in a “pushed” state.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+<span class="n">POINT</span> <span class="n">pt</span><span class="p">;</span>
+
+<span class="c1">// retrieve the mouse coordinates
+</span><span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="kt">short</span><span class="p">)</span><span class="n">LOWORD</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+<span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="kt">short</span><span class="p">)</span><span class="n">HIWORD</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+
+<span class="c1">// Loop over all buttons to see if one has been clicked
+</span><span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">nNumButtons</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//get screen coordinates of each button
+</span>    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">ctp</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+    <span class="n">InflateRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+            
+    <span class="c1">//if clicked in a custom button
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">iActiveButton</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fPressed</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+        <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">fMouseDown</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+                
+        <span class="n">SetCapture</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+                
+        <span class="n">RedrawCaption</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+                
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">return</span> <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">wpOldProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Mouse Movement (WM_MOUSEMOVE)</strong></p>
+
+<p>The <code class="highlighter-rouge">WM_MOUSEMOVE</code> message will be received whenever the mouse moves within the client area of a window, but will be also be received outside the client area when the mouse capture is set. The mouse-move handler is very similar to the left-click handler shown above. The only difference is a small amount of code to convert the client-relative mouse coordinates to screen-relative coordinates (a simple <code class="highlighter-rouge">ClientToScreen</code> call). The other change is a test to see if the mouse is inside or outside the active button’s region. If it is inside, then the button is drawn with a sunken appearance. When the mouse is outside the active button, then the button is drawn normally. This behaviour causes the button to be pushed in and out as the mouse moves over it.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GetButtonRect</span><span class="p">(</span><span class="n">ctp</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">iActiveButton</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+    <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">[</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">iActiveButton</span><span class="p">].</span><span class="n">fPressed</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="k">else</span>
+    <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">[</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">iActiveButton</span><span class="p">].</span><span class="n">fPressed</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Mouse button up (WM_LBUTTONUP)</strong></p>
+
+<p>The left-button-up handler is also very similar to the mouse-move handler. The only difference being the button is restored to its non-pressed state, and a <code class="highlighter-rouge">WM_COMMAND</code> message is sent to the window if the mouse is still within the active button when the mouse button is released. This <code class="highlighter-rouge">WM_COMMAND</code> basically simulates a standard button press - the command identifier is stored in wParam.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GetButtonRect</span><span class="p">(</span><span class="n">ctp</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">iActiveButton</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+    <span class="n">SendMessage</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">WM_COMMAND</span><span class="p">,</span> <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">[</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">iActiveButton</span><span class="p">].</span><span class="n">uCmd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Hit-testing (WM_NCHITTEST)</strong></p>
+
+<p>Last one! This message handler must check if the mouse is inside any one of the inserted buttons. Because our inserted buttons are inside the caption area, the default handler for this message will return <code class="highlighter-rouge">HTCAPTION</code>. We need to override this, so we will return <code class="highlighter-rouge">HTBORDER</code> instead to prevent any caption-related behaviour occuring when the user clicks our button.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ctp</span><span class="o">-&gt;</span><span class="n">nNumButtons</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">GetButtonRect</span><span class="p">(</span><span class="n">ctp</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">PtInRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">pt</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">HTBORDER</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">return</span> <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">wpOldProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="one-last-step">One last step</h2>
+
+<p>We’re almost there! We now have fully functional buttons inside the caption area of a window. There are two more messages that our subclass procedure needs to handle. The messages are <code class="highlighter-rouge">WM_NCACTIVATE</code> and <code class="highlighter-rouge">WM_SETTEXT</code>. Both of these messages cause a window caption to be repainted, which is going to cause our inserted buttons to be painted over. In the case of <code class="highlighter-rouge">WM_NCACTIVATE</code>, the caption is painted in either active or inactive colours whenever the window is activated or deactivated. As for <code class="highlighter-rouge">WM_SETTEXT</code>, this message is received whenever the window text is to be changed, causing the caption to repainted.</p>
+
+<p>Unfortunately for us neither of these repaints occur through the <code class="highlighter-rouge">WM_NCPAINT</code> message, which is a design flaw in Windows as far as I can make out. The problem still remains though. The solution is to prevent both messages from performing any painting whilst letting them do everything else. This is achieved in four steps:</p>
+
+<ol>
+  <li>Turn off the <code class="highlighter-rouge">WS_VISIBLE</code> style for the window, which stops any painting from occuring.</li>
+  <li>Calling the old window procedure to handle the message.</li>
+  <li>Turn <code class="highlighter-rouge">WS_VISIBLE</code> back on again.</li>
+  <li>Paint the window frame and caption using our custom code.</li>
+</ol>
+
+<p>The code looks like this.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="nf">foobar</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">ret</span><span class="p">,</span> <span class="n">dwStyle</span><span class="p">;</span>
+
+    <span class="n">dwStyle</span> <span class="o">=</span> <span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_STYLE</span><span class="p">);</span>
+
+    <span class="c1">// turn OFF WS_VISIBLE
+</span>    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_STYLE</span><span class="p">,</span> <span class="n">dwStyle</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">WS_VISIBLE</span><span class="p">);</span>
+
+    <span class="c1">// perform the default action, minus painting
+</span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">ctp</span><span class="o">-&gt;</span><span class="n">wpOldProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+
+    <span class="c1">// turn ON WS_VISIBLE
+</span>    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_STYLE</span><span class="p">,</span> <span class="n">dwStyle</span><span class="p">);</span>
+
+    <span class="c1">// perform custom painting
+</span>    <span class="n">Caption_NCPaint</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="p">(</span><span class="n">HRGN</span><span class="p">)</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This same code can be used to process <code class="highlighter-rouge">WM_SETTEXT</code> and <code class="highlighter-rouge">WM_NCACTIVATE</code>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>There is another option for placing buttons over the caption bar. You could simply create a button using <code class="highlighter-rouge">CreateWindow</code> with the <code class="highlighter-rouge">WS_POPUP</code> style. This button can be positioned over the window’s title bar, and will look and act just like a normal button. This method will work, but it’s not perfect. There will be window focus problems, clipping and painting problems, and the hassle of always making sure that the button is in the right place, and never overlapping any windows it shouldn’t be.</p>
+
+<p>The method of inserting titlebar buttons described here is the preferred way to perform this type of customization. Well, I hope you enjoyed this article and found it useful. If you have any feedback, I’d be glad to here it.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/titlebar.zip">titlebar.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-10-01T00:00:00+00:00">October 01, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="cards-dll-direct-bitmap-access.html" class="pagination--pager" title="Cards.dll direct bitmap access
+">Previous</a>
+    
+    
+      <a href="reducing-executable-size.html" class="pagination--pager" title="Reducing Executable Size
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-titlebar by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

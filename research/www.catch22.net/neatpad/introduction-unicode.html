@@ -1,0 +1,756 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/introduction-unicode by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Introduction to Unicode - Catch22</title>
+<meta name="description" content="The user-interface for the TextView has progressed enough to allow us to switch our attention back to the TextDocument. I am now concentrating on adding full Unicode support to Neatpad. Because Unicode is such a complicated subject I won’t attempt to tackle it all at once so instead I will split the various aspects of Unicode across several tutorials.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Introduction to Unicode">
+<meta property="og:url" content="introduction-unicode.html">
+
+
+  <meta property="og:description" content="The user-interface for the TextView has progressed enough to allow us to switch our attention back to the TextDocument. I am now concentrating on adding full Unicode support to Neatpad. Because Unicode is such a complicated subject I won’t attempt to tackle it all at once so instead I will split the various aspects of Unicode across several tutorials.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-12-04T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="introduction-unicode.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Introduction to Unicode</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="active">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Introduction to Unicode">
+    <meta itemprop="description" content="The user-interface for the TextView has progressed enough to allow us to switch our attention back to the TextDocument. I am now concentrating on adding full Unicode support to Neatpad. Because Unicode is such a complicated subject I won’t attempt to tackle it all at once so instead I will split the various aspects of Unicode across several tutorials.">
+    <meta itemprop="datePublished" content="December 04, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Introduction to Unicode
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Introduction to Unicode</h1-->
+<!--h3>An introduction to Unicode and character sets</h3-->
+
+<p>The user-interface for the TextView has progressed enough to allow us to switch our attention back to the <em>TextDocument</em>. I am now concentrating on adding full Unicode support to Neatpad. Because Unicode is such a complicated subject I won’t attempt to tackle it all at once so instead I will split the various aspects of Unicode across several tutorials.</p>
+
+<p>The first Unicode topic (Part 8 - what you are reading now) will be an introduction to Unicode and the various encoding schemes that are in common use. There won’t be any code download as this will be purely a discussion about Unicode to make sure everyone understands the various issues. The next Unicode topic (Part 9) will look at how to incorporate the concepts discussed here into Neatpad - so will focus on loading, storing and processing Unicode data. The rest of the Unicode topics will focus on the issues surrounding the display of Unicode text - and will include complex script support, bi-directional text and the <strong>Uniscribe</strong> API.</p>
+
+<h2 id="unicode-myths">Unicode Myths</h2>
+
+<p>Before we start properly it may be worth dispelling the most common myths about Unicode - and hopefully by the end of this article you will have a good idea about what Unicode is all about.</p>
+
+<p>The most common incorrect statement I see about Unicode is this: <em>“In Unicode all characters are two bytes long.”</em></p>
+
+<p>This is totally incorrect. The Unicode standard has always defined more than one encoding form for its characters - with UCS-2 originally being the most common. However since Unicode 2.0 there no longer exists <em>any</em> encoding scheme which can represent all characters using two bytes (read about UTF-16 further down the page).</p>
+
+<p>It doesn’t help that even Microsoft gets it wrong in it’s own documentation sometimes with statements such as <em>“Unicode is a wide-character set”</em>. Well, they’re half-way right - on Windows at least, Unicode strings are typically encoded as UCS-2/UTF-16, but it is quite misleading to claim that Unicode is a “wide-character-set” because it is so much more than that.</p>
+
+<p>The next most common question you hear Windows programmers asking is <em>“How do I convert a UNICODE string to a UTF-8 string?”</em>. This is a question usually asked by somebody who doesn’t understand Unicode. A UTF-8 string <em>is</em> a Unicode string so it cannot be converted. Probably the person asking the question meant <em>“how to I convert between this UCS-2 formatted string and UTF-8?”</em>. Of course, the answer in this case would be the <code class="highlighter-rouge">WideCharToMultiByte()</code> API call.</p>
+
+<p>One last misconception is that the <code class="highlighter-rouge">wchar_t</code> “wide character” type is 16bits. This is maybe true on Windows platforms, but the C language makes no such assumption about the width of a <code class="highlighter-rouge">wchar_t</code> type - it can be as wide as the C compiler wants it to be in order to represent a single “wide character”, and on UNIX and Linux <code class="highlighter-rouge">wchar_t</code> is commonly a 32bit quantity.</p>
+
+<h2 id="code-pages-and-character-sets">Code Pages and Character Sets</h2>
+
+<p>Everyone is familiar with the ASCII character-set, which encodes 128 unique character values (0-127) using 7bit integers. Most people are also aware of the existance of the ANSI character-set(s), which use a full 8bit byte to encode 256 (0-255) character values. And it is probably fair to say, most people are fully aware that an 8bit byte is not sufficient to encode all of the world’s writing systems, except maybe a very few European languages.</p>
+
+<p>These “byte-based” character sets are often referred to as <em>Single-Byte-Character-Sets</em>, or SBCS for short. Most of the 8bit character-sets keep the bottom 128 characters as ASCII, and define their own characters in the top “half” of the byte. There are many, many single-byte character-sets in existence.</p>
+
+<p>These extra character-sets are referred to as <strong>codepages</strong> (a traditional IBM term), and are each identified by a unique codepage number which is usually defined by the ANSI/ISO organisations. For example, the familiar ANSI codepage used by Windows is 1252. A Windows application could set it’s codepage number to tell Windows from which character-set it wanted to work with.</p>
+
+<p>Of course a single 8bit character was never going to be enough to represent the rest of the world’s writing systems. The east-Asian languages especially needed a different approach and this is where <em>Double-Byte-Character-Sets</em> (DBCS) come into play. With these character-sets, a character can be represented by either one or two bytes. There are many other character-sets which share this design and Microsoft refers to them all as <em>Multi-Byte-Character-Sets</em> (MBCS) in it’s documentation. The one thing all these character sets have in common is their complexity - they are all quite difficult to work with from a programming perspective.</p>
+
+<p>You may be familar with the many APIs and support libraries for dealing with MBCS strings such as <code class="highlighter-rouge">CharNext</code>, <code class="highlighter-rouge">CharPrev</code>, <code class="highlighter-rouge">_mbsinc</code>, <code class="highlighter-rouge">_mbsdec</code> etc. All of these APIs are designed for a program to work with legacy character-sets - and rely on the correct codepage to be setup before an application can display text correctly.</p>
+
+<p>Note that all of these concepts are really quite out of date now. SBCS, MBCS and DBCS, and the whole idea of codepages all belong in the past and thankfully we no longer have to worry about them.</p>
+
+<h2 id="what-is-unicode">What is Unicode?</h2>
+
+<p>There seems to be alot of confusion surrounding Unicode. This is mostly due to the fact that Unicode has evolved quite significantly since its first release in 1991. A great deal of information has been written about Unicode during this time and much of the earlier information is now inaccurate. Almost 15 years later Unicode is now at version 4.1 - and your perception of Unicode has probably been most influenced depending on when you first became exposed to the subject. Understanding the <em>history</em> of Unicode is almost as important as understanding Unicode itself.</p>
+
+<p>Unicode is the <em>universal</em> character encoding standard for representing the world’s writing systems in computer-form. It is also a <em>practical</em> implementation of the <strong>ISO-10646</strong> standard. The Unicode consortium (represented by several international companies including Microsoft and IBM) develops the Unicode standard in parallel with ISO-10646. Often you will see terms from each standard used interchangably but really they refer to the same thing.</p>
+
+<p>The main purpose behind Unicode is to define a <em>single</em> code-page which holds <strong>all</strong> of the characters commonly in use today. At its heart Unicode is really just a big table which assigns a unique number to each character as defined by ISO-10646. Each of these numbers in the Unicode codepage is referred to as a “ <strong>code-point</strong>”. The following are examples of Unicode code-points:</p>
+
+<p><strong>U+0041</strong>“Latin Capital Letter A” <strong>U+03BE</strong>“Greek Small Letter Xi” <strong>U+1D176</strong>“Musical Symbol End Tie”</p>
+
+<p>The standard convention is to write “ <strong>U+</strong>” followed by a hexadecimal number which represents the codepoint value. Often you will also see a descriptive tag next to each code-point, which gives the full name to the codepoint as defined in the Unicode standard.</p>
+
+<p>The Unicode standard can represent a little over one million code-points. With version 4.0 around 96,382 characters have been assigned to actual code-points, leaving approximately 91% of the encoding space unallocated. With most of the world’s writing systems already encoded (including the garantuam Chinese-Japenese-Korean character-sets), this leaves a lot of expansion for future use.</p>
+
+<p>A single code-point within this encoding space can take a value anywhere between 0x000000 and 0x10FFFF. Unicode codepoints can therefore be represented using 21-bit integer values. It is no accident that these numbers were chosen and if you read into the UTF-16 format more deeply you will understand why Unicode has been limited in this way. It is important to note that both the Unicode consortium and ISO pledge to <em>never</em> extend the encoding-space past this range.</p>
+
+<h2 id="utf-32-and-ucs4">UTF-32 and UCS4</h2>
+
+<p>Of course, a 21-bit integer is a bit of an “odd” sized unit and doesn’t lend itself well to storage in a computer. As a result of this, Unicode defines several <em>Transformation Formats</em> with which to encode streams of Unicode code-points. The three most common are “<strong>UTF-8</strong>”, “<strong>UTF-16</strong>” and “<strong>UTF-32</strong>”.</p>
+
+<p>Out of these three, UTF-32 is by far the easiest to work with. Exactly one 32-bit integer is required to store each Unicode character. However, UTF-32 is very wasteful - 11 bits out of the 32 are never used, and in the case of plain English text encoded as UTF-32, this means 75% waste overall. The table below illustrates how a 21bit integer (represented with ‘x’s) is encoded in a 32bit storage unit:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Unicode</td>
+      <td>UTF-32</td>
+    </tr>
+    <tr>
+      <td>00000000 - 0010FFFF</td>
+      <td><code class="highlighter-rouge">00000000</code> <code class="highlighter-rouge">000xxxxx</code> <code class="highlighter-rouge">xxxxxxxx</code> <code class="highlighter-rouge">xxxxxxxx</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Some operating systems (like UNIX variants) use UTF-32 internally to process and store strings of text. However UTF-32 is rarely used to transmit and store text-files simply because it is so space-inefficient and because of this, it is not a commonly encountered format.</p>
+
+<h2 id="ucs-2">UCS-2</h2>
+
+<p><strong>UCS</strong> is a term defined by ISO-10646 and stands for <strong>Universal Character Set</strong>. When Unicode was first released the primary encoding scheme was intended to be the UCS-2 format. UCS-2 uses a 16bit <em>code-unit</em> to store and represent each character. At the time this was considered an adequate scheme because only 55,000 characters had been assigned to Unicode code-points thus far - this meant that every Unicode character (at the time) could be represented by a single 16bit integer. Unfortunately we are still paying the consequences for this incredibly short-sighted decision.</p>
+
+<p>Even before Unicode was developed there existed many “wide character sets” which required more than one byte to store each character. The most notable were IBM’s DBCS (double-byte-character-set), JIS-208, SJIS and EUC to name just a few. To support the various wide-character sets, the <code class="highlighter-rouge">wchar_t</code> type was introduced into the C standard in the late 80s (although it wasn’t ratified until 1995). The <code class="highlighter-rouge">wchar_t</code> type (and wide-character support in general) provided the mechanism to support these wide-character sets.</p>
+
+<p>The companies which backed the UCS-2 format pledged support for Unicode. Microsoft in particular engineered its Windows NT OS line to be natively “Unicode” compatible right from the outside, and used the 16bit UCS-2 wide-character strings to store and process all text.</p>
+
+<h2 id="utf-16">UTF-16</h2>
+
+<p>In 1996 Unicode 2.0 was released, extending the code-space beyond 65,535 characters - or what is known the <em>Basic Multilingual Plane</em> (BMP). It was obvious that a single 16bit integer was insufficient to encode the entire Unicode code-space, and the UTF-16 format was introduced along with the UTF-16 <em>Surrogate Mechanism</em>. Importantly, UTF-16 is backward compatible with UCS-2 (it encodes the same values in the same way).</p>
+
+<p>In order to represent characters from 0x10000 to 0x10FFFF, <strong>two</strong> 16bit values are now required - which together are called a <em>Surrogate Pair</em>. This also means that there is no longer a 1:1 mapping between the 16bit units and Unicode characters. The two 16bit values must be carefully formatted to indicate that they are surrogates:</p>
+
+<ul>
+  <li>The first 16bit value is called the “high surrogate” and must have the top 6 (of 16) bits set to “110110”. This leaves 10 unused bits for storing values from 0xD800 to 0xDBFF, providing a range of 1024 characters.</li>
+  <li>The second 16bit of the pair is called the “low surrogate” and must have the top 6 bits set to “110111” - this results in values from 0xDC00 to 0xDFFF, again providing a range of 1024 characters.</li>
+</ul>
+
+<p>This “surrogate range” between D800 and DFFF was “stolen” from the one of the previously named “Private Use Areas” of UCS-2. When combined together a surrogate-pair provides 1024x1024 combinations, which results in 0x100000 (1,048,576) additional codepoints outside of the BMP. The table below illustrates how the Unicode code-space is represented using UTF-16.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Unicode</td>
+      <td>UTF-16</td>
+    </tr>
+    <tr>
+      <td>00000000-0000FFFF</td>
+      <td><code class="highlighter-rouge">xxxxxxxx</code> <code class="highlighter-rouge">xxxxxxxx</code></td>
+    </tr>
+    <tr>
+      <td>00010000-0010FFFF</td>
+      <td><code class="highlighter-rouge">110110yy</code> <code class="highlighter-rouge">yyxxxxxx</code> <code class="highlighter-rouge">110111xx</code> <code class="highlighter-rouge">xxxxxxxx</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So in essence, UTF-16 is a variable-width encoding scheme much like the multi-byte UTF-8. You may be wondering (as I did) exactly what the advantage is now that UTF-16 is no longer a fixed-width format. It would be interesting to see if UTF-16 would be in use today had UTF-8 been available right from the start.</p>
+
+<p>Even without the variable-width problem, using UTF-16 from a C/C++ perspective is pretty tiresome because of the strange <code class="highlighter-rouge">wchar_t</code> type and the <code class="highlighter-rouge">L""</code> syntax for widecharacter string literals. Understand that UTF-16 is the dominent encoding format at the moment. Microsoft Windows and Macintosh OSX both use it for their operating systems, and the Java and C# languages also use UTF-16 for all string operations. UTF-16 is unlikely to go away any time soon.</p>
+
+<p>Actually, the variable-width nature of UTF-16 and the slight complexity it now brings pales into insignificance when compared with the nightmare of displaying Unicode. It <em>really</em> doesn’t matter that a string is in multibyte format - even with UTF-32 one codepoint does not necessarily map to one visible/selectable “glyph”, as we will find out over the next parts of this series.</p>
+
+<h2 id="utf-8">UTF-8</h2>
+
+<p>One very popular encoding format is UTF-8, officially presented in 1993. A common misconception is that UTF-8 is a “lesser” form of UTF-16. Nothing could be further from the truth - it encodes the exact same Unicode values as UTF-16 and UTF-32, but instead uses variable-length sequences of up to <em>four</em> 8-bit bytes. This means that UTF-8 is a true multi-byte format. Much of the text on the Internet (such as in web pages and XML) is transmitted using UTF-8, and many Linux and UNIX variants use UTF-8 internally.</p>
+
+<p>The way UTF-8 works is quite clever. The MSB (most-significant-bit) in each byte is used to indicate whether a character-unit is a single 7bit ASCII value (top bit set to “0”), or is part of a multibyte sequence (top bit set to “1”). This means that UTF-8 is 100% backward compatible with plain 7bit ASCII text - of course, it was designed for this very purpose. The design allows older non-Unicode software to handle and process Unicode data with little or no modification.</p>
+
+<p>There are actually three basic constructs in UTF-8 text:</p>
+
+<ul>
+  <li>Plain ASCII text (characters in the range 0-127) is represented as-is with no modification.</li>
+  <li><em>Lead-bytes</em> identify the start of a multibyte sequence. The number of “1” bits at the top of a lead-byte denote how many bytes there are in the sequence, including the lead-byte. So a byte with “110” at the start denotes a 2-byte sequence and a byte with “1110” denotes a 3-byte sequence, and so-on. The remaining bits at the bottom of the lead-byte are used to store the first part of the 21-bit Unicode value.</li>
+  <li><em>Trail-bytes</em> always start with “10” as the top-bits, with the lower 6 bits being used to store the remaining bits from the Unicode value. A trail-byte must always follow a lead-byte - it cannot ever appear on its own.</li>
+</ul>
+
+<p>So, a Unicode value in the range 0-127 is represented as-is. Values outside of this range (0x80 - 0x10FFFF) are represented using a multibyte sequence, comprising exactly one lead-byte and one-or-more trail-bytes. Each Unicode character with a value above 0x7F has it’s bits <em>distributed</em> over the “spare” bits in the multibyte sequence.</p>
+
+<p>The following table illustrates this concept:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Unicode</td>
+      <td>UTF-8</td>
+    </tr>
+    <tr>
+      <td>00000000-0000007F</td>
+      <td><code class="highlighter-rouge">0xxxxxxxx</code></td>
+    </tr>
+    <tr>
+      <td>00000080-000007FF</td>
+      <td><code class="highlighter-rouge">110xxxxx</code> <code class="highlighter-rouge">10xxxxxx</code></td>
+    </tr>
+    <tr>
+      <td>00000800-0000FFFF</td>
+      <td><code class="highlighter-rouge">1110xxxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code></td>
+    </tr>
+    <tr>
+      <td>00010000-001FFFFF</td>
+      <td><code class="highlighter-rouge">11110xxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code></td>
+    </tr>
+    <tr>
+      <td>00200000-03FFFFFF*</td>
+      <td><code class="highlighter-rouge">111110xx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code></td>
+    </tr>
+    <tr>
+      <td>04000000-7FFFFFFF*</td>
+      <td><code class="highlighter-rouge">1111110x</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code> <code class="highlighter-rouge">10xxxxxx</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice that the last two rows have been marked with an asterisk: they are illegal forms of UTF-8. Although UTF-8 can theoretically be used to encode a full 31bit integer using lead-bytes <code class="highlighter-rouge">111110xx</code> and <code class="highlighter-rouge">1111110x</code>, these are overlong sequences because they represent numbers outside of the 0-10FFFF unicode range. Remember that this “artificial” limit has been imposed due to the UTF-16 surrogate mechanism.</p>
+
+<h2 id="unicode-text-files">Unicode text files</h2>
+
+<p>If you have ever used the regular Notepad on Windows NT you may be aware that text files can be saved in several formats - ASCII, Unicode (which is really UTF-16), Unicode-Big-Endian (which is big-endian-UTF-16) and lastly UTF-8.</p>
+
+<p>The problem with text-files on Windows (and probably most other operating-systems) is that there is no way to tell what type of text is contained within a file - because plain-text files (by their very nature) provide no such facility. The Unicode standard therefore defines a method for tagging a text-file with a “Byte Order Mark” in order to identify the encoding scheme used to save the file. The <em>optional</em> “BOM” sequences are listed below.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Byte Signature</td>
+      <td>Unicode Format</td>
+    </tr>
+    <tr>
+      <td><em>none</em></td>
+      <td>Plain ASCII/ANSI</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">EF BB BF</code></td>
+      <td>UTF-8</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">FF FE</code></td>
+      <td>UTF-16, little-endian</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">FE FF</code></td>
+      <td>UTF-16, big-endian</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">FF FE 00 00</code></td>
+      <td>UTF-32, little-endian</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">00 00 FE FF</code></td>
+      <td>UTF-32, big-endian</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The table above was taken from the Unicode Standard 4.0. The BOM values are chosen because it would be extremely unlikely to ever encounter those character-sequences at the start of a plain-text document. Of course it is still possible to encounter such files - its just very rare.</p>
+
+<p>With Neatpad, in the absence of any signature the file is treated as plain ANSI text. This is in contrast to how Notepad works - it uses statistical analysis of the file in order to make a ‘best guess’ as to the underlying format, and sometimes gets it wrong.</p>
+
+<h2 id="relevant-reading">Relevant reading</h2>
+
+<p>The first place you should start is <a href="http://www.unicode.org/faq/">www.unicode.org/faq</a>. This is the official site for Unicode and contains the complete Unicode 4.1 standard. The standard is also available in book (hardback) form.</p>
+
+<p>However if you want a really good book on Unicode then I can recommend “Unicode Demystified” by Richard Gillam. This book gives a really good <em>practical</em> coverage of the many Unicode issues and I found it indispensible whilst researching this project.</p>
+
+<p>The following links may also prove to be useful:</p>
+
+<ul>
+  <li><a href="http://en.wikipedia.org/wiki/Unicode">WIKI page on Unicode</a></li>
+  <li><a href="http://www.unicode.org/notes/tn12/">UTF16 for processing</a></li>
+  <li><a href="http://www.tbray.org/ongoing/When/200x/2003/04/26/UTF">Characters vs Bytes</a></li>
+  <li><a href="http://icu.sourceforge.net/docs/papers/forms_of_unicode/">Forms of Unicode</a></li>
+  <li><a href="http://www-128.ibm.com/developerworks/opensource/library/os-unicode/">Power user’s guide to multilingual text editors</a></li>
+  <li><a href="http://www.cs.tut.fi/~jkorpela/chars.html">A tutorial on character-code issues</a></li>
+  <li><a href="http://www.cl.cam.ac.uk/~mgk25/unicode.html">UTF-8 and Unicode FAQ for Unix/Linux</a></li>
+</ul>
+
+<h2 id="unicode-c-projects-in-windows">Unicode C++ projects in Windows</h2>
+
+<p>Seeing as we want to support Unicode in Neatpad, it makes sense for us to use the native Unicode support provided by the Windows operating systems. In practise this means using the “Wide-character” Unicode APIs - which are basically UTF-16/UCS-2. There is a certain technique to writing Unicode-enabled applications under Windows which every programmer should be aware of.</p>
+
+<ol>
+  <li>The first step in creating any Unicode Windows project is to enable support for the wide-character APIs. This is usually achieved by defining the <code class="highlighter-rouge">UNICODE</code> and <code class="highlighter-rouge">_UNICODE</code> macros for every source-file in your project (and removing macros such as <code class="highlighter-rouge">_MBCS</code> and <code class="highlighter-rouge">_DBCS</code>). The reason two macros are required is simple: <code class="highlighter-rouge">UNICODE</code> is used for the Windows/Platform SDK libraries, whereas <code class="highlighter-rouge">_UNICODE</code> is used for the standard C/C++ runtime libaries.</li>
+  <li>The second step is to <code class="highlighter-rouge">#include &lt;tchar.h&gt;</code> - this file contains many “support macros” that are very useful for Unicode projects.</li>
+  <li>The third step is to define any character <em>type</em> as <code class="highlighter-rouge">TCHAR</code> - this is another macro and results in <code class="highlighter-rouge">WCHAR</code> string types for <code class="highlighter-rouge">UNICODE</code> projects, and <code class="highlighter-rouge">char</code> string types for regular “non Unicode” projects.</li>
+  <li>The forth step is to declare all <em>string literals</em> using the <code class="highlighter-rouge">_T</code> and <code class="highlighter-rouge">_TEXT</code> macros, which are defined in <code class="highlighter-rouge">&lt;tchar.h&gt;</code>. These macros control how string-literals are defined. For a non-Unicode project these macros do nothing, however for a UNICODE project all string-literals have the <code class="highlighter-rouge">L""</code> string prefix attached.</li>
+  <li>The fith and final step is replace all calls to C-runtime string functions (such as <code class="highlighter-rouge">strcpy</code>) with their <code class="highlighter-rouge">_tcs</code> equivalent (e.g. <code class="highlighter-rouge">_tcscpy</code>). Although these equivalents can all be found in the <code class="highlighter-rouge">&lt;tchar.h&gt;</code> runtime header, there is a simple trick to obtaining the ‘<code class="highlighter-rouge">_t</code>’ name from the original - just replace the ‘<code class="highlighter-rouge">str</code>’ part with ‘<code class="highlighter-rouge">_tcs</code>’.</li>
+</ol>
+
+<p>You’ve hopefully got the idea that Unicode programming in Windows relies heavily on the C/C++ preprocessor for support. The example below illustrates all of these concepts together.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+#include &lt;tchar.h&gt;
+</span>
+<span class="n">TCHAR</span> <span class="n">szFileName</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+
+<span class="c1">// calling one of the standard-C calls
+</span><span class="n">_tcscpy</span><span class="p">(</span><span class="n">szFileName</span><span class="p">,</span> <span class="n">_T</span><span class="p">(</span><span class="s">"file.txt"</span><span class="p">));</span>
+
+<span class="c1">// calling one of the Platform-SDK APIs
+</span><span class="n">CreateFile</span><span class="p">(</span><span class="n">szFileName</span><span class="p">,</span> <span class="n">GENERIC_READ</span><span class="p">,</span> <span class="p">...);</span>
+</code></pre></div></div>
+
+<p>Because <code class="highlighter-rouge">TCHAR</code>, <code class="highlighter-rouge">_tcscpy</code>, <code class="highlighter-rouge">_T</code> and <code class="highlighter-rouge">CreateFile</code> are really MACROs, with <code class="highlighter-rouge">UNICODE</code> defined our sample program becomes:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WCHAR</span> <span class="n">szFileName</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+
+<span class="n">_wcscpy</span><span class="p">(</span><span class="n">szFileName</span><span class="p">,</span> <span class="s">L"file.txt"</span><span class="p">);</span>
+<span class="n">CreateFileW</span><span class="p">(</span><span class="n">szFileName</span><span class="p">,</span> <span class="p">...);</span>
+</code></pre></div></div>
+
+<p>Note that the <code class="highlighter-rouge">WCHAR</code> character-type is actually another macro which is defined as <code class="highlighter-rouge">wchar_t</code>. The Visual-C compiler treats this wide-character type as a 16bit quantity. Don’t assume that this is true across all platforms - for example on UNIX systems <code class="highlighter-rouge">wchar_t</code> is usually a 32bit quantity because the native Unicode format is UTF-32 on these systems.</p>
+
+<p>Without the <code class="highlighter-rouge">UNICODE</code> setting defined our sample program becomes an ordinary “C” program:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">szFileName</span><span class="p">[</span><span class="n">MAX_PATH</span><span class="p">];</span>
+
+<span class="n">strcpy</span><span class="p">(</span><span class="n">szFileName</span><span class="p">,</span> <span class="s">"file.txt"</span><span class="p">);</span>
+<span class="n">CreateFileA</span><span class="p">(</span><span class="n">szFileName</span><span class="p">,</span> <span class="p">...);</span>
+</code></pre></div></div>
+
+<p>Rather than putting <code class="highlighter-rouge">UNICODE</code> and <code class="highlighter-rouge">_UNICODE</code> at the top of every source-file we will make things easier on ourselves. The last thing we need to do is configure the Neatpad and TextView projects to build as Unicode applications on a project-wide basis. Rather than modify the existing projects, we will add two new project configurations (one for Debug and one for Release). This will allow us to build the an ASCII-only Neatpad, and a Unicode build from the same sourcecode.</p>
+
+<p>Select <code class="highlighter-rouge">Build -&gt; Configurations</code> menu item from Visual Studio.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor801.gif" alt="&lt;&gt;" /></p>
+
+<p>The new configurations are created by using the existing non-unicode projects as templates. We need to perform this task for both the Neatpad and TextView projects, and for each Debug and Release build as well. Once done we will have four project configurations for each project - Debug, Release, Unicode Debug and Unicode Release.</p>
+
+<h2 id="coming-up-in-part-9">Coming up in Part 9</h2>
+
+<p>Hopefully this has been a useful introduction to Unicode. I felt it was necessary to cover the basics first before diving straight in as Unicode is such a complicated subject. The next part of this series will look at taking the ideas presented here and integrating directly into Neatpad.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-12-04T00:00:00+00:00">December 04, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../win32/64bit-scrollbars.html" class="pagination--pager" title="64bit Scrollbars
+">Previous</a>
+    
+    
+      <a href="unicode-text-processing.html" class="pagination--pager" title="Unicode Text Processing
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/introduction-unicode by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

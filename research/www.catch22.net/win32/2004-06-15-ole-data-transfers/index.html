@@ -1,0 +1,475 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/2004-06-15-ole-data-transfers/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>OLE Data Transfers - Catch22</title>
+<meta name="description" content="Welcome to the second article in the “OLE Drag and Drop” tutorial series! The purpose of this article is to explore how data is represented and transferred between applications in the OLE environment.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="OLE Data Transfers">
+<meta property="og:url" content="index.html">
+
+
+  <meta property="og:description" content="Welcome to the second article in the “OLE Drag and Drop” tutorial series! The purpose of this article is to explore how data is represented and transferred between applications in the OLE environment.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2004-06-15T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="index.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">OLE Data Transfers</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="OLE Data Transfers">
+    <meta itemprop="description" content="Welcome to the second article in the “OLE Drag and Drop” tutorial series! The purpose of this article is to explore how data is represented and transferred between applications in the OLE environment.">
+    <meta itemprop="datePublished" content="June 15, 2004">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">OLE Data Transfers
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>OLE Data Transfers</h1-->
+<!--h3>All about OLE data types, storage mediums and data format</h3-->
+
+<p>Welcome to the second article in the “OLE Drag and Drop” tutorial series! The purpose of this article is to explore how data is represented and transferred between applications in the OLE environment.</p>
+
+<p>The very heart of OLE data transfers is the <code class="highlighter-rouge">IDataObject</code> COM interface. An <code class="highlighter-rouge">IDataObject</code> provides a method of transferring and accessing data from one application to another. The most common use of OLE data transfers is the Windows clipboard, and of course drag and drop. The <code class="highlighter-rouge">IDataObject</code> is effectively a COM wrapper around one or more items of data.</p>
+
+<p>Before we look at the <code class="highlighter-rouge">IDataObject</code> in any detail, there are two very important data structures with which you must become familar: the <code class="highlighter-rouge">FORMATETC</code> and <code class="highlighter-rouge">STGMEDIUM</code> structures, which are used to describe and store OLE data.</p>
+
+<h2 id="describing-ole-data">Describing OLE data</h2>
+
+<p>The <code class="highlighter-rouge">FORMATETC</code> structure (pronounced “format et cetera”) is used to identify the type of data that an <code class="highlighter-rouge">IDataObject</code> can supply (or receive). It is basically an extension of the standard Windows clipboard formats (<code class="highlighter-rouge">CF_TEXT</code> etc). So in addition to the basic clipboard format, the <code class="highlighter-rouge">FORMATETC</code> structure also describes how the data should be rendered and stored.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">CLIPFORMAT</span> <span class="n">cfFormat</span><span class="p">;</span> <span class="c1">// Clipboard format  
+</span>    <span class="n">DVTARGETDEVICE</span> <span class="o">*</span><span class="n">ptd</span><span class="p">;</span> <span class="c1">// (NULL) Target device for rendering
+</span>    <span class="n">DWORD</span> <span class="n">dwAspect</span><span class="p">;</span> <span class="c1">// (DV_CONTENT) How much detail is required for data rendering
+</span>    <span class="n">LONG</span> <span class="n">lindex</span><span class="p">;</span> <span class="c1">// (-1) Used when data is split across page boundaries
+</span>    <span class="n">DWORD</span> <span class="n">tymed</span><span class="p">;</span> <span class="c1">// Storage medium used for data transfer (HGLOBAL, IStream etc)
+</span>    
+<span class="p">}</span> <span class="n">FORMATETC</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The members of the <code class="highlighter-rouge">FORMATETC</code> structure are described below.</p>
+
+<p>This value will almost always be -1.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">cfFormat</code> : The clipboard format which is used to identify the <code class="highlighter-rouge">FORMATETC</code> structure. This can either be a built-in format such as <code class="highlighter-rouge">CF_TEXT</code> or <code class="highlighter-rouge">CF_BITMAP</code>, or a custom format registered with <code class="highlighter-rouge">RegisterClipboardFormat</code>.</li>
+  <li><code class="highlighter-rouge">ptd</code> : Pointer to a <code class="highlighter-rouge">DVTARGETDEVICE</code> structure, which provides information about the device for which the data has been rendered. For normal clipboard operations and drag and drop, this will usually be NULL.</li>
+  <li><code class="highlighter-rouge">dwAspect</code> : Describes the amount of detail used to render the data. Usually this will be <code class="highlighter-rouge">DVASPECT_CONTENT</code>, meaning “full content”, but could describe a lesser detail such as thumbnail or icon.</li>
+  <li><code class="highlighter-rouge">lindex</code> : Is only used when data is to be split across page boundaries, and is not used for simple OLE transfers.</li>
+  <li><code class="highlighter-rouge">tymed</code> : This is the interesting member, because it describes the type of “storage medium” used to hold the data. This member has taken it’s name from the words “Type of Medium” - i.e. ty…med. The value is taken from on of the <code class="highlighter-rouge">TYMED_xxx</code> values defined in windows.h</li>
+</ul>
+
+<p>So with this single data structure, OLE has provided a method to describe to a “consumer” what the data is, and how it is intended to be rendered.</p>
+
+<h2 id="storing-ole-data">Storing OLE data</h2>
+
+<p>The <code class="highlighter-rouge">STGMEDIUM</code> structure (short for STORAGE MEDIUM) provides a container in which to actually <em>hold</em> data - hence the term <em>storage medium</em>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span> 
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">tymed</span><span class="p">;</span>
+    
+    <span class="k">union</span>
+    <span class="p">{</span>
+        <span class="n">HBITMAP</span> <span class="n">hBitmap</span><span class="p">;</span>
+        <span class="n">HMETAFILEPICT</span> <span class="n">hMetaFilePict</span><span class="p">;</span>
+        <span class="n">HENHMETAFILE</span> <span class="n">hEnhMetaFile</span><span class="p">;</span>
+        <span class="n">HGLOBAL</span> <span class="n">hGlobal</span><span class="p">;</span>
+        <span class="n">LPWSTR</span> <span class="n">lpszFileName</span><span class="p">;</span>
+        <span class="n">IStream</span> <span class="o">*</span><span class="n">pstm</span><span class="p">;</span>
+        <span class="n">IStorage</span> <span class="o">*</span><span class="n">pstg</span><span class="p">;</span>
+    <span class="p">};</span> 
+    
+    <span class="n">IUnknown</span> <span class="o">*</span><span class="n">pUnkForRelease</span><span class="p">;</span>
+    
+<span class="p">}</span> <span class="n">STGMEDIUM</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The structure definition above might look complicated, but there are in effect only three members, because the “unnamed” union collects all of it’s contents as one entity sharing the same space within the STGMEDIUM structure.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">tymed</code> : This must be the same as tymed in the <code class="highlighter-rouge">FORMATETC</code> structure - this member specifies what medium has been used to store the data - i.e. global data (<code class="highlighter-rouge">TYMED_HGLOBAL</code>), <code class="highlighter-rouge">IStream</code> (<code class="highlighter-rouge">TYMED_ISTREAM</code>) etc. The corresponding element in the union is the “handle” to the data.</li>
+  <li><code class="highlighter-rouge">hBitmap</code> / <code class="highlighter-rouge">hGlobal</code> etc: The actual data. Only one of these will be valid, depending on the value of <em>tymed</em>.</li>
+  <li><code class="highlighter-rouge">pUnkForRelease</code> : An optional pointer to an <code class="highlighter-rouge">IUnknown</code> interface on which the receipient of the data should call <code class="highlighter-rouge">Release</code>. When this field is NULL, it is the receipient’s responsibility to release the memory handle. The <code class="highlighter-rouge">ReleaseStgMedium</code> API call is useful here because it takes care of releasing the <code class="highlighter-rouge">STGMEDIUM</code>’s data contents, so in fact no work is required on our part.</li>
+</ul>
+
+<p>The <code class="highlighter-rouge">STGMEDIUM</code> structure is basically an extension of the traditional Windows HGLOBAL memory handle. Whilst the HGLOBAL is still supported (and is still the most common!), many other types of storage are supported, the most useful being the <code class="highlighter-rouge">IStream</code> and <code class="highlighter-rouge">IStorage</code> generic COM interfaces.</p>
+
+<p>So in conclusion, the <code class="highlighter-rouge">FORMATETC</code> and <code class="highlighter-rouge">STGMEDIUM</code> structures are used in conjunction to describe and store an OLE data entity. The <code class="highlighter-rouge">FORMATETC</code> is usually used to request a specific type of data from an <code class="highlighter-rouge">IDataObject</code>, whilst the <code class="highlighter-rouge">STGMEDIUM</code> structure is used to receive and hold the requested data.</p>
+
+<h2 id="transferring-ole-data">Transferring OLE data</h2>
+
+<p>The <code class="highlighter-rouge">IDataObject</code> interface provides a method to transfer data from one application to another. An <code class="highlighter-rouge">IDataObject</code> is very useful for two situations - <strong>Clipboard</strong> transfers and <strong>Drag and Drop</strong>. With a careful design, it is therefore possible to implement both clipboard and drag-and-drop support with a single COM object.</p>
+
+<p>The following table lists the <code class="highlighter-rouge">IDataObject</code> member functions in the order they must appear in the interface v-table. The <code class="highlighter-rouge">IUnknown</code> methods (<code class="highlighter-rouge">AddRef</code>, <code class="highlighter-rouge">Release</code> and <code class="highlighter-rouge">QueryInterface</code>) have been removed for brevity.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>IDataObject Methods</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">GetData</code></td>
+      <td>Renders the data described in a <code class="highlighter-rouge">FORMATETC</code> structure and transfers it through the <code class="highlighter-rouge">STGMEDIUM</code> structure.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">GetDataHere</code></td>
+      <td>Renders the data described in a <code class="highlighter-rouge">FORMATETC</code> structure and transfers it through the <code class="highlighter-rouge">STGMEDIUM</code> structure allocated by the caller.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">QueryGetData</code></td>
+      <td>Determines whether the data object is capable of rendering the data described in the FORMATETC structure.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">GetCanonicalFormatEtc</code></td>
+      <td>Provides a potentially different but logically equivalent <code class="highlighter-rouge">FORMATETC</code> structure.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">SetData</code></td>
+      <td>Provides the source data object with data described by a <code class="highlighter-rouge">FORMATETC</code> structure and an <code class="highlighter-rouge">STGMEDIUM</code> structure.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">EnumFormatEtc</code></td>
+      <td>Creates and returns a pointer to an <code class="highlighter-rouge">IEnumFORMATETC</code> interface to enumerate the <code class="highlighter-rouge">FORMATETC</code> objects supported by the data object.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DAdvise</code></td>
+      <td>Creates a connection between a data object and an advise sink so the advise sink can receive notifications of changes in the data object.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">DUnadvise</code></td>
+      <td>Destroys a notification previously set up with the DAdvise method.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">EnumDAdvise</code></td>
+      <td>Creates and returns a pointer to an interface to enumerate the current advisory connections.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The table above looks pretty overwhelming, and it gets even worse when we look at the <code class="highlighter-rouge">EnumFormatEtc</code> method and discover that we also have to implement the <code class="highlighter-rouge">IEnumFORMATETC</code> interface as well! Thats a total of thirteen member functions, not including the <code class="highlighter-rouge">IUnknown</code> methods - and we havn’t even begun to look at <code class="highlighter-rouge">IDropSource</code> and <code class="highlighter-rouge">IDropTarget</code>!</p>
+
+<p>Fortunately for simple OLE drag&amp;drop, only the <code class="highlighter-rouge">GetData</code>, <code class="highlighter-rouge">QueryGetData</code> and <code class="highlighter-rouge">EnumFormatEtc</code> members are required so that saves us alot of work.</p>
+
+<h2 id="accessing-the-clipboard-using-idataobject">Accessing the Clipboard using IDataObject</h2>
+
+<p>To ease ourselves into the way OLE works, we will begin with a simple program which will access the clipboard using OLE.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WINOLEAPI</span> <span class="n">OleGetClipboard</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">**</span> <span class="n">ppDataObj</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This single Windows API call is used to retrieve an <code class="highlighter-rouge">IDataObject</code>, which provides a nice interface to cleanly access the Window’s clipboard content. Note that we don’t have to implement the <code class="highlighter-rouge">IDataObject</code> interface in this case, we just need to know how to interface with it. A simple program to access the clipboard contents is shown below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;windows.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">;</span>
+
+    <span class="c1">// Initialize COM and OLE
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">OleInitialize</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">S_OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// Access the data on the clipboard
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">OleGetClipboard</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pDataObject</span><span class="p">)</span> <span class="o">==</span> <span class="n">S_OK</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// access the IDataObject using a separate function
+</span>        <span class="n">DisplayDataObject</span><span class="p">(</span><span class="n">pDataObject</span><span class="p">);</span>
+        <span class="n">pDataObject</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Cleanup
+</span>    <span class="n">OleUninitialize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The OLE API calls are very simple, and it is also straight-forward to programmatically access an <code class="highlighter-rouge">IDataObject</code>:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">DisplayDataObject</span><span class="p">(</span><span class="n">IDataObject</span> <span class="o">*</span><span class="n">pDataObject</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">FORMATETC</span> <span class="n">fmtetc</span> <span class="o">=</span> <span class="p">{</span> <span class="n">CF_TEXT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">DVASPECT_CONTENT</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">TYMED_HGLOBAL</span> <span class="p">};</span>
+    <span class="n">STGMEDIUM</span> <span class="n">stgmed</span><span class="p">;</span>
+
+    <span class="c1">// ask the IDataObject for some CF_TEXT data, stored as a HGLOBAL
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">pDataObject</span><span class="o">-&gt;</span><span class="n">GetData</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fmtetc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">stgmed</span><span class="p">)</span> <span class="o">==</span> <span class="n">S_OK</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// We need to lock the HGLOBAL handle because we can't
+</span>        <span class="c1">// be sure if this is GMEM_FIXED (i.e. normal heap) data or not
+</span>        <span class="kt">char</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">GlobalLock</span><span class="p">(</span><span class="n">stgmed</span><span class="p">.</span><span class="n">hGlobal</span><span class="p">);</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+
+        <span class="c1">// cleanup
+</span>        <span class="n">GlobalUnlock</span><span class="p">(</span><span class="n">stgmed</span><span class="p">.</span><span class="n">hGlobal</span><span class="p">);</span>
+        <span class="n">ReleaseStgMedium</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stgmed</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The code above demonstrates the most common method used to access an <code class="highlighter-rouge">IDataObject</code>. The data is requested using <code class="highlighter-rouge">IDataObject::GetData</code>. We constructed a <code class="highlighter-rouge">FORMATETC</code> object which was used to specify exactly what type of data we wanted - in this case, a standard <code class="highlighter-rouge">CF_TEXT</code> buffer of data, stored as a regular HGLOBAL memory object.</p>
+
+<p>The data is returned into the <code class="highlighter-rouge">STGMEDIUM</code> structure that <em>we</em> provided. Once we lock and display the data it is a simple matter to cleanup and call the standard <code class="highlighter-rouge">ReleaseStgMedium</code> API, to release the data stored inside the <code class="highlighter-rouge">STGMEDIUM</code> structure.</p>
+
+<p>Note that the code sample will only work when there is text selected into the Windows clipboard - that is, if there is no <code class="highlighter-rouge">CF_TEXT</code> stored in the clipboard, the clipboard’s <code class="highlighter-rouge">IDataObject::GetData</code> routine will return a failure code and we won’t print anything.</p>
+
+<h2 id="coming-up-in-part-3---implementing-idataobject">Coming up in Part 3 - Implementing IDataObject</h2>
+
+<p>OK, so we still havn’t actually performed any drag and drop, or even implemented a single COM interface yet. All this is going to change in Part 3 of the tutorial, where we will implement our very own <code class="highlighter-rouge">IDataObject</code> and store it on the Windows clipboard. Once we’ve accomplished this (no mean feat!) we will be ready to start dragging and dropping to our heart’s content.</p>
+
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2004-06-15T00:00:00+00:00">June 15, 2004</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../implementing-idataobject.html" class="pagination--pager" title="Implementing IDataObject
+">Previous</a>
+    
+    
+      <a href="../enumerating-formatetc.html" class="pagination--pager" title="Enumerating FORMATETC
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/2004-06-15-ole-data-transfers/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:45 GMT -->
+</html>

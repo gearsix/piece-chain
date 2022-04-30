@@ -1,0 +1,427 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-combobox by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Custom Combobox - Catch22</title>
+<meta name="description" content="Introduction">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Custom Combobox">
+<meta property="og:url" content="custom-combobox.html">
+
+
+  <meta property="og:description" content="Introduction">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2004-01-04T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="custom-combobox.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Custom Combobox</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/flatcombo.zip">flatcombo.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Custom Combobox">
+    <meta itemprop="description" content="Introduction">
+    <meta itemprop="datePublished" content="January 04, 2004">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Custom Combobox
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Custom Combobox</h1-->
+<!--h3>How to customize the appearance of a combobox</h3-->
+
+<h2 id="introduction">Introduction</h2>
+
+<p>It’s time for a new tutorial, something that has been overdue for a long time. The first new tutorial I want to write is going to explore how to implement a flat combo-box. The same technique will also be suitable for making combo-boxes with customized borders as well.</p>
+
+<p><img src="http://www.catch22.net/assets/img/flatcombo.gif" alt="" class="align-center" /></p>
+
+<p>Most of the tutorials I’ve written so far (which concerned changing a window’s appearance) did so by modifying a window’s non-client area. This is a nice way of doing this type of thing because the window’s frame is separated from the content it is displaying. Any custom-control that you may also decide to write should also follow this same design principle - keep the window borders in the non-client area, and the user-data inside the client area.</p>
+
+<p>The ComboBox is different because it does not have a non-client area, and hence has no “real” window borders. The ComboBox’s 3D appearance is achieved by painting the entirety of the control within it’s client area. This means that it will be extremely difficult to completely remove the borders from the control. Whichever Microsoft employee who decided to design the ComboBox in this manner should be ashamed of themselves, quite frankly, because every other control within Windows follows the same design-rules, <em>except</em> the ComboBox.</p>
+
+<h2 id="subclassing-a-combobox">Subclassing a ComboBox</h2>
+
+<p>Fortunately I know of a nice way to modify a ComboBox’s appearance which is very suited to what we want to do. Yet again we will need to subclass the ComboBox window and intercept one or two window-messages to add the functionality we need.</p>
+
+<p>The first step is therefore to perform the subclassing, this is exactly the same as for any other window:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VOID</span> <span class="nf">MakeFlatCombo</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndCombo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">LONG</span> <span class="n">OldComboProc</span><span class="p">;</span>
+    
+    <span class="c1">// save the current window procedure before we subclass
+</span>    <span class="n">OldComboProc</span> <span class="o">=</span> <span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">);</span>
+
+    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">,</span> <span class="n">OldComboProc</span><span class="p">);</span>
+
+    <span class="c1">// subclass the window procedure
+</span>    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndCombo</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">FlatComboProc</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Subclassing a window is easy and I’ve covered this many times before so there’s no need to explain any further. The next step is to now write a replacement window procedure which preserves the combo-box’s original functionality, but also removes it’s 3D-borders from the client area.</p>
+
+<p>The method I have used to achieve this is actually a bit of a cheat, because we are not going to remove the 3D borders. Instead we will leave the 2-pixel area around the control intact, but we’ll make it look different by painting it in a solid colour to make it look flat.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="nf">FlatComboProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">msg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// get the previous window procedure so we can still call it
+</span>    <span class="n">WNDPROC</span> <span class="n">OldComboProc</span> <span class="o">=</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">);</span>
+    
+    <span class="k">switch</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">WM_PAINT</span><span class="p">:</span>
+        <span class="c1">// custom painting will go here
+</span>    <span class="p">}</span>
+
+    <span class="c1">// preserve original window's functionality
+</span>    <span class="k">return</span> <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">OldComboProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Above is the very simplest form of subclass possible. This replacement window-procedure simply uses CallWindowProc to call the old window procedure. Our custom painting logic will be implemented inside the <code class="highlighter-rouge">WM_PAINT</code> handler. Note that this is different to previous tutorials which always used <code class="highlighter-rouge">WM_NCPAINT</code> - this is because we are going to modify the <em>client</em> area of the combo-box.</p>
+
+<h2 id="changing-a-comboboxs-client-area">Changing a ComboBox’s client area</h2>
+
+<p>OK, the boring bit is out of the way. The only thing left to do is modify the painting operation of a combo box.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HDC</span> <span class="n">hdc</span><span class="p">;</span>
+<span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+<span class="n">PAINTSTRUCT</span> <span class="n">ps</span><span class="p">;</span>
+
+<span class="n">hdc</span> <span class="o">=</span> <span class="n">BeginPaint</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+
+<span class="c1">// Find coordinates of client area
+</span><span class="n">GetClientRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+<span class="c1">// Deflate the rectangle by the size of the borders
+</span><span class="n">InflateRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="o">-</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXEDGE</span><span class="p">),</span> <span class="o">-</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">CM_CYEDGE</span><span class="p">));</span>
+
+<span class="c1">// Make a mask from the rectangle, so the borders aren't included
+</span><span class="n">IntersectClipRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">);</span>
+
+<span class="c1">// Draw the combo-box into our DC
+</span><span class="n">CallWindowProc</span><span class="p">(</span><span class="n">OldComboProc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">hdc</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Let’s walk through the code line-by-line. The first thing we have to do is obtain a Device Context to draw into, this is obtained using the standard <code class="highlighter-rouge">BeginPaint</code> API call. The next step is to work out the coordinates of the combo-box area that we want to draw - i.e. the region not including the outer borders. This is obtained using a combination of <code class="highlighter-rouge">GetClientRect</code> and <code class="highlighter-rouge">InflateRect</code>. The final stage is to call the original window procedure to paint the combo-box normally, but before we do this we make sure that the “normal” borders don’t get drawn by masking them out with the <code class="highlighter-rouge">IntersectClipRect</code> call.</p>
+
+<p>It’s actually pretty simple. The only thing left to do now is to draw our own custom border around the control, otherwise this area won’t ever get updated and will appear “dirty”.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Remove the clipping region
+</span><span class="n">SelectClipRgn</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// now mask off the inside of the control so we can paint the borders
+</span><span class="n">ExcludeClipRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">);</span>
+
+<span class="c1">// paint a flat colour
+</span><span class="n">GetClientRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+<span class="n">FillRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_3DSHADOW</span><span class="p">));</span>
+
+<span class="n">EndPaint</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ps</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The code above is very simple. All it does is invert the clipping rectangle so that instead of the borders being masked off and the inside being “exposed”, the inside is masked off and the borders are exposed. The borders are then painted a dark colour to show that they have been customized. You have two options here really. To remove the appearance of the borders altogether you should choose a colour that blends into the combo’s parent window. For example, if the combo box was in a dialog box you would paint the combo’s borders the same colour as the dialog background. The alternative is to make your own custom 3D effect, again this is totally up to you how you decide to do this.</p>
+
+<h2 id="making-a-custom-button">Making a custom button</h2>
+
+<p>The difficult part is out of the way. The rest of this tutorial is now only concerned with additional effects for the combo box. The next logical step for combo-box customization is to customize the appearance of the 3D button on the right of the control. Again, it is not possible to remove the button, only to change it’s appearance to something else.</p>
+
+<p>This stage is very simple, and only requires one extra line of code to what we’ve already got. By simply adding the button’s region to the clipping rectangle when we do the painting we can prevent the button from being drawn “normally” in the exact same way we did for the 3D borders.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Find coordinates of client area
+</span><span class="n">GetClientRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+<span class="c1">// Deflate the rectangle by the size of the borders
+</span><span class="n">InflateRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="o">-</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXEDGE</span><span class="p">),</span> <span class="o">-</span><span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">CM_CYEDGE</span><span class="p">));</span>
+
+<span class="c1">// Remove the drop-down button as well
+</span><span class="n">rect</span><span class="p">.</span><span class="n">right</span> <span class="o">-=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">CM_CXSCROLL</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>As you can see only one line as been added - an adjustment of the right-hand-side of the clipping rectangle so that it excludes the drop-down button.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I’m going to stop here because the important bits have been done. The source-code download does a little more work than I’ve presented here and shows how to draw a completely custom combo-box which also responds to mouse-messages correctly. Hopefully this tutorial has answered any questions you might of had regarding ComboBox customization. Stay tuned for more tutorials coming soon!</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/flatcombo.zip">flatcombo.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2004-01-04T00:00:00+00:00">January 04, 2004</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="system-image-list.html" class="pagination--pager" title="System Image List
+">Previous</a>
+    
+    
+      <a href="../undocumented-createprocess.html" class="pagination--pager" title="Undocumented CreateProcess
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-combobox by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

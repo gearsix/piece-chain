@@ -1,0 +1,600 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/url-control by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>URL Control - Catch22</title>
+<meta name="description" content="Updated 2018Since this tutorial was written, the Win32 Common Controls library includes a control called the SysLink control. It is strongly recommended that you use this control if you want to embed hyperlinks in your Win32 application.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="URL Control">
+<meta property="og:url" content="url-control.html">
+
+
+  <meta property="og:description" content="Updated 2018Since this tutorial was written, the Win32 Common Controls library includes a control called the SysLink control. It is strongly recommended that you use this control if you want to embed hyperlinks in your Win32 application.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-10-01T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="url-control.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">URL Control</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/urlctrl.zip">urlctrl.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="URL Control">
+    <meta itemprop="description" content="Updated 2018Since this tutorial was written, the Win32 Common Controls library includes a control called the SysLink control. It is strongly recommended that you use this control if you want to embed hyperlinks in your Win32 application.">
+    <meta itemprop="datePublished" content="October 01, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">URL Control
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>URL Control</h1-->
+<!--h3>A simple HTTP URL control</h3-->
+
+<h2 id="updated-2018">Updated 2018</h2>
+<p>Since this tutorial was written, the Win32 Common Controls library includes a control called the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb760704(v=vs.85).aspx">SysLink</a> control. It is strongly recommended that you use this control if you want to embed hyperlinks in your Win32 application.</p>
+
+<h2 id="updated-6th-jan-2005">Updated 6th Jan 2005</h2>
+
+<p>Ralph Bittmann has kindly sent an update of the URL Control. It has some nice extra features:</p>
+
+<ul>
+  <li>Keyboard support for tabbing, focus and space key</li>
+  <li>Window resizing to fit the displayed text</li>
+  <li>Better font support</li>
+  <li>Better cursor support</li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This tutorial will teach you how to implement a “URL” control, which pops up a browser when you click on the hyperlink. The control will be based around a simple static text label, and we’re going to customize it so that it looks and feels like a hyperlink that you would find in a web-page.</p>
+
+<p><img src="http://www.catch22.net/assets/img/urlctrl.gif" alt="Sample screen-shot" class="align-center" /></p>
+
+<p>Our aim is to implement a single function, which takes a window handle and a URL, and converts the specified static control into a URL control. This is what the function prototype will look like:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">StaticToURLControl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hDlg</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uStaticId</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szURL</span><span class="p">,</span> <span class="n">COLORREF</span> <span class="n">crLink</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The function above will actually take a dialog’s window handle and the control ID of a static label. Because I envisage this URL control will be most commonly found in dialog boxes this method provides the simplest interface.</p>
+
+<h2 id="subclassing-again">Subclassing again</h2>
+
+<p>The easiest way to create this URL control is to subclass a static control, and add on the functionality we require. The subclass procedure will need to perform these tasks:</p>
+
+<ul>
+  <li>Change the mouse cursor to a “hand” when the mouse moves over the control.</li>
+  <li>Change the colour of the label (Blue for normal, Purple for a visited link).</li>
+  <li>Display the static label with an underlined font.</li>
+  <li>Display a browser when the user clicks on the control.</li>
+</ul>
+
+<p>Before we start to implement these features, we need to actually perform the subclass and initialize the static control correctly. The structure below will hold our URL control state.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span>
+<span class="p">{</span>
+    <span class="n">TCHAR</span> <span class="n">szURL</span><span class="p">[</span><span class="n">_MAX_PATH</span><span class="p">];</span> <span class="c1">// desination URL
+</span>    <span class="n">WNDPROC</span> <span class="n">oldproc</span><span class="p">;</span> <span class="c1">// old window procedure
+</span>    <span class="n">COLORREF</span> <span class="n">crLink</span><span class="p">;</span> <span class="c1">// current link colour
+</span>    <span class="n">COLORREF</span> <span class="n">crVisited</span><span class="p">;</span> <span class="c1">// link colour if visited} URLCtrl;
+</span></code></pre></div></div>
+
+<p>A hyperlink in a web page has several properties which we need to emulate. In addition to the visible display text, a hyperlink also has a destiniation URL which is visited when the link is clicked on. Now, a standard static control already has a text label which you set with <code class="highlighter-rouge">SetWindowText</code> or <code class="highlighter-rouge">WM_SETTEXT</code>. However, we need to somehow specify what the destination URL is, so the structure above includes this information.</p>
+
+<p>The colour of a hyperlink is also important. A hyperlink has two colours - blue when unvisited, and purple when the link has been visited. The two <code class="highlighter-rouge">COLORREF</code> structure members will represent these properties.</p>
+
+<p>The function below shows how to convert a static control into a URL control. It performs a number of steps, described below.</p>
+
+<ol>
+  <li>Allocate memory for the URL state structure.</li>
+  <li>Set the URL destination text.</li>
+  <li>Set the hyperlink colours.</li>
+  <li>Replace the static control’s window procedure with our custom one.</li>
+  <li>Associate the URL state with the new URL control.</li>
+</ol>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="nf">StaticToURLControl</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hDlg</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">staticid</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szURL</span><span class="p">,</span> <span class="n">COLORREF</span> <span class="n">crLink</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">HWND</span> <span class="n">hwndCtrl</span> <span class="o">=</span> <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">hDlg</span><span class="p">,</span> <span class="n">staticid</span><span class="p">);</span>
+
+    <span class="c1">// Allocate memory for the URL structure
+</span>    <span class="n">URLCtrl</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="n">URLCtrl</span> <span class="o">*</span><span class="p">)</span><span class="n">HeapAlloc</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">URLCtrl</span><span class="p">));</span>
+
+    <span class="c1">// set the URL text (not the display text)
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">szURL</span><span class="p">)</span> <span class="n">lstrcpy</span><span class="p">(</span><span class="n">url</span><span class="o">-&gt;</span><span class="n">szURL</span><span class="p">,</span> <span class="n">szURL</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">url</span><span class="o">-&gt;</span><span class="n">szURL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="sc">'\0'</span><span class="p">);</span>
+
+    <span class="c1">// set the hyperlink colour
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">crLink</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">url</span><span class="o">-&gt;</span><span class="n">crLink</span> <span class="o">=</span> <span class="n">crLink</span><span class="p">;</span>
+    <span class="k">else</span> <span class="n">url</span><span class="o">-&gt;</span><span class="n">crLink</span> <span class="o">=</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">);</span>
+
+    <span class="c1">// set the visited colour
+</span>    <span class="n">url</span><span class="o">-&gt;</span><span class="n">crVisited</span> <span class="o">=</span> <span class="n">RGB</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">128</span><span class="p">);</span>
+
+    <span class="c1">// subclass the static control
+</span>    <span class="n">url</span><span class="o">-&gt;</span><span class="n">oldproc</span> <span class="o">=</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndCtrl</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">URLCtrlProc</span><span class="p">);</span>
+
+    <span class="c1">// associate the URL structure with the static control
+</span>    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndCtrl</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">url</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="the-actual-subclass-procedure">The actual subclass procedure</h2>
+
+<p>A subclass procedure is just a window procedure. The only difference is, instead of calling <code class="highlighter-rouge">DefWindowProc</code> you must use <code class="highlighter-rouge">CallWindowProc</code>. The skeleton function below performs no customization. All it does at present is to free the URL structure when the window is destroyed.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Subclass window procedure for a static control
+</span><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="nf">URLCtrlProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">iMsg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="c1">// get the URL state structure for this window
+</span>    <span class="n">URLCtrl</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="n">URLCtrl</span> <span class="o">*</span><span class="p">)</span><span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">);</span>
+    <span class="n">WNDPROC</span> <span class="n">oldproc</span> <span class="o">=</span> <span class="n">url</span><span class="o">-&gt;</span><span class="n">oldproc</span><span class="p">;</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="n">iMsg</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">WM_NCDESTROY</span><span class="p">:</span>
+        <span class="n">HeapFree</span><span class="p">(</span><span class="n">GetProcessHeap</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">url</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+
+        <span class="c1">// handle other messages here.
+</span>    <span class="p">}</span>
+
+    <span class="c1">// perform default processing for all other messages
+</span>    <span class="k">return</span> <span class="n">CallWindowProc</span><span class="p">(</span><span class="n">oldproc</span><span class="p">,</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">iMsg</span><span class="p">,</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The rest of this tutorial will show you what is necessary to fill in the rest of the subclass procedure.</p>
+
+<h2 id="changing-the-mouse-cursor">Changing the mouse cursor</h2>
+
+<p>This is the easiest task to perform, so I’ll do this first to get started. All we need to do is handle the <code class="highlighter-rouge">WM_SETCURSOR</code> message in our subclass procedure. We use the <code class="highlighter-rouge">SetCursor</code> API call to actually change the mouse cursor, and then return <code class="highlighter-rouge">TRUE</code> to tell Windows to stop any further processing.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_SETCURSOR</span><span class="p">:</span>
+    <span class="n">SetCursor</span><span class="p">(</span><span class="n">hCurs</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>It’s that simple. The only other thing to do is to create an appropriate cursor. The simplest way to do this is to use the <code class="highlighter-rouge">LoadCursor</code> API call, and include a cursor as a resource in your main executable. This is slightly disadvantagous because you have to remember to include this cursor every time you want a URL control.</p>
+
+<p>Our solution will be to create the cursor manually, with the <code class="highlighter-rouge">CreateCursor</code> API call. Using this method, our URL source file will be completely standalone, with no other dependencies. This is what the function looks like (from MSDN):</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HCURSOR</span> <span class="n">CreateCursor</span><span class="p">(</span>
+  <span class="n">HINSTANCE</span> <span class="n">hInst</span><span class="p">,</span> <span class="c1">// handle to application instance
+</span>  <span class="kt">int</span> <span class="n">xHotSpot</span><span class="p">,</span> <span class="c1">// x coordinate of hot spot
+</span>  <span class="kt">int</span> <span class="n">yHotSpot</span><span class="p">,</span> <span class="c1">// y coordinate of hot spot
+</span>  <span class="kt">int</span> <span class="n">nWidth</span><span class="p">,</span> <span class="c1">// cursor width
+</span>  <span class="kt">int</span> <span class="n">nHeight</span><span class="p">,</span> <span class="c1">// cursor height
+</span>  <span class="n">CONST</span> <span class="n">VOID</span> <span class="o">*</span><span class="n">pvANDPlane</span><span class="p">,</span> <span class="c1">// AND mask array
+</span>  <span class="n">CONST</span> <span class="n">VOID</span> <span class="o">*</span><span class="n">pvXORPlane</span> <span class="c1">// XOR mask array
+</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>We have to build those mask arrays somehow. For a standard 32x32 monochrome cursor, we require two 128 byte arrays, which represent the bit-masks used to create the cursor image. The download includes these two arrays, but it’s worth mentioning how you can create your own by extracting the bit masks from a cursor resource.</p>
+
+<ol>
+  <li>Create a cursor using the Visual C++ resource editor.</li>
+  <li>Locate the <code class="highlighter-rouge">\*.CUR</code> file in your project directory.</li>
+  <li>Open the cursor file in your favourite Hex Editor. I recommend my very own <a href="http://www.catch22.net/software/hexedit">HexEdit</a> :-)</li>
+  <li>Select the last 128 bytes in the .CUR file. This is the XOR mask.</li>
+  <li>The mask is stored upside down for some reason, so you need to reverse each line in the bitmap. We can calculate that 1 line in the cursor requires 4 bytes in the mask, because 128 bytes divided by 32 lines equals 4.</li>
+  <li>Reverse the selection using the Edit-&gt;Reverse menu command -&gt;</li>
+  <li>Enter “4” in the Item Width edit field. Click on OK.</li>
+  <li>Export the raw bytes as a C-style array of BYTES.</li>
+  <li>Select the File-&gt;Export menu command.</li>
+  <li>Select “C Source” and “Byte” export types.</li>
+  <li>Select a file name and hit Export.</li>
+  <li>Repeat from step 4, but this time select the second-last 128 byte block before the current selection. This is the AND mask.</li>
+</ol>
+
+<p>You should now have two *.C files saved somewhere. They will look like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Generated by HexEdit */</span>
+<span class="cm">/* C:\MSVC\My Projects\URLCtrl\cur00001.cur */</span>
+<span class="n">BYTE</span> <span class="n">XORMask</span><span class="p">[</span><span class="mi">128</span><span class="p">]</span> <span class="o">=</span>
+<span class="p">{</span>
+  <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span>
+  <span class="mh">0xf9</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> 
+  <span class="p">...,</span> <span class="p">...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Once you’ve got your two arrays included in your source, you can create a cursor like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hCurs</span> <span class="o">=</span> <span class="n">CreateCursor</span><span class="p">(</span><span class="n">GetModuleHandle</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">XORMask</span><span class="p">,</span> <span class="n">ANDMask</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Just store this cursor handle somewhere so that the <code class="highlighter-rouge">WM_SETCURSOR</code> handler has access to it. Although it may seem as if I’ve side-tracked a little from the original task, I think this technique is really useful so I included it anyway!</p>
+
+<h2 id="painting-the-url-control">Painting the URL control</h2>
+
+<p>Now for the artistic part. We need to customize both the font and the colour of the static control if we are to create a proper hyperlink. There are two ways to do this. The first is to handle the <code class="highlighter-rouge">WM_CTLCOLORSTATIC</code> message in the static control’s parent window (the dialog box). However, this means that every time we want to use a URL control we have to manually handle this message. A better solution is to completely take over drawing in the static control’s <code class="highlighter-rouge">WM_PAINT</code> handler.</p>
+
+<h3 id="find-the-text-alignment">Find the text alignment.</h3>
+
+<p>A standard static control can have its text aligned to the left, right or center. In addition, text can also be centered vertically. Utimately we will be using <code class="highlighter-rouge">DrawText</code> to draw the text, so we need to map the static control text-alignment styles to those that can be specified with <code class="highlighter-rouge">DrawText</code>. The code below shows you how.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DWORD</span> <span class="n">dwStyle</span> <span class="o">=</span> <span class="n">GetWindowLong</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">GWL_STYLE</span><span class="p">);</span>
+<span class="n">DWORD</span> <span class="n">dwDTStyle</span> <span class="o">=</span> <span class="n">DT_SINGLELINE</span><span class="p">;</span>
+
+<span class="c1">// Test if centered horizontally or vertically
+</span><span class="k">if</span><span class="p">(</span><span class="n">dwStyle</span> <span class="o">&amp;</span> <span class="n">SS_CENTER</span><span class="p">)</span> <span class="n">dwDTstyle</span> <span class="o">|=</span> <span class="n">DT_CENTER</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="n">dwStyle</span> <span class="o">&amp;</span> <span class="n">SS_RIGHT</span><span class="p">)</span> <span class="n">dwDTstyle</span> <span class="o">|=</span> <span class="n">DT_RIGHT</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="n">dwStyle</span> <span class="o">&amp;</span> <span class="n">SS_CENTERIMAGE</span><span class="p">)</span> <span class="n">dwDTstyle</span> <span class="o">|=</span> <span class="n">DT_VCENTER</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="set-the-text-colours-before-drawing">Set the text colours before drawing.</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SetTextColor</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">url</span><span class="o">-&gt;</span><span class="n">crLink</span><span class="p">);</span>
+<span class="n">SetBkColor</span> <span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_3DFACE</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="create-an-underlined-font">Create an underlined font.</h3>
+
+<p>This one is easy. We first of all find the default GUI font that we would be drawing with normally. Then, we create a new font based on that one, but with the underline style set, like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Get the default GUI font
+</span><span class="n">LOGFONT</span> <span class="n">lf</span><span class="p">;</span>
+<span class="n">HFONT</span> <span class="n">hf</span> <span class="o">=</span> <span class="p">(</span><span class="n">HFONT</span><span class="p">)</span><span class="n">GetStockObject</span><span class="p">(</span><span class="n">DEFAULT_GUI_FONT</span><span class="p">);</span>
+
+<span class="c1">// Add UNDERLINE attribute
+</span><span class="n">GetObject</span><span class="p">(</span><span class="n">hf</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">lf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lf</span><span class="p">);</span>
+<span class="n">lf</span><span class="p">.</span><span class="n">lfUnderline</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+            
+<span class="c1">// Create a new font
+</span><span class="n">hfUnderlined</span> <span class="o">=</span> <span class="n">CreateFontIndirect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lf</span><span class="p">);</span>
+
+<span class="c1">// Use the font
+</span><span class="n">SelectObject</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">hfUnderlined</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="draw-the-text">Draw the text.</h3>
+
+<p>The static control already has its window text set, so we’ll just use that instead of having to store our own copy. Note the <code class="highlighter-rouge">dwDTStyle</code> flag for <code class="highlighter-rouge">DrawText</code>, which we worked out earlier.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCHAR</span> <span class="n">szWinText</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+
+<span class="n">GetWindowText</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">szWinText</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">szWinText</span><span class="p">);</span>
+<span class="n">DrawText</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">szWinText</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">dwDTStyle</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="launch-the-default-browser">Launch the Default Browser</h2>
+
+<p>At this point we have a static control that looks like a hyperlink, but it doesn’t do anything yet. We only need to handle three mouse messages to launch a browser when the user clicks on the static control.</p>
+
+<h3 id="enable-mouse-messages-wm_nchittest">Enable mouse messages (WM_NCHITTEST)</h3>
+
+<p>This is the most important message. A standard static control will return <code class="highlighter-rouge">HTTRANSPARENT</code> for this message, which means that all mouse messages get passed to the parent window instead of the static control. We have to override this behaviour so that our subclass procedure receives the mouse messages instead.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_NCHITTEST</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">HTCLIENT</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="mouse-down-wm_lbuttondown">Mouse-down (WM_LBUTTONDOWN)</h3>
+
+<p>All we need to do for this message is to set a flag saying “The user has clicked the mouse down in our window”. This is so that when the mouse is released in the same window we can interpret this as a mouse click. We need the flag, because it is quite possible for a window to receive a button-up message even if the mouse button wasn’t pressed down in that window.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_LBUTTONDOWN</span><span class="p">:</span>
+    <span class="n">fClicking</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+    <span class="k">break</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="mouse-up-wm_lbuttonup">Mouse-up (WM_LBUTTONUP)</h3>
+
+<p>This is when we launch the browser.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_LBUTTONUP</span><span class="p">:</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">fClicking</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fClicking</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+
+        <span class="c1">// Change the link colour to purple
+</span>        <span class="n">url</span><span class="o">-&gt;</span><span class="n">crLink</span> <span class="o">=</span> <span class="n">url</span><span class="o">-&gt;</span><span class="n">crVisited</span><span class="p">;</span>
+
+        <span class="n">InvalidateRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">UpdateWindow</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+        <span class="c1">// Open a browser
+</span>        <span class="n">ShellExecute</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">_T</span><span class="p">(</span><span class="s">"open"</span><span class="p">),</span> <span class="n">url</span><span class="o">-&gt;</span><span class="n">szURL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">SW_SHOWNORMAL</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The default browser is launched by a call to <code class="highlighter-rouge">ShellExecute</code>. To get this function to display a browser, all we do is specify “open” as the second parameter, and pass a pointer to a string containing a fully qualified URL as the third parameter. <code class="highlighter-rouge">ShellExecute</code> does the rest for us, by displaying a browser window for the specified URL.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That, in a nutshell, is it. The source-code download includes the complete URL control source, and a mini test application to demonstrate it. If you want to use a URL control in one of your applications, just include “URLCtrl.h” in your source, and call the following function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StaticToURLControl</span><span class="p">(</span><span class="n">hDlg</span><span class="p">,</span> <span class="n">IDC_HYPER1</span><span class="p">,</span> <span class="s">"http://www.mysite.com"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Just a quick mention on how to use the function above. In the resource editor for your dialog box, you need to give your static control a unique ID (instead of <code class="highlighter-rouge">ID_STATIC</code>), because by default all static controls have an ID of -1, which means that you can’t locate a standard static control using GetDlgItem.</p>
+
+<p>The second issue is the URL text. You need to specify a complete URL, including the <code class="highlighter-rouge">http://</code> prefix, in order for <code class="highlighter-rouge">ShellExecute</code> to interpret the string as a URL and launch the browser accordingly.</p>
+
+<p>The last issue is specifying the colour for an unvisited hyperlink. You can specify either a <code class="highlighter-rouge">RGB(r,g,b)</code> value, or just pass -1, which gives the control the default blue colour.</p>
+
+<p>Have fun!</p>
+
+<p>James.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/urlctrl.zip">urlctrl.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-10-01T00:00:00+00:00">October 01, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="self-deleting-executables.html" class="pagination--pager" title="Self-deleting Executables
+">Previous</a>
+    
+    
+      <a href="custom-controls.html" class="pagination--pager" title="Custom Controls
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/url-control by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

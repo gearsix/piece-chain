@@ -1,0 +1,547 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-scrollbars by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Custom Scrollbars - Catch22</title>
+<meta name="description" content="">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Custom Scrollbars">
+<meta property="og:url" content="custom-scrollbars.html">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2002-01-06T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="custom-scrollbars.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Custom Scrollbars</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/coolscroll_src.zip">coolscroll_src.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Custom Scrollbars">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="January 06, 2002">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Custom Scrollbars
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Custom Scrollbars</h1-->
+<!--h3>Introducing the Cool Scrollbar library, for customizing the appearance of scrollbars</h3-->
+
+<p><img src="http://www.catch22.net/assets/img/coolscroll01.gif" alt="screen-shot" class="align-center" /></p>
+
+<h2 id="new-features-in-version-12">New features in Version 1.2</h2>
+
+<ul>
+  <li>TreeView problem fixed, thanks go to Diego Tártara.</li>
+  <li>A few other minor problems also fixed.</li>
+</ul>
+
+<h2 id="new-features-in-version-11">New features in Version 1.1</h2>
+
+<ul>
+  <li>Supports ALL types of window (only in Windows NT, 2000 and XP).</li>
+  <li>Simplified demo application.</li>
+  <li>MFC demo application also included.</li>
+  <li>Added support for Right-left reading windows .</li>
+  <li>Changed calling convention of APIs to WINAPI (__stdcall).</li>
+  <li>Completely standalone (no need for c-runtime).</li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Cool Scrollbars is a library I have written to customize the standard scrollbars of a window. Please note that this library only supports standard window-scrollbars. Separate scrollbar controls are NOT supported. If you want to customize a scrollbar control, then you must devise your own method.</p>
+
+<p>Rather than explain how this library works, I will describe how to use the library in your applications. Cool scrollbars behave exactly like normal scrollbars in a window. However, unlike standard scrollbars, cool scrollbars can be heavily customized. The library is written entirely in the C programming language, and can be compiled to a tiny 14kb! With all features enabled, this rises to around 20kb. This is a pretty small overhead for something which is so complex. Although this library does not require any external libraries such as MFC, ATL, WTL etc, there is NO reason why you cannot use this library in those types of project.</p>
+
+<h2 id="features">Features</h2>
+
+<ul>
+  <li>Change the size of a window’s scrollbars.</li>
+  <li>Insert buttons into the scrollbar area.</li>
+  <li>Use standard bitmaps or metafiles on inserted buttons.</li>
+  <li>Enable tooltips for all inserted buttons.</li>
+  <li>Enable flat-style and hot-tracked scrollbars.</li>
+  <li>Custom-draw, so you can paint the scrollbars with your own bitmaps.</li>
+</ul>
+
+<p>Starting with version 1.1 of the Cool Scrollbar library, is a new feature which makes it possible to add cool scrollbars to any window in your program, even if you don’t have access to the source-code. This includes standard Windows Controls (edit, list-boxes) and the Common Controls (ListView, TreeView etc).</p>
+
+<p>Unfortunately this feature is only available when a program is running under Windows NT, 2000 and XP. This is because of the different ways the Windows 9x and NT operating systems map DLLs into a process’s address space. This difference prevents a process from hooking API calls when running under Windows 9x, and is the reason why this feature is only available under NT.</p>
+
+<p>Perhaps a later version of the Cool Scrollbar library will address this problem. Until then however, a program which must run under Windows 95,98 or ME is restricted to having cool-scrollbars only on windows for which the source-code is available.</p>
+
+<h2 id="enable-cool-scrollbars-for-any-window-new-in-version-11">Enable cool scrollbars for ANY window (New in version 1.1)</h2>
+
+<p>The Cool Scrollbar download now contains an additional library which provides a program with the ability to enable cool-scrollbars for ANY window in that program. This library (coolsb_detours) uses a technique called binary-rewriting to hook and intercept all of the standard scrollbar API calls inside USER32.DLL. The coolsb_detours library actually relies on the superb <strong>Detours</strong> package available from research.microsoft.com.</p>
+
+<p>In order to use coolsb_detours, you must goto Microsoft’s research site and download the Detours package. There is only one file you actually need, but the Detours license agreement prevents me from distributing this file myself. You can goto the Detours page here:</p>
+
+<p><a href="http://research.microsoft.com/sn/detours/">http://research.microsoft.com/sn/detours</a></p>
+
+<p>The only file you need from this package is “lib\detours.lib”. Simply copy this file into the coolsb_detours directory before you try to compile it. Please read Microsoft’s licence agreement for this package before you start - it contains some important information.</p>
+
+<p>Once you have downloaded the Detours package you must add the coolsb_detours project to your workspace, as well as the standard coolsb project. You do not have to include coolsb_detours if you don’t need the new feature it offers.</p>
+
+<p>There are two new cool-scrollbar API calls which enable and disable support for all types of window.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CoolSB_InitializeApp</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">CoolSB_InitializeApp</code> allows your program to apply cool-scrollbars to any window created by your program. Note that <code class="highlighter-rouge">CoolSB_InitializeApp</code> does not enable the cool-scrollbars themselves - this is still achieved with the <code class="highlighter-rouge">InitializeCoolSB</code> API call (see below). You would typically call <code class="highlighter-rouge">CoolSB_InitApp</code> at the start of your program.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CoolSB_UninitializeApp</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">CoolSB_UninitializeApp</code> must be called before your program exits (assuming that you also called <code class="highlighter-rouge">CoolSB_InitializeApp</code>)</p>
+
+<p>These two functions will only return successfully when a program is running under Windows NT, 2000 or XP.</p>
+
+<h2 id="adding-cool-scrollbars-to-a-window">Adding cool scrollbars to a window</h2>
+
+<p>To add cool scrollbars to a window, call <code class="highlighter-rouge">InitializeCoolSB</code>, passing the handle to the window. Unless you are using the <strong>coolsb_detours</strong> package under Windows NT/2000/XP, you must replace ALL standard scrollbar functions, such as <code class="highlighter-rouge">SetScrollInfo</code> or <code class="highlighter-rouge">GetScrollInfo</code>, with the equivalent <code class="highlighter-rouge">CoolSB_xxx</code> version. There is a cool scrollbar function call for every standard scrollbar API call. These functions behave in the exact same way as the standard API calls. If cool scrollbars haven’t been enabled for a window, the cool scrollbar functions will default to the standard API calls automatically. This allows you to turn cool scroll bars on and off without having to write conditional code.</p>
+
+<p>In addition to the standard scrollbar functions, cool scrollbars offer a number of extra features, and also a set of API calls to manipulate these features.</p>
+
+<p><strong>Note:</strong> You do NOT need to use the <code class="highlighter-rouge">CoolSB_xxx</code> scrollbar functions if you are using the coolsb_detours library.</p>
+
+<h2 id="changing-the-size-of-the-scrollbars">Changing the size of the scrollbars</h2>
+
+<p><code class="highlighter-rouge">CoolSB_SetSize</code> allows to alter the size of either the horizontal scrollbar, or the vertical scrollbar, or both. You should be very sure that you really want to change the size of a scrollbar, because it could annoy a user who has set their system scrollbar sizes to the exact size that they want.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CoolSB_SetSize</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wBar</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nLength</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nWidth</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>By using this API call, you can alter the two dimensions of a scrollbar.</p>
+
+<ul>
+  <li><strong>wBar</strong> can be one of the following values: <code class="highlighter-rouge">SB_HORZ</code>, <code class="highlighter-rouge">SB_VERT</code> or<code class="highlighter-rouge"> SB_BOTH</code>.</li>
+  <li><strong>nLength</strong> refers to either the width of a horizontal scrollbar arrow, or the height of a vertical scrollbar arrow. I chose the term “length” because you can take the length to mean the length of the actual arrow, in the direction it points.</li>
+  <li><strong>nWidth</strong> refers to the height of a horizontal scrollbar arrow, or the width of a vertical scrollbar arrow. This parameter is probably the one most people think of when they think of scrollbar “size”, because it alters not only the width of the arrow, but the scrollbar margin and the thumb width as well.</li>
+</ul>
+
+<p>By specifying a non-negative integer number, you can specify the size, in pixels, of a scrollbar arrow. The scrollbar size will remain unaffected by the system scrollbar settings, even if the user changes these settings whilst your program is running.</p>
+
+<p><strong>Important.</strong> By specifying a negative number, you can set the scrollbar dimensions to a multiple of the system scrollbar sizes. A value of -1 or <code class="highlighter-rouge">SYSTEM_METRIC</code> results in scrollbars which are the exact same size as a normal scrollbar. A value of -2 results in scrollbars twice the size of a standard scrollbar, and so-on. By using negative values, the cool scrollbars will always be sized according to the system scrollbar metrics. You do not have to call this function every time the scrollbar system metrics are changed by the user.</p>
+
+<p>You should try to assign the same number to both the length and the width. If you use different values, then your scrollbars will looked squashed in one dimension.</p>
+
+<h2 id="making-flat-scrollbars">Making Flat Scrollbars</h2>
+
+<p>The Cool Scrollbar library supports Flat scrollbars, like the variety found in the common controls library. Unlike the Microsoft flat scrollbars, the cool scrollbars only support two types of flat scrollbars. These are standard flat-looking scrollbars, without “hot-tracking”, and normal flat scrollbars, with “hot-tracking” enabled. Hot-tracking is the feature that highlights a portion of a scrollbar when the mouse moves over it.</p>
+
+<p>The <code class="highlighter-rouge">CoolSB_SetFlatMode</code> API allows you to give a cool scrollbar enabled window flat scrollbars.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CoolSB_SetFlatMode</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wBar</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nFlatMode</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>You must specify which scrollbar of a window will be displayed as a flat scrollbar, by using the <code class="highlighter-rouge">wBar</code> parameter. This can be either <code class="highlighter-rouge">SB_HORZ</code>, <code class="highlighter-rouge">SB_VERT</code>, or <code class="highlighter-rouge">SB_BOTH</code> if you want both scrollbars to become flat looking. The <code class="highlighter-rouge">nFlatMode</code> parameter can be one of three values.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">CSBS_FLAT</code></td>
+      <td>Normal looking flat scrollbars</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CSBS_HOTTRACKED</code></td>
+      <td>Hot-tracked flat scrollbars</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">CSBS_NORMAL</code></td>
+      <td>Remove the flat look</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="inserting-a-button-into-a-cool-scroll-bar">Inserting a button into a cool scroll bar</h2>
+
+<p>There are four functions available to insert a button into a scrollbar. You can insert buttons to the left or right of a horizontal scrollbar, and above or below a vertical scrollbar.</p>
+
+<p>All of these functions use the <a href="http://www.catch22.net/coolscroll2.asp#SCROLLBUT">SCROLLBUT</a> structure to specify the attributes of each button. You must use the <code class="highlighter-rouge">fMask</code> member to specify which members of the <code class="highlighter-rouge">SCROLLBUT</code> structure contain valid information.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CoolSB_InsertButton</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wSBflags</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">nPos</span><span class="p">,</span> <span class="n">SCROLLBUT</span> <span class="o">*</span><span class="n">psb</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>wSBflags</strong> must be either <code class="highlighter-rouge">SB_HORZ</code> or <code class="highlighter-rouge">SB_VERT</code></li>
+  <li><strong>nPos</strong> is an integer value specifying the position of the inserted button. This can be zero to insert the button in front of all other buttons, or -1 to insert the button after any others.</li>
+  <li><strong>psb</strong> is the address of a <code class="highlighter-rouge">SCROLLBUT</code> structure which specifies the button properties.</li>
+</ul>
+
+<p>The remaining button functions all deal with buttons that are already inserted into a scrollbar.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BOOL</span> <span class="n">CoolSB_ModifyButton</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wSBflags</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uItem</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fByCmd</span><span class="p">,</span> <span class="n">SCROLLBUT</span> <span class="o">*</span><span class="n">psb</span><span class="p">);</span>
+<span class="n">BOOL</span> <span class="n">CoolSB_RemoveButton</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wSBflags</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uItem</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fByCmd</span><span class="p">);</span>
+<span class="n">BOOL</span> <span class="n">CoolSB_GetButton</span> <span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wSBflags</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uItem</span><span class="p">,</span> <span class="n">BOOL</span> <span class="n">fByCmd</span><span class="p">,</span> <span class="n">SCROLLBUT</span> <span class="o">*</span><span class="n">psb</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>wSBflags</strong> must be either <code class="highlighter-rouge">SB_HORZ</code> or <code class="highlighter-rouge">SB_VERT</code></li>
+  <li>If <code class="highlighter-rouge">fByCmd</code> is <code class="highlighter-rouge">TRUE</code>, then <code class="highlighter-rouge">uItem</code> is the command identifier of the button, which is specified by the <code class="highlighter-rouge">uCmdId</code> member of the <code class="highlighter-rouge">SCROLLBUT</code> structure when a button is inserted.</li>
+  <li>If <code class="highlighter-rouge">fByCmd</code> is <code class="highlighter-rouge">FALSE</code>, then <code class="highlighter-rouge">uItem</code> is a non-negative integer specifying the position of the button to modify / remove.</li>
+  <li><code class="highlighter-rouge">psb</code> is the address of a <code class="highlighter-rouge">SCROLLBUT</code> structure.</li>
+</ul>
+
+<p>Inserted buttons will receive mouse click notifications The <code class="highlighter-rouge">NM_CLICK</code> message will be sent for mouse-down events, and the normal <code class="highlighter-rouge">WM_COMMAND</code> message for mouse-up events. The <code class="highlighter-rouge">NM_CLICK</code> message (sent in the form of a <code class="highlighter-rouge">WM_NOTIFY</code>) uses the <a href="http://www.catch22.net/coolscroll2.asp#NMCOOLBUTMSG">NMCOOLBUTMSG</a> structure, which contains useful information such as the coordinates of the button.</p>
+
+<h2 id="tooltips-for-inserted-buttons">Tooltips for inserted buttons</h2>
+
+<p>When <code class="highlighter-rouge">COOLSB_TOOLTIPS</code> is defined in the userdefs.h file, tooltip notifications will be sent to the window if the mouse hovers over one of the inserted buttons. By ignoring these messages, tooltips will not be displayed. However, by handling the <code class="highlighter-rouge">WM_NOTIFY</code> message correctly, it is simple to add tooltips to any of the inserted buttons.</p>
+
+<p>You only need to respond to the standard <code class="highlighter-rouge">TTN_GETDISPINFO</code> notification in order to display a tooltip. The button’s command identifier will be specified in the <code class="highlighter-rouge">hdr.idFrom</code> member of the <code class="highlighter-rouge">NMTTDISPINFO</code> structure. Below is the sample code required to support tooltips.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_NOTIFY</span><span class="p">:</span>	
+<span class="p">{</span>
+  <span class="n">NMTTDISPINFO</span> <span class="o">*</span><span class="n">ttdi</span><span class="p">;</span>
+  <span class="n">ttdi</span> <span class="o">=</span> <span class="p">(</span><span class="n">NMTTDISPINFO</span> <span class="o">*</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+			
+  <span class="k">if</span><span class="p">(</span><span class="n">ttdi</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">TTN_GETDISPINFO</span><span class="p">)</span>
+  <span class="p">{</span>
+      <span class="n">wsprintf</span><span class="p">(</span><span class="n">ttdi</span><span class="o">-&gt;</span><span class="n">lpszText</span><span class="p">,</span> <span class="s">"This is button %d"</span><span class="p">,</span> <span class="n">ttdi</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">idFrom</span><span class="p">);</span>
+      <span class="n">ttdi</span><span class="o">-&gt;</span><span class="n">hinst</span> <span class="o">=</span> <span class="n">hInst</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="custom-draw-scroll-bars">Custom draw scroll bars</h2>
+
+<p>The cool scrollbar library supports a subset of Custom Draw, the feature found with many of the common controls shipped with Windows. Custom Draw allows an application to completely take over the drawing of a window’s scrollbars, and replace the scrollbar graphics with a completely user defined look.</p>
+
+<p>Just like the standard Custom Draw facility, drawing requests are sent to a cool scrollbar enabled window via a <code class="highlighter-rouge">WM_NOTIFY</code> message.</p>
+
+<p>A <a href="http://www.catch22.net/coolscroll2.asp#NMCSBCUSTOMDRAW">NMCSBCUSTOMDRAW</a> structure is used to notify you of drawing operations.</p>
+
+<p><img src="http://www.catch22.net/assets/img/coolscroll02.gif" alt="" /></p>
+
+<p>Not all of the Custom Draw functionality is implemented for cool scrollbars. Only three notifications will be sent to a window - <code class="highlighter-rouge">CDDS_PREPAINT</code> (to check if you want to custom draw or not), <code class="highlighter-rouge">CDDS_POSTPAINT</code> (after drawing has finished) and <code class="highlighter-rouge">CDDS_ITEMPREPAINT</code>, for each scrollbar item. A pre-paint and post-paint notification is sent one for each scrollbar, whenever it needs to be painted. These two notifications are not sent when the scrollbar gripper (the dead area) needs to be painted; only an item pre-paint is sent in this case.</p>
+
+<p>It is important to note that the return value from the <code class="highlighter-rouge">CDDS_ITEMPREPAINT</code> notification is not currently used. It is assumed that if custom draw is enabled (by returning <code class="highlighter-rouge">CDRF_SKIPDEFAULT</code> in the pre-paint step), then the whole scrollbar will be custom-drawn, so you must draw all portions of a scrollbar if you want to draw any at all.</p>
+
+<h2 id="removing-cool-scroll-bars">Removing cool scroll bars</h2>
+
+<p>If for some strange reason you want to turn off cool scrollbars, then simply call the <code class="highlighter-rouge">UninitializeCoolSB</code> API, passing the handle to the window. You do not need to call this function when your window is destroyed, as the cool scrollbars will automatically remove themselves in this instance.</p>
+
+<h2 id="a-note-about-the-source-code">A note about the source code</h2>
+
+<p>This library is written entirely in the C language, and uses no other library other than the standard win32 API. In order to encapsulate the code, it was necessary to package all of the implementation code into a single file, with all functions given static linkage so they don’t conflict with other functions in your projects. This is a drawback of using C. It would be better to split the source into separate files which deal with specific scrollbar functions - such as drawing code in one file, mouse code in another and so on. However, this would require the use of namespaces to encapsulate the library, and namespaces are only available in C++. I thought that reaching a wider audience was more important in this case, but feel free to use your C++ compiler instead.</p>
+
+<p>I should also take this opportunity to defend my use of C++ style comments in a C project. My reason: I find it tedious to use the C-style comments. Also, every C compiler for Windows that I tried accepts C++ comments with no problem. In fact, the new C99 standard allows the use of C++ style comments, but the project will compile fine on older compilers also. So there.</p>
+
+<h3 id="important">IMPORTANT:</h3>
+
+<p>There is a file called <code class="highlighter-rouge">userdefs.h</code> which can be used to include or exclude certain features of the cool scrollbar library. If you don’t want support for inserted buttons, for example, then you can <code class="highlighter-rouge">#undef</code> the <code class="highlighter-rouge">INCLUDE_BUTTONS</code> definition, which will result in a smaller code size. There are many features which can be altered in this way, and they are all fully documented in this file.</p>
+
+<h2 id="why-you-cant-customize-a-standard-windows-control">Why you can’t customize a standard Windows control</h2>
+
+<p>(Only relevant under Windows 95,98,ME)</p>
+
+<p>Someone is bound to complain that they can’t add cool scrollbars to a tree-view control, or an edit control, so I’ll explain why this isn’t possible.</p>
+
+<p>Firstly, it is quite possible to custom-draw the scrollbars on a standard window. All you need to do is call <code class="highlighter-rouge">InitializeCoolSB</code>, after all. However, internally, the standard windows all make use of the standard scrollbar functions such as <code class="highlighter-rouge">SetScrollInfo</code> and <code class="highlighter-rouge">SetScrollPos</code>. This is a problem, because these functions cause a window’s scrollbars to be re-drawn, and this redraw does not get performed via a <code class="highlighter-rouge">WM_NCPAINT</code> message. Whenever you resize a standard window, or scroll up and down in one, the standard scrollbar API will be called, and this will cause your nicely drawn custom scrollbars to be over-written. So, unless you have the source-code to a window or control, you cannot apply the cool scrollbar library to it, because you must call the <code class="highlighter-rouge">CoolSB_xxx</code> API functions to perform all scrolling operations instead.</p>
+
+<p>Still not convinced? Well, in theory there is a way to overcome these problems and use the coolscrollbar library on any window, but it is not for the feint-hearted. It is possible to intercept any Windows API call in a program, and perform such tasks as replacing the function call with another user-defined call. For example, you could intercept all scrollbar API calls that your program made, and forward them on to the <code class="highlighter-rouge">CoolSB_xxx</code> versions instead.</p>
+
+<p>There are loads of sources on the net which do API interception. These are the two techniques that I would look at:</p>
+
+<ul>
+  <li><strong>Import Address Table (IAT) patching</strong>.</li>
+</ul>
+
+<p>This technique could be used with the common controls library, because the library contains a thunk table which contains pointers to the scrollbar functions which reside in USER32.DLL. The IAT can be re-written so that all scrollbar API calls get diverted to the <code class="highlighter-rouge">CoolSB_xxx</code> functions.</p>
+<ul>
+  <li><strong>Binary re-writing of the target function.</strong></li>
+</ul>
+
+<p>This is more complex, and involves over-writing the start of each scrollbar function actually inside USER32.DLL. You would have to use this technique if you wanted cool scrollbars on an edit or list control. This is because these controls are implemented inside USER32.DLL, and you can’t patch the IAT for USER32, simply because it does not import its own API calls. So, you have to intercept the scrollbar API calls inside USER32 itself.</p>
+
+<p>The new <strong>coolsb_detours</strong> library uses the second technique above to overcome this problem, but this will only work when your program runs under Windows NT. If you are using the Windows 9x family of operating systems, then your are on your own.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The Cool Scrollbar library is now in it’s second release (version 1.1). Although I have addressed a couple of minor problems and introduced some new features, you must still be careful when you use this library. There might be bugs or incompatibilites with your projects which I have over-looked. I’ve tested the library thoroughly with my own projects, but it remains to be seen whether I’ve got it completely right. Feedback would be appreciated!</p>
+
+<p> </p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/coolscroll_src.zip">coolscroll_src.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2002-01-06T00:00:00+00:00">January 06, 2002</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="cardlib.html" class="pagination--pager" title="CardLib
+">Previous</a>
+    
+    
+      <a href="custom-messagebox.html" class="pagination--pager" title="Custom MessageBox
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/custom-scrollbars by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

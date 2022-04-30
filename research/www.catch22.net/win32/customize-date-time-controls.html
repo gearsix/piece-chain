@@ -1,0 +1,397 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/win32/customize-date-time-controls by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Customize date-time controls - Catch22</title>
+<meta name="description" content="This is quite a short tutorial. The purpose of this exercise to remove the spin-buttons from the edge of a date-time control. The result is a control with looks like an edit box, but behaves exactly like a date-time control. This picture will show you the effect.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Customize date-time controls">
+<meta property="og:url" content="customize-date-time-controls.html">
+
+
+  <meta property="og:description" content="This is quite a short tutorial. The purpose of this exercise to remove the spin-buttons from the edge of a date-time control. The result is a control with looks like an edit box, but behaves exactly like a date-time control. This picture will show you the effect.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2001-08-23T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="customize-date-time-controls.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="http://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="http://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="http://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../win32.html" itemprop="item"><span itemprop="name">Win32</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Customize date-time controls</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/datetime.zip">datetime.zip</a>      
+    
+  </div>
+
+    
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Customize date-time controls">
+    <meta itemprop="description" content="This is quite a short tutorial. The purpose of this exercise to remove the spin-buttons from the edge of a date-time control. The result is a control with looks like an edit box, but behaves exactly like a date-time control. This picture will show you the effect.">
+    <meta itemprop="datePublished" content="August 23, 2001">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Customize date-time controls
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Customize date-time controls</h1-->
+<!--h3>Improve the apearance of the date-time control</h3-->
+
+<p>This is quite a short tutorial. The purpose of this exercise to remove the spin-buttons from the edge of a date-time control. The result is a control with looks like an edit box, but behaves exactly like a date-time control. This picture will show you the effect.</p>
+
+<p><img src="http://www.catch22.net/assets/img/datetime02.gif" alt="" class="align-center" /></p>
+
+<p>The standard date-time control looks rather messy in my opinion, especially when several are clustored together like in the example shown above.</p>
+
+<p><img src="http://www.catch22.net/assets/img/datetime01.gif" alt="" class="align-center" /></p>
+
+<p>With a little subclassing we can make the date-time controls look much cleaner in appearance. The second dialog looks far less cluttered, and isn’t so overwhelming to look at. The new looking date-time control pictured above is achieved using two steps.</p>
+
+<h2 id="hiding-the-spin-control">Hiding the Spin control</h2>
+
+<p>This is achieved by resizing the control horizontally by an amount large enough so that the spin control moves outside of the original bounding rectangle of the control. This happens because the date-time control reacts to the <code class="highlighter-rouge">WM_SIZE</code> message, and when it is resized, it aligns the spin control to the right-hand side of the control.</p>
+
+<p>Next the control is subclassed. The subclass procedure intercepts the <code class="highlighter-rouge">WM_SIZE</code> message so that it performs no processing when that message is received. We then size the control back to its original position. Because the control no longer performs any <code class="highlighter-rouge">WM_SIZE</code> processing, the spin child control is not aligned to the right-hand side any more, and becomes hidden because it is clipped outside the control’s window rectangle.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">MakeCoolDateTime</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwndDT</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">RECT</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">WNDPROC</span> <span class="n">oldproc</span><span class="p">;</span>
+    
+    <span class="c1">//work out how big the date-time control is.
+</span>    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwndDT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">OffsetRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">);</span>
+
+    <span class="c1">//resize the date-time control horizontally. We don't
+</span>    <span class="c1">//want to move it, so we can use SetWindowPos.
+</span>    <span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hwndDT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="o">+</span><span class="mi">100</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> 
+        <span class="n">SWP_NOMOVE</span> <span class="o">|</span> <span class="n">SWP_NOACTIVATE</span> <span class="o">|</span> <span class="n">SWP_NOZORDER</span><span class="p">);</span>
+
+    <span class="c1">//subclass the control so when we size it back to what it was,
+</span>    <span class="c1">//our wndproc will intersept the WM_SIZE, and the scrollbar will not
+</span>    <span class="c1">//get shifted back into the control
+</span>    <span class="n">oldproc</span> <span class="o">=</span> <span class="p">(</span><span class="n">WNDPROC</span><span class="p">)</span><span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndDT</span><span class="p">,</span> <span class="n">GWL_WNDPROC</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">NewDTProc</span><span class="p">);</span>
+
+    <span class="c1">//we need to remember the old window procedure. Just store
+</span>    <span class="c1">//the pointer in the USERDATA area of the window.
+</span>    <span class="n">SetWindowLong</span><span class="p">(</span><span class="n">hwndDT</span><span class="p">,</span> <span class="n">GWL_USERDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">LONG</span><span class="p">)</span><span class="n">oldproc</span><span class="p">);</span>
+
+    <span class="c1">//make it a little smaller too
+</span>    <span class="n">rect</span><span class="p">.</span><span class="n">right</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="c1">//size the date-time control back to it's original place
+</span>    <span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hwndDT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> 
+        <span class="n">SWP_NOMOVE</span> <span class="o">|</span> <span class="n">SWP_NOACTIVATE</span> <span class="o">|</span> <span class="n">SWP_NOZORDER</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="creating-a-flat-look">Creating a flat look</h2>
+
+<p>The flat look is achieved by handling the <code class="highlighter-rouge">WM_NCPAINT</code> message in the subclass procedure. Instead of passing control to the old window procedure for the date-time control, we simply draw our own border using a single grey line.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_NCPAINT</span><span class="p">:</span>
+
+    <span class="n">hdc</span> <span class="o">=</span> <span class="n">GetWindowDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">);</span>
+
+    <span class="c1">//work out the coordinates of the window rectangle,
+</span>    <span class="n">GetWindowRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+
+    <span class="c1">//make them relative to the top-left of the window
+</span>    <span class="n">OffsetRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="o">-</span><span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">);</span>
+    <span class="n">InflateRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="c1">//Draw a single line around the outside
+</span>    <span class="n">FrameRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_3DSHADOW</span><span class="p">));</span>
+    <span class="n">ReleaseDC</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="n">hdc</span><span class="p">);</span>    
+    
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>To give the control a different coloured back-ground, we could probably use the Custom Draw facility provided by the Date-Time control. However, it is much easier to handle the <code class="highlighter-rouge">WM_ERASEBKGND</code> in this situation, because we already have a subclass procedure in place. All we do is fill the background using our own colour instead of letting the default window procedure use the standard window background.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">WM_ERASEBKGND</span><span class="p">:</span>
+    <span class="n">hdc</span> <span class="o">=</span> <span class="p">(</span><span class="n">HDC</span><span class="p">)</span><span class="n">wParam</span><span class="p">;</span>
+    <span class="n">GetClientRect</span><span class="p">(</span><span class="n">hwnd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+    <span class="n">FillRect</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rect</span><span class="p">,</span> <span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_BTNHILIGHT</span><span class="p">));</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>You can see that by just using a simple subclassing procedure we have dramatically changed the appearance of a control. There are many enhancements that we could add to the date-time control by just adding a little more logic to the control. One possiblity would be to only show the spin control when the mouse moves over a date-time control. This would require mouse hit-testing, and extending the <code class="highlighter-rouge">WM_SIZE</code> logic.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="http://www.catch22.net/assets/files/tuts/win32/datetime.zip">datetime.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2001-08-23T00:00:00+00:00">August 23, 2001</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="memory-management-techniques-part-1.html" class="pagination--pager" title="Memory Techniques - Part 1
+">Previous</a>
+    
+    
+      <a href="drive-list-control.html" class="pagination--pager" title="Drive-list control
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="http://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/win32/customize-date-time-controls by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:44 GMT -->
+</html>

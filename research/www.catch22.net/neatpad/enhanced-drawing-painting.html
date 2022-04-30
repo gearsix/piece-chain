@@ -1,0 +1,745 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  
+<!-- Mirrored from www.catch22.net/tuts/neatpad/enhanced-drawing-painting by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Enhanced Drawing &amp; Painting - Catch22</title>
+<meta name="description" content="Welcome to the fourth installment of the “Design and Implementation of a Win32 Text Editor” article series! I realise that you were probably expecting a different tutorial this time around. However, it was only after starting to implement mouse selection and highlighting that I realised there wasn’t proper support in the drawing “engine”. I’ve decided to implement all of my text-output requirements in this one tutorial. So we will be covering tabbed-output, multi-coloured text (i.e. for syntax highlighting and selection highlighting) and the problem of ASCII control characters.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Catch22">
+<meta property="og:title" content="Enhanced Drawing &amp; Painting">
+<meta property="og:url" content="enhanced-drawing-painting.html">
+
+
+  <meta property="og:description" content="Welcome to the fourth installment of the “Design and Implementation of a Win32 Text Editor” article series! I realise that you were probably expecting a different tutorial this time around. However, it was only after starting to implement mouse selection and highlighting that I realised there wasn’t proper support in the drawing “engine”. I’ve decided to implement all of my text-output requirements in this one tutorial. So we will be covering tabbed-output, multi-coloured text (i.e. for syntax highlighting and selection highlighting) and the problem of ASCII control characters.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2005-04-19T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="enhanced-drawing-painting.html">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="https://www.catch22.net/feed.xml" type="application/atom+xml" rel="alternate" title="Catch22 Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://www.catch22.net/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--tutorial wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="https://www.catch22.net/">Catch22</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/blog/" >Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/software/" >Software</a>
+            </li><li class="masthead__menu-item">
+              <a href="../index.html" >Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://www.catch22.net/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://www.catch22.net/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="https://www.catch22.net/tuts" itemprop="item"><span itemprop="name">Tuts</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="../neatpad.html" itemprop="item"><span itemprop="name">Neatpad</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+                
+      
+    
+      
+      
+        <li class="current">Enhanced Drawing & Painting</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad4.zip">neatpad4.zip</a>      
+    
+  </div>
+
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Neatpad</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="#" class=""></a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="neatpad-overview.html" class="">Neatpad Overview</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="loading-text-file.html" class="">Loading a text file</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrollbars-scrolling.html" class="">Scrollbars & Scrolling</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="enhanced-drawing-painting.html" class="active">Enhanced Drawing & Painting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="mouse-selection-highlighting.html" class="">Mouse Selection & Highlighting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="scrolling-mouse.html" class="">Scrolling with the Mouse</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="margins-and-long-lines.html" class="">Margins and Long Lines</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-unicode.html" class="">Introduction to Unicode</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-processing.html" class="">Unicode Text Processing</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="transparent-text.html" class="">Transparent Text</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="introduction-uniscribe.html" class="">Introduction to Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="uniscribe-mysteries.html" class="">Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="more-uniscribe-mysteries.html" class="">More Uniscribe Mysteries</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="drawing-styled-text-uniscribe.html" class="">Drawing styled text with Uniscribe</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="integrating-usplib.html" class="">Integrating UspLib</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="keyboard-navigation.html" class="">Keyboard Navigation</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="piece-chains.html" class="">Piece Chains</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="unicode-text-editing.html" class="">Unicode Text Editing</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Enhanced Drawing &amp; Painting">
+    <meta itemprop="description" content="Welcome to the fourth installment of the “Design and Implementation of a Win32 Text Editor” article series! I realise that you were probably expecting a different tutorial this time around. However, it was only after starting to implement mouse selection and highlighting that I realised there wasn’t proper support in the drawing “engine”. I’ve decided to implement all of my text-output requirements in this one tutorial. So we will be covering tabbed-output, multi-coloured text (i.e. for syntax highlighting and selection highlighting) and the problem of ASCII control characters.">
+    <meta itemprop="datePublished" content="April 19, 2005">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Enhanced Drawing &amp; Painting
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <!--h1>Enhanced Drawing & Painting</h1-->
+<!--h3>Improving the text display of TextView</h3-->
+
+<p>Welcome to the fourth installment of the “Design and Implementation of a Win32 Text Editor” article series! I realise that you were probably expecting a different tutorial this time around. However, it was only after starting to implement mouse selection and highlighting that I realised there wasn’t proper support in the drawing “engine”. I’ve decided to implement all of my text-output requirements in this one tutorial. So we will be covering tabbed-output, multi-coloured text (i.e. for syntax highlighting and selection highlighting) and the problem of ASCII control characters.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor14.gif" alt="&lt;&gt;" /></p>
+
+<p>Example of coloured text with ASCII control characters.</p>
+
+<h2 id="multi-coloured-text">Multi-coloured text</h2>
+
+<p>The first reason the drawing code needs revising is to support multi-coloured text. And I don’t just mean syntax colouring (which will be covered in a later tutorial). Selection highlighting is the main reason text must be drawn using different colours, simply to distinguish between selected and unselected text. The image below illustates a line of text with the middle portion selected using the default system colours.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor17.gif" alt="&lt;&gt;" /></p>
+
+<p>Note that the text isn’t really <em>selected</em> - it is merely drawn using two different colour schemes. Just have a play with selecting this paragraph of text in whatever browser you are using, and understand that the “selection” you are making is really just a segment of text drawn in a different colour. So all we need to do for our TextView is divide up our text into the appropriate segments and call <code class="highlighter-rouge">SetTextColor</code> &amp; <code class="highlighter-rouge">SetBkColor</code> to set the colours before calling <code class="highlighter-rouge">ExtTextOut</code> - there really isn’t any magic involved here.</p>
+
+<p>A common mistake when first starting a control such as this is to try drawing the selected text in the WM_MOUSEMOVE handler, using intricate fill modes, inverted rectangles or transparent text. This really is the worst approach you could take. The next tutorial will show how to update a selection using the mouse, but <em>all</em> the drawing will be happening in our <code class="highlighter-rouge">WM_PAINT</code> handler.</p>
+
+<p>The drawing logic must therefore be able to handle combinations of any colour - because we must think ahead about syntax and block highlighting. And because a text file does not store colour or style information, character colours must be computed separately and applied to the displayed text at runtime.</p>
+
+<p>The attributes of a single character will be represented by the <code class="highlighter-rouge">ATTR structure, shown below:</code></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+    <span class="n">COLORREF</span> <span class="n">fg</span><span class="p">;</span> <span class="c1">// foreground colour
+</span>    <span class="n">COLORREF</span> <span class="n">bg</span><span class="p">;</span> <span class="c1">// background colour
+</span>    <span class="n">ULONG</span> <span class="n">style</span><span class="p">;</span> <span class="c1">// font and style information
+</span><span class="p">}</span> <span class="n">ATTR</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Whenever a line of text is retrieved from the TextDocument, this text must be “colourised” before displaying it. Font, style and colour attributes will be computed by a separate routine, <code class="highlighter-rouge">ApplyTextAttributes</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">TextView</span><span class="o">::</span><span class="n">ApplyTextAttributes</span><span class="p">(</span> <span class="n">ULONG</span> <span class="n">nLineNo</span><span class="p">,</span> 
+                                    <span class="n">ULONG</span> <span class="n">nOffset</span><span class="p">,</span> 
+                                    <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> 
+                                    <span class="kt">int</span> <span class="n">nTextLen</span><span class="p">,</span> 
+                                    <span class="n">ATTR</span> <span class="o">*</span><span class="n">attr</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="c1">// loop over each character in the text-buffer
+</span>   <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nTextLen</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+        <span class="c1">// apply highlight colours 
+</span>        <span class="k">if</span><span class="p">(</span><span class="n">nOffset</span> <span class="o">+</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">m_nSelectionStart</span> <span class="o">&amp;&amp;</span> <span class="n">nOffset</span> <span class="o">+</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m_nSelectionEnd</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fg</span> <span class="o">=</span> <span class="n">GetColour</span><span class="p">(</span><span class="n">TXC_HIGHLIGHTTEXT</span><span class="p">);</span>
+            <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">bg</span> <span class="o">=</span> <span class="n">GetColour</span><span class="p">(</span><span class="n">TXC_HIGHLIGHT</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// normal text colours
+</span>        <span class="k">else</span>
+        <span class="p">{</span>
+           <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fg</span> <span class="o">=</span> <span class="n">GetColour</span><span class="p">(</span><span class="n">TXC_FOREGROUND</span><span class="p">);</span>
+           <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">bg</span> <span class="o">=</span> <span class="n">GetColour</span><span class="p">(</span><span class="n">TXC_BACKGROUND</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">style</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This function will be called whenever some text is about to be drawn. Two parameters are passed in - <code class="highlighter-rouge">nLineNo</code> and <code class="highlighter-rouge">nOffset</code>, which describe where in the file the text occurs. <code class="highlighter-rouge">ApplyTextAttribrutes</code> will use these two parameters to determine how to “format” the text - currently as selected or unselected.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TCHAR</span> <span class="n">buff</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+<span class="n">ATTR</span> <span class="n">attr</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+<span class="n">ULONG</span> <span class="n">fileoff</span><span class="p">;</span>
+
+<span class="c1">// get some text from the TextDocument
+</span><span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">m_pTextDoc</span><span class="o">-&gt;</span><span class="n">getline</span><span class="p">(</span><span class="n">nLineNo</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fileoff</span><span class="p">);</span>
+
+<span class="c1">// calculate colour and font information
+</span><span class="n">ApplyTextAttributes</span><span class="p">(</span><span class="n">nLineNo</span><span class="p">,</span> <span class="n">fileoff</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The formatting information is returned through the <code class="highlighter-rouge">ATTR</code> array which must be the same size as the <code class="highlighter-rouge">szText</code> buffer which holds the text. For the moment this function is sufficient to describe “normal” and “highlighted” text, but will not perform any form of syntax highlighting. I imagine that the function prototype may have to change slightly because syntax highlighting will have additional requirements.</p>
+
+<h2 id="multi-font-display">Multi-font display</h2>
+
+<p>In part one of this series I wrote that I wanted to restrict the TextView to a single, fixed-width font. The entire reason for using fixed-width fonts was to keep the TextView code as simple as possible - especially the mouse-cursor placement logic. However even a fixed-width text display is not truly fixed-width, because of TAB characters which cause variable sized gaps in the lines of text. Having to deal with TABs means writing additional code to parse each line of text - to determine where in the line the mouse has been placed. My reasoning for supporting variable-width fonts is this: if we have more work to do, we may as well do it properly and handle all types of font.</p>
+
+<p>In order to manage multiple fonts, we must devise a strategy to manage these fonts somehow. The <code class="highlighter-rouge">FONT</code> structure (defined below) holds a handle to a font (a normal <code class="highlighter-rouge">HFONT</code>) and also contains important information about the font’s dimensions in the <code class="highlighter-rouge">TEXTMETRIC</code> structure.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">FONT</span>
+<span class="p">{</span>
+    <span class="n">HFONT</span> <span class="n">hFont</span><span class="p">;</span>
+    <span class="n">TEXTMETRIC</span> <span class="n">tm</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">nInternalLeading</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nDescent</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>An array of these fonts is stored as a member of the TextView class:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FONT</span> <span class="n">m_FontAttr</span><span class="p">[</span><span class="n">MAX_FONTS</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">m_nNumFonts</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The first element in this array (element zero) is always the default display font. Additional fonts can be added to this array but will not be used unless some form of syntax-highlighting is developed. I only imagine variations of fonts would be used in the control (i.e. normal and bold fonts) rather than completely different styles, but the TextView will support whatever fonts you decide on.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor16.gif" alt="&lt;&gt;" /></p>
+
+<p>There are some added complications which will arise from the use of multiple fonts, which are highlighted by the picture above. The problem can be divided into three cases:</p>
+
+<ul>
+  <li>Fonts can vary in width and height. The width is not so much trouble, however fonts of different heights must be aligned so that their <em>bases</em> are on the same horizontal line.</li>
+  <li>The height of a line of text is not based on a single font any more - it must be big enough to hold the tallest font currently in use.</li>
+  <li>Smaller fonts do not fill the vertical extents of the line when painted (as can be seen above). This will require us to fill this extra “dead space” ourselves.</li>
+</ul>
+
+<p>To solve these problems we must first understand how a font’s structure is described by GDI. The diagram below illustrates the dimensions of a font as described by the <code class="highlighter-rouge">TEXTMETRIC</code> structure:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor10.gif" alt="&lt;&gt;" /></p>
+
+<p>The <em>Baseline</em> of a font is measured by the <em>Ascent</em> dimension. Therefore if we keep track of the largest <em>Ascent</em> out of all the fonts we are using, we can work out the amount to vertically offset shorter fonts based on their individual Ascent value. For example, suppose we are using two fonts - “Courier New” with an ascent of 21, and “Lucida” with an ascent of 18. When drawing text using the Lucida font, we would have to offset this text down by 3 pixels in order to align the baselines correctly.</p>
+
+<p>The second problem is easily solvable. Previous incarnations of Neatpad used the <code class="highlighter-rouge">m_nFontHeight</code> variable to keep track of the height of each line. This variable has now disappeared, to be replaced by a more meaningful value - <code class="highlighter-rouge">m_nLineHeight</code>. The TextView code demonstrates how this value is calculated in the <code class="highlighter-rouge">OnSetFont</code> member function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LONG</span> <span class="n">TextView</span><span class="o">::</span><span class="n">OnSetFont</span><span class="p">(</span><span class="n">HFONT</span> <span class="n">hFont</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_nLineHeight</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m_nNumFonts</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_nLineHeight</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">m_nLineHeight</span><span class="p">,</span> <span class="n">m_FontAttr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">tm</span><span class="p">.</span><span class="n">tmHeight</span><span class="p">);</span>
+    <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The final painting problem is easily solved because there is a handy API at our disposal. <code class="highlighter-rouge">ExtTextOut</code> allows us to specify a rectangular region to paint when drawing some text:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ExtTextOut</span><span class="p">(</span><span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">flags</span><span class="p">,</span> <span class="n">RECT</span> <span class="o">*</span><span class="n">rect</span><span class="p">,</span> <span class="n">TCHAR</span> <span class="n">szText</span><span class="p">,</span> <span class="p">...);</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> parameters specify where the text is to be drawn. The <code class="highlighter-rouge">rect</code> parameter specifies the background rectangle. As long as this rectangular region fills the entire height of the line we can be sure to paint the background properly.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor30.gif" alt="&lt;&gt;" /></p>
+
+<p>Something we must be careful with is how we tell ExtTextOut to fill the background. The <code class="highlighter-rouge">ETO_OPAQUE</code> flag can be used to achieve this effect. However, we must also specify <code class="highlighter-rouge">ETO_CLIPPED</code> as well, otherwise we will get some strange effects when using ClearType fonts. The picture above illustrates the problem - even the string length was calculated using <code class="highlighter-rouge">GetTextExtentPoint32</code> (and the background rectangle set to this size), when <code class="highlighter-rouge">ExtTextOut</code> was called the string “bleeds” outwards by 1 pixel either side - an oddity unique to the way ClearType text is displayed. Specifying <code class="highlighter-rouge">ETO_CLIPPED</code> prevents this problem.</p>
+
+<h2 id="line-spacing">Line Spacing</h2>
+
+<p>There is something that I want to mention at this point: Many people are sometimes confused as to how the height of a font (or line of text) must be calculated. There are usually four different methods I see of obtaining a font’s height, shown below:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TEXTMETRIC</span> <span class="n">tm</span><span class="p">;</span>
+<span class="n">GetTextMetrics</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tm</span><span class="p">);</span>
+
+<span class="n">height1</span> <span class="o">=</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmHeight</span><span class="p">;</span>
+<span class="n">height2</span> <span class="o">=</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmHeight</span> <span class="o">+</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmExternalLeading</span><span class="p">;</span>
+<span class="n">height3</span> <span class="o">=</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmHeight</span> <span class="o">+</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmInternalLeading</span><span class="p">;</span>
+<span class="n">height4</span> <span class="o">=</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmHeight</span> <span class="o">+</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmInternalLeading</span> <span class="o">+</span> <span class="n">tm</span><span class="p">.</span><span class="n">tmExternalLeading</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Method #1 is correct and is what many editors utilize, because the height of a font is exactly determined by the <code class="highlighter-rouge">tmHeight</code> value. However, method #2 is more correct for a text-editor. The <em>External Leading</em> of a font is the value (as assigned by the font’s designer) that should be added in-between lines of text when displayed in a <em>paragraph</em>.</p>
+
+<p>In other words, a multi-line display should use this value when displaying lines of text. The problem is, the external-leading is <strong>not</strong> taken into account when text is drawn using the standard Windows text routines (TextOut/DrawText). When a line of text is drawn using <code class="highlighter-rouge">TextOut</code>, the background is only filled to cover the <code class="highlighter-rouge">tmHeight</code> of the font and does not include the <code class="highlighter-rouge">tmExternalLeading</code> value. This results in gaps in-between lines of text, which makes people think that they are doing something wrong. The gaps between lines must be filled manually if the correct results are desired. Our multi-font display handles this extra line-spacing correctly by using <code class="highlighter-rouge">ExtTextOut</code> and enlarging the background rectangle appropriately.</p>
+
+<p>As a final note, the third and fourth methods are <strong>wrong</strong> and should <strong>not</strong> be used to calculate the height of a font, or the height of a line of text. Study the diagram above to see how the various dimensions relate to each other.</p>
+
+<p>As an extra feature I have also added a new message to the TextView - <code class="highlighter-rouge">TXM_SETLINESPACING</code>. This message is used to set extra spacing above and below each line of text, in addition to the font’s external leading value.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TextView_SetLineSpacing</span><span class="p">(</span><span class="n">hwndTextView</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The example above instructs the text-view to add 3 pixels above each line, and 2 pixels below each line (resulting in each line of text being 5 pixels taller). I think people will find this feature extremely useful, as many fonts sometimes don’t look very good unless extra line-spacing is included.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor31.gif" alt="" /></p>
+
+<p>The picture above illustrates the various components of a line of text in Neatpad.</p>
+
+<h2 id="ascii-control-characters">ASCII Control characters</h2>
+
+<p>The other reason I decided to revise the drawing code was to take into account control-characters (i.e. ASCII control characters 0 - 31). Many simple text editors (such as regular Notepad) do not handle control characters at all. The NUL character (ASCII value ‘zero’) is never displayed for example - and how could it be - there is no visual representation for this character. The other control characters are equally problematic because they are designed to have <em>function</em> rather than <em>appearance</em> - a backspace or linefeed character also cannot be displayed for this reason. The solution is to duplicate what the <a href="http://www.scintilla.org/">Scintilla</a> edit component does to display control characters:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor13.gif" alt="&lt;&gt;" /></p>
+
+<p>The line of text above has two control-characters embedded it - the NUL character (value zero) and the SYN character (value 24). I’d never seen this method of displaying control-characters until I looked at Scintilla, however it does seem like a neat way of dealing with the problem. Every character in the range 0 to 31 is displayed using inverted colours, with a rectangular border to enclose the text. These “graphic/textual” representations of the ASCII control characters stand out from the surrounding text and are a great visual aid in my opinion.</p>
+
+<p>Enhancing the text-output has again introduced further complexity. The “new style” control-characters are not fixed-width - the borders introduce a 4-pixel overlap which means that the display can no longer be fixed-width only. Actually it was the introduction of these control-character “bitmaps” that prompted me to switch to a fully variable-width font display.</p>
+
+<p>The images that make up the control-characters will be quite complicated to draw - more so than just doing a simple “TextOut”. In an ideal world we could pre-calculate the bitmaps and store them in an off-screen buffer, and “BitBlt” them to the screen each time we needed to - this would be an efficient method to draw these characters.</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor11.gif" alt="&lt;&gt;" /></p>
+
+<p>Unfortunately nothing is that simple. We must be able to deal with control-characters in multiple colours (i.e. when they are selected/highlighted or part of a syntax string). We also need to take into account the different fonts, heights and styles that I want the TextView to handle. This means that our drawing code will have to be modified to deal with the occurance of ASCII control codes and handle them appropriately with a special routine <code class="highlighter-rouge">DrawCtrlChar</code>.</p>
+
+<p>The basic breakdown of drawing operation is as follows (for black-on-white text):</p>
+
+<ol>
+  <li>Fill the background white.</li>
+  <li>Make a rectangle the width of the text and the same height as the letters.</li>
+  <li>Draw this rectangle in black.</li>
+  <li>Expand this rectangle 1 pixel at the top and bottom, and contract it by 1 pixel at the left and right. (i.e. make it taller and thinner by 1 pixel in each dimension).</li>
+  <li>Draw a second black rectangle - this gives the illusion of a rounded rectangle.
+6.Draw the text in white.</li>
+</ol>
+
+<p>The TextView will of course support the option <em>not</em> to display control-characters this way - I can imagine some scenarios where this would be useful. In this case control-characters can be replaced by a single character ‘.’, or just drawn as best they can.</p>
+
+<h2 id="neattextout">NeatTextOut</h2>
+
+<p>At this point we need to develop a new text-output routine which can handle drawing an aribitrary segment of text (possibly containing control-characters), in a specific font and colour. <code class="highlighter-rouge">NeatTextOut</code> (prototype shown below) is similar to <code class="highlighter-rouge">TabbedTextOut</code>, with the exception that colour and style information is supplied in the <code class="highlighter-rouge">ATTR</code> structure. This function also returns the width of the displayed text (in pixels) so that the calling function can keep track of where to draw (and also when to stop drawing when the text goes outside the window).</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">NeatTextOut</span><span class="p">(</span> <span class="n">HDC</span> <span class="n">hdc</span><span class="p">,</span> 
+                 <span class="kt">int</span> <span class="n">xpos</span><span class="p">,</span> 
+                 <span class="kt">int</span> <span class="n">ypos</span><span class="p">,</span> 
+                 <span class="n">TCHAR</span> <span class="o">*</span><span class="n">szText</span><span class="p">,</span> 
+                 <span class="kt">int</span> <span class="n">nLen</span><span class="p">,</span> 
+                 <span class="kt">int</span> <span class="n">nTabOrigin</span><span class="p">,</span> 
+                 <span class="n">ATTR</span> <span class="o">*</span><span class="n">attr</span>
+               <span class="p">);</span>
+</code></pre></div></div>
+
+<p>I <em>really</em> don’t see the value of including the source-code here for you to see, because it is obviously included in the TextView class and is fully documented for you to see there. Suffice to say, if you don’t want to support control-characters you can quite easily replace this function with a normal <code class="highlighter-rouge">TabbedTextOut</code>.</p>
+
+<h2 id="improved-drawing-engine">Improved drawing engine</h2>
+
+<p>The whole thrust behind this tutorial is to be able to render text to the TextView window, using the <code class="highlighter-rouge">ATTR</code> structure as a guide for how the text should look. The drawing logic is shared between the following functions:</p>
+
+<p><img src="https://www.catch22.net/assets/img/editor15.gif" alt="&lt;&gt;" /></p>
+
+<p>The first function - <code class="highlighter-rouge">OnPaint</code> - hasn’t changed at all, whereas the <code class="highlighter-rouge">PaintLine</code> function has actually been reduced in functionality. All it does is work out where to draw the line, and then passes control to a further function, <code class="highlighter-rouge">PaintText</code>, to do the actual work. My reasoning behind this decision is to allow <code class="highlighter-rouge">PaintLine</code> to handle selection margins and line-numbers at some time in the future, and to allow <code class="highlighter-rouge">PaintText</code> to just draw the text and nothing else.</p>
+
+<p>The <code class="highlighter-rouge">PaintText</code> function is therefore responsible for drawing an entire line of text. It retrieves text from the TextDocument and applies colour formatting to the text by calling <code class="highlighter-rouge">ApplyTextAttributes</code> before calling <code class="highlighter-rouge">NeatTextOut</code> to display the text.</p>
+
+<p>The benefit of this design is that the drawing code is completely independent of the rest of the TextView. I like this approach because it means that text drawing is isolated into one single place. Any future syntax-highlighting, mouse selection, bookmarks or any other changes will not impact on the drawing code because it is completely dumb - all it knows how to do is draw text in particular styles. It will be up to the syntax highlighter to create these styles, but this is a separate, well-contained problem of it’s own.</p>
+
+<p>Understand that when we draw text we have two parallel arrays - one holding the text and the other holding each character’s colour attributes. Iterating through these arrays and drawing the text character by character will be <strong>very</strong> slow, so instead <code class="highlighter-rouge">PaintText</code> collects together as much text as possible before drawing it. What it does is identify consecutive characters that share the same colour and font, and outputs each “span” of text in one go. The result is very fast and in practise is not really any slower than doing a single <code class="highlighter-rouge">TextOut</code>. The important part of the <code class="highlighter-rouge">PaintText</code> routine is shown below.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// current character position
+</span><span class="kt">int</span> <span class="n">lasti</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// last character position
+</span><span class="kt">int</span> <span class="n">xtab</span> <span class="o">=</span> <span class="n">xpos</span><span class="p">;</span>
+
+<span class="kt">char</span> <span class="n">buff</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+<span class="n">ATTR</span> <span class="n">attr</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+
+<span class="c1">//
+// Display the text by breaking it into spans of colour/style
+//
+</span><span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// if the colour or font changes, then need to output 
+</span>    <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">len</span> <span class="o">||</span> 
+       <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">fg</span> <span class="o">!=</span> <span class="n">attr</span><span class="p">[</span><span class="n">lasti</span><span class="p">].</span><span class="n">fg</span> <span class="o">||</span> 
+       <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">bg</span> <span class="o">!=</span> <span class="n">attr</span><span class="p">[</span><span class="n">lasti</span><span class="p">].</span><span class="n">bg</span> <span class="o">||</span> 
+       <span class="n">attr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">style</span> <span class="o">!=</span> <span class="n">attr</span><span class="p">[</span><span class="n">lasti</span><span class="p">].</span><span class="n">style</span><span class="p">)</span>   
+    <span class="p">{</span>
+        <span class="n">xpos</span> <span class="o">+=</span> <span class="n">NeatTextOut</span><span class="p">(</span><span class="n">hdc</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">ypos</span><span class="p">,</span> <span class="n">buff</span> <span class="o">+</span> <span class="n">lasti</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">lasti</span><span class="p">,</span> <span class="n">xtab</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attr</span><span class="p">[</span><span class="n">lasti</span><span class="p">]);</span>
+        <span class="n">lasti</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I’m not going to include any more code in this tutorial because the sourcecode download is well documented - as always ;-) and it is very easy to see what is going on.</p>
+
+<h2 id="coming-up-in-part-5">Coming up in Part 5</h2>
+
+<p>Mouse input and selection <em>definitely</em> be the subject of the next tutorial. It was necessary to delay the this subject because without proper drawing support selection highlighting would not have been realistically possible. We will also implement “mouse scrolling” - i.e. where the text selection is extended beyond the window and the contents must be scrolled into view. The scrolling work we have done so far will make this task very simple.</p>
+
+
+
+  <div class="file-attachments">
+    <h4>DOWNLOADS</h4>
+    
+      
+       <a href="https://www.catch22.net/assets/files/tuts/neatpad/neatpad4.zip">neatpad4.zip</a>      
+    
+  </div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2005-04-19T00:00:00+00:00">April 19, 2005</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="../win32/2005-03-28-remote-debugging-using-vmware/index.html" class="pagination--pager" title="Remote Debugging using VMWare
+">Previous</a>
+    
+    
+      <a href="mouse-selection-highlighting.html" class="pagination--pager" title="Mouse Selection &amp; Highlighting
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="https://www.catch22.net/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Catch22. Powered by <a href="https://jekyllrb.com/" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="https://www.catch22.net/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+
+<!-- Mirrored from www.catch22.net/tuts/neatpad/enhanced-drawing-painting by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:48:41 GMT -->
+</html>

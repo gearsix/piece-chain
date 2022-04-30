@@ -1,0 +1,198 @@
+<html>
+<title>The Craft of Text Editing: Chapter 10</title>
+
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+<body>
+<a name="top"> </a>
+<h1>Chapter 10: Emacs-Type Editors</h1>
+
+<blockquote>
+Oh frabjous day!  Callooh!  Callay!&quot;<br>
+&nbsp;&nbsp;He chortled in his joy.<br>
+</blockquote>
+
+<p>With a thesis subtitle of &quot;A Cookbook for an Emacs&quot; and
+this book's subtitle of &quot;Emacs for Modern Times,&quot; it is a
+safe bet that I would get around to discussing Emacs-type editors at
+some point.  And so I have.</p>
+
+<p>First, I will admit to being biased.  I have used Emacs-type
+editors exclusively for going on fifteen years now (except for a brief
+stint in durance vile on a Macintosh).  In addition, I have
+implemented or worked on implementations of a half-dozen Emacs-type
+editors.  This chapter will describe what it is about an Emacs-type
+editor that makes it special.</p>
+
+<h2>&quot;What Do You Mean, 'Emacs-type?' &quot;</h2>
+
+<p>This chapter discusses &quot;Emacs-type&quot; editors and not a
+particular &quot;Emacs&quot; editor because, due to its very nature,
+there isn't one definitive &quot;Emacs&quot; editor.  The closest that
+you can come to such a thing is either the original Emacs-on-TECO or
+Gnu-Emacs.</p>
+
+<h2>The Command Set</h2>
+
+<p>The specifics of the Emacs command set will always be shifting and
+changing.  Even details on how the basic commands operate will change.
+However, the broad outlines of the basic commands are pretty constant,
+which is to say that an editor that does not implement them is not
+considered to be an Emacs-type editor.  Appendix C lists one Emacs
+command set and a set of changes to it.</p>
+
+<p>By and large, the Emacs command set follows the design guidelines
+presented in the previous chapter.  Those places where it falls short
+are usually either physical constraints (there are only a limited
+number of keys available), design compromises (to achieve A one must
+trade off B), or the ever-present &quot;historical reasons&quot; (it
+was a good idea at the time and, while we know better now, it is too
+ingrained to change).  All things considered, the Emacs command set
+meets the design guidelines better than any other editor that I am
+aware of.</p>
+
+<p>Some editors never get beyond providing the command set.  These
+editors are neither extensible nor provide an extended environment.
+These limitations may be due to the implementation environment or
+merely the amount of effort that is available to devote to the
+project.  There is a place for such editors (they are listed in
+Appendix B as &quot;command set&quot;).  After all, an implementor
+should be able to decide to create a small editor without feeling
+obligated to spend years on the project.  Given that this decision has
+been made, it is better to use the Emacs command set than any other
+(at least in my opinion).</p>
+
+<h2>The Extended Environment</h2>
+
+<p>Emacs-type editors have been and continue to be used for many
+things besides editing text.  Here are some examples.</p>
+
+<p><b>Emulation</b>: If you or another user likes a different editor's
+command set for some reason, you can just emulate it in an Emacs-type
+editor.  Thus, you can still have all of the power of an Emacs and
+your favorite command set as well.</p>
+
+<p><b>Electronic mail</b>: A text editor can be the primary interface
+to a mail system. Messages can be composed by editing a buffer and can
+be sent with a command.  Mail can be read and managed by reading it
+into a buffer and having commands to perform such operations as
+&quot;move to the next message&quot; and &quot;summarize all
+messages.&quot; Having the full power of an editor available makes it
+easy to un-delete an accidentally deleted message or to copy part of
+the text of a message into one's reply.  In addition, you have only
+minimal additional learning in order to use the system very
+effectively.</p>
+
+<p><b>Command shell</b>: A text editor can be the primary interface to
+the operating system.  Command lines can be edited with the full power
+of the editor before being evaluated.  The past record of interaction
+can be kept and parts of it examined or re-used in new command lines.
+If the operating system does not have support for advanced terminals,
+a display editor can offer its interface for use by other programs.
+Other programs would then take advantage of the terminal independence
+of the editor.  Alternatively, other programs would insert their
+output into a buffer and the editor would become an entire
+terminal-management system.  This function has been somewhat
+superseded by a window system.  But again, why learn two systems when
+you only need to learn one?</p>
+
+<p><b>Compilation</b>: A text editor can work closely with a compiler
+to speed turnaround when developing software.</p>
+
+<p><b>Debugging</b>: A text editor can be used by a debugger.
+Multiple buffers and multiple windows can be used to examine (perhaps
+multiple) source files, interact with the debugger, and see the
+output/input of the program as it runs.  In addition, a debugger might
+use a window or two to do such things as constantly show the values of
+selected variables.</p>
+
+<p><b>File interface</b>: A text editor can be an interface to a
+complicated file.  For example, an indexed sequential file can be
+updated by providing editor commands to read and write entries (adding
+or deleting them can be managed as well).  The full power of the
+editor is available for editing the contents of the entry.</p>
+
+<p><b>File system interface</b>: A text editor can provide a smooth
+interface to the file system. A directory can be read by the editor
+and &quot;edited&quot; by the user. Files can be deleted or otherwise
+changed in a smooth manner by merely moving to the file name and
+giving a command (<i>e.g.</i>, &quot;delete&quot;).</p>
+
+<p><b>Binary files</b>: A text editor can be used to examine and --
+when absolutely necessary -- modify binary files.  It can thus replace
+various patching programs.</p>
+
+<p>Again, all of these functions are currently performed by one or
+more Emacs-type editors.  The main advantage to building them off of
+the editor is that, even in the absence of such features, most users
+spend the bulk of their time using the text editor (or word processor,
+etc.).  By extending that environment, only minimal learning is
+required to use those features.  Users are thus free to get work done
+instead of having to spend their time reading manuals.  This extended
+environment is one of the hallmarks of an Emacs-type editor.</p>
+
+<h2>Extensibility</h2>
+
+<p>The final hallmark of an Emacs-type editor is extensibility.  Emacs
+was born because of the extensibility of its predecessor, TECO.  TECO
+was extensible and many of its users took advantage of that
+extensibility to write their own command or change the existing ones.
+Eventually, one person (Richard Stallman) took a large number of those
+extension packages and created a &quot;standard&quot; package of
+Editor MACroS: EMACS.  With extensibility in its heritage and even in
+its name, an Emacs-type editor is expected to be extensible.</p>
+
+<p>Extensibility means, quite simply, that end users can change any of
+the features of the editor.  There should be <i>no</i> feature that a
+sufficiently dedicated end user cannot change.  This implies that the
+full source code of the implementation is available to all end users
+(and that is why GNU-Emacs is distributed under its
+&quot;CopyLeft&quot; policy).</p>
+
+<p>Now, not every end user will want to recode redisplay.  However,
+the principle remains.  Most end users will only want to tweak a few
+parameters and maybe &quot;fix&quot; a command or two.  That's great
+and you should encourage such changes by making it easy to make
+them.</p>
+
+<p>Now that the importance of extensibility has been explained, it is
+easy to see why the Emacs command set cannot be standardized: each
+user will want to change it.  In a way, the Emacs command set can be
+compared to a ball of mud.  You can add more to it, or take some away,
+and you will still have a ball of mud.  (Actually, this property is
+true of most extensible systems.)  That is also why any comparison
+between an implementation of an Emacs-type editor and any other editor
+is pointless: the Emacs-type editor can be changed (and may already
+have been) to overcome any shortcoming.</p>
+
+<h2>Questions to Probe Your Understanding</h2>
+
+<p>Identify those ways in which the Emacs command set does not meet
+the design guidelines listed in the previous chapter.  (Easy to
+Medium)</p>
+
+<p>Identify other editors or similar programs that offer extended
+environments. (Easy)</p>
+
+<p>Identify other editors or similar programs that are
+extensible. (Easy)</p>
+
+<p>What other programs would you like to be extensible that aren't?
+(Easy)</p>
+
+<br>
+<hr>
+<br>
+
+<p>Copyright 1999 by Craig A. Finseth.</p>
+
+<p><a href="#top">Back to Top</a>.</p>
+
+<p><a href="index-2.html">Back to Contents</a>.</p>
+
+<p><a href="http://www.finseth.com/~fin/index.html">Back to Home</a>.</p>
+
+</body>
+
+<!-- Mirrored from web.mit.edu/~yandros/doc/craft-text-editing/Chapter-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 20:45:04 GMT -->
+</html>
