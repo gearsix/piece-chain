@@ -17,6 +17,11 @@ Piece *palloc()
 	return &pieceblk[npieces++];
 }
 
+void pfree(Piece *p)
+{
+
+}
+
 Piece *psplit(Piece *p, long int offset)
 {
 	Piece *q = palloc();
@@ -86,6 +91,27 @@ Piece *bufidx(Buf *b, size_t pos)
 	return b->pos;
 }
 
-void bufins(Buf *b, size_t pos, const char *buf)
+void bufins(Buf *b, size_t pos, const char *s)
 {
+	const size_t slen = strlen(s);
+	Piece *p = palloc();
+
+	bufidx(pos);
+
+	p->f = b->append;
+	p->off = ftell(b->append);
+	p->len = strlen(buf);
+/*	p->undo = ??	*/
+	p->redo = NULL;
+	p->prev = b->pos->prev;
+	p->next = b->pos->next;
+	b->pos->next = p;
+
+	fprintf(b->append, "%s", buf);
+	if (ferror(b->append)) {
+		perror("failed to write to append file");
+		--npieces;
+		memset(ins, 0, sizeof(Piece));
+	}
+	return (ins->f == 0) ? b->size : (b->size += slen);
 }
