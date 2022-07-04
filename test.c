@@ -22,13 +22,18 @@ void setup()
 
 void print(Buf *b)
 {
-	Piece *p;
+	Piece *p = b->tail;
 
-	printf("b->tail: %p\tb->pos: %p\tb->head: %p\n\n",
-		(void *)b->tail, (void *)b->pos, (void *)b->head);
-
-	for (p = b->tail; p != NULL; p = p->next)
-		printf("%p\n", (void *)p);
+	printf("Buf: %p\n", (void *)b);
+	printf("size: %lu, index: %lu\n", b->size, b->idx);
+	do {
+		printf("%p", (void *)p);
+		if (p == b->tail) printf("<-tail");
+		if (p == b->pos) printf("<-pos");
+		if (p == b->head) printf("<-head");
+		puts("");
+	} while ((p = p->next));
+	printf("\n");
 }
 
 void test_bufinit()
