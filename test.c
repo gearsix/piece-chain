@@ -39,30 +39,16 @@ void test_bufinit()
 	assert(b->read);
 	assert(b->append);
 
-	p = b->tail;
-	assert(p);
-	assert(p->f == NULL);
-	assert(p->off == 0);
-	assert(p->len == 0);
-	assert(p->next == b->pos);
-	assert(p->prev == NULL);
+	assert(b->pos == b->tail);
+	assert(b->pos == b->head);
 
 	p = b->pos;
 	assert(p);
 	assert(p->f == b->read);
 	assert(p->off == 0);
 	assert(p->len == strlen(INBUF));
-	assert(p->prev == b->tail);
-	assert(p->next == b->head);
-
-	p = b->head;
-	assert(p);
-	assert(p);
-	assert(p->f == NULL);
-	assert(p->off == 0);
-	assert(p->len == 0);
+	assert(p->prev == NULL);
 	assert(p->next == NULL);
-	assert(p->prev == b->pos);
 }
 
 void test_bufidx()
@@ -71,11 +57,29 @@ void test_bufidx()
 	p = bufidx(b, idx);
 
 	assert(p == b->pos);
+	assert(p == b->head);
+	assert(p->prev == b->tail);
 	assert(p->f == b->read);
 	assert(p->off == idx);
 	assert(p->len == strlen(INBUF) - idx);
-	assert(p->prev != b->tail);
-	assert(p->next == b->head);
+}
+
+void test_bufins()
+{
+	const char *buf = "y";
+	const size_t idx = 2, len = strlen(buf);
+	bufins(b, idx, buf);
+
+	assert(b->size == strlen(INBUF) + len);
+	assert(b->idx == idx + len);
+	assert(b->pos == b->tail->next->next);
+	assert(b->pos->f == b->read);
+	assert(b->pos->off == 2);
+	assert(b->pos->len == 3);
+	assert(b->pos->undo == NULL);
+	assert(b->pos->redo == NULL);
+	assert(b->pos->prev == b->tail->next);
+	assert(b->pos->next == b->head);
 }
 
 int main()
@@ -83,6 +87,7 @@ int main()
 	setup();
 	test_bufinit();
 	test_bufidx();
+	test_bufins();
 	puts("success - no assertions failed");
 	return 0;
 }

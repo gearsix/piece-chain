@@ -5,24 +5,49 @@
 #include <stdlib.h>
 #include <string.h>
 
-Piece *palloc()
+static const size_t blksiz = BUFSIZ/sizeof(Piece);
+static Piece **nextp = NULL;
+
+static size_t pfree(Piece *p)
 {
+	static Piece **freeblk = NULL;
+	static size_t nblk = 0, nfree = 0;
+
+	if (!p) {
+		if (!nextp && nfree > 0)
+			nextp = &freeblk[--nfree];
+		return nfree;
+	}
+
+	if (nfree + 1 > blksiz * nblk)
+		freeblk = realloc(freeblk, (++nblk * blksiz) * sizeof(Piece *));
+	if (!freeblk) { perror("failed to allocate freeblk"); exit(1); }
+
+	freeblk[nfree++] = p;
+	nextp = &freeblk[nfree - 1];
+	return nfree;
+}
+
+static Piece *palloc()
+{
+	Piece *p;
 	static Piece *pieceblk = NULL;
 	static size_t nblk = 0, npieces = 0;
-	static const size_t blksiz = BUFSIZ/sizeof(Piece);
 
-	if (npieces + 1 > blksiz * nblk)
-		pieceblk = realloc(pieceblk, (++nblk * blksiz) * sizeof(Piece));
-	if (!pieceblk) { perror("failed to allocate pieceblk memory"); exit(1); }
-	return &pieceblk[npieces++];
+	if (pfree(NULL) > 0) {
+		p = *nextp;
+		nextp = NULL;
+	} else {
+		if (npieces + 1 > blksiz * nblk)
+			pieceblk = realloc(pieceblk, (++nblk * blksiz) * sizeof(Piece));
+		if (!pieceblk) { perror("failed to allocate pieceblk"); exit(1); }
+		p = &pieceblk[npieces++];
+	}
+
+	return memset(p, 0, sizeof(Piece));
 }
 
-void pfree(Piece *p)
-{
-
-}
-
-Piece *psplit(Piece *p, long int offset)
+static Piece *psplit(Piece *p, long int offset)
 {
 	Piece *q = palloc();
 	if (offset > 0) {
@@ -32,7 +57,8 @@ Piece *psplit(Piece *p, long int offset)
 		q->len -= p->len = offset;
 		q->next = p->next;
 		q->prev = p;
-		p->next = q->next->prev =q;
+		p->next = q;
+		if (q->next) q->next->prev = q;
 
 		p = q;
 	}
@@ -42,13 +68,9 @@ Piece *psplit(Piece *p, long int offset)
 struct Buf *bufinit(const char *fpath)
 {
 	Buf *b = calloc(1, sizeof(Buf));
-	
-	b->append = tmpfile();
 
-	b->pos = palloc();
-	b->pos->prev = b->tail = palloc();
-	b->pos->next = b->head = palloc();
-	b->head->prev = b->tail->next = b->pos;
+	b->append = tmpfile();
+	b->tail = b->pos = b->head = palloc();
 
 	if (fpath) {
 		b->read = fopen(fpath, "rb");
@@ -85,33 +107,39 @@ Piece *bufidx(Buf *b, size_t pos)
 	} else {
 		offset = (idx >= pos) ? idx - pos : pos - idx;
 		b->pos = psplit(p, offset);
+		if (!b->pos->next) b->head = b->pos;
 		b->idx = pos;
 	}
 
 	return b->pos;
 }
 
-void bufins(Buf *b, size_t pos, const char *s)
+size_t bufins(Buf *b, size_t pos, const char *s)
 {
 	const size_t slen = strlen(s);
 	Piece *p = palloc();
 
-	bufidx(pos);
+	b->pos = bufidx(b, pos)->prev;
 
 	p->f = b->append;
 	p->off = ftell(b->append);
-	p->len = strlen(buf);
+	p->len = slen;
 /*	p->undo = ??	*/
 	p->redo = NULL;
-	p->prev = b->pos->prev;
+	p->prev = b->pos;
 	p->next = b->pos->next;
-	b->pos->next = p;
 
-	fprintf(b->append, "%s", buf);
+	b->pos->next = b->pos->next->prev = p;
+
+	fprintf(b->append, "%s", s);
 	if (ferror(b->append)) {
 		perror("failed to write to append file");
-		--npieces;
-		memset(ins, 0, sizeof(Piece));
+		pfree(p);
+		p = 0;
+	} else {
+		b->idx += slen;
+		b->pos = p->next;
 	}
-	return (ins->f == 0) ? b->size : (b->size += slen);
+
+	return (p == 0) ? b->size : (b->size += slen);
 }
