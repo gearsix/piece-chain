@@ -40,16 +40,15 @@ void print(Buf *b)
 void test_bufinit()
 {
 	Piece *p;
+
 	b = bufinit(INFILE);
 
 	assert(b->read);
 	assert(b->append);
-
 	assert(b->pos == b->tail);
 	assert(b->pos == b->head);
 
-	p = b->pos;
-	assert(p);
+	assert((p = b->pos));
 	assert(p->f == b->read);
 	assert(p->off == 0);
 	assert(p->len == strlen(INBUF));
@@ -60,6 +59,7 @@ void test_bufinit()
 void test_bufidx()
 {
 	Piece *p; size_t idx = 5;
+
 	p = bufidx(b, idx);
 
 	assert(p == b->pos);
@@ -74,6 +74,7 @@ void test_bufins()
 {
 	const char *buf = "y";
 	const size_t idx = 2, len = strlen(buf);
+
 	bufins(b, idx, buf);
 
 	assert(b->size == strlen(INBUF) + len);
@@ -92,19 +93,20 @@ void test_bufins()
 void test_bufdel()
 {
 	const size_t idx = 3, len = 9;
+
 	bufdel(b, idx, len);
 
 	assert(b->size == strlen(INBUF)+1-len); /* +1 for bufins */
 	assert(b->idx == idx);
 	assert(b->pos == b->head);
-	assert(b->tail->next->next->next == b->pos);
+	assert(b->tail->next->next == b->pos);
 
 	assert(b->pos->f == b->read);
 	assert(b->pos->off == 11);
 	assert(b->pos->len == 0);
 	assert(b->pos->undo == NULL);
 	assert(b->pos->redo == NULL);
-	assert(b->pos->prev == b->tail->next->next);
+	assert(b->pos->prev == b->tail->next);
 	assert(b->pos->next == NULL);
 }
 
@@ -112,20 +114,20 @@ void test_bufins1()
 {
 	const char *buf = " buddy!";
 	const size_t idx = 3, len = strlen(buf), bsiz = b->size;
+
 	bufins(b, idx, buf);
 
-	print(b);
 	assert(b->size == bsiz + len);
 	assert(b->idx == idx + len);
 	assert(b->pos == b->head);
 	assert(b->pos == b->tail->next->next->next);
 
-	assert(b->pos->f == b->append);
-	assert(b->pos->off == 1);
-	assert(b->pos->len == len);
+	assert(b->pos->prev->f == b->append);
+	assert(b->pos->prev->off == 1);
+	assert(b->pos->prev->len == len);
 	assert(b->pos->undo == NULL);
 	assert(b->pos->redo == NULL);
-	assert(b->pos->prev == b->tail->next->next->next);
+	assert(b->pos->prev == b->tail->next->next);
 	assert(b->pos->next == NULL);
 }
 

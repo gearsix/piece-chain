@@ -149,7 +149,7 @@ size_t bufdel(Buf *b, size_t pos, size_t num)
 	Piece *pre, *post;
 	size_t end = pos+num;
 
-	pre = bufidx(b, pos);
+	pre = bufidx(b, (pos == 0) ? 0 : pos-1);
 	post = bufidx(b, (end > b->size) ? b->size : end)->next;
 	if (!post) post = b->head;
 
