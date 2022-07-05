@@ -20,3 +20,5 @@ Buf *bufinit(const char *fpath);
 Piece *bufidx(Buf *b, size_t pos);
 
 size_t bufins(Buf *b, size_t pos, const char *s);
+
+size_t bufdel(Buf *b, size_t pos, size_t num);

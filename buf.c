@@ -124,7 +124,7 @@ size_t bufins(Buf *b, size_t pos, const char *s)
 	p->f = b->append;
 	p->off = ftell(b->append);
 	p->len = slen;
-/*	p->undo = ??	*/
+	p->undo = NULL;
 	p->redo = NULL;
 	p->prev = b->pos;
 	p->next = b->pos->next;
@@ -142,4 +142,20 @@ size_t bufins(Buf *b, size_t pos, const char *s)
 	}
 
 	return (p == 0) ? b->size : (b->size += slen);
+}
+
+size_t bufdel(Buf *b, size_t pos, size_t num)
+{
+	Piece *pre, *post;
+	size_t end = pos+num;
+
+	pre = bufidx(b, pos);
+	post = bufidx(b, (end > b->size) ? b->size : end)->next;
+	if (!post) post = b->head;
+
+	pre->next = post;
+	post->prev = pre;
+
+	b->idx = pos;
+	return (b->size -= num);
 }

@@ -34,6 +34,7 @@ void print(Buf *b)
 		puts("");
 	} while ((p = p->next));
 	printf("\n");
+	fflush(stdout);
 }
 
 void test_bufinit()
@@ -78,6 +79,7 @@ void test_bufins()
 	assert(b->size == strlen(INBUF) + len);
 	assert(b->idx == idx + len);
 	assert(b->pos == b->tail->next->next);
+
 	assert(b->pos->f == b->read);
 	assert(b->pos->off == 2);
 	assert(b->pos->len == 3);
@@ -87,12 +89,54 @@ void test_bufins()
 	assert(b->pos->next == b->head);
 }
 
+void test_bufdel()
+{
+	const size_t idx = 3, len = 9;
+	bufdel(b, idx, len);
+
+	assert(b->size == strlen(INBUF)+1-len); /* +1 for bufins */
+	assert(b->idx == idx);
+	assert(b->pos == b->head);
+	assert(b->tail->next->next->next == b->pos);
+
+	assert(b->pos->f == b->read);
+	assert(b->pos->off == 11);
+	assert(b->pos->len == 0);
+	assert(b->pos->undo == NULL);
+	assert(b->pos->redo == NULL);
+	assert(b->pos->prev == b->tail->next->next);
+	assert(b->pos->next == NULL);
+}
+
+void test_bufins1()
+{
+	const char *buf = " buddy!";
+	const size_t idx = 3, len = strlen(buf), bsiz = b->size;
+	bufins(b, idx, buf);
+
+	print(b);
+	assert(b->size == bsiz + len);
+	assert(b->idx == idx + len);
+	assert(b->pos == b->head);
+	assert(b->pos == b->tail->next->next->next);
+
+	assert(b->pos->f == b->append);
+	assert(b->pos->off == 1);
+	assert(b->pos->len == len);
+	assert(b->pos->undo == NULL);
+	assert(b->pos->redo == NULL);
+	assert(b->pos->prev == b->tail->next->next->next);
+	assert(b->pos->next == NULL);
+}
+
 int main()
 {
 	setup();
 	test_bufinit();
 	test_bufidx();
 	test_bufins();
+	test_bufdel();
+	test_bufins1();
 	puts("success - no assertions failed");
 	return 0;
 }
