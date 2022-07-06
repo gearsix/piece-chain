@@ -65,17 +65,15 @@ static Piece *psplit(Piece *p, long int offset)
 	return p;
 }
 
-struct Buf *bufinit(const char *fpath)
+struct Buf *bufinit(FILE *f)
 {
 	Buf *b = calloc(1, sizeof(Buf));
 
 	b->append = tmpfile();
 	b->tail = b->pos = b->head = palloc();
 
-	if (fpath) {
-		b->read = fopen(fpath, "rb");
-		if (ferror(b->read)) perror(fpath);
-		
+	if (f) {
+		b->read =f;
 		b->pos->f = b->read;
 		fseek(b->read, 0, SEEK_END);
 		b->size = b->pos->len = ftell(b->read);
@@ -158,4 +156,27 @@ size_t bufdel(Buf *b, size_t pos, size_t num)
 
 	b->idx = pos;
 	return (b->size -= num);
+}
+
+int bufout(Buf *b, FILE *f)
+{
+	size_t n, fsiz = 0;
+	char buf[BUFSIZ];
+	Piece *p = b->tail;
+
+	do {
+		if ((size_t)ftell(p->f) != p->off)
+			fseek(p->f, p->off, SEEK_SET);
+		
+		n = 0;
+		do {
+			buf[0] = '\0';
+			fread(buf, 1, p->len, p->f);
+			fsiz += fwrite(buf, 1, p->len, f);
+		} while (p->len - (BUFSIZ*n++) > BUFSIZ);
+
+		p = p->next;
+	} while(p);
+
+	return fsiz;
 }

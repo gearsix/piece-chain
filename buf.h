@@ -15,10 +15,12 @@ typedef struct Buf {
 	struct Piece *tail, *pos, *head;
 } Buf;
 
-Buf *bufinit(const char *fpath);
+Buf *bufinit(FILE *f);
 
 Piece *bufidx(Buf *b, size_t pos);
 
 size_t bufins(Buf *b, size_t pos, const char *s);
 
 size_t bufdel(Buf *b, size_t pos, size_t num);
+
+int bufout(Buf *b, FILE *f);

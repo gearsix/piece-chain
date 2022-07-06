@@ -9,18 +9,27 @@
 #define OUTBUF "hey buddy!" /* tests will aim to change INBUF to this */
 
 Buf *b;
+FILE *in, *out;
 
 void setup()
 {	
-	FILE *in = fopen(INFILE, "w+b");
+	in = fopen(INFILE, "w+b");
 	if (ferror(in)) perror("fopen in.txt");
 	fputs(INBUF, in);
-	fclose(in);
+
+	out = fopen(OUTFILE, "w+b");
+	if (ferror(in)) perror("fopen out.txt");
 
 	return;
 }
 
-void print(Buf *b)
+void setdown()
+{
+	fclose(out);
+	fclose(in);
+}
+
+void print()
 {
 	Piece *p = b->tail;
 
@@ -32,6 +41,8 @@ void print(Buf *b)
 		if (p == b->pos) printf("<-pos");
 		if (p == b->head) printf("<-head");
 		puts("");
+		printf("\tf: %s, off: %lu, len %lu\n",
+			(p->f == b->read) ? "read" : "append", p->off, p->len);
 	} while ((p = p->next));
 	printf("\n");
 	fflush(stdout);
@@ -41,7 +52,7 @@ void test_bufinit()
 {
 	Piece *p;
 
-	b = bufinit(INFILE);
+	b = bufinit(in);
 
 	assert(b->read);
 	assert(b->append);
@@ -131,6 +142,17 @@ void test_bufins1()
 	assert(b->pos->next == NULL);
 }
 
+void test_bufout()
+{
+	char buf[BUFSIZ] = {0};
+
+	bufout(b, out);
+
+	rewind(out);
+	assert(fread(buf, 1, BUFSIZ, out) > 0);
+	assert(strcmp(buf, OUTBUF) == 0);
+}
+
 int main()
 {
 	setup();
@@ -139,6 +161,8 @@ int main()
 	test_bufins();
 	test_bufdel();
 	test_bufins1();
+	test_bufout();
+	setdown();
 	puts("success - no assertions failed");
 	return 0;
 }
