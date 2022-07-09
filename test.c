@@ -100,8 +100,6 @@ void test_bufins()
 	assert(b->pos->f == b->read);
 	assert(b->pos->off == 2);
 	assert(b->pos->len == 3);
-	assert(b->pos->undo == NULL);
-	assert(b->pos->redo == NULL);
 	assert(b->pos->prev == b->tail->next);
 	assert(b->pos->next == b->head);
 }
@@ -120,8 +118,6 @@ void test_bufdel()
 	assert(b->pos->f == b->read);
 	assert(b->pos->off == 11);
 	assert(b->pos->len == 0);
-	assert(b->pos->undo == NULL);
-	assert(b->pos->redo == NULL);
 	assert(b->pos->prev == b->tail->next);
 	assert(b->pos->next == NULL);
 }
@@ -141,8 +137,6 @@ void test_bufins1()
 	assert(b->pos->prev->f == b->append);
 	assert(b->pos->prev->off == 1);
 	assert(b->pos->prev->len == len);
-	assert(b->pos->undo == NULL);
-	assert(b->pos->redo == NULL);
 	assert(b->pos->prev == b->tail->next->next);
 	assert(b->pos->next == NULL);
 }

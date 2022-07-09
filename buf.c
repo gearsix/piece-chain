@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
-static Piece *pieceblk = NULL; /* block of all pieces */
-static Piece **freeblk = NULL; /* ptr block to all free'd `pieceblk` items */
+static Piece *pieceblk = NULL;
+static Piece **freeblk = NULL;
 
 static void pclean()
 {
@@ -14,6 +15,10 @@ static void pclean()
 	free(pieceblk);
 }
 
+/* adds `p` to `freeblk` and returns the last added `freeblk` item.
+	If `p` is NULL, the last added `freeblk` item will be returned,
+	or NULL if `freeblk` is empty.
+	`freeblk` is dynamically allocated. */
 static Piece *pfree(Piece *p)
 {
 	static size_t nblk = 0, nfree = 0;
@@ -28,6 +33,12 @@ static Piece *pfree(Piece *p)
 	return freeblk[nfree++] = p;
 }
 
+/* returns the next available `Piece` item in `pieceblk`.
+	If `freeblk` is not empty, it's last item pointed to by it will be
+	returned (recycling `pieceblk` items). The returned `Piece` will
+	always have it's values set to 0. `pieceblk` is dynamically
+	allocated.
+	`atexit(pclean)` is called the first time the function is called. */
 static Piece *palloc()
 {
 	Piece *p;
@@ -36,7 +47,7 @@ static Piece *palloc()
 	static const size_t blksiz = BUFSIZ/sizeof(Piece);
 
 	static int hook = 0;
-	if (hook == 0) { atexit(pclean); hook = 1; }
+	if (!hook) { atexit(pclean); hook = 1; }
 
 	if ( !(p = pfree(NULL)) ) {
 		if (nalloc + 1 > blksiz * nblk)
@@ -48,10 +59,18 @@ static Piece *palloc()
 	return memset(p, 0, sizeof(Piece));
 }
 
+/* splits `p` into two `Piece` items. The values of `p` will be
+	modified to fit the first `Piece`; a new `Piece` will be allocated
+	for the second.
+	The `prev` and `next` items of these & associated `Piece` items will
+	be updated to reflect the new `Piece`.
+	`offset` should be the offset within `p->len` to split at. If offset
+	is not within the boundry of `p->len`, then `p` will be returned.
+	The *first* `Piece` in the split is returned. */
 static Piece *psplit(Piece *p, long int offset)
 {
 	Piece *q = palloc();
-	if (offset > 0) {
+	if (offset > 0 && offset <= (int)p->len) {
 		memcpy(q, p, sizeof(Piece));
 
 		q->off += offset;
@@ -70,7 +89,7 @@ struct Buf *bufinit(FILE *read, FILE *append)
 {
 	Buf *b = calloc(1, sizeof(Buf));
 
-	if (!read || !append) return NULL;
+	if (!append) return NULL;
 	
 	b->read = read;
 	b->append = append;
@@ -133,8 +152,6 @@ size_t bufins(Buf *b, size_t pos, const char *s)
 	p->f = b->append;
 	p->off = ftell(b->append);
 	p->len = slen;
-	p->undo = NULL;
-	p->redo = NULL;
 	p->prev = b->pos;
 	p->next = b->pos->next;
 
@@ -183,7 +200,9 @@ int bufout(Buf *b, FILE *f)
 		do {
 			buf[0] = '\0';
 			fread(buf, 1, p->len, p->f);
+			if (ferror(p->f)) { perror("bufout: fread failed"); break; }
 			fsiz += fwrite(buf, 1, p->len, f);
+			if (ferror(f)) { perror("bufout: fwrite failed"); break; }
 		} while (p->len - (BUFSIZ*n++) > BUFSIZ);
 
 		p = p->next;
