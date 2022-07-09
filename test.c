@@ -1,5 +1,6 @@
 #include "buf.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 
@@ -9,13 +10,15 @@
 #define OUTBUF "hey buddy!" /* tests will aim to change INBUF to this */
 
 Buf *b;
-FILE *in, *out;
+FILE *in, *tmp, *out;
 
 void setup()
 {	
 	in = fopen(INFILE, "w+b");
 	if (ferror(in)) perror("fopen in.txt");
 	fputs(INBUF, in);
+
+	tmp = tmpfile();
 
 	out = fopen(OUTFILE, "w+b");
 	if (ferror(in)) perror("fopen out.txt");
@@ -25,8 +28,10 @@ void setup()
 
 void setdown()
 {
+	buffree(b);
 	fclose(out);
 	fclose(in);
+	fclose(tmp);
 }
 
 void print()
@@ -52,7 +57,7 @@ void test_bufinit()
 {
 	Piece *p;
 
-	b = bufinit(in);
+	b = bufinit(in, tmp);
 
 	assert(b->read);
 	assert(b->append);

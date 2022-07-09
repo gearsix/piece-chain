@@ -15,7 +15,9 @@ typedef struct Buf {
 	struct Piece *tail, *pos, *head;
 } Buf;
 
-Buf *bufinit(FILE *f);
+Buf *bufinit(FILE *read, FILE *append);
+
+void buffree(Buf *b);
 
 Piece *bufidx(Buf *b, size_t pos);
 

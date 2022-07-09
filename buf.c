@@ -5,43 +5,44 @@
 #include <stdlib.h>
 #include <string.h>
 
-static const size_t blksiz = BUFSIZ/sizeof(Piece);
-static Piece **nextp = NULL;
+static Piece *pieceblk = NULL; /* block of all pieces */
+static Piece **freeblk = NULL; /* ptr block to all free'd `pieceblk` items */
 
-static size_t pfree(Piece *p)
+static void pclean()
 {
-	static Piece **freeblk = NULL;
-	static size_t nblk = 0, nfree = 0;
+	free(freeblk);
+	free(pieceblk);
+}
 
-	if (!p) {
-		if (!nextp && nfree > 0)
-			nextp = &freeblk[--nfree];
-		return nfree;
-	}
+static Piece *pfree(Piece *p)
+{
+	static size_t nblk = 0, nfree = 0;
+	static const size_t blksiz = BUFSIZ/sizeof(Piece *);
+
+	if (!p) return (nfree == 0) ? NULL : freeblk[--nfree];
 
 	if (nfree + 1 > blksiz * nblk)
 		freeblk = realloc(freeblk, (++nblk * blksiz) * sizeof(Piece *));
 	if (!freeblk) { perror("failed to allocate freeblk"); exit(1); }
 
-	freeblk[nfree++] = p;
-	nextp = &freeblk[nfree - 1];
-	return nfree;
+	return freeblk[nfree++] = p;
 }
 
 static Piece *palloc()
 {
 	Piece *p;
-	static Piece *pieceblk = NULL;
-	static size_t nblk = 0, npieces = 0;
+	
+	static size_t nblk = 0, nalloc = 0;
+	static const size_t blksiz = BUFSIZ/sizeof(Piece);
 
-	if (pfree(NULL) > 0) {
-		p = *nextp;
-		nextp = NULL;
-	} else {
-		if (npieces + 1 > blksiz * nblk)
+	static int hook = 0;
+	if (hook == 0) { atexit(pclean); hook = 1; }
+
+	if ( !(p = pfree(NULL)) ) {
+		if (nalloc + 1 > blksiz * nblk)
 			pieceblk = realloc(pieceblk, (++nblk * blksiz) * sizeof(Piece));
 		if (!pieceblk) { perror("failed to allocate pieceblk"); exit(1); }
-		p = &pieceblk[npieces++];
+		p = &pieceblk[nalloc++];
 	}
 
 	return memset(p, 0, sizeof(Piece));
@@ -65,21 +66,31 @@ static Piece *psplit(Piece *p, long int offset)
 	return p;
 }
 
-struct Buf *bufinit(FILE *f)
+struct Buf *bufinit(FILE *read, FILE *append)
 {
 	Buf *b = calloc(1, sizeof(Buf));
 
-	b->append = tmpfile();
+	if (!read || !append) return NULL;
+	
+	b->read = read;
+	b->append = append;
+	
 	b->tail = b->pos = b->head = palloc();
-
-	if (f) {
-		b->read =f;
-		b->pos->f = b->read;
-		fseek(b->read, 0, SEEK_END);
-		b->size = b->pos->len = ftell(b->read);
-	}
+	b->pos->f = b->read;
+	fseek(b->read, 0, SEEK_END);
+	b->size = b->pos->len = ftell(b->read);
 
 	return b;
+}
+
+void buffree(Buf *b)
+{
+	Piece *p = b->tail->next;
+	while (p) {
+		pfree(p->prev);
+		p = p->next;
+	}
+	free(b);
 }
 
 Piece *bufidx(Buf *b, size_t pos)
