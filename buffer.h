@@ -47,9 +47,8 @@ bufins(Buffer *b, size_t pos, const char *s);
 /* Removed all pieces from index `pos` to `pos+num`.
 	`pos` and `pos+num` are found using `bufidx`. */
 size_t
-bufdel(Buffer *b, size_t pos, size_t num);
+bufdel(Buffer *b, size_t pos, int num);
 
 /* writes all data in `b` to `f`. */
 int
 bufout(Buffer *b, FILE *f);
-

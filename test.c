@@ -6,6 +6,6 @@
 int main()
 {
 	test_buffer();
-	puts("success - no assertions failed");
+	puts("no assertions failed");
 	return 0;
 }

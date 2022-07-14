@@ -1,4 +1,3 @@
-
 #include "buffer.h"
 
 #include <stdio.h>
@@ -79,20 +78,44 @@ static Piece *palloc()
 	returned. */
 static Piece *psplit(Piece *p, long int offset)
 {
-	Piece *q = palloc();
+	Piece *q = p;
 	if (offset > 0 && offset <= (int)p->len) {
+		q = palloc();
 		memcpy(q, p, sizeof(Piece));
-
 		q->off += offset;
 		q->len -= p->len = offset;
 		q->next = p->next;
 		q->prev = p;
 		p->next = q;
 		if (q->next) q->next->prev = q;
-
-		p = q;
+	} else if (offset == 0) {
+		q = palloc();
+		q->next = p;
+		p->prev = q;
 	}
-	return p;
+	return q;
+}
+
+/* pfind will find the `Piece` which contains index `pos`.
+	The search starts from `p`, where the index is `idx`.
+	`p` will be set to the found `Piece`.
+	The new index will be returned. */
+static size_t pfind(Piece **ptr, size_t idx, size_t pos)
+{
+	Piece *p = *ptr;
+	if (pos >= idx) {
+		while (pos >= idx + p->len && p->next) {
+			idx += p->len;
+			p = p->next;
+		}
+	} else {
+		do {
+			p = p->prev;
+			idx -= p->len;
+		} while (pos < idx && p->prev);
+	}
+	*ptr = p;
+	return idx;
 }
 
 struct Buffer *bufinit(FILE *read, FILE *append)
@@ -124,41 +147,28 @@ void buffree(Buffer *b)
 
 Piece *bufidx(Buffer *b, size_t pos)
 {
-	size_t idx = b->idx, offset;
-	Piece *p = b->pos;
+	size_t offset, idx = pfind(&b->pos, b->idx, pos);
 
-	if (pos >= idx) {
-		while (pos >= idx + p->len && p->next) {
-			idx += p->len;
-			p = p->next;
-		}
-	} else {
-		do {
-			p = p->prev;
-			idx -= p->len;
-		} while(pos > idx && p->prev);
-	}
-
-	if (idx == pos) {
-		b->idx = idx;
-		b->pos = p;
-	} else {
+	if (idx != pos || idx == 0) {
 		offset = (idx >= pos) ? idx - pos : pos - idx;
-		b->pos = psplit(p, offset);
+		b->pos = psplit(b->pos, offset);
+		if (!b->pos->prev) b->tail = b->pos;
 		if (!b->pos->next) b->head = b->pos;
-		b->idx = pos;
 	}
-
+	
+	b->idx = pos;
 	return b->pos;
 }
 
 size_t bufins(Buffer *b, size_t pos, const char *s)
 {
 	const size_t slen = strlen(s);
-	Piece *p = palloc();
+	Piece *p;
 
 	b->pos = bufidx(b, pos)->prev;
-
+	if (!b->pos) b->pos = b->tail;
+	
+	p = palloc();
 	p->f = b->append;
 	p->off = ftell(b->append);
 	p->len = slen;
@@ -170,22 +180,36 @@ size_t bufins(Buffer *b, size_t pos, const char *s)
 	fprintf(b->append, "%s", s);
 	CATCH(ferror(b->append), "bufins: write to append",
 		{ pfree(p); p = 0; });
+
 	if (p != 0) {
 		b->idx += slen;
+		b->size += slen;
 		b->pos = p->next;
 	}
 
-	return (p == 0) ? b->size : (b->size += slen);
+	return b->size;
 }
 
-size_t bufdel(Buffer *b, size_t pos, size_t num)
+size_t bufdel(Buffer *b, size_t pos, int num)
 {
+	size_t tmp;
 	Piece *pre, *post;
-	size_t end = pos+num;
 
-	pre = bufidx(b, (pos == 0) ? 0 : pos-1);
-	post = bufidx(b, (end > b->size) ? b->size : end)->next;
-	if (!post) post = b->head;
+	if (num < 0) {
+		if ((int)pos-num < 0)
+			num = pos;
+		else {
+			tmp = abs(num);
+			num = pos;
+			pos = (tmp > pos) ? 0 : tmp;
+		}
+	}
+
+	if (pos+num > b->size) num = b->size - pos;
+	
+	pre = bufidx(b, pos)->prev;
+	if (!pre) pre = b->tail;
+	post = bufidx(b, pos+num);
 
 	pre->next = post;
 	post->prev = pre;
@@ -201,18 +225,19 @@ int bufout(Buffer *b, FILE *f)
 	Piece *p = b->tail;
 
 	do {
-		if ((size_t)ftell(p->f) != p->off)
+		if (p->len > 0 && p->f) {
+			if ((size_t)ftell(p->f) != p->off)
 			fseek(p->f, p->off, SEEK_SET);
 		
-		n = 0;
-		do {
-			buf[0] = '\0';
-			fread(buf, 1, p->len, p->f);
-			CATCH(ferror(p->f), "bufout: fread failed", break);
-			fsiz += fwrite(buf, 1, p->len, f);
-			CATCH(ferror(f), "bufout: fwrite failed", break);
-		} while (p->len - (BUFSIZ*n++) > BUFSIZ);
-
+			n = 0;
+			do {
+				buf[0] = '\0';
+				fread(buf, 1, p->len, p->f);
+				CATCH(ferror(p->f), "bufout: fread failed", break);
+				fsiz += fwrite(buf, 1, p->len, f);
+				CATCH(ferror(f), "bufout: fwrite failed", break);
+			} while (p->len - (BUFSIZ*n++) > BUFSIZ);
+		}
 		p = p->next;
 	} while(p);
 

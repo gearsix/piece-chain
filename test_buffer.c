@@ -2,6 +2,7 @@
 #include "buffer.h"
 
 #include <stdio.h>
+#include <signal.h>
 #include <string.h>
 #include <assert.h>
 
@@ -10,7 +11,7 @@ static Buffer *B;
 static FILE *in_f;
 static const char *in_p = "in.txt", *in_buf = "hello world";
 static FILE *out_f;
-static const char *out_p = "out.txt", *out_buf = "hey buddy!";
+static const char *out_p = "out.txt", *out_buf = "Hey buddy!";
 static FILE *tmp_f;
 static const char *tmp_p = "tmp.txt";
 
@@ -22,20 +23,25 @@ static void test_bufidx();
 static void test_bufins();
 static void test_bufdel();
 static void test_bufins1();
+static void test_bufdel1();
+static void test_bufins2();
 static void test_bufout();
 
 
 void test_buffer()
 {
 	printf("test_buffer: ");
-	setup();
+	setup();	
+	signal(SIGABRT, setdown);
 	test_bufinit();
 	test_bufidx();
 	test_bufins();
 	test_bufdel();
 	test_bufins1();
+	test_bufdel1();
+	test_bufins2();
 	test_bufout();
-	setdown();
+	setdown(0);
 	puts("success");
 }
 
@@ -43,7 +49,7 @@ static void debugprint()
 {
 	Piece *p = B->tail;
 
-	printf("Buf: %p\n", (void *)B);
+	printf("\nBuf: %p\n", (void *)B);
 	printf("size: %d, index: %d\n", (int)B->size, (int)B->idx);
 	do {
 		printf("%p", (void *)p);
@@ -69,15 +75,17 @@ static void setup()
 	if (ferror(tmp_f)) perror("fopen tmp");
 }
 
-static void setdown()
+static void setdown(int n)
 {
 	buffree(B);
 	fclose(out_f);
 	fclose(in_f);
 	fclose(tmp_f);
-	remove(in_p);
-	remove(out_p);
-	remove(tmp_p);
+	if (n != SIGABRT) {
+		remove(in_p);
+		remove(out_p);
+		remove(tmp_p);
+	}
 }
 
 static void test_bufinit()
@@ -115,8 +123,8 @@ static void test_bufidx()
 
 static void test_bufins()
 {
-	const char *buf = "y";
-	const size_t idx = 2, len = strlen(buf);
+	const char *buf = "y"; size_t idx = 2;
+	const size_t len = strlen(buf);
 
 	bufins(B, idx, buf);
 
@@ -133,11 +141,12 @@ static void test_bufins()
 
 static void test_bufdel()
 {
-	const size_t idx = 3, len = 9;
+	size_t idx = 3; int len = B->size+1;
+	const size_t bsiz = B->size;
 
 	bufdel(B, idx, len);
-
-	assert(B->size == strlen(in_buf)+1-len); /* +1 for bufins */
+	
+	assert(B->size == bsiz-(bsiz-idx));
 	assert(B->idx == idx);
 	assert(B->pos == B->head);
 	assert(B->tail->next->next == B->pos);
@@ -151,8 +160,8 @@ static void test_bufdel()
 
 static void test_bufins1()
 {
-	const char *buf = " buddy!";
-	const size_t idx = 3, len = strlen(buf), bsiz = B->size;
+	size_t idx = 3; const char *buf = " buddy!";
+	const size_t len = strlen(buf), bsiz = B->size;
 
 	bufins(B, idx, buf);
 
@@ -168,6 +177,49 @@ static void test_bufins1()
 	assert(B->pos->next == NULL);
 }
 
+static void test_bufdel1()
+{
+	size_t idx = 0; int len = 1;
+	const size_t bsiz = B->size;
+
+	bufdel(B, idx, len);
+
+	assert(B->size == bsiz - len);
+	assert(B->idx == idx);
+	
+	assert(B->pos->prev == B->tail);
+	assert(B->pos->prev->f == 0);
+	assert(B->pos->prev->off == 0);
+	assert(B->pos->prev->len == 0);
+	assert(B->pos->prev->prev == 0);
+	assert(B->pos->prev->next == B->pos);
+
+	assert(B->pos->f == B->read);
+	assert(B->pos->off == 1);
+	assert(B->pos->len == (size_t)len);
+	assert(B->pos->prev == B->tail);
+	assert(B->pos->next->next->next == B->head);
+}
+
+static void test_bufins2()
+{
+	const char *buf = "H"; const size_t idx = 0;
+	size_t len = strlen(buf), bsiz = B->size;
+
+	bufins(B, idx, buf);
+
+	assert(B->size == bsiz + len);
+	assert(B->idx == idx + len);
+	assert(B->pos == B->tail->next->next);
+
+	assert(B->pos->prev == B->tail->next);
+	assert(B->pos->prev->f == B->append);
+	assert(B->pos->prev->off == 8);
+	assert(B->pos->prev->len == 1);
+	assert(B->pos->prev->prev == B->tail);
+	assert(B->pos->prev->next == B->pos);
+}
+
 static void test_bufout()
 {
 	size_t n = 0;
@@ -176,7 +228,6 @@ static void test_bufout()
 	bufout(B, out_f);
 	rewind(out_f);
 	n = fread(buf, 1, BUFSIZ, out_f);
-	
 	assert(n > 0);
 	assert(strcmp(buf, out_buf) == 0);
 }
