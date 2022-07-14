@@ -1,5 +1,12 @@
 /* A piece chain implementation.
 	gearsix, 2022 */
+#ifndef ECBUF
+#define ECBUF
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 
 /* Points to a file (`f`), which contains a string which starts
@@ -52,3 +59,9 @@ bufdel(Buffer *b, size_t pos, int num);
 /* writes all data in `b` to `f`. */
 int
 bufout(Buffer *b, FILE *f);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ECBUF */
