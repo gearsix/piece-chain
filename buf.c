@@ -1,4 +1,4 @@
-#include "buffer.h"
+#include "buf.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -118,9 +118,9 @@ static size_t pfind(Piece **ptr, size_t idx, size_t pos)
 	return idx;
 }
 
-struct Buffer *bufinit(FILE *read, FILE *append)
+struct Buf *bufinit(FILE *read, FILE *append)
 {
-	Buffer *b = calloc(1, sizeof(Buffer));
+	Buf *b = calloc(1, sizeof(Buf));
 
 	if (!append) return NULL;
 	
@@ -135,7 +135,7 @@ struct Buffer *bufinit(FILE *read, FILE *append)
 	return b;
 }
 
-void buffree(Buffer *b)
+void buffree(Buf *b)
 {
 	Piece *p = b->tail->next;
 	while (p) {
@@ -145,7 +145,7 @@ void buffree(Buffer *b)
 	free(b);
 }
 
-Piece *bufidx(Buffer *b, size_t pos)
+Piece *bufidx(Buf *b, size_t pos)
 {
 	size_t offset, idx = pfind(&b->pos, b->idx, pos);
 
@@ -160,7 +160,7 @@ Piece *bufidx(Buffer *b, size_t pos)
 	return b->pos;
 }
 
-size_t bufins(Buffer *b, size_t pos, const char *s)
+size_t bufins(Buf *b, size_t pos, const char *s)
 {
 	const size_t slen = strlen(s);
 	Piece *p;
@@ -190,7 +190,7 @@ size_t bufins(Buffer *b, size_t pos, const char *s)
 	return b->size;
 }
 
-size_t bufdel(Buffer *b, size_t pos, int num)
+size_t bufdel(Buf *b, size_t pos, int num)
 {
 	size_t tmp;
 	Piece *pre, *post;
@@ -218,7 +218,7 @@ size_t bufdel(Buffer *b, size_t pos, int num)
 	return (b->size -= num);
 }
 
-int bufout(Buffer *b, FILE *f)
+int bufout(Buf *b, FILE *f)
 {
 	size_t n, fsiz = 0;
 	char buf[BUFSIZ];

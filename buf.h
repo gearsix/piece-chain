@@ -25,40 +25,35 @@ typedef struct Piece {
 	chain. `idx` is the last addressed index in the chain.
 	`read` and `append` point to the original file (`read`) and
 	any data to be added `append`. */
-typedef struct Buffer {
+typedef struct Buf {
 	FILE *read, *append;
 	size_t size, idx;
 	struct Piece *tail, *pos, *head;
-} Buffer;
+} Buf;
 
-/* Allocates & initialises a `Buffer`. If `append` is NULL, nothing is
+/* Allocates & initialises a `Buf`. If `append` is NULL, nothing is
 	allocated or initialised and NULL is returned. */
-Buffer *
-bufinit(FILE *read, FILE *append);
+Buf *bufinit(FILE *read, FILE *append);
 
 /* Frees `b` and all `Piece` items associated with it. */
 void
-buffree(Buffer *b);
+buffree(Buf *b);
 
 /* Set `b->idx` to `pos` and `b->pos` to the `Piece` in the chain,
 	where the start of `b->pos->next` is `pos`. */
-Piece *
-bufidx(Buffer *b, size_t pos);
+Piece *bufidx(Buf *b, size_t pos);
 
 /* Adds a new `Piece` to the chain, at `pos` (found using `bufidx`).
 	`s` will be appended to `b->append` and the new `Piece` will
 	reflect the appended data. */
-size_t
-bufins(Buffer *b, size_t pos, const char *s);
+size_t bufins(Buf *b, size_t pos, const char *s);
 
 /* Removed all pieces from index `pos` to `pos+num`.
 	`pos` and `pos+num` are found using `bufidx`. */
-size_t
-bufdel(Buffer *b, size_t pos, int num);
+size_t bufdel(Buf *b, size_t pos, int num);
 
 /* writes all data in `b` to `f`. */
-int
-bufout(Buffer *b, FILE *f);
+int bufout(Buf *b, FILE *f);
 
 #ifdef __cplusplus
 }

@@ -1,12 +1,12 @@
 #include "test.h"
-#include "buffer.h"
+#include "buf.h"
 
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
 #include <assert.h>
 
-static Buffer *B;
+static Buf *B;
 
 static FILE *in_f;
 static const char *in_p = "in.txt", *in_buf = "hello world";
@@ -28,7 +28,7 @@ static void test_bufins2();
 static void test_bufout();
 
 
-void test_buffer()
+void test_buf()
 {
 	printf("test_buffer: ");
 	setup();	

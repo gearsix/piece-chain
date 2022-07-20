@@ -5,7 +5,7 @@
 
 int main()
 {
-	test_buffer();
+	test_buf();
 	puts("no assertions failed");
 	return 0;
 }

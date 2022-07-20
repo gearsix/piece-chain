@@ -1,2 +1,2 @@
 
-void test_buffer();
+void test_buf();
