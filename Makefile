@@ -1,5 +1,5 @@
 CC := gcc
-SRC := buf.c
+SRC := buf.c cmd.c
 OUT := ec
 OPTS := -g -Wall -Wpedantic -std=c89
 
